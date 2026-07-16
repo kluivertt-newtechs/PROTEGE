@@ -1,20 +1,21 @@
 <po-page-default p-title="Precificação - Transporte de Valores">
-  <section class="pricing-header">
-    <div>
-      <h2>NewTech Soluções - módulo comercial integrado ao TOTVS Datasul</h2>
-      <p>Simulação frontend com dados mestres, custos operacionais, CPE, impostos e processamento.</p>
-    </div>
-    <span class="sync-badge">ERP Datasul conectado - {{ selectedBase.erpBranch }}</span>
-  </section>
-
   <po-tabs>
     <po-tab p-label="Parâmetros" [p-active]="true">
       <div class="pricing-grid">
         <po-container class="span-12" p-title="Dados mestres do ERP">
           <div class="info-grid">
-            <po-info p-label="Cliente ERP" p-value="PROTEGE TRANSPORTE DE VALORES"></po-info>
-            <po-info p-label="Estabelecimento" [p-value]="selectedBase.erpBranch"></po-info>
-            <po-info p-label="Regime tributário" [p-value]="selectedBase.taxRegime"></po-info>
+            <po-info
+              p-label="Cliente ERP"
+              p-value="PROTEGE TRANSPORTE DE VALORES"
+            ></po-info>
+            <po-info
+              p-label="Estabelecimento"
+              [p-value]="selectedBase.erpBranch"
+            ></po-info>
+            <po-info
+              p-label="Regime tributário"
+              [p-value]="selectedBase.taxRegime"
+            ></po-info>
             <po-select
               name="selectedBase"
               p-label="Base de atendimento"
@@ -45,45 +46,66 @@
         <po-container class="span-6" p-title="Impostos interestaduais">
           <div class="info-grid compact">
             <po-info p-label="UF origem" [p-value]="selectedBase.uf"></po-info>
-            <po-info p-label="UF destino exemplo" p-value="RJ / MG / RS"></po-info>
-            <po-info p-label="PIS/COFINS" [p-value]="formatPercent(parameters.pisCofinsRate)"></po-info>
-            <po-info p-label="ICMS simplificado" p-value="7,00% ou 12,00%"></po-info>
+            <po-info
+              p-label="UF destino exemplo"
+              p-value="RJ / MG / RS"
+            ></po-info>
+            <po-info
+              p-label="PIS/COFINS"
+              [p-value]="formatPercent(parameters.pisCofinsRate)"
+            ></po-info>
+            <po-info
+              p-label="ICMS simplificado"
+              p-value="7,00% ou 12,00%"
+            ></po-info>
           </div>
         </po-container>
 
-        <po-container class="span-6" p-title="Parâmetros comerciais">
+        <po-container class="span-6 po-mb-3" p-title="Parâmetros comerciais">
           <div class="form-grid">
             <po-input
               name="operationalExpensesRate"
               p-label="Despesas operacionais"
               p-help="Informe 14 ou 0,14"
               [ngModel]="parameters.operationalExpensesRate"
-              (ngModelChange)="parameters.operationalExpensesRate = $event; onParameterChange()"
+              (ngModelChange)="
+                parameters.operationalExpensesRate = $event; onParameterChange()
+              "
             ></po-input>
             <po-input
               name="indirectExpensesRate"
               p-label="Despesas indiretas"
               p-help="Informe 14,1 ou 0,141"
               [ngModel]="parameters.indirectExpensesRate"
-              (ngModelChange)="parameters.indirectExpensesRate = $event; onParameterChange()"
+              (ngModelChange)="
+                parameters.indirectExpensesRate = $event; onParameterChange()
+              "
             ></po-input>
             <po-input
               name="targetMarginRate"
               p-label="Margem/EBITDA alvo"
               p-help="Informe 8 ou 0,08"
               [ngModel]="parameters.targetMarginRate"
-              (ngModelChange)="parameters.targetMarginRate = $event; onParameterChange()"
+              (ngModelChange)="
+                parameters.targetMarginRate = $event; onParameterChange()
+              "
             ></po-input>
             <po-input
               name="pisCofinsRate"
               p-label="PIS/COFINS"
               p-help="Lucro Presumido"
               [ngModel]="parameters.pisCofinsRate"
-              (ngModelChange)="parameters.pisCofinsRate = $event; onParameterChange()"
+              (ngModelChange)="
+                parameters.pisCofinsRate = $event; onParameterChange()
+              "
             ></po-input>
           </div>
           <div class="actions-row end">
-            <po-button p-kind="primary" p-label="Salvar parâmetros" (p-click)="saveParameters()"></po-button>
+            <po-button
+              p-kind="primary"
+              p-label="Salvar parâmetros"
+              (p-click)="saveParameters()"
+            ></po-button>
           </div>
         </po-container>
       </div>
@@ -124,13 +146,20 @@
             ></po-select>
           </div>
 
-          <ng-container *ngIf="simulation.operationMode === 'transport'; else processingForm">
+          <ng-container
+            *ngIf="
+              simulation.operationMode === 'transport';
+              else processingForm
+            "
+          >
             <po-radio-group
               name="transportCostOrigin"
               p-label="Origem do custo"
               [p-options]="costOriginOptions"
               [ngModel]="simulation.transportCostOrigin"
-              (ngModelChange)="simulation.transportCostOrigin = $event; recalculate()"
+              (ngModelChange)="
+                simulation.transportCostOrigin = $event; recalculate()
+              "
             ></po-radio-group>
 
             <div class="form-grid">
@@ -149,7 +178,7 @@
               ></po-select>
               <po-select
                 name="vehicle"
-              p-label="Tipo de veículo"
+                p-label="Tipo de veículo"
                 [p-options]="vehicleOptions"
                 [ngModel]="simulation.vehicle"
                 (ngModelChange)="simulation.vehicle = $event; recalculate()"
@@ -166,7 +195,9 @@
                 p-label="Tributação"
                 [p-options]="taxOperationOptions"
                 [ngModel]="simulation.taxOperation"
-                (ngModelChange)="simulation.taxOperation = $event; recalculate()"
+                (ngModelChange)="
+                  simulation.taxOperation = $event; recalculate()
+                "
               ></po-select>
               <po-input
                 name="quantity"
@@ -182,7 +213,10 @@
               ></po-input>
             </div>
 
-            <div class="form-grid sop-grid" *ngIf="simulation.transportCostOrigin === 'SOP'">
+            <div
+              class="form-grid sop-grid"
+              *ngIf="simulation.transportCostOrigin === 'SOP'"
+            >
               <po-input
                 name="km"
                 p-label="KM deslocamento"
@@ -199,13 +233,17 @@
                 name="overtime50Hours"
                 p-label="Horas extra 50%"
                 [ngModel]="simulation.overtime50Hours"
-                (ngModelChange)="simulation.overtime50Hours = $event; recalculate()"
+                (ngModelChange)="
+                  simulation.overtime50Hours = $event; recalculate()
+                "
               ></po-input>
               <po-input
                 name="overtime100Hours"
                 p-label="Horas extra 100%"
                 [ngModel]="simulation.overtime100Hours"
-                (ngModelChange)="simulation.overtime100Hours = $event; recalculate()"
+                (ngModelChange)="
+                  simulation.overtime100Hours = $event; recalculate()
+                "
               ></po-input>
             </div>
           </ng-container>
@@ -217,13 +255,17 @@
                 p-label="Tipo de processamento"
                 [p-options]="processingTypeOptions"
                 [ngModel]="simulation.processingType"
-                (ngModelChange)="simulation.processingType = $event; recalculate()"
+                (ngModelChange)="
+                  simulation.processingType = $event; recalculate()
+                "
               ></po-select>
               <po-input
                 name="thousandsVolume"
                 p-label="Volume de milheiros"
                 [ngModel]="simulation.thousandsVolume"
-                (ngModelChange)="simulation.thousandsVolume = $event; recalculate()"
+                (ngModelChange)="
+                  simulation.thousandsVolume = $event; recalculate()
+                "
               ></po-input>
             </div>
             <po-table
@@ -240,11 +282,11 @@
         <aside class="span-4 result-panel">
           <div class="metric primary">
             <span>{{ formatCurrency(result.finalPrice) }}</span>
-              <small>Preço unitário</small>
+            <small>Preço unitário</small>
           </div>
           <div class="metric">
             <span>{{ formatCurrency(result.monthlyPrice) }}</span>
-              <small>Preço mensal por {{ monthlyLabel }}</small>
+            <small>Preço mensal por {{ monthlyLabel }}</small>
           </div>
           <div class="metric">
             <span>{{ formatPercent(result.ebitdaRate) }}</span>

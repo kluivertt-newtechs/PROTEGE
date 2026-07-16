@@ -40,12 +40,12 @@ export class MainComponent {
   ];
 
   menu: Array<PoMenuItem> = [
-    {
-      label: 'Home',
-      shortLabel: 'Home',
-      icon: 'an an-house',
-      link: 'home',
-    },
+    // {
+    //   label: 'Home',
+    //   shortLabel: 'Home',
+    //   icon: 'an an-house',
+    //   link: 'home',
+    // },
     {
       label: 'Precificação',
       shortLabel: 'Preço',
