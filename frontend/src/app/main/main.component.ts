@@ -56,13 +56,13 @@ export class MainComponent {
     {
       label: 'Simulação',
       shortLabel: 'Simular',
-      icon: 'an an-chart-line-up',
+      icon: 'an an-calculator',
       link: 'simulation',
     },
     {
       label: 'Consolidado',
       shortLabel: 'Consolidado',
-      icon: 'an an-calculator',
+      icon: 'an an-chart-line-up',
       link: 'consolidated',
     },
   ];
