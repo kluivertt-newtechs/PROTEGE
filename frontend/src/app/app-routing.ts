@@ -24,6 +24,13 @@ export const routes: Routes = [
             (r) => r.pricingRoutes,
           ),
       },
+      {
+        path: 'simulation',
+        loadChildren: () =>
+          import('./features/simulation/simulation.routes').then(
+            (r) => r.simulationRoutes,
+          ),
+      },
     ],
   },
   { path: '**', redirectTo: '' },

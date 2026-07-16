@@ -4,8 +4,8 @@ import {
   PoToolbarAction,
   PoToolbarProfile,
 } from '@po-ui/ng-components';
-import { SHARED_MODULES } from '../shared/shared';
 import { Router } from '@angular/router';
+import { SHARED_MODULES } from '../shared/shared';
 
 @Component({
   selector: 'app-root',
@@ -51,6 +51,12 @@ export class MainComponent {
       shortLabel: 'Preço',
       icon: 'an an-currency-circle-dollar',
       link: 'pricing',
+    },
+    {
+      label: 'Simulação',
+      shortLabel: 'Simular',
+      icon: 'an an-chart-line-up',
+      link: 'simulation',
     },
   ];
 

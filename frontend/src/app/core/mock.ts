@@ -85,11 +85,11 @@ export interface InterstateTaxRate {
 }
 
 export const pricingBases: Array<PricingBase> = [
-  { id: 'base-oeste', name: 'Base Oeste', city: 'Sao Paulo', uf: 'SP', erpBranch: '1.01 - Matriz SP', taxRegime: 'Lucro Presumido' },
+  { id: 'base-oeste', name: 'Base Oeste', city: 'São Paulo', uf: 'SP', erpBranch: '1.01 - Matriz SP', taxRegime: 'Lucro Presumido' },
   { id: 'rio-branco', name: 'Rio Branco', city: 'Rio Branco', uf: 'AC', erpBranch: '2.04 - Filial AC', taxRegime: 'Lucro Presumido' },
   { id: 'campinas', name: 'Campinas', city: 'Campinas', uf: 'SP', erpBranch: '1.03 - Campinas', taxRegime: 'Lucro Presumido' },
   { id: 'bauru', name: 'Bauru', city: 'Bauru', uf: 'SP', erpBranch: '1.05 - Bauru', taxRegime: 'Lucro Presumido' },
-  { id: 'cuiaba', name: 'Cuiaba', city: 'Cuiaba', uf: 'MT', erpBranch: '3.02 - Cuiaba', taxRegime: 'Lucro Presumido' },
+  { id: 'cuiaba', name: 'Cuiabá', city: 'Cuiabá', uf: 'MT', erpBranch: '3.02 - Cuiabá', taxRegime: 'Lucro Presumido' },
 ];
 
 export const vehicleCosts: Array<VehicleCost> = [
@@ -113,22 +113,22 @@ export const commercialParametersMock: CommercialParameters = {
 export const cpeReferences: Array<CpeReference> = [
   { baseId: 'base-oeste', city: 'SAO PAULO', uf: 'SP', routeType: 'Semanal', vehicle: 'Carro Forte', pointType: 'Embarque', cost: 612.35 },
   { baseId: 'base-oeste', city: 'SAO PAULO', uf: 'SP', routeType: 'Semanal', vehicle: 'Carro Leve', pointType: 'Embarque', cost: 398.72 },
-  { baseId: 'base-oeste', city: 'SAO PAULO', uf: 'SP', routeType: 'Sabado', vehicle: 'Carro Forte', pointType: 'Abastecimento', cost: 733.28 },
+  { baseId: 'base-oeste', city: 'SAO PAULO', uf: 'SP', routeType: 'Sábado', vehicle: 'Carro Forte', pointType: 'Abastecimento', cost: 733.28 },
   { baseId: 'rio-branco', city: 'ACRELANDIA', uf: 'AC', routeType: 'Semanal', vehicle: 'Carro Forte', pointType: 'Embarque', cost: 815.9 },
-  { baseId: 'rio-branco', city: 'RIO BRANCO', uf: 'AC', routeType: 'Semanal', vehicle: 'Carro Leve', pointType: 'Tecnica', cost: 455.4 },
+  { baseId: 'rio-branco', city: 'RIO BRANCO', uf: 'AC', routeType: 'Semanal', vehicle: 'Carro Leve', pointType: 'Técnica', cost: 455.4 },
   { baseId: 'campinas', city: 'CAMPINAS', uf: 'SP', routeType: 'Semanal', vehicle: 'Carro Forte', pointType: 'Ponta a ponta', cost: 582.13 },
   { baseId: 'base-oeste', city: 'SANTA CRUZ DO SUL', uf: 'RS', routeType: 'Semanal', vehicle: 'Carro Forte', pointType: 'Embarque', cost: 1048.67 },
 ];
 
 export const processingCosts: Array<ProcessingCost> = [
-  { type: 'AGENCIA', baseId: 'base-oeste', costPerThousand: 12.42, issRate: 0.05 },
-  { type: 'AGENCIA - BBD', baseId: 'base-oeste', costPerThousand: 10.88, issRate: 0.05 },
+  { type: 'AGÊNCIA', baseId: 'base-oeste', costPerThousand: 12.42, issRate: 0.05 },
+  { type: 'AGÊNCIA - BBD', baseId: 'base-oeste', costPerThousand: 10.88, issRate: 0.05 },
   { type: 'ATM', baseId: 'base-oeste', costPerThousand: 17.36, issRate: 0.05 },
-  { type: 'ATM - ITAU', baseId: 'base-oeste', costPerThousand: 15.97, issRate: 0.05 },
-  { type: 'AGENCIA', baseId: 'rio-branco', costPerThousand: 14.2, issRate: 0.04 },
+  { type: 'ATM - ITAÚ', baseId: 'base-oeste', costPerThousand: 15.97, issRate: 0.05 },
+  { type: 'AGÊNCIA', baseId: 'rio-branco', costPerThousand: 14.2, issRate: 0.04 },
   { type: 'ATM', baseId: 'rio-branco', costPerThousand: 19.4, issRate: 0.04 },
-  { type: 'AGENCIA', baseId: 'campinas', costPerThousand: 11.95, issRate: 0.03 },
-  { type: 'ATM - ITAU', baseId: 'cuiaba', costPerThousand: 18.75, issRate: 0.05 },
+  { type: 'AGÊNCIA', baseId: 'campinas', costPerThousand: 11.95, issRate: 0.03 },
+  { type: 'ATM - ITAÚ', baseId: 'cuiaba', costPerThousand: 18.75, issRate: 0.05 },
 ];
 
 export const interstateTaxRates: Array<InterstateTaxRate> = [
@@ -146,7 +146,7 @@ export const initialPricingSimulation: PricingSimulation = {
   operationMode: 'transport',
   transportCostOrigin: 'CPE',
   baseId: 'base-oeste',
-  city: 'Sao Paulo',
+  city: 'São Paulo',
   uf: 'SP',
   destinationUf: 'RJ',
   pointType: 'Embarque',
@@ -159,6 +159,6 @@ export const initialPricingSimulation: PricingSimulation = {
   normalHours: 2,
   overtime50Hours: 0,
   overtime100Hours: 0,
-  processingType: 'AGENCIA',
+  processingType: 'AGÊNCIA',
   thousandsVolume: 120,
 };
