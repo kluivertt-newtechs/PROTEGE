@@ -26,6 +26,17 @@ export class PricingComponent {
 
   parameters: CommercialParameters = { ...commercialParametersMock };
   selectedBaseId = this.bases[0]?.id ?? '';
+  baseOptions: Array<PoSelectOption> = this.bases.map((base) => ({
+    label: `${base.name} (${base.uf})`,
+    value: base.id,
+  }));
+  costItems: Array<TableItem> = this.buildCostItems();
+  processingItems: Array<TableItem> = this.processingCosts.map((cost) => ({
+    type: cost.type,
+    base: this.bases.find((base) => base.id === cost.baseId)?.name ?? cost.baseId,
+    costPerThousand: this.formatCurrency(cost.costPerThousand),
+    issRate: this.formatPercent(cost.issRate),
+  }));
   syncStatus = 'Última sincronização: hoje, 08:14 - CD0704 / PD4000 / FT4001';
 
   costColumns: Array<PoTableColumn> = [
@@ -46,15 +57,16 @@ export class PricingComponent {
     { property: 'issRate', label: 'ISS' },
   ];
 
-  get baseOptions(): Array<PoSelectOption> {
-    return this.bases.map((base) => ({ label: `${base.name} (${base.uf})`, value: base.id }));
-  }
-
   get selectedBase() {
     return this.bases.find((base) => base.id === this.selectedBaseId) ?? this.bases[0];
   }
 
-  get costItems(): Array<TableItem> {
+  onBaseChange(baseId: string): void {
+    this.selectedBaseId = baseId;
+    this.costItems = this.buildCostItems();
+  }
+
+  private buildCostItems(): Array<TableItem> {
     return this.vehicleCosts
       .filter((cost) => cost.baseId === this.selectedBaseId)
       .map((cost) => ({
@@ -67,15 +79,6 @@ export class PricingComponent {
         issRate: this.formatPercent(cost.issRate),
         icmsRate: this.formatPercent(cost.icmsRate),
       }));
-  }
-
-  get processingItems(): Array<TableItem> {
-    return this.processingCosts.map((cost) => ({
-      type: cost.type,
-      base: this.bases.find((base) => base.id === cost.baseId)?.name ?? cost.baseId,
-      costPerThousand: this.formatCurrency(cost.costPerThousand),
-      issRate: this.formatPercent(cost.issRate),
-    }));
   }
 
   synchronizeErp(): void {

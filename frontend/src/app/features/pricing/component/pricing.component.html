@@ -19,7 +19,7 @@
           p-label="Base de atendimento"
           [p-options]="baseOptions"
           [ngModel]="selectedBaseId"
-          (ngModelChange)="selectedBaseId = $event"
+          (ngModelChange)="onBaseChange($event)"
         ></po-select>
       </div>
       <div class="actions-row">

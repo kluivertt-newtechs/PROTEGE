@@ -37,6 +37,13 @@ export class SimulationComponent implements OnInit {
 
   simulation: PricingSimulation = { ...initialPricingSimulation };
   result: PricingResult = this.emptyResult();
+  baseOptions: Array<PoSelectOption> = this.bases.map((base) => ({
+    label: `${base.name} (${base.uf})`,
+    value: base.id,
+  }));
+  vehicleOptions: Array<PoSelectOption> = [];
+  processingTypeOptions: Array<PoSelectOption> = [];
+  processingItems: Array<TableItem> = [];
 
   costOriginOptions: Array<PoRadioGroupOption> = [
     { label: 'Custo por esforço (CPE)', value: 'CPE' },
@@ -75,14 +82,11 @@ export class SimulationComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    this.refreshBaseDependentOptions();
     this.recalculate();
   }
 
-  get baseOptions(): Array<PoSelectOption> {
-    return this.bases.map((base) => ({ label: `${base.name} (${base.uf})`, value: base.id }));
-  }
-
-  get vehicleOptions(): Array<PoSelectOption> {
+  private buildVehicleOptions(): Array<PoSelectOption> {
     const vehicles = this.vehicleCosts
       .filter((cost) => cost.baseId === this.simulation.baseId)
       .map((cost) => cost.vehicle);
@@ -90,7 +94,7 @@ export class SimulationComponent implements OnInit {
     return [...new Set(vehicles)].map((vehicle) => ({ label: vehicle, value: vehicle }));
   }
 
-  get processingTypeOptions(): Array<PoSelectOption> {
+  private buildProcessingTypeOptions(): Array<PoSelectOption> {
     const types = this.processingCosts
       .filter((cost) => cost.baseId === this.simulation.baseId)
       .map((cost) => cost.type);
@@ -98,7 +102,7 @@ export class SimulationComponent implements OnInit {
     return [...new Set(types)].map((type) => ({ label: type, value: type }));
   }
 
-  get processingItems(): Array<TableItem> {
+  private buildProcessingItems(): Array<TableItem> {
     return this.processingCosts
       .filter((cost) => cost.baseId === this.simulation.baseId)
       .map((cost) => ({
@@ -107,6 +111,12 @@ export class SimulationComponent implements OnInit {
         costPerThousand: this.formatCurrency(cost.costPerThousand),
         issRate: this.formatPercent(cost.issRate),
       }));
+  }
+
+  private refreshBaseDependentOptions(): void {
+    this.vehicleOptions = this.buildVehicleOptions();
+    this.processingTypeOptions = this.buildProcessingTypeOptions();
+    this.processingItems = this.buildProcessingItems();
   }
 
   get monthlyLabel(): string {
@@ -123,6 +133,8 @@ export class SimulationComponent implements OnInit {
   }
 
   onBaseChange(): void {
+    this.refreshBaseDependentOptions();
+
     const availableVehicle = this.vehicleOptions[0]?.value;
     const availableProcessingType = this.processingTypeOptions[0]?.value;
 

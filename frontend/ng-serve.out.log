@@ -329,3 +329,11 @@ Page reload sent to client(s).
 
 Application bundle generation complete. [0.596 seconds] - 2026-07-16T19:57:23.745Z
 
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+
+No output file changes.
+
+Application bundle generation complete. [0.117 seconds] - 2026-07-16T20:11:17.606Z
+
+Page reload sent to client(s).
