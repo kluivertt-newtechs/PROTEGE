@@ -11,12 +11,12 @@ export const routes: Routes = [
     path: '',
     component: MainComponent,
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'home' },
-      {
-        path: 'home',
-        loadChildren: () =>
-          import('./features/home/home.routes').then((r) => r.homeRoutes),
-      },
+      { path: '', pathMatch: 'full', redirectTo: 'pricing' },
+      // {
+      //   path: 'home',
+      //   loadChildren: () =>
+      //     import('./features/home/home.routes').then((r) => r.homeRoutes),
+      // },
       {
         path: 'pricing',
         loadChildren: () =>

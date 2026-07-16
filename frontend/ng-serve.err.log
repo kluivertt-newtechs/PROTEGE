@@ -1352,3 +1352,464 @@
         ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS6053: File 'C:/Projetos/NewTech/PROTEGE/frontend/src/main.ngtypecheck.ts' not found.
+  The file is in the program because:
+    Root file specified for compilation[0m [1m[35m[plugin angular-compiler][0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS6053: File 'C:/Projetos/NewTech/PROTEGE/frontend/src/main.ts' not found.
+  The file is in the program because:
+    Root file specified for compilation[0m [1m[35m[plugin angular-compiler][0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS6053: File 'C:/Projetos/NewTech/PROTEGE/frontend/src/main.ngtypecheck.ts' not found.
+  The file is in the program because:
+    Root file specified for compilation[0m [1m[35m[plugin angular-compiler][0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS6053: File 'C:/Projetos/NewTech/PROTEGE/frontend/src/main.ts' not found.
+  The file is in the program because:
+    Root file specified for compilation[0m [1m[35m[plugin angular-compiler][0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module 'src/app/shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/login/component/login.component.ts:7:31:
+[37m      7 │ import { SHARED_MODULES } from [32m'src/app/shared/shared'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/login/component/login.component.ts:15:12:
+[37m      15 │   imports: [[32mSHARED_MODULES[37m, CommonModule],
+         ╵             [32m~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/features/login/component/login.component.ts:15:12:
+[37m      15 │   imports: [[32mSHARED_MODULES[37m, CommonModule],
+         ╵             [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module 'src/app/shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/pricing/component/pricing.component.ts:11:31:
+[37m      11 │ import { SHARED_MODULES } from [32m'src/app/shared/shared'[37m;
+         ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/pricing/component/pricing.component.ts:20:12:
+[37m      20 │   imports: [[32m...SHARED_MODULES[37m, CommonModule],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/features/pricing/component/pricing.component.ts:20:15:
+[37m      20 │   imports: [...[32mSHARED_MODULES[37m, CommonModule],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module 'src/app/shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/simulation/component/simulation.component.ts:19:31:
+[37m      19 │ import { SHARED_MODULES } from [32m'src/app/shared/shared'[37m;
+         ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/simulation/component/simulation.component.ts:29:12:
+[37m      29 │   imports: [[32m...SHARED_MODULES[37m, CommonModule],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/features/simulation/component/simulation.component.ts:29:15:
+[37m      29 │   imports: [...[32mSHARED_MODULES[37m, CommonModule],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/main/main.component.ts:8:31:
+[37m      8 │ import { SHARED_MODULES } from [32m'../shared/shared'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/main/main.component.ts:14:12:
+[37m      14 │   imports: [[32m...SHARED_MODULES[37m],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/main/main.component.ts:14:15:
+[37m      14 │   imports: [...[32mSHARED_MODULES[37m],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module 'src/app/shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/login/component/login.component.ts:7:31:
+[37m      7 │ import { SHARED_MODULES } from [32m'src/app/shared/shared'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/login/component/login.component.ts:15:12:
+[37m      15 │   imports: [[32mSHARED_MODULES[37m, CommonModule],
+         ╵             [32m~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/features/login/component/login.component.ts:15:12:
+[37m      15 │   imports: [[32mSHARED_MODULES[37m, CommonModule],
+         ╵             [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module 'src/app/shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/pricing/component/pricing.component.ts:11:31:
+[37m      11 │ import { SHARED_MODULES } from [32m'src/app/shared/shared'[37m;
+         ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/pricing/component/pricing.component.ts:20:12:
+[37m      20 │   imports: [[32m...SHARED_MODULES[37m, CommonModule],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/features/pricing/component/pricing.component.ts:20:15:
+[37m      20 │   imports: [...[32mSHARED_MODULES[37m, CommonModule],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module 'src/app/shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/simulation/component/simulation.component.ts:19:31:
+[37m      19 │ import { SHARED_MODULES } from [32m'src/app/shared/shared'[37m;
+         ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/simulation/component/simulation.component.ts:29:12:
+[37m      29 │   imports: [[32m...SHARED_MODULES[37m, CommonModule],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/features/simulation/component/simulation.component.ts:29:15:
+[37m      29 │   imports: [...[32mSHARED_MODULES[37m, CommonModule],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/main/main.component.ts:8:31:
+[37m      8 │ import { SHARED_MODULES } from [32m'../shared/shared'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/main/main.component.ts:14:12:
+[37m      14 │   imports: [[32m...SHARED_MODULES[37m],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/main/main.component.ts:14:15:
+[37m      14 │   imports: [...[32mSHARED_MODULES[37m],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/login.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/login/login.routes.ts:7:13:
+[37m      7 │       import([32m'./component/login.component'[37m).then((c) => c.LoginComp...
+        ╵              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/login.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/login/login.routes.ts:7:13:
+[37m      7 │       import([32m'./component/login.component'[37m).then((c) => c.LoginComp...
+        ╵              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module 'src/app/shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/login/component/login.component.ts:6:31:
+[37m      6 │ import { SHARED_MODULES } from [32m'src/app/shared/shared'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/login/component/login.component.ts:15:12:
+[37m      15 │   imports: [[32m...SHARED_MODULES[37m, CommonModule, PoPageLoginModule],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/features/login/component/login.component.ts:15:15:
+[37m      15 │   imports: [...[32mSHARED_MODULES[37m, CommonModule, PoPageLoginModule],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module 'src/app/shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/pricing/component/pricing.component.ts:11:31:
+[37m      11 │ import { SHARED_MODULES } from [32m'src/app/shared/shared'[37m;
+         ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/pricing/component/pricing.component.ts:20:12:
+[37m      20 │   imports: [[32m...SHARED_MODULES[37m, CommonModule],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/features/pricing/component/pricing.component.ts:20:15:
+[37m      20 │   imports: [...[32mSHARED_MODULES[37m, CommonModule],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module 'src/app/shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/simulation/component/simulation.component.ts:19:31:
+[37m      19 │ import { SHARED_MODULES } from [32m'src/app/shared/shared'[37m;
+         ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/simulation/component/simulation.component.ts:29:12:
+[37m      29 │   imports: [[32m...SHARED_MODULES[37m, CommonModule],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/features/simulation/component/simulation.component.ts:29:15:
+[37m      29 │   imports: [...[32mSHARED_MODULES[37m, CommonModule],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/main/main.component.ts:8:31:
+[37m      8 │ import { SHARED_MODULES } from [32m'../shared/shared'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/main/main.component.ts:14:12:
+[37m      14 │   imports: [[32m...SHARED_MODULES[37m],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/main/main.component.ts:14:15:
+[37m      14 │   imports: [...[32mSHARED_MODULES[37m],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module 'src/app/shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/login/component/login.component.ts:6:31:
+[37m      6 │ import { SHARED_MODULES } from [32m'src/app/shared/shared'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/login/component/login.component.ts:15:12:
+[37m      15 │   imports: [[32m...SHARED_MODULES[37m, CommonModule, PoPageLoginModule],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/features/login/component/login.component.ts:15:15:
+[37m      15 │   imports: [...[32mSHARED_MODULES[37m, CommonModule, PoPageLoginModule],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module 'src/app/shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/pricing/component/pricing.component.ts:11:31:
+[37m      11 │ import { SHARED_MODULES } from [32m'src/app/shared/shared'[37m;
+         ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/pricing/component/pricing.component.ts:20:12:
+[37m      20 │   imports: [[32m...SHARED_MODULES[37m, CommonModule],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/features/pricing/component/pricing.component.ts:20:15:
+[37m      20 │   imports: [...[32mSHARED_MODULES[37m, CommonModule],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module 'src/app/shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/simulation/component/simulation.component.ts:19:31:
+[37m      19 │ import { SHARED_MODULES } from [32m'src/app/shared/shared'[37m;
+         ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/simulation/component/simulation.component.ts:29:12:
+[37m      29 │   imports: [[32m...SHARED_MODULES[37m, CommonModule],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/features/simulation/component/simulation.component.ts:29:15:
+[37m      29 │   imports: [...[32mSHARED_MODULES[37m, CommonModule],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/main/main.component.ts:8:31:
+[37m      8 │ import { SHARED_MODULES } from [32m'../shared/shared'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/main/main.component.ts:14:12:
+[37m      14 │   imports: [[32m...SHARED_MODULES[37m],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/main/main.component.ts:14:15:
+[37m      14 │   imports: [...[32mSHARED_MODULES[37m],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module 'src/app/shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/login/component/login.component.ts:6:31:
+[37m      6 │ import { SHARED_MODULES } from [32m'src/app/shared/shared'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/login/component/login.component.ts:15:12:
+[37m      15 │   imports: [[32m...SHARED_MODULES[37m, CommonModule, PoPageLoginModule],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/features/login/component/login.component.ts:15:15:
+[37m      15 │   imports: [...[32mSHARED_MODULES[37m, CommonModule, PoPageLoginModule],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module 'src/app/shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/pricing/component/pricing.component.ts:11:31:
+[37m      11 │ import { SHARED_MODULES } from [32m'src/app/shared/shared'[37m;
+         ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/pricing/component/pricing.component.ts:20:12:
+[37m      20 │   imports: [[32m...SHARED_MODULES[37m, CommonModule],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/features/pricing/component/pricing.component.ts:20:15:
+[37m      20 │   imports: [...[32mSHARED_MODULES[37m, CommonModule],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module 'src/app/shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/simulation/component/simulation.component.ts:19:31:
+[37m      19 │ import { SHARED_MODULES } from [32m'src/app/shared/shared'[37m;
+         ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/simulation/component/simulation.component.ts:29:12:
+[37m      29 │   imports: [[32m...SHARED_MODULES[37m, CommonModule],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/features/simulation/component/simulation.component.ts:29:15:
+[37m      29 │   imports: [...[32mSHARED_MODULES[37m, CommonModule],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../shared/shared' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/main/main.component.ts:8:31:
+[37m      8 │ import { SHARED_MODULES } from [32m'../shared/shared'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/main/main.component.ts:14:12:
+[37m      14 │   imports: [[32m...SHARED_MODULES[37m],
+         ╵             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/main/main.component.ts:14:15:
+[37m      14 │   imports: [...[32mSHARED_MODULES[37m],
+         ╵                [32m~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "./component/login.component"[0m
+
+    src/app/features/login/login.routes.ts:4:36:
+[37m      4 │ ...ent: () => import([32m'./component/login.component'[37m).then((c) => c.L...
+        ╵                      [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m

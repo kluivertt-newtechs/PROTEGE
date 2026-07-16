@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
 import {
+  PoMenuModule,
   PoMenuItem,
+  PoToolbarModule,
   PoToolbarAction,
   PoToolbarProfile,
 } from '@po-ui/ng-components';
-import { Router } from '@angular/router';
-import { SHARED_MODULES } from '../shared/shared';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css'],
-  imports: [...SHARED_MODULES],
+  imports: [RouterOutlet, PoMenuModule, PoToolbarModule],
 })
 export class MainComponent {
   toolbarProfile: PoToolbarProfile = {

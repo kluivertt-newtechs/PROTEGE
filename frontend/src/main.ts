@@ -1,19 +1,14 @@
-import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter } from '@angular/router';
 import { importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router';
 import { routes } from './app/app-routing';
 import { AppComponent } from './app.component';
-
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-
-/* ⭐ REGISTRO GLOBAL DO GRID */
-ModuleRegistry.registerModules([AllCommunityModule]);
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideZoneChangeDetection(),
-    provideRouter(routes),
+    provideRouter(routes, withPreloading(PreloadAllModules)),
     importProvidersFrom(BrowserAnimationsModule),
   ],
 }).catch((err) => console.error(err));

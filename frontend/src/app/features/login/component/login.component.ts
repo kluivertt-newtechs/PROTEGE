@@ -1,18 +1,28 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PoLanguage, PoNotificationService } from '@po-ui/ng-components';
+import {
+  PoLanguage,
+  PoLoadingModule,
+  PoNotificationService,
+} from '@po-ui/ng-components';
+import { PoPageLoginModule } from '@po-ui/ng-templates';
 import { Login } from '../models/login';
 import { LoginService } from '../services/login.service';
-import { SHARED_MODULES } from 'src/app/shared/shared';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   standalone: true,
-  imports: [SHARED_MODULES, CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PoLoadingModule,
+    PoPageLoginModule,
+  ],
 })
 export class LoginComponent implements OnInit {
   private loginService: LoginService = inject(LoginService);
@@ -46,7 +56,7 @@ export class LoginComponent implements OnInit {
             this.poNotification.error('Acesso inválido');
           }
         },
-        error: (err: any) => {
+        error: () => {
           this.poNotification.error('Erro ao efetuar o login');
         },
       });
