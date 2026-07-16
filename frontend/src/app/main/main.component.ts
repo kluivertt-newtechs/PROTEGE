@@ -59,6 +59,12 @@ export class MainComponent {
       icon: 'an an-chart-line-up',
       link: 'simulation',
     },
+    {
+      label: 'Consolidado',
+      shortLabel: 'Consolidado',
+      icon: 'an an-calculator',
+      link: 'consolidated',
+    },
   ];
 
   constructor(private router: Router) {}

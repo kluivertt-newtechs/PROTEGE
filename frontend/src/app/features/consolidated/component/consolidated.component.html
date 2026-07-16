@@ -1,0 +1,144 @@
+<po-page-default p-title="Consolidado">
+  <div class="consolidated-grid">
+    <po-container class="span-8 proposal-panel" p-title="Resumo da proposta">
+      <div class="proposal-heading">
+        <div>
+          <span class="section-kicker">Proposta unica</span>
+          <h2>{{ result.proposal.serviceType }}</h2>
+          <p>{{ result.proposal.city }} / {{ result.proposal.uf }} - {{ result.proposal.baseName }}</p>
+        </div>
+        <strong>{{ result.proposal.operationLabel }}</strong>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-item">
+          <span>Quantidade / volume</span>
+          <strong>{{ result.proposal.quantity }} {{ result.proposal.quantityLabel }}</strong>
+        </div>
+        <div class="summary-item">
+          <span>Preco unitario simulado</span>
+          <strong>{{ formatCurrency(result.proposal.unitPrice) }}</strong>
+        </div>
+        <div class="summary-item">
+          <span>Tributacao principal</span>
+          <strong>{{ formatPercent(result.mainTaxRate) }}</strong>
+        </div>
+        <div class="summary-item">
+          <span>PIS/COFINS</span>
+          <strong>{{ formatPercent(result.pisCofinsRate) }}</strong>
+        </div>
+      </div>
+
+      <p class="warning" *ngIf="result.warning">{{ result.warning }}</p>
+    </po-container>
+
+    <aside class="span-4 result-panel">
+      <div class="metric primary">
+        <small>Preco unitario de fechamento</small>
+        <span>{{ formatCurrency(result.finalUnitPrice) }}</span>
+      </div>
+      <div class="metric">
+        <small>Receita mensal ajustada</small>
+        <span>{{ formatCurrency(result.finalMonthlyPrice) }}</span>
+      </div>
+      <div class="metric">
+        <small>Margem EBITDA</small>
+        <span>{{ formatPercent(result.ebitdaRate) }}</span>
+      </div>
+    </aside>
+
+    <po-container class="span-8" p-title="Parametros de fechamento">
+      <div class="form-grid parameter-grid">
+        <po-input
+          name="targetMarginRate"
+          p-label="Margem alvo"
+          [ngModel]="parameters.targetMarginRate"
+          (ngModelChange)="parameters.targetMarginRate = $event; recalculate()"
+        ></po-input>
+        <po-input
+          name="adValoremRate"
+          p-label="Taxa ad valorem"
+          [ngModel]="parameters.adValoremRate"
+          (ngModelChange)="parameters.adValoremRate = $event; recalculate()"
+        ></po-input>
+        <po-input
+          name="custodyRate"
+          p-label="Taxa custodia"
+          [ngModel]="parameters.custodyRate"
+          (ngModelChange)="parameters.custodyRate = $event; recalculate()"
+        ></po-input>
+        <po-input
+          name="financialVolume"
+          p-label="Volume financeiro base"
+          [ngModel]="parameters.financialVolume"
+          (ngModelChange)="parameters.financialVolume = $event; recalculate()"
+        ></po-input>
+        <div class="radio-field">
+          <po-radio-group
+            name="issIcmsIncluded"
+            p-label="ISS/ICMS incluso?"
+            [p-options]="issIcmsOptions"
+            [ngModel]="parameters.issIcmsIncluded ? 'true' : 'false'"
+            (ngModelChange)="setIssIcmsIncluded($event)"
+          ></po-radio-group>
+        </div>
+      </div>
+    </po-container>
+
+    <po-container class="span-4 indicators-panel" p-title="Indicadores">
+      <div class="indicator-list">
+        <div class="indicator-row">
+          <span>Margem alvo</span>
+          <strong>{{ formatPercent(parameters.targetMarginRate) }}</strong>
+        </div>
+        <div class="indicator-row">
+          <span>Ad valorem</span>
+          <strong>{{ formatCurrency(result.adValorem) }}</strong>
+        </div>
+        <div class="indicator-row">
+          <span>Custodia</span>
+          <strong>{{ formatCurrency(result.custody) }}</strong>
+        </div>
+        <div class="indicator-row total">
+          <span>EBITDA</span>
+          <strong>{{ formatCurrency(result.ebitda) }}</strong>
+        </div>
+      </div>
+    </po-container>
+
+    <po-container class="span-12 po-mb-3" p-title="DRE Consolidado">
+      <div class="dre-header">
+        <div>
+          <span>Receita liquida</span>
+          <strong>{{ formatCurrency(result.netRevenue) }}</strong>
+        </div>
+        <div>
+          <span>Preco mensal final</span>
+          <strong>{{ formatCurrency(result.finalMonthlyPrice) }}</strong>
+        </div>
+        <div>
+          <span>Margem EBITDA</span>
+          <strong>{{ formatPercent(result.ebitdaRate) }}</strong>
+        </div>
+      </div>
+
+      <div class="dre-list">
+        <div
+          class="dre-row"
+          *ngFor="let row of dreRows"
+          [class.total]="row.total"
+          [class.negative]="row.negative"
+        >
+          <span>
+            {{ row.label }}
+            <small *ngIf="row.detail">{{ row.detail }}</small>
+          </span>
+          <strong
+            >{{ row.negative ? "-" : ""
+            }}{{ formatCurrency(row.value) }}</strong
+          >
+        </div>
+      </div>
+    </po-container>
+  </div>
+</po-page-default>

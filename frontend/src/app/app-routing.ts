@@ -31,6 +31,13 @@ export const routes: Routes = [
             (r) => r.simulationRoutes,
           ),
       },
+      {
+        path: 'consolidated',
+        loadChildren: () =>
+          import('./features/consolidated/consolidated.routes').then(
+            (r) => r.consolidatedRoutes,
+          ),
+      },
     ],
   },
   { path: '**', redirectTo: '' },

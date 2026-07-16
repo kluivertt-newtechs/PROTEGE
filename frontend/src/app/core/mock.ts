@@ -78,6 +78,47 @@ export interface PricingResult {
   warning?: string;
 }
 
+export interface ConsolidatedProposal {
+  baseName: string;
+  city: string;
+  uf: string;
+  serviceType: string;
+  operationLabel: string;
+  quantity: number;
+  quantityLabel: string;
+  unitPrice: number;
+}
+
+export interface ConsolidatedParameters {
+  targetMarginRate: number;
+  issIcmsIncluded: boolean;
+  adValoremRate: number;
+  custodyRate: number;
+  financialVolume: number;
+}
+
+export interface ConsolidatedResult {
+  proposal: ConsolidatedProposal;
+  pricing: PricingResult;
+  grossRevenue: number;
+  adjustedGrossRevenue: number;
+  netRevenue: number;
+  pisCofins: number;
+  issIcms: number;
+  directCosts: number;
+  operationalExpenses: number;
+  indirectExpenses: number;
+  adValorem: number;
+  custody: number;
+  ebitda: number;
+  ebitdaRate: number;
+  finalUnitPrice: number;
+  finalMonthlyPrice: number;
+  mainTaxRate: number;
+  pisCofinsRate: number;
+  warning?: string;
+}
+
 export interface InterstateTaxRate {
   originUf: string;
   destinationUf: string;

@@ -16,6 +16,7 @@ import {
   processingCosts,
   vehicleCosts,
 } from 'src/app/core/mock';
+import { calculatePricingResult } from 'src/app/core/pricing-calculator';
 import { SHARED_MODULES } from 'src/app/shared/shared';
 
 type OperationMode = PricingSimulation['operationMode'];
@@ -153,37 +154,7 @@ export class SimulationComponent implements OnInit {
   }
 
   recalculate(): void {
-    const costTotal =
-      this.simulation.operationMode === 'processing'
-        ? this.calculateProcessingCost()
-        : this.calculateTransportCost();
-
-    const commercialLoad =
-      this.parameters.operationalExpensesRate +
-      this.parameters.indirectExpensesRate +
-      this.parameters.targetMarginRate;
-    const denominator = Math.max(0.01, 1 - commercialLoad);
-    const netPrice = costTotal / denominator;
-    const taxRate = this.resolveTaxRate();
-    const finalPrice = netPrice / Math.max(0.01, 1 - taxRate);
-    const quantity =
-      this.simulation.operationMode === 'processing'
-        ? Math.max(0, this.simulation.thousandsVolume)
-        : Math.max(0, this.simulation.quantity);
-
-    this.result = {
-      costTotal,
-      operationalExpenses: netPrice * this.parameters.operationalExpensesRate,
-      indirectExpenses: netPrice * this.parameters.indirectExpensesRate,
-      margin: netPrice * this.parameters.targetMarginRate,
-      netPrice,
-      taxRate,
-      taxes: finalPrice - netPrice,
-      finalPrice,
-      monthlyPrice: finalPrice * quantity,
-      ebitdaRate: this.parameters.targetMarginRate,
-      warning: this.resolveWarning(costTotal),
-    };
+    this.result = calculatePricingResult(this.simulation, this.parameters);
   }
 
   formatCurrency(value: number): string {
