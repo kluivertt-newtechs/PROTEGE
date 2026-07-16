@@ -1,0 +1,29 @@
+<po-modal #modal [p-title]="title">
+  <div>
+    <p class="po-mb-3" [innerHTML]="descriptionUpload"></p>
+  </div>
+
+  <div>
+    <po-upload
+      #uploadComponent
+      name="upload"
+      p-label="Selecione um arquivo"
+      [p-drag-drop]="true"
+      [p-multiple]="false"
+      [p-required-url]="false"
+      [p-auto-upload]="false"
+      [p-drag-drop-height]="160"
+    >
+    </po-upload>
+  </div>
+
+  <po-modal-footer>
+    <po-button p-label="Fechar" (p-click)="modal.close()"> </po-button>
+    <po-button
+      p-label="Processar"
+      p-kind="primary"
+      (p-click)="confirm()"
+      [p-disabled]="!isUploadDisabled()"
+    ></po-button>
+  </po-modal-footer>
+</po-modal>

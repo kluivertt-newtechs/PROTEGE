@@ -1,0 +1,73 @@
+
+> project@0.0.0 dev
+> ng serve --configuration=development --host 127.0.0.1 --port 4200
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mAngular[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+[33m❯[39m Building...
+[32m✔[39m Building...
+[1mInitial chunk files[22m            [2m | [22m[1mNames[22m              [2m | [22m [1mRaw size[22m
+[32mstyles.css[39m                     [2m | [22m[2mstyles[22m             [2m | [22m[36m597.73 kB[39m[2m | [22m
+[32mmain.js[39m                        [2m | [22m[2mmain[22m               [2m | [22m [36m10.65 kB[39m[2m | [22m
+[32mchunk-YQOESBWP.js[39m              [2m | [22m[2m-[22m                  [2m | [22m[36m754 bytes[39m[2m | [22m
+[32mchunk-CG64DR6Q.js[39m              [2m | [22m[2m-[22m                  [2m | [22m[36m592 bytes[39m[2m | [22m
+[32mpolyfills.js[39m                   [2m | [22m[2mpolyfills[22m          [2m | [22m [36m95 bytes[39m[2m | [22m
+
+[1m [22m                              [2m | [22m[1mInitial total[22m      [2m | [22m[1m609.82 kB[22m
+
+[1mLazy chunk files[22m               [2m | [22m[1mNames[22m              [2m | [22m [1mRaw size[22m
+[32mpricing.component-BQFP6C2U.js[39m  [2m | [22m[2mpricing-component[22m  [2m | [22m [36m66.39 kB[39m[2m | [22m
+[32mlogin.component-HEMVV7CT.js[39m    [2m | [22m[2mlogin-component[22m    [2m | [22m [36m10.54 kB[39m[2m | [22m
+[32mhome-page.component-Q37HVVHL.js[39m[2m | [22m[2mhome-page-component[22m[2m | [22m  [36m6.13 kB[39m[2m | [22m
+[32mpricing.routes-RL72NI5P.js[39m     [2m | [22m[2mpricing-routes[22m     [2m | [22m[36m303 bytes[39m[2m | [22m
+[32mhome.routes-VL7AKMLY.js[39m        [2m | [22m[2mhome-routes[22m        [2m | [22m[36m291 bytes[39m[2m | [22m
+[32mlogin.routes-APWOIF2F.js[39m       [2m | [22m[2mlogin-routes[22m       [2m | [22m[36m289 bytes[39m[2m | [22m
+
+Application bundle generation complete. [5.335 seconds] - 2026-07-16T19:12:11.254Z
+
+Watch mode enabled. Watching for file changes...
+NOTE: Raw file sizes do not reflect development server per-request transformations.
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m4200[22m/[39m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m[2m | [22m[1mRaw size[22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m [2m | [22m[36m10.66 kB[39m[2m | [22m
+
+Application bundle generation complete. [2.455 seconds] - 2026-07-16T19:12:49.140Z
+
+Page reload sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m          [2m | [22m[1mNames[22m            [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                      [2m | [22m[2mmain[22m             [2m | [22m [36m10.66 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m             [2m | [22m[1mNames[22m            [2m | [22m [1mRaw size[22m
+[32mpricing.component-V7BBPFDS.js[39m[2m | [22m[2mpricing-component[22m[2m | [22m [36m66.45 kB[39m[2m | [22m
+[32mpricing.routes-UF66EMST.js[39m   [2m | [22m[2mpricing-routes[22m   [2m | [22m[36m303 bytes[39m[2m | [22m
+
+Application bundle generation complete. [1.703 seconds] - 2026-07-16T19:13:12.632Z
+
+Page reload sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m          [2m | [22m[1mNames[22m            [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                      [2m | [22m[2mmain[22m             [2m | [22m [36m10.66 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m             [2m | [22m[1mNames[22m            [2m | [22m [1mRaw size[22m
+[32mpricing.component-CXEGUV7T.js[39m[2m | [22m[2mpricing-component[22m[2m | [22m [36m66.65 kB[39m[2m | [22m
+[32mpricing.routes-GSLTK63Q.js[39m   [2m | [22m[2mpricing-routes[22m   [2m | [22m[36m303 bytes[39m[2m | [22m
+
+Application bundle generation complete. [1.366 seconds] - 2026-07-16T19:13:33.534Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m          [2m | [22m[1mNames[22m            [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                      [2m | [22m[2mmain[22m             [2m | [22m [36m10.66 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m             [2m | [22m[1mNames[22m            [2m | [22m [1mRaw size[22m
+[32mpricing.component-2ZO4UYGI.js[39m[2m | [22m[2mpricing-component[22m[2m | [22m [36m66.66 kB[39m[2m | [22m
+[32mpricing.routes-7RF6TSPD.js[39m   [2m | [22m[2mpricing-routes[22m   [2m | [22m[36m303 bytes[39m[2m | [22m
+
+Application bundle generation complete. [1.415 seconds] - 2026-07-16T19:13:39.524Z
+
+Page reload sent to client(s).

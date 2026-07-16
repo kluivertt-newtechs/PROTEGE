@@ -1,0 +1,11 @@
+@if (isLoading) {
+  <po-loading-overlay p-text="Carregando"></po-loading-overlay>
+}
+
+<po-page-login
+  #loginPage
+  (p-login-submit)="onLogin($event)"
+  p-logo="assets/logo.png"
+  [p-hide-remember-user]="true"
+  [p-languages]="languages"
+></po-page-login>

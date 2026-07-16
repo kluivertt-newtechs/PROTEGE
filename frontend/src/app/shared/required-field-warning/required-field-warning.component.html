@@ -1,0 +1,8 @@
+<div
+  *ngIf="isInput ? canValidateRequiredField() : true"
+  class="alert alert-danger"
+>
+  <div *ngIf="form.controls[field].errors?.['required']">Campo obrigatório</div>
+  <ng-content></ng-content>
+</div>
+

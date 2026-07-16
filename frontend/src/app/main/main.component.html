@@ -1,0 +1,16 @@
+<div class="po-wrapper">
+  <po-toolbar
+    p-title="GRUPO PROTEGE | Jornada do Cliente"
+    [p-profile-actions]="profileActions"
+    [p-profile]="toolbarProfile"
+  ></po-toolbar>
+
+  <po-menu
+    [p-collapsed]="true"
+    [p-menus]="menu"
+    [p-filter]="false"
+    p-logo="assets/logo.png"
+  ></po-menu>
+
+  <router-outlet></router-outlet>
+</div>

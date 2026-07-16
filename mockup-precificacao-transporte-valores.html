@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Precificação Transporte de Valores — Mockup PO-UI</title>
+<style>
+  :root{
+    --po-blue-900:#0b3d63; --po-blue-700:#0c5cbb; --po-blue-500:#2d75c9; --po-blue-100:#e5f0fb;
+    --po-gray-900:#2e343c; --po-gray-700:#54595e; --po-gray-500:#8a9099; --po-gray-300:#d3d6da; --po-gray-100:#f4f6f8;
+    --po-green:#0a8a3f; --po-amber:#c77700; --po-red:#c62f2f;
+    --radius:4px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:"Segoe UI",Roboto,Arial,sans-serif;background:var(--po-gray-100);color:var(--po-gray-900);font-size:13px;}
+  .po-page-header{background:var(--po-blue-900);color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+  .po-page-header h1{font-size:16px;font-weight:600;margin:0;}
+  .po-page-header .sub{font-size:11px;color:#bcd6ef;margin-top:2px;}
+  .erp-badge{background:var(--po-blue-700);border:1px solid #4c8fd8;padding:4px 10px;border-radius:12px;font-size:11px;display:flex;align-items:center;gap:6px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:#4ce07a;display:inline-block;}
+  .tabs{display:flex;background:#fff;border-bottom:1px solid var(--po-gray-300);padding:0 24px;}
+  .tab{padding:12px 18px;font-size:13px;font-weight:600;color:var(--po-gray-700);cursor:pointer;border-bottom:3px solid transparent;}
+  .tab.active{color:var(--po-blue-700);border-bottom-color:var(--po-blue-700);}
+  .container{max-width:1180px;margin:0 auto;padding:20px 24px 60px;}
+  .screen{display:none;}
+  .screen.active{display:block;}
+  .card{background:#fff;border:1px solid var(--po-gray-300);border-radius:var(--radius);margin-bottom:16px;}
+  .card-header{padding:10px 16px;border-bottom:1px solid var(--po-gray-300);display:flex;align-items:center;justify-content:space-between;}
+  .card-header h2{font-size:13px;font-weight:600;margin:0;color:var(--po-blue-900);text-transform:uppercase;letter-spacing:.03em;}
+  .card-header .tag{font-size:10px;background:var(--po-blue-100);color:var(--po-blue-700);padding:2px 8px;border-radius:10px;font-weight:600;}
+  .card-body{padding:16px;}
+  .grid{display:grid;gap:14px;}
+  .g4{grid-template-columns:repeat(4,1fr);}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .field label{display:block;font-size:11px;color:var(--po-gray-700);margin-bottom:4px;font-weight:600;}
+  .field input, .field select{width:100%;height:32px;border:1px solid var(--po-gray-300);border-radius:var(--radius);padding:0 8px;font-size:13px;background:#fff;}
+  .field input:disabled{background:var(--po-gray-100);color:var(--po-gray-700);}
+  .field input:focus, .field select:focus{outline:none;border-color:var(--po-blue-500);box-shadow:0 0 0 2px var(--po-blue-100);}
+  .btn{height:32px;padding:0 16px;border-radius:var(--radius);font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--po-blue-700);background:#fff;color:var(--po-blue-700);}
+  .btn.primary{background:var(--po-blue-700);color:#fff;}
+  .btn.primary:hover{background:var(--po-blue-500);}
+  .btn:hover{background:var(--po-blue-100);}
+  table{width:100%;border-collapse:collapse;font-size:12px;}
+  th{text-align:left;background:var(--po-gray-100);color:var(--po-gray-700);padding:8px 10px;font-weight:600;border-bottom:1px solid var(--po-gray-300);}
+  td{padding:7px 10px;border-bottom:1px solid #eef0f2;}
+  .badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;}
+  .badge.ok{background:#e3f6ea;color:var(--po-green);}
+  .radio-group{display:flex;gap:18px;padding:6px 0;}
+  .radio-opt{display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;}
+  .seg{display:inline-flex;border:1px solid var(--po-blue-700);border-radius:var(--radius);overflow:hidden;margin-bottom:14px;}
+  .seg div{padding:7px 16px;font-size:12px;font-weight:600;cursor:pointer;color:var(--po-blue-700);}
+  .seg div.active{background:var(--po-blue-700);color:#fff;}
+  .hint{font-size:11px;color:var(--po-gray-500);margin-top:4px;}
+  .divider{height:1px;background:var(--po-gray-300);margin:14px 0;}
+  .result-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;}
+  .waterfall-row{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:12px;border-bottom:1px dashed #eef0f2;}
+  .waterfall-row .label{flex:1;color:var(--po-gray-700);}
+  .waterfall-row .val{font-weight:600;width:110px;text-align:right;}
+  .waterfall-row.total{border-top:2px solid var(--po-blue-900);border-bottom:none;padding-top:10px;margin-top:4px;}
+  .waterfall-row.total .label, .waterfall-row.total .val{color:var(--po-blue-900);font-size:13px;}
+  .metric{background:var(--po-blue-900);color:#fff;border-radius:var(--radius);padding:14px;text-align:center;margin-bottom:10px;}
+  .metric .v{font-size:24px;font-weight:700;}
+  .metric .l{font-size:10px;color:#bcd6ef;text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+  .metric-sub{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .metric-sub .box{background:var(--po-gray-100);border-radius:var(--radius);padding:10px;text-align:center;}
+  .metric-sub .box .v{font-size:15px;font-weight:700;color:var(--po-gray-900);}
+  .metric-sub .box .l{font-size:10px;color:var(--po-gray-500);}
+  .footer-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:6px;}
+  .sync-line{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--po-gray-500);}
+</style>
+</head>
+<body>
+
+<div class="po-page-header">
+  <div>
+    <h1>Precificação · Transporte de Valores</h1>
+    <div class="sub">NewTech Soluções · Módulo comercial integrado ao TOTVS Datasul</div>
+  </div>
+  <div class="erp-badge"><span class="dot"></span> ERP Datasul conectado — Estab. 1.01</div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showScreen('parametros', this)">Parâmetros</div>
+  <div class="tab" onclick="showScreen('simulacao', this)">Simulação de preço</div>
+</div>
+
+<div class="container">
+
+  <!-- TELA 1: PARAMETROS -->
+  <div id="parametros" class="screen active">
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Dados mestres do ERP</h2>
+        <span class="tag">CD0704 · Clientes/Bases</span>
+      </div>
+      <div class="card-body">
+        <div class="grid g4">
+          <div class="field"><label>Cliente (ERP)</label><input value="PROTEGE TRANSPORTE DE VALORES" disabled></div>
+          <div class="field"><label>Estabelecimento</label><input value="1.01 — Matriz SP" disabled></div>
+          <div class="field"><label>Regime tributário</label><input value="Lucro Presumido" disabled></div>
+          <div class="field"><label>Base de atendimento</label>
+            <select id="baseAtendimento" onchange="renderCustos()">
+              <option value="Base Oeste">Base Oeste (SP)</option>
+              <option value="Rio Branco">Rio Branco (AC)</option>
+            </select>
+          </div>
+        </div>
+        <div class="sync-line" style="margin-top:12px;">
+          <button class="btn" onclick="syncErp()">↻ Sincronizar com ERP TOTVS Datasul</button>
+          <span id="syncStatus">Último sync: hoje, 08:14 — CD0704 / PD4000 / FT4001</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Custo padrão por veículo e base</h2>
+        <span class="tag">PD4000 · Ficha de custo padrão</span>
+      </div>
+      <div class="card-body">
+        <table id="tabelaCustos">
+          <thead><tr>
+            <th>Veículo</th><th>Hora normal</th><th>Hora extra 50%</th><th>Hora extra 100%</th>
+            <th>Custo fixo veíc./h</th><th>Custo variável/km</th><th>ISS base</th><th>ICMS UF</th>
+          </tr></thead>
+          <tbody id="tabelaCustosBody"></tbody>
+        </table>
+        <div class="hint">Valores refletem o cadastro de custo padrão do Datasul para a base selecionada. Edição só é permitida no ERP; aqui a tela é somente leitura (parametrização simplificada).</div>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <div class="card-header"><h2>Impostos interestaduais (ICMS)</h2><span class="tag">FT4001 · Regras fiscais</span></div>
+        <div class="card-body">
+          <div class="grid g2">
+            <div class="field"><label>UF origem</label><select id="ufOrigemParam"><option>SP</option><option>AC</option><option>RS</option><option>RO</option></select></div>
+            <div class="field"><label>UF destino</label><select id="ufDestinoParam"><option>RJ</option><option>MG</option><option>SP</option></select></div>
+          </div>
+          <div class="divider"></div>
+          <div class="waterfall-row"><span class="label">Alíquota ICMS interestadual aplicável</span><span class="val" id="icmsInterParam">12,00%</span></div>
+          <div class="hint">Alíquota nacional simplificada (7% ou 12% conforme origem/destino). Em produção, buscar via FT4001/FT4002.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h2>Parâmetros comerciais (não-ERP)</h2><span class="tag badge ok">Editável</span></div>
+        <div class="card-body">
+          <div class="grid g2">
+            <div class="field"><label>Despesas operacionais (% s/ ROL)</label><input type="number" id="parDespOp" value="14.0" step="0.1"></div>
+            <div class="field"><label>Despesas indiretas (% s/ ROL)</label><input type="number" id="parDespInd" value="14.1" step="0.1"></div>
+            <div class="field"><label>Margem/EBITDA alvo padrão (%)</label><input type="number" id="parMargem" value="8.0" step="0.5"></div>
+            <div class="field"><label>PIS/COFINS (Lucro Presumido)</label><input value="3,65%" disabled></div>
+          </div>
+          <div class="footer-actions"><button class="btn primary" onclick="alert('Parâmetros salvos e propagados para a tela de Simulação.')">Salvar parâmetros</button></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TELA 2: SIMULACAO -->
+  <div id="simulacao" class="screen">
+
+    <div class="seg">
+      <div class="active" id="segTransporte" onclick="setModo('transporte')">Transporte de valores</div>
+      <div id="segProcessamento" onclick="setModo('processamento')">Processamento (ATM)</div>
+    </div>
+
+    <div class="result-grid">
+      <div>
+
+        <div class="card" id="cardPontoTransporte">
+          <div class="card-header"><h2>Condição operacional do ponto</h2></div>
+          <div class="card-body">
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="origem" value="CPE" checked onchange="toggleOrigem()"> Custo por esforço (CPE)</label>
+              <label class="radio-opt"><input type="radio" name="origem" value="SOP" onchange="toggleOrigem()"> Condição operacional (SOP)</label>
+            </div>
+            <div class="divider"></div>
+            <div class="grid g3">
+              <div class="field"><label>Cidade</label><input id="cidade" value="São Paulo"></div>
+              <div class="field"><label>UF</label><select id="ufOperacao"><option>SP</option><option>AC</option><option>RS</option><option>RO</option><option>RJ</option><option>MG</option></select></div>
+              <div class="field"><label>Base de atendimento</label><select id="baseSim"><option>Base Oeste</option><option>Rio Branco</option></select></div>
+
+              <div class="field"><label>Tipo de ponto</label>
+                <select id="tipoPonto">
+                  <option>Embarque</option><option>Abastecimento</option><option>Técnica</option><option>Ponta a ponta</option>
+                </select>
+              </div>
+              <div class="field"><label>Tipo de veículo</label>
+                <select id="tipoVeiculo" onchange="recalcular()">
+                  <option value="Carro Forte">Carro forte</option>
+                  <option value="Carro Leve">Carro leve (2 func.)</option>
+                  <option value="Carro Leve 4">Carro leve (4 func.)</option>
+                </select>
+              </div>
+              <div class="field"><label>Tipo de rota</label><select id="tipoRota"><option>Semanal</option><option>Sábado</option><option>Domingo</option></select></div>
+
+              <div class="field"><label>Urbano / interurbano / interestadual</label>
+                <select id="tipoImposto" onchange="recalcular()">
+                  <option value="URBANO">Urbano (ISS)</option>
+                  <option value="INTERURBANO">Interurbano (ICMS UF operação)</option>
+                  <option value="INTERESTADUAL">Interestadual (ICMS origem→destino)</option>
+                </select>
+              </div>
+              <div class="field"><label>Qtde. de atendimentos/mês</label><input type="number" id="qtdAtendimentos" value="22"></div>
+              <div class="field"><label>Custo pedágio/estadia/outros (R$)</label><input type="number" id="outrosCustos" value="0"></div>
+            </div>
+
+            <div id="camposSop" style="display:none;">
+              <div class="divider"></div>
+              <div class="grid g4">
+                <div class="field"><label>KM deslocamento</label><input type="number" id="km" value="18"></div>
+                <div class="field"><label>Horas normais</label><input type="number" id="hNormal" value="2" step="0.1"></div>
+                <div class="field"><label>Horas extra 50%</label><input type="number" id="h50" value="0" step="0.1"></div>
+                <div class="field"><label>Horas extra 100%</label><input type="number" id="h100" value="0" step="0.1"></div>
+              </div>
+            </div>
+            <div id="campoCpe" class="hint">Modo CPE: custo padrão obtido por esforço (lookup Base + dia + rota + cidade/UF), sem necessidade de detalhar KM/horas.</div>
+          </div>
+        </div>
+
+        <div class="card" id="cardProcessamento" style="display:none;">
+          <div class="card-header"><h2>Processamento de numerário (ATM)</h2></div>
+          <div class="card-body">
+            <div class="grid g3">
+              <div class="field"><label>Tipo de processamento</label><select id="tipoProcessamento"><option>Agência</option><option>Agência BBD</option><option>ATM</option></select></div>
+              <div class="field"><label>Volume de milheiros/mês</label><input type="number" id="volMilheiros" value="120"></div>
+              <div class="field"><label>Custo padrão/milheiro (ERP)</label><input type="number" id="custoMilheiro" value="22.55" disabled></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h2>Margem aplicada nesta simulação</h2></div>
+          <div class="card-body">
+            <div class="field"><label>Margem/EBITDA (%) — herdada dos parâmetros, ajustável</label>
+              <input type="number" id="margemSim" value="8.0" step="0.5" oninput="recalcular()">
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-actions"><button class="btn primary" onclick="recalcular()">Calcular preço</button></div>
+      </div>
+
+      <div>
+        <div class="metric">
+          <div class="v" id="precoFinalUnit">R$ 0,00</div>
+          <div class="l">Preço final unitário</div>
+        </div>
+        <div class="metric-sub" style="margin-bottom:14px;">
+          <div class="box"><div class="v" id="precoMensal">R$ 0</div><div class="l">Preço total/mês</div></div>
+          <div class="box"><div class="v" id="ebitdaPct">0%</div><div class="l">EBITDA s/ ROL</div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h2>Composição do preço (DRE unitário)</h2></div>
+          <div class="card-body">
+            <div class="waterfall-row"><span class="label">Custo total (mão de obra + veículo + KM + outros)</span><span class="val" id="wCusto">R$ 0,00</span></div>
+            <div class="waterfall-row"><span class="label">Despesas operacionais</span><span class="val" id="wDespOp">R$ 0,00</span></div>
+            <div class="waterfall-row"><span class="label">Despesas indiretas</span><span class="val" id="wDespInd">R$ 0,00</span></div>
+            <div class="waterfall-row"><span class="label">Margem/EBITDA</span><span class="val" id="wMargem">R$ 0,00</span></div>
+            <div class="waterfall-row"><span class="label">= Preço líquido</span><span class="val" id="wLiquido">R$ 0,00</span></div>
+            <div class="waterfall-row"><span class="label">Impostos (ISS/ICMS + PIS/COFINS)</span><span class="val" id="wImpostos">R$ 0,00</span></div>
+            <div class="waterfall-row total"><span class="label">Preço final unitário</span><span class="val" id="wFinal">R$ 0,00</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const custosErp = {
+  "Base Oeste": {
+    uf:"SP", iss:0.05, icms:0.12,
+    veiculos:{
+      "Carro Forte":{hn:251.06,h50:331.97,h100:470.75,fixo:67.20,var:4.06},
+      "Carro Leve":{hn:125.53,h50:165.98,h100:235.38,fixo:14.84,var:0.59},
+      "Carro Leve 4":{hn:170.00,h50:225.00,h100:319.00,fixo:20.00,var:0.75}
+    },
+    cpe:{ "SAO PAULO_SP_Semanal_Carro Forte": 132.89 }
+  },
+  "Rio Branco": {
+    uf:"AC", iss:0.04, icms:0.12,
+    veiculos:{
+      "Carro Forte":{hn:236.87,h50:314.66,h100:446.43,fixo:69.70,var:3.77},
+      "Carro Leve":{hn:118.43,h50:157.33,h100:223.21,fixo:14.95,var:0.60},
+      "Carro Leve 4":{hn:160.00,h50:212.00,h100:301.00,fixo:19.50,var:0.70}
+    },
+    cpe:{ "ACRELANDIA_AC_Semanal_Carro Forte": 809.42 }
+  }
+};
+const icmsInterestadual = { "SP-RJ":12, "SP-MG":12, "AC-SP":12, "RS-SP":12, "RO-SP":12 };
+const pisCofins = 0.0365;
+
+function showScreen(id, el){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+function renderCustos(){
+  const base = document.getElementById('baseAtendimento').value;
+  const d = custosErp[base];
+  const body = document.getElementById('tabelaCustosBody');
+  body.innerHTML = '';
+  Object.entries(d.veiculos).forEach(([nome,v])=>{
+    body.innerHTML += `<tr><td>${nome}</td><td>R$ ${v.hn.toFixed(2)}</td><td>R$ ${v.h50.toFixed(2)}</td><td>R$ ${v.h100.toFixed(2)}</td><td>R$ ${v.fixo.toFixed(2)}</td><td>R$ ${v.var.toFixed(2)}</td><td>${(d.iss*100).toFixed(1)}%</td><td>${(d.icms*100).toFixed(1)}%</td></tr>`;
+  });
+}
+
+function syncErp(){
+  document.getElementById('syncStatus').textContent = 'Sincronizando com CD0704 / PD4000 / FT4001...';
+  setTimeout(()=>{
+    document.getElementById('syncStatus').textContent = 'Último sync: agora — CD0704 / PD4000 / FT4001 (OK)';
+    renderCustos();
+  }, 700);
+}
+
+function setModo(modo){
+  document.getElementById('segTransporte').classList.toggle('active', modo==='transporte');
+  document.getElementById('segProcessamento').classList.toggle('active', modo==='processamento');
+  document.getElementById('cardPontoTransporte').style.display = modo==='transporte' ? 'block' : 'none';
+  document.getElementById('cardProcessamento').style.display = modo==='processamento' ? 'block' : 'none';
+  recalcular();
+}
+
+function toggleOrigem(){
+  const origem = document.querySelector('input[name="origem"]:checked').value;
+  document.getElementById('camposSop').style.display = origem==='SOP' ? 'block' : 'none';
+  document.getElementById('campoCpe').style.display = origem==='CPE' ? 'block' : 'none';
+  recalcular();
+}
+
+function fmt(v){ return v.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+
+function recalcular(){
+  const modo = document.getElementById('segProcessamento').classList.contains('active') ? 'processamento' : 'transporte';
+  const despOp = parseFloat(document.getElementById('parDespOp').value)/100 || 0;
+  const despInd = parseFloat(document.getElementById('parDespInd').value)/100 || 0;
+  const margem = parseFloat(document.getElementById('margemSim').value)/100 || 0;
+
+  let custoTotal = 0;
+
+  if(modo === 'processamento'){
+    const vol = parseFloat(document.getElementById('volMilheiros').value) || 0;
+    const custoUnit = parseFloat(document.getElementById('custoMilheiro').value) || 0;
+    custoTotal = custoUnit; // custo unitário por milheiro
+    var qtd = vol;
+  } else {
+    const base = document.getElementById('baseSim').value;
+    const veic = document.getElementById('tipoVeiculo').value;
+    const origem = document.querySelector('input[name="origem"]:checked').value;
+    const dBase = custosErp[base] || custosErp['Base Oeste'];
+    const v = dBase.veiculos[veic];
+    const outros = parseFloat(document.getElementById('outrosCustos').value) || 0;
+
+    if(origem === 'CPE'){
+      custoTotal = 132.89; // valor de referência lookup CPE (exemplo)
+    } else {
+      const km = parseFloat(document.getElementById('km').value) || 0;
+      const hn = parseFloat(document.getElementById('hNormal').value) || 0;
+      const h50 = parseFloat(document.getElementById('h50').value) || 0;
+      const h100 = parseFloat(document.getElementById('h100').value) || 0;
+      custoTotal = (hn*v.hn) + (h50*v.h50) + (h100*v.h100) + (v.fixo*(hn+h50+h100)) + (v.var*km) + outros;
+    }
+    var qtd = parseFloat(document.getElementById('qtdAtendimentos').value) || 1;
+  }
+
+  const rateio = 1 - despOp - despInd - margem;
+  const precoLiquido = rateio > 0 ? custoTotal / rateio : custoTotal;
+  const valDespOp = precoLiquido * despOp;
+  const valDespInd = precoLiquido * despInd;
+  const valMargem = precoLiquido * margem;
+
+  let aliquotaImposto = pisCofins;
+  if(modo === 'transporte'){
+    const tipoImp = document.getElementById('tipoImposto').value;
+    const base = document.getElementById('baseSim').value;
+    const dBase = custosErp[base] || custosErp['Base Oeste'];
+    if(tipoImp === 'URBANO') aliquotaImposto += dBase.iss;
+    else if(tipoImp === 'INTERURBANO') aliquotaImposto += dBase.icms;
+    else {
+      const ufO = document.getElementById('ufOperacao').value;
+      aliquotaImposto += 0.12; // ICMS interestadual simplificado
+    }
+  } else {
+    aliquotaImposto += 0.0865 - pisCofins; // aproxima ISS padrão processamento
+  }
+
+  const precoFinal = precoLiquido / (1 - aliquotaImposto);
+  const valImpostos = precoFinal - precoLiquido;
+  const precoMensal = precoFinal * qtd;
+  const ebitdaPct = margem*100;
+
+  document.getElementById('precoFinalUnit').textContent = 'R$ ' + fmt(precoFinal);
+  document.getElementById('precoMensal').textContent = 'R$ ' + fmt(precoMensal);
+  document.getElementById('ebitdaPct').textContent = ebitdaPct.toFixed(1) + '%';
+
+  document.getElementById('wCusto').textContent = 'R$ ' + fmt(custoTotal);
+  document.getElementById('wDespOp').textContent = 'R$ ' + fmt(valDespOp);
+  document.getElementById('wDespInd').textContent = 'R$ ' + fmt(valDespInd);
+  document.getElementById('wMargem').textContent = 'R$ ' + fmt(valMargem);
+  document.getElementById('wLiquido').textContent = 'R$ ' + fmt(precoLiquido);
+  document.getElementById('wImpostos').textContent = 'R$ ' + fmt(valImpostos);
+  document.getElementById('wFinal').textContent = 'R$ ' + fmt(precoFinal);
+}
+
+renderCustos();
+recalcular();
+</script>
+</body>
+</html>
