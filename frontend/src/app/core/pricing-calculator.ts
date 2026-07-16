@@ -50,9 +50,10 @@ export function calculatePricingResult(
 export function calculateConsolidatedResult(
   simulation: PricingSimulation = initialPricingSimulation,
   parameters: ConsolidatedParameters,
+  savedCommercialParameters: CommercialParameters = commercialParametersMock,
 ): ConsolidatedResult {
   const commercialParameters: CommercialParameters = {
-    ...commercialParametersMock,
+    ...savedCommercialParameters,
     targetMarginRate: normalizeRate(parameters.targetMarginRate),
   };
   const pricing = calculatePricingResult(simulation, commercialParameters);

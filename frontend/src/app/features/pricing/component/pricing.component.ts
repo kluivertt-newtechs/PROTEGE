@@ -3,11 +3,11 @@ import { Component } from '@angular/core';
 import { PoSelectOption, PoTableColumn } from '@po-ui/ng-components';
 import {
   CommercialParameters,
-  commercialParametersMock,
   pricingBases,
   processingCosts,
   vehicleCosts,
 } from 'src/app/core/mock';
+import { PricingMockStateService } from 'src/app/core/pricing-mock-state.service';
 import { SHARED_MODULES } from 'src/app/shared/shared';
 
 type TableItem = Record<string, string | number>;
@@ -24,7 +24,7 @@ export class PricingComponent {
   readonly vehicleCosts = vehicleCosts;
   readonly processingCosts = processingCosts;
 
-  parameters: CommercialParameters = { ...commercialParametersMock };
+  parameters: CommercialParameters;
   selectedBaseId = this.bases[0]?.id ?? '';
   baseOptions: Array<PoSelectOption> = this.bases.map((base) => ({
     label: `${base.name} (${base.uf})`,
@@ -56,6 +56,10 @@ export class PricingComponent {
     { property: 'costPerThousand', label: 'Custo/milheiro' },
     { property: 'issRate', label: 'ISS' },
   ];
+
+  constructor(private readonly mockState: PricingMockStateService) {
+    this.parameters = this.mockState.getCommercialParameters();
+  }
 
   get selectedBase() {
     return this.bases.find((base) => base.id === this.selectedBaseId) ?? this.bases[0];
@@ -90,16 +94,15 @@ export class PricingComponent {
   }
 
   saveParameters(): void {
+    this.mockState.updateCommercialParameters(this.parameters);
+    this.parameters = this.mockState.getCommercialParameters();
+    this.mockState.saveCommercialParameters();
     this.syncStatus = 'Parâmetros comerciais salvos localmente.';
   }
 
   onParameterChange(): void {
-    this.parameters = {
-      operationalExpensesRate: this.normalizeRate(this.parameters.operationalExpensesRate),
-      indirectExpensesRate: this.normalizeRate(this.parameters.indirectExpensesRate),
-      targetMarginRate: this.normalizeRate(this.parameters.targetMarginRate),
-      pisCofinsRate: this.normalizeRate(this.parameters.pisCofinsRate),
-    };
+    this.mockState.updateCommercialParameters(this.parameters);
+    this.parameters = this.mockState.getCommercialParameters();
   }
 
   formatCurrency(value: number): string {
@@ -108,14 +111,5 @@ export class PricingComponent {
 
   formatPercent(value: number): string {
     return value.toLocaleString('pt-BR', { style: 'percent', minimumFractionDigits: 2 });
-  }
-
-  private normalizeRate(value: number): number {
-    const safeValue = this.safeNumber(value);
-    return safeValue > 1 ? safeValue / 100 : safeValue;
-  }
-
-  private safeNumber(value: number): number {
-    return Number.isFinite(Number(value)) ? Number(value) : 0;
   }
 }

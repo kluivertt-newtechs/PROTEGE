@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { PoRadioGroupOption } from '@po-ui/ng-components';
 import {
+  CommercialParameters,
   ConsolidatedParameters,
   ConsolidatedResult,
+  PricingSimulation,
   commercialParametersMock,
-  initialPricingSimulation,
 } from 'src/app/core/mock';
+import { PricingMockStateService } from 'src/app/core/pricing-mock-state.service';
 import { calculateConsolidatedResult } from 'src/app/core/pricing-calculator';
 import { SHARED_MODULES } from 'src/app/shared/shared';
 
@@ -26,6 +28,8 @@ interface DreRow {
   imports: [...SHARED_MODULES, CommonModule],
 })
 export class ConsolidatedComponent implements OnInit {
+  commercialParameters: CommercialParameters;
+  simulation: PricingSimulation;
   parameters: ConsolidatedParameters = {
     targetMarginRate: commercialParametersMock.targetMarginRate,
     issIcmsIncluded: false,
@@ -34,7 +38,7 @@ export class ConsolidatedComponent implements OnInit {
     financialVolume: 250000,
   };
 
-  result: ConsolidatedResult = calculateConsolidatedResult(initialPricingSimulation, this.parameters);
+  result: ConsolidatedResult;
   dreRows: Array<DreRow> = [];
 
   issIcmsOptions: Array<PoRadioGroupOption> = [
@@ -42,11 +46,24 @@ export class ConsolidatedComponent implements OnInit {
     { label: 'Sim', value: 'true' },
   ];
 
+  constructor(private readonly mockState: PricingMockStateService) {
+    this.commercialParameters = this.mockState.getCommercialParameters();
+    this.simulation = this.mockState.getLastSimulation();
+    this.parameters.targetMarginRate = this.commercialParameters.targetMarginRate;
+    this.result = calculateConsolidatedResult(
+      this.simulation,
+      this.parameters,
+      this.commercialParameters,
+    );
+  }
+
   ngOnInit(): void {
     this.recalculate();
   }
 
   recalculate(): void {
+    this.commercialParameters = this.mockState.getCommercialParameters();
+    this.simulation = this.mockState.getLastSimulation();
     this.parameters = {
       targetMarginRate: this.normalizeRate(this.parameters.targetMarginRate),
       issIcmsIncluded: Boolean(this.parameters.issIcmsIncluded),
@@ -54,7 +71,11 @@ export class ConsolidatedComponent implements OnInit {
       custodyRate: this.normalizeRate(this.parameters.custodyRate),
       financialVolume: this.safeNumber(this.parameters.financialVolume),
     };
-    this.result = calculateConsolidatedResult(initialPricingSimulation, this.parameters);
+    this.result = calculateConsolidatedResult(
+      this.simulation,
+      this.parameters,
+      this.commercialParameters,
+    );
     this.dreRows = this.buildDreRows();
   }
 
