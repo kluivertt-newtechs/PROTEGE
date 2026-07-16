@@ -32,3 +32,10 @@
          ╵               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG2008: Could not find stylesheet file './consolidated.component.css'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/consolidated/component/consolidated.component.ts:24:14:
+[37m      24 │   styleUrls: [[32m'./consolidated.component.css'[37m],
+         ╵               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
