@@ -62,6 +62,9 @@ export interface PricingSimulation {
   overtime100Hours: number;
   processingType: string;
   thousandsVolume: number;
+  costCorrectionEnabled: boolean;
+  costCorrectionRate: number;
+  costCorrectionTargets: string[];
 }
 
 export interface PricingResult {
@@ -202,4 +205,7 @@ export const initialPricingSimulation: PricingSimulation = {
   overtime100Hours: 0,
   processingType: 'AGÊNCIA',
   thousandsVolume: 120,
+  costCorrectionEnabled: false,
+  costCorrectionRate: 0,
+  costCorrectionTargets: [],
 };

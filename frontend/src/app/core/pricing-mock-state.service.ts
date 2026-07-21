@@ -31,7 +31,10 @@ export class PricingMockStateService {
   }
 
   getLastSimulation(): PricingSimulation {
-    return { ...this.simulation };
+    return {
+      ...this.simulation,
+      costCorrectionTargets: [...this.simulation.costCorrectionTargets],
+    };
   }
 
   updateSimulation(simulation: PricingSimulation): PricingResult {
@@ -47,7 +50,10 @@ export class PricingMockStateService {
 
   resetMocks(): PricingResult {
     this.commercialParameters = { ...commercialParametersMock };
-    this.simulation = { ...initialPricingSimulation };
+    this.simulation = {
+      ...initialPricingSimulation,
+      costCorrectionTargets: [...initialPricingSimulation.costCorrectionTargets],
+    };
     this.removeStorage(COMMERCIAL_PARAMETERS_KEY);
     this.removeStorage(LAST_SIMULATION_KEY);
     return this.recalculate();
@@ -80,7 +86,12 @@ export class PricingMockStateService {
   }
 
   private normalizeSimulation(simulation: PricingSimulation): PricingSimulation {
+    const costCorrectionTargets = Array.isArray(simulation.costCorrectionTargets)
+      ? simulation.costCorrectionTargets.map((target) => String(target))
+      : [];
+
     return {
+      ...initialPricingSimulation,
       ...simulation,
       quantity: this.safeNumber(simulation.quantity),
       otherCosts: this.safeNumber(simulation.otherCosts),
@@ -89,6 +100,9 @@ export class PricingMockStateService {
       overtime50Hours: this.safeNumber(simulation.overtime50Hours),
       overtime100Hours: this.safeNumber(simulation.overtime100Hours),
       thousandsVolume: this.safeNumber(simulation.thousandsVolume),
+      costCorrectionEnabled: simulation.costCorrectionEnabled === true,
+      costCorrectionRate: this.normalizeRate(simulation.costCorrectionRate),
+      costCorrectionTargets,
     };
   }
 

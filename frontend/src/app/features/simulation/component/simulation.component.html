@@ -42,7 +42,7 @@
             p-label="Origem do custo"
             [p-options]="costOriginOptions"
             [ngModel]="simulation.transportCostOrigin"
-            (ngModelChange)="simulation.transportCostOrigin = $event; recalculate()"
+            (ngModelChange)="onTransportCostOriginChange($event)"
           ></po-radio-group>
 
           <div class="form-grid">
@@ -108,14 +108,66 @@
               name="overtime50Hours"
               p-label="Horas extra 50%"
               [ngModel]="simulation.overtime50Hours"
-              (ngModelChange)="simulation.overtime50Hours = $event; recalculate()"
+              (ngModelChange)="
+                simulation.overtime50Hours = $event; recalculate()
+              "
             ></po-input>
             <po-input
               name="overtime100Hours"
               p-label="Horas extra 100%"
               [ngModel]="simulation.overtime100Hours"
-              (ngModelChange)="simulation.overtime100Hours = $event; recalculate()"
+              (ngModelChange)="
+                simulation.overtime100Hours = $event; recalculate()
+              "
             ></po-input>
+          </div>
+
+          <div class="correction-box">
+            <div class="correction-title">Fator de correção</div>
+            <label class="native-checkbox">
+              <input
+                type="checkbox"
+                [checked]="simulation.costCorrectionEnabled"
+                (change)="
+                  onCostCorrectionEnabledChange($any($event.target).checked)
+                "
+              />
+              <span>Aplicar fator de correção</span>
+            </label>
+
+            <div
+              class="correction-content"
+              *ngIf="simulation.costCorrectionEnabled"
+            >
+              <po-input
+                name="transportCostCorrectionRate"
+                p-label="Percentual de correção"
+                p-help="Informe 10 ou 0,10"
+                [ngModel]="simulation.costCorrectionRate"
+                (ngModelChange)="
+                  simulation.costCorrectionRate = $event; recalculate()
+                "
+              ></po-input>
+
+              <div class="correction-targets">
+                <label
+                  class="native-checkbox"
+                  *ngFor="let option of costCorrectionOptions"
+                >
+                  <input
+                    type="checkbox"
+                    [checked]="isCostCorrectionTargetSelected(option.value)"
+                    (change)="
+                      onCostCorrectionTargetChange(
+                        option.value,
+                        $any($event.target).checked
+                      )
+                    "
+                  />
+                  <span>{{ option.label }}</span>
+                </label>
+              </div>
+            </div>
           </div>
 
           <p class="warning" *ngIf="result.warning">{{ result.warning }}</p>
@@ -152,14 +204,66 @@
               p-label="Tipo de processamento"
               [p-options]="processingTypeOptions"
               [ngModel]="simulation.processingType"
-              (ngModelChange)="simulation.processingType = $event; recalculate()"
+              (ngModelChange)="
+                simulation.processingType = $event; recalculate()
+              "
             ></po-select>
             <po-input
               name="thousandsVolume"
               p-label="Volume de milheiros"
               [ngModel]="simulation.thousandsVolume"
-              (ngModelChange)="simulation.thousandsVolume = $event; recalculate()"
+              (ngModelChange)="
+                simulation.thousandsVolume = $event; recalculate()
+              "
             ></po-input>
+          </div>
+
+          <div class="correction-box">
+            <div class="correction-title">Fator de correção</div>
+            <label class="native-checkbox">
+              <input
+                type="checkbox"
+                [checked]="simulation.costCorrectionEnabled"
+                (change)="
+                  onCostCorrectionEnabledChange($any($event.target).checked)
+                "
+              />
+              <span>Aplicar fator de correção</span>
+            </label>
+
+            <div
+              class="correction-content"
+              *ngIf="simulation.costCorrectionEnabled"
+            >
+              <po-input
+                name="processingCostCorrectionRate"
+                p-label="Percentual de correção"
+                p-help="Informe 10 ou 0,10"
+                [ngModel]="simulation.costCorrectionRate"
+                (ngModelChange)="
+                  simulation.costCorrectionRate = $event; recalculate()
+                "
+              ></po-input>
+
+              <div class="correction-targets">
+                <label
+                  class="native-checkbox"
+                  *ngFor="let option of costCorrectionOptions"
+                >
+                  <input
+                    type="checkbox"
+                    [checked]="isCostCorrectionTargetSelected(option.value)"
+                    (change)="
+                      onCostCorrectionTargetChange(
+                        option.value,
+                        $any($event.target).checked
+                      )
+                    "
+                  />
+                  <span>{{ option.label }}</span>
+                </label>
+              </div>
+            </div>
           </div>
 
           <po-table

@@ -27,6 +27,48 @@
   padding-top: 14px;
 }
 
+.correction-box {
+  border-top: 1px solid #e5e7eb;
+  margin-top: 18px;
+  padding-top: 14px;
+}
+
+.correction-title {
+  color: #2e343c;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.correction-content {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(180px, 240px) 1fr;
+  margin-top: 12px;
+}
+
+.correction-targets {
+  align-content: start;
+  display: grid;
+  gap: 10px 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding-top: 26px;
+}
+
+.native-checkbox {
+  align-items: center;
+  color: #2e343c;
+  display: inline-flex;
+  gap: 8px;
+  min-height: 24px;
+}
+
+.native-checkbox input {
+  accent-color: #0b3d63;
+  height: 16px;
+  width: 16px;
+}
+
 .result-panel {
   display: grid;
   gap: 12px;
@@ -122,6 +164,15 @@
 @media (max-width: 640px) {
   .form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .correction-content,
+  .correction-targets {
+    grid-template-columns: 1fr;
+  }
+
+  .correction-targets {
+    padding-top: 0;
   }
 
   .metric span {

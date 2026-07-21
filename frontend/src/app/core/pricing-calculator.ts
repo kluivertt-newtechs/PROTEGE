@@ -13,6 +13,22 @@ import {
   vehicleCosts,
 } from './mock';
 
+const CORRECTION_TARGETS = {
+  cpeReference: 'cpeReference',
+  otherCosts: 'otherCosts',
+  sopNormalHours: 'sopNormalHours',
+  sopOvertime50Hours: 'sopOvertime50Hours',
+  sopOvertime100Hours: 'sopOvertime100Hours',
+  sopFixedVehicleHour: 'sopFixedVehicleHour',
+  sopVariableKm: 'sopVariableKm',
+  processingCostPerThousand: 'processingCostPerThousand',
+} as const;
+
+interface CostComponent {
+  target: string;
+  value: number;
+}
+
 export function calculatePricingResult(
   simulation: PricingSimulation,
   parameters: CommercialParameters = commercialParametersMock,
@@ -145,12 +161,17 @@ export function resolveMainTaxRate(simulation: PricingSimulation): number {
 function calculateTransportCost(simulation: PricingSimulation): number {
   if (simulation.transportCostOrigin === 'CPE') {
     const reference = findCpeReference(simulation);
-    return (reference?.cost ?? 0) + safeNumber(simulation.otherCosts);
+    return sumCorrectedCostComponents(simulation, [
+      { target: CORRECTION_TARGETS.cpeReference, value: reference?.cost ?? 0 },
+      { target: CORRECTION_TARGETS.otherCosts, value: safeNumber(simulation.otherCosts) },
+    ]);
   }
 
   const vehicleCost = findVehicleCost(simulation);
   if (!vehicleCost) {
-    return safeNumber(simulation.otherCosts);
+    return sumCorrectedCostComponents(simulation, [
+      { target: CORRECTION_TARGETS.otherCosts, value: safeNumber(simulation.otherCosts) },
+    ]);
   }
 
   const totalHours =
@@ -158,22 +179,62 @@ function calculateTransportCost(simulation: PricingSimulation): number {
     safeNumber(simulation.overtime50Hours) +
     safeNumber(simulation.overtime100Hours);
 
-  return (
-    safeNumber(simulation.normalHours) * vehicleCost.normalHour +
-    safeNumber(simulation.overtime50Hours) * vehicleCost.overtime50 +
-    safeNumber(simulation.overtime100Hours) * vehicleCost.overtime100 +
-    totalHours * vehicleCost.fixedCostPerHour +
-    safeNumber(simulation.km) * vehicleCost.variableCostPerKm +
-    safeNumber(simulation.otherCosts)
-  );
+  return sumCorrectedCostComponents(simulation, [
+    {
+      target: CORRECTION_TARGETS.sopNormalHours,
+      value: safeNumber(simulation.normalHours) * vehicleCost.normalHour,
+    },
+    {
+      target: CORRECTION_TARGETS.sopOvertime50Hours,
+      value: safeNumber(simulation.overtime50Hours) * vehicleCost.overtime50,
+    },
+    {
+      target: CORRECTION_TARGETS.sopOvertime100Hours,
+      value: safeNumber(simulation.overtime100Hours) * vehicleCost.overtime100,
+    },
+    {
+      target: CORRECTION_TARGETS.sopFixedVehicleHour,
+      value: totalHours * vehicleCost.fixedCostPerHour,
+    },
+    {
+      target: CORRECTION_TARGETS.sopVariableKm,
+      value: safeNumber(simulation.km) * vehicleCost.variableCostPerKm,
+    },
+    { target: CORRECTION_TARGETS.otherCosts, value: safeNumber(simulation.otherCosts) },
+  ]);
 }
 
 function calculateProcessingCost(simulation: PricingSimulation): number {
-  return (
-    processingCosts.find(
-      (cost) => cost.baseId === simulation.baseId && cost.type === simulation.processingType,
-    )?.costPerThousand ?? 0
+  return sumCorrectedCostComponents(simulation, [
+    {
+      target: CORRECTION_TARGETS.processingCostPerThousand,
+      value:
+        processingCosts.find(
+          (cost) => cost.baseId === simulation.baseId && cost.type === simulation.processingType,
+        )?.costPerThousand ?? 0,
+    },
+  ]);
+}
+
+function sumCorrectedCostComponents(
+  simulation: PricingSimulation,
+  components: Array<CostComponent>,
+): number {
+  return components.reduce(
+    (total, component) => total + applyCostCorrection(simulation, component),
+    0,
   );
+}
+
+function applyCostCorrection(simulation: PricingSimulation, component: CostComponent): number {
+  if (
+    !simulation.costCorrectionEnabled ||
+    !simulation.costCorrectionTargets.includes(component.target)
+  ) {
+    return component.value;
+  }
+
+  return component.value * (1 + normalizeRate(simulation.costCorrectionRate));
 }
 
 function resolveTaxRate(simulation: PricingSimulation, parameters: CommercialParameters): number {
