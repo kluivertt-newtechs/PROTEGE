@@ -1,285 +1,291 @@
 <po-page-default p-title="Simulação de Preços">
-  <po-tabs>
-    <po-tab
-      p-label="Transporte de valores"
-      [p-active]="simulation.operationMode === 'transport'"
-      (p-click)="setOperationMode('transport')"
-    >
-      <div class="simulation-grid">
-        <po-container class="span-8" p-title="Condição operacional">
-          <div class="form-grid">
-            <po-select
-              name="transportBase"
-              p-label="Base de atendimento"
-              [p-options]="baseOptions"
-              [ngModel]="simulation.baseId"
-              (ngModelChange)="simulation.baseId = $event; onBaseChange()"
-            ></po-select>
-            <po-input
-              name="city"
-              p-label="Cidade"
-              [ngModel]="simulation.city"
-              (ngModelChange)="simulation.city = $event; recalculate()"
-            ></po-input>
-            <po-select
-              name="uf"
-              p-label="UF da operação"
-              [p-options]="ufOptions"
-              [ngModel]="simulation.uf"
-              (ngModelChange)="simulation.uf = $event; recalculate()"
-            ></po-select>
-            <po-select
-              name="destinationUf"
-              p-label="UF destino"
-              [p-options]="ufOptions"
-              [ngModel]="simulation.destinationUf"
-              (ngModelChange)="simulation.destinationUf = $event; recalculate()"
-            ></po-select>
-          </div>
-
-          <po-radio-group
-            name="transportCostOrigin"
-            p-label="Origem do custo"
-            [p-options]="costOriginOptions"
-            [ngModel]="simulation.transportCostOrigin"
-            (ngModelChange)="onTransportCostOriginChange($event)"
-          ></po-radio-group>
-
-          <div class="form-grid">
-            <po-select
-              name="pointType"
-              p-label="Tipo de ponto"
-              [p-options]="pointTypeOptions"
-              [ngModel]="simulation.pointType"
-              (ngModelChange)="simulation.pointType = $event; recalculate()"
-            ></po-select>
-            <po-select
-              name="vehicle"
-              p-label="Tipo de veículo"
-              [p-options]="vehicleOptions"
-              [ngModel]="simulation.vehicle"
-              (ngModelChange)="simulation.vehicle = $event; recalculate()"
-            ></po-select>
-            <po-select
-              name="routeType"
-              p-label="Tipo de rota"
-              [p-options]="routeTypeOptions"
-              [ngModel]="simulation.routeType"
-              (ngModelChange)="simulation.routeType = $event; recalculate()"
-            ></po-select>
-            <po-select
-              name="taxOperation"
-              p-label="Tributação"
-              [p-options]="taxOperationOptions"
-              [ngModel]="simulation.taxOperation"
-              (ngModelChange)="simulation.taxOperation = $event; recalculate()"
-            ></po-select>
-            <po-input
-              name="quantity"
-              p-label="Atendimentos/mês"
-              [ngModel]="simulation.quantity"
-              (ngModelChange)="simulation.quantity = $event; recalculate()"
-            ></po-input>
-            <po-input
-              name="otherCosts"
-              p-label="Pedágio/estadia/outros"
-              [ngModel]="simulation.otherCosts"
-              (ngModelChange)="simulation.otherCosts = $event; recalculate()"
-            ></po-input>
-          </div>
-
-          <div
-            class="form-grid sop-grid"
-            *ngIf="simulation.transportCostOrigin === 'SOP'"
-          >
-            <po-input
-              name="km"
-              p-label="KM deslocamento"
-              [ngModel]="simulation.km"
-              (ngModelChange)="simulation.km = $event; recalculate()"
-            ></po-input>
-            <po-input
-              name="normalHours"
-              p-label="Horas normais"
-              [ngModel]="simulation.normalHours"
-              (ngModelChange)="simulation.normalHours = $event; recalculate()"
-            ></po-input>
-            <po-input
-              name="overtime50Hours"
-              p-label="Horas extra 50%"
-              [ngModel]="simulation.overtime50Hours"
-              (ngModelChange)="
-                simulation.overtime50Hours = $event; recalculate()
-              "
-            ></po-input>
-            <po-input
-              name="overtime100Hours"
-              p-label="Horas extra 100%"
-              [ngModel]="simulation.overtime100Hours"
-              (ngModelChange)="
-                simulation.overtime100Hours = $event; recalculate()
-              "
-            ></po-input>
-          </div>
-
-          <div class="correction-box">
-            <div class="correction-title">Fator de correção</div>
-            <label class="native-checkbox">
-              <input
-                type="checkbox"
-                [checked]="simulation.costCorrectionEnabled"
-                (change)="
-                  onCostCorrectionEnabledChange($any($event.target).checked)
+  <div class="simulation-page">
+    <po-tabs>
+      <po-tab
+        p-label="Transporte de valores"
+        [p-active]="simulation.operationMode === 'transport'"
+        (p-click)="setOperationMode('transport')"
+      >
+        <div class="simulation-grid">
+          <po-container class="span-8" p-title="Condição operacional">
+            <div class="form-grid">
+              <po-select
+                name="transportBase"
+                p-label="Base de atendimento"
+                [p-options]="baseOptions"
+                [ngModel]="simulation.baseId"
+                (ngModelChange)="simulation.baseId = $event; onBaseChange()"
+              ></po-select>
+              <po-input
+                name="city"
+                p-label="Cidade"
+                [ngModel]="simulation.city"
+                (ngModelChange)="simulation.city = $event; recalculate()"
+              ></po-input>
+              <po-select
+                name="uf"
+                p-label="UF da operação"
+                [p-options]="ufOptions"
+                [ngModel]="simulation.uf"
+                (ngModelChange)="simulation.uf = $event; recalculate()"
+              ></po-select>
+              <po-select
+                name="destinationUf"
+                p-label="UF destino"
+                [p-options]="ufOptions"
+                [ngModel]="simulation.destinationUf"
+                (ngModelChange)="
+                  simulation.destinationUf = $event; recalculate()
                 "
-              />
-              <span>Aplicar fator de correção</span>
-            </label>
+              ></po-select>
+            </div>
+
+            <po-radio-group
+              name="transportCostOrigin"
+              p-label="Origem do custo"
+              [p-options]="costOriginOptions"
+              [ngModel]="simulation.transportCostOrigin"
+              (ngModelChange)="onTransportCostOriginChange($event)"
+            ></po-radio-group>
+
+            <div class="form-grid">
+              <po-select
+                name="pointType"
+                p-label="Tipo de ponto"
+                [p-options]="pointTypeOptions"
+                [ngModel]="simulation.pointType"
+                (ngModelChange)="simulation.pointType = $event; recalculate()"
+              ></po-select>
+              <po-select
+                name="vehicle"
+                p-label="Tipo de veículo"
+                [p-options]="vehicleOptions"
+                [ngModel]="simulation.vehicle"
+                (ngModelChange)="simulation.vehicle = $event; recalculate()"
+              ></po-select>
+              <po-select
+                name="routeType"
+                p-label="Tipo de rota"
+                [p-options]="routeTypeOptions"
+                [ngModel]="simulation.routeType"
+                (ngModelChange)="simulation.routeType = $event; recalculate()"
+              ></po-select>
+              <po-select
+                name="taxOperation"
+                p-label="Tributação"
+                [p-options]="taxOperationOptions"
+                [ngModel]="simulation.taxOperation"
+                (ngModelChange)="
+                  simulation.taxOperation = $event; recalculate()
+                "
+              ></po-select>
+              <po-input
+                name="quantity"
+                p-label="Atendimentos/mês"
+                [ngModel]="simulation.quantity"
+                (ngModelChange)="simulation.quantity = $event; recalculate()"
+              ></po-input>
+              <po-input
+                name="otherCosts"
+                p-label="Pedágio/estadia/outros"
+                [ngModel]="simulation.otherCosts"
+                (ngModelChange)="simulation.otherCosts = $event; recalculate()"
+              ></po-input>
+            </div>
 
             <div
-              class="correction-content"
-              *ngIf="simulation.costCorrectionEnabled"
+              class="form-grid sop-grid"
+              *ngIf="simulation.transportCostOrigin === 'SOP'"
             >
               <po-input
-                name="transportCostCorrectionRate"
-                p-label="Percentual de correção"
-                p-help="Informe 10 ou 0,10"
-                [ngModel]="simulation.costCorrectionRate"
-                (ngModelChange)="
-                  simulation.costCorrectionRate = $event; recalculate()
-                "
+                name="km"
+                p-label="KM deslocamento"
+                [ngModel]="simulation.km"
+                (ngModelChange)="simulation.km = $event; recalculate()"
               ></po-input>
-
-              <div class="correction-targets">
-                <label
-                  class="native-checkbox"
-                  *ngFor="let option of costCorrectionOptions"
-                >
-                  <input
-                    type="checkbox"
-                    [checked]="isCostCorrectionTargetSelected(option.value)"
-                    (change)="
-                      onCostCorrectionTargetChange(
-                        option.value,
-                        $any($event.target).checked
-                      )
-                    "
-                  />
-                  <span>{{ option.label }}</span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <p class="warning" *ngIf="result.warning">{{ result.warning }}</p>
-        </po-container>
-
-        <ng-container *ngTemplateOutlet="resultPanel"></ng-container>
-      </div>
-    </po-tab>
-
-    <po-tab
-      p-label="Processamento"
-      [p-active]="simulation.operationMode === 'processing'"
-      (p-click)="setOperationMode('processing')"
-    >
-      <div class="simulation-grid">
-        <po-container class="span-8" p-title="Condição de processamento">
-          <div class="form-grid">
-            <po-select
-              name="processingBase"
-              p-label="Base de atendimento"
-              [p-options]="baseOptions"
-              [ngModel]="simulation.baseId"
-              (ngModelChange)="simulation.baseId = $event; onBaseChange()"
-            ></po-select>
-            <po-select
-              name="processingUf"
-              p-label="UF da operação"
-              [p-options]="ufOptions"
-              [ngModel]="simulation.uf"
-              (ngModelChange)="simulation.uf = $event; recalculate()"
-            ></po-select>
-            <po-select
-              name="processingType"
-              p-label="Tipo de processamento"
-              [p-options]="processingTypeOptions"
-              [ngModel]="simulation.processingType"
-              (ngModelChange)="
-                simulation.processingType = $event; recalculate()
-              "
-            ></po-select>
-            <po-input
-              name="thousandsVolume"
-              p-label="Volume de milheiros"
-              [ngModel]="simulation.thousandsVolume"
-              (ngModelChange)="
-                simulation.thousandsVolume = $event; recalculate()
-              "
-            ></po-input>
-          </div>
-
-          <div class="correction-box">
-            <div class="correction-title">Fator de correção</div>
-            <label class="native-checkbox">
-              <input
-                type="checkbox"
-                [checked]="simulation.costCorrectionEnabled"
-                (change)="
-                  onCostCorrectionEnabledChange($any($event.target).checked)
-                "
-              />
-              <span>Aplicar fator de correção</span>
-            </label>
-
-            <div
-              class="correction-content"
-              *ngIf="simulation.costCorrectionEnabled"
-            >
               <po-input
-                name="processingCostCorrectionRate"
-                p-label="Percentual de correção"
-                p-help="Informe 10 ou 0,10"
-                [ngModel]="simulation.costCorrectionRate"
+                name="normalHours"
+                p-label="Horas normais"
+                [ngModel]="simulation.normalHours"
+                (ngModelChange)="simulation.normalHours = $event; recalculate()"
+              ></po-input>
+              <po-input
+                name="overtime50Hours"
+                p-label="Horas extra 50%"
+                [ngModel]="simulation.overtime50Hours"
                 (ngModelChange)="
-                  simulation.costCorrectionRate = $event; recalculate()
+                  simulation.overtime50Hours = $event; recalculate()
                 "
               ></po-input>
+              <po-input
+                name="overtime100Hours"
+                p-label="Horas extra 100%"
+                [ngModel]="simulation.overtime100Hours"
+                (ngModelChange)="
+                  simulation.overtime100Hours = $event; recalculate()
+                "
+              ></po-input>
+            </div>
 
-              <div class="correction-targets">
-                <label
-                  class="native-checkbox"
-                  *ngFor="let option of costCorrectionOptions"
-                >
-                  <input
-                    type="checkbox"
-                    [checked]="isCostCorrectionTargetSelected(option.value)"
-                    (change)="
-                      onCostCorrectionTargetChange(
-                        option.value,
-                        $any($event.target).checked
-                      )
-                    "
-                  />
-                  <span>{{ option.label }}</span>
-                </label>
+            <div class="correction-box">
+              <div class="correction-title">Fator de correção</div>
+              <label class="native-checkbox">
+                <input
+                  type="checkbox"
+                  [checked]="simulation.costCorrectionEnabled"
+                  (change)="
+                    onCostCorrectionEnabledChange($any($event.target).checked)
+                  "
+                />
+                <span>Aplicar fator de correção</span>
+              </label>
+
+              <div
+                class="correction-content"
+                *ngIf="simulation.costCorrectionEnabled"
+              >
+                <po-input
+                  name="transportCostCorrectionRate"
+                  p-label="Percentual de correção"
+                  p-help="Informe 10 ou 0,10"
+                  [ngModel]="simulation.costCorrectionRate"
+                  (ngModelChange)="
+                    simulation.costCorrectionRate = $event; recalculate()
+                  "
+                ></po-input>
+
+                <div class="correction-targets">
+                  <label
+                    class="native-checkbox"
+                    *ngFor="let option of costCorrectionOptions"
+                  >
+                    <input
+                      type="checkbox"
+                      [checked]="isCostCorrectionTargetSelected(option.value)"
+                      (change)="
+                        onCostCorrectionTargetChange(
+                          option.value,
+                          $any($event.target).checked
+                        )
+                      "
+                    />
+                    <span>{{ option.label }}</span>
+                  </label>
+                </div>
               </div>
             </div>
-          </div>
 
-          <po-table
-            class="compact-table"
-            [p-columns]="processingColumns"
-            [p-items]="processingItems"
-            [p-hide-table-search]="true"
-          ></po-table>
+            <p class="warning" *ngIf="result.warning">{{ result.warning }}</p>
+          </po-container>
 
-          <p class="warning" *ngIf="result.warning">{{ result.warning }}</p>
-        </po-container>
+          <ng-container *ngTemplateOutlet="resultPanel"></ng-container>
+        </div>
+      </po-tab>
 
-        <ng-container *ngTemplateOutlet="resultPanel"></ng-container>
-      </div>
-    </po-tab>
-  </po-tabs>
+      <po-tab
+        p-label="Processamento"
+        [p-active]="simulation.operationMode === 'processing'"
+        (p-click)="setOperationMode('processing')"
+      >
+        <div class="simulation-grid">
+          <po-container class="span-8" p-title="Condição de processamento">
+            <div class="form-grid">
+              <po-select
+                name="processingBase"
+                p-label="Base de atendimento"
+                [p-options]="baseOptions"
+                [ngModel]="simulation.baseId"
+                (ngModelChange)="simulation.baseId = $event; onBaseChange()"
+              ></po-select>
+              <po-select
+                name="processingUf"
+                p-label="UF da operação"
+                [p-options]="ufOptions"
+                [ngModel]="simulation.uf"
+                (ngModelChange)="simulation.uf = $event; recalculate()"
+              ></po-select>
+              <po-select
+                name="processingType"
+                p-label="Tipo de processamento"
+                [p-options]="processingTypeOptions"
+                [ngModel]="simulation.processingType"
+                (ngModelChange)="
+                  simulation.processingType = $event; recalculate()
+                "
+              ></po-select>
+              <po-input
+                name="thousandsVolume"
+                p-label="Volume de milheiros"
+                [ngModel]="simulation.thousandsVolume"
+                (ngModelChange)="
+                  simulation.thousandsVolume = $event; recalculate()
+                "
+              ></po-input>
+            </div>
+
+            <div class="correction-box">
+              <div class="correction-title">Fator de correção</div>
+              <label class="native-checkbox">
+                <input
+                  type="checkbox"
+                  [checked]="simulation.costCorrectionEnabled"
+                  (change)="
+                    onCostCorrectionEnabledChange($any($event.target).checked)
+                  "
+                />
+                <span>Aplicar fator de correção</span>
+              </label>
+
+              <div
+                class="correction-content"
+                *ngIf="simulation.costCorrectionEnabled"
+              >
+                <po-input
+                  name="processingCostCorrectionRate"
+                  p-label="Percentual de correção"
+                  p-help="Informe 10 ou 0,10"
+                  [ngModel]="simulation.costCorrectionRate"
+                  (ngModelChange)="
+                    simulation.costCorrectionRate = $event; recalculate()
+                  "
+                ></po-input>
+
+                <div class="correction-targets">
+                  <label
+                    class="native-checkbox"
+                    *ngFor="let option of costCorrectionOptions"
+                  >
+                    <input
+                      type="checkbox"
+                      [checked]="isCostCorrectionTargetSelected(option.value)"
+                      (change)="
+                        onCostCorrectionTargetChange(
+                          option.value,
+                          $any($event.target).checked
+                        )
+                      "
+                    />
+                    <span>{{ option.label }}</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <po-table
+              class="compact-table"
+              [p-columns]="processingColumns"
+              [p-items]="processingItems"
+              [p-hide-table-search]="true"
+            ></po-table>
+
+            <p class="warning" *ngIf="result.warning">{{ result.warning }}</p>
+          </po-container>
+
+          <ng-container *ngTemplateOutlet="resultPanel"></ng-container>
+        </div>
+      </po-tab>
+    </po-tabs>
+  </div>
 
   <ng-template #resultPanel>
     <aside class="span-4 result-panel">
