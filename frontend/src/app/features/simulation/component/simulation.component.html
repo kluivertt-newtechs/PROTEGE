@@ -179,6 +179,7 @@
           </po-container>
 
           <ng-container *ngTemplateOutlet="resultPanel"></ng-container>
+          <ng-container *ngTemplateOutlet="calculationMemoryPanel"></ng-container>
         </div>
       </po-tab>
 
@@ -282,6 +283,7 @@
           </po-container>
 
           <ng-container *ngTemplateOutlet="resultPanel"></ng-container>
+          <ng-container *ngTemplateOutlet="calculationMemoryPanel"></ng-container>
         </div>
       </po-tab>
     </po-tabs>
@@ -333,23 +335,51 @@
         </div>
       </po-container>
 
-      <po-container p-title="Memoria de calculo">
-        <div class="memory-list">
+    </aside>
+  </ng-template>
+
+  <ng-template #calculationMemoryPanel>
+    <po-container class="span-12 calculation-memory-panel" p-title="Memoria de calculo">
+      <ng-container *ngIf="(result.calculationMemory ?? []) as memory">
+        <div class="memory-empty" *ngIf="memory.length === 0">
+          Nenhuma memoria de calculo disponivel para esta simulacao.
+        </div>
+
+        <div class="memory-list" *ngIf="memory.length > 0">
+          <div class="memory-row memory-heading" aria-hidden="true">
+            <span>Status</span>
+            <span>Formula</span>
+            <span>Categoria</span>
+            <span>Expressao</span>
+            <span>Valor calculado</span>
+          </div>
+
           <div
             class="memory-row"
-            *ngFor="let step of result.calculationMemory ?? []"
+            *ngFor="let step of memory; let index = index"
             [class.error]="step.status === 'error'"
             [class.disabled]="step.status === 'disabled'"
           >
-            <div class="memory-header">
-              <span>{{ step.label }}</span>
-              <strong>{{ formatCurrency(step.value) }}</strong>
+            <div class="memory-status-cell">
+              <span class="memory-order">{{ index + 1 }}</span>
+              <span
+                class="memory-status"
+                [ngClass]="getMemoryStatusClass(step.status)"
+              >
+                {{ formatMemoryStatus(step.status) }}
+              </span>
             </div>
-            <code>{{ step.expression || step.message }}</code>
-            <small>{{ step.status }} · {{ step.category }}</small>
+            <div class="memory-label" data-label="Formula">{{ step.label }}</div>
+            <div class="memory-category" data-label="Categoria">{{ step.category }}</div>
+            <code class="memory-expression" data-label="Expressao">
+              {{ step.expression || step.message || '-' }}
+            </code>
+            <strong class="memory-value" data-label="Valor calculado">
+              {{ formatCurrency(step.value) }}
+            </strong>
           </div>
         </div>
-      </po-container>
-    </aside>
+      </ng-container>
+    </po-container>
   </ng-template>
 </po-page-default>

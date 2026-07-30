@@ -7,6 +7,7 @@ import {
 } from '@po-ui/ng-components';
 import {
   CommercialParameters,
+  FormulaExecutionStep,
   PricingResult,
   PricingSimulation,
   cpeReferences,
@@ -18,6 +19,7 @@ import { PricingMockStateService } from 'src/app/core/pricing-mock-state.service
 import { SHARED_MODULES } from 'src/app/shared/shared';
 
 type OperationMode = PricingSimulation['operationMode'];
+type FormulaExecutionStatus = FormulaExecutionStep['status'];
 type TableItem = Record<string, string | number>;
 
 interface CostCorrectionOption {
@@ -198,6 +200,20 @@ export class SimulationComponent implements OnInit {
 
   formatPercent(value: number): string {
     return value.toLocaleString('pt-BR', { style: 'percent', minimumFractionDigits: 2 });
+  }
+
+  formatMemoryStatus(status: FormulaExecutionStatus): string {
+    const labels: Record<FormulaExecutionStatus, string> = {
+      ok: 'OK',
+      error: 'Erro',
+      disabled: 'Inativa',
+    };
+
+    return labels[status];
+  }
+
+  getMemoryStatusClass(status: FormulaExecutionStatus): string {
+    return `status-${status}`;
   }
 
   private buildVehicleOptions(): Array<PoSelectOption> {
