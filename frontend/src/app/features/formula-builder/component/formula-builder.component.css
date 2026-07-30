@@ -3,7 +3,7 @@
 }
 
 .formula-grid {
-  align-items: start;
+  align-items: stretch;
   display: grid;
   gap: 24px;
   grid-template-columns: minmax(280px, 4fr) minmax(360px, 5fr) minmax(240px, 3fr);
@@ -13,7 +13,25 @@
 .formula-list,
 .formula-editor,
 .variable-palette {
+  min-height: 0;
   min-width: 0;
+}
+
+.formula-list,
+.variable-palette {
+  overflow: hidden;
+}
+
+.formula-list .formula-panel-scroll,
+.variable-palette .formula-panel-scroll {
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.formula-editor .formula-panel-scroll {
+  overflow: visible;
 }
 
 .toolbar,
@@ -28,8 +46,7 @@
   border: 1px solid #e5e7eb;
   border-radius: 4px;
   display: grid;
-  max-height: 620px;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .formula-row {

@@ -2,150 +2,156 @@
   <div class="formula-page">
     <section class="formula-grid">
       <po-container class="formula-list" p-title="Catálogo de fórmulas">
-        <div class="toolbar">
-          <po-button
-            p-icon="an an-plus"
-            p-label="Nova"
-            (p-click)="addFormula()"
-          ></po-button>
-          <po-button
-            p-icon="an an-arrow-clockwise"
-            p-label="Restaurar padrão"
-            (p-click)="resetDefaults()"
-          ></po-button>
-        </div>
+        <div class="formula-panel-scroll">
+          <div class="toolbar">
+            <po-button
+              p-icon="an an-plus"
+              p-label="Nova"
+              (p-click)="addFormula()"
+            ></po-button>
+            <po-button
+              p-icon="an an-arrow-clockwise"
+              p-label="Restaurar padrão"
+              (p-click)="resetDefaults()"
+            ></po-button>
+          </div>
 
-        <div class="formula-table">
-          <button
-            type="button"
-            class="formula-row"
-            *ngFor="let formula of formulas"
-            [class.active]="selectedFormula?.id === formula.id"
-            [class.disabled]="!formula.enabled"
-            (click)="selectFormula(formula)"
-          >
-            <span class="order">{{ formatOrder(formula.order) }}</span>
-            <span class="formula-main">
-              <strong>{{ formula.label }}</strong>
-              <small>{{ formula.id }} · {{ getCategoryLabel(formula.category) }}</small>
-            </span>
-            <span class="status">{{ formula.enabled ? 'Ativa' : 'Inativa' }}</span>
-          </button>
+          <div class="formula-table">
+            <button
+              type="button"
+              class="formula-row"
+              *ngFor="let formula of formulas"
+              [class.active]="selectedFormula?.id === formula.id"
+              [class.disabled]="!formula.enabled"
+              (click)="selectFormula(formula)"
+            >
+              <span class="order">{{ formatOrder(formula.order) }}</span>
+              <span class="formula-main">
+                <strong>{{ formula.label }}</strong>
+                <small>{{ formula.id }} · {{ getCategoryLabel(formula.category) }}</small>
+              </span>
+              <span class="status">{{ formula.enabled ? 'Ativa' : 'Inativa' }}</span>
+            </button>
+          </div>
         </div>
       </po-container>
 
       <po-container class="formula-editor" p-title="Editor">
-        <ng-container *ngIf="selectedFormula; else emptyState">
-          <div class="editor-grid">
+        <div class="formula-panel-scroll">
+          <ng-container *ngIf="selectedFormula; else emptyState">
+            <div class="editor-grid">
+              <po-input
+                name="formulaId"
+                p-label="Identificador"
+                [(ngModel)]="selectedFormula.id"
+              ></po-input>
+              <po-input
+                name="formulaLabel"
+                p-label="Nome"
+                [(ngModel)]="selectedFormula.label"
+              ></po-input>
+              <po-select
+                name="formulaCategory"
+                p-label="Categoria"
+                [p-options]="categoryOptions"
+                [ngModel]="selectedFormula.category"
+                (ngModelChange)="updateSelectedCategory($event)"
+              ></po-select>
+              <po-input
+                name="formulaOrder"
+                p-label="Ordem"
+                [(ngModel)]="selectedFormula.order"
+              ></po-input>
+            </div>
+
             <po-input
-              name="formulaId"
-              p-label="Identificador"
-              [(ngModel)]="selectedFormula.id"
+              name="formulaDescription"
+              p-label="Descrição"
+              [(ngModel)]="selectedFormula.description"
             ></po-input>
-            <po-input
-              name="formulaLabel"
-              p-label="Nome"
-              [(ngModel)]="selectedFormula.label"
-            ></po-input>
-            <po-select
-              name="formulaCategory"
-              p-label="Categoria"
-              [p-options]="categoryOptions"
-              [ngModel]="selectedFormula.category"
-              (ngModelChange)="updateSelectedCategory($event)"
-            ></po-select>
-            <po-input
-              name="formulaOrder"
-              p-label="Ordem"
-              [(ngModel)]="selectedFormula.order"
-            ></po-input>
-          </div>
 
-          <po-input
-            name="formulaDescription"
-            p-label="Descrição"
-            [(ngModel)]="selectedFormula.description"
-          ></po-input>
+            <label class="native-checkbox">
+              <input type="checkbox" [(ngModel)]="selectedFormula.enabled" />
+              <span>Fórmula ativa</span>
+            </label>
 
-          <label class="native-checkbox">
-            <input type="checkbox" [(ngModel)]="selectedFormula.enabled" />
-            <span>Fórmula ativa</span>
-          </label>
+            <po-textarea
+              name="formulaExpression"
+              p-label="Expressão"
+              p-help="Use operadores + - * /, parênteses, ternário e Math.max, Math.min, Math.round, Math.abs."
+              [(ngModel)]="selectedFormula.expression"
+            ></po-textarea>
 
-          <po-textarea
-            name="formulaExpression"
-            p-label="Expressão"
-            p-help="Use operadores + - * /, parênteses, ternário e Math.max, Math.min, Math.round, Math.abs."
-            [(ngModel)]="selectedFormula.expression"
-          ></po-textarea>
+            <div class="actions">
+              <po-button
+                p-icon="an an-check"
+                p-label="Validar"
+                (p-click)="validate()"
+              ></po-button>
+              <po-button
+                p-icon="an an-floppy-disk"
+                p-label="Salvar"
+                p-kind="primary"
+                (p-click)="save()"
+              ></po-button>
+              <po-button
+                p-icon="an an-trash"
+                p-label="Remover"
+                (p-click)="removeSelected()"
+              ></po-button>
+            </div>
 
-          <div class="actions">
-            <po-button
-              p-icon="an an-check"
-              p-label="Validar"
-              (p-click)="validate()"
-            ></po-button>
-            <po-button
-              p-icon="an an-floppy-disk"
-              p-label="Salvar"
-              p-kind="primary"
-              (p-click)="save()"
-            ></po-button>
-            <po-button
-              p-icon="an an-trash"
-              p-label="Remover"
-              (p-click)="removeSelected()"
-            ></po-button>
-          </div>
+            <p class="status-message" [class.error]="statusType === 'error'" [class.success]="statusType === 'success'" *ngIf="statusMessage">
+              {{ statusMessage }}
+            </p>
+          </ng-container>
 
-          <p class="status-message" [class.error]="statusType === 'error'" [class.success]="statusType === 'success'" *ngIf="statusMessage">
-            {{ statusMessage }}
-          </p>
-        </ng-container>
-
-        <ng-template #emptyState>
-          <p class="empty-state">Nenhuma fórmula selecionada.</p>
-        </ng-template>
+          <ng-template #emptyState>
+            <p class="empty-state">Nenhuma fórmula selecionada.</p>
+          </ng-template>
+        </div>
       </po-container>
 
       <po-container class="variable-palette" p-title="Variáveis disponíveis">
-        <p class="variable-section-title">Entradas da simulação</p>
-        <div class="variable-grid">
-          <button
-            type="button"
-            class="variable-chip"
-            *ngFor="let variable of variables"
-            (click)="insertToken(variable.id)"
-          >
-            <strong>{{ variable.id }}</strong>
-            <small>{{ variable.label }}</small>
-          </button>
+        <div class="formula-panel-scroll">
+          <p class="variable-section-title">Entradas da simulação</p>
+          <div class="variable-grid">
+            <button
+              type="button"
+              class="variable-chip"
+              *ngFor="let variable of variables"
+              (click)="insertToken(variable.id)"
+            >
+              <strong>{{ variable.id }}</strong>
+              <small>{{ variable.label }}</small>
+            </button>
 
-          <button type="button" class="variable-chip" (click)="insertToken('Math.max()')">
-            <strong>Math.max()</strong>
-            <small>Maior valor</small>
-          </button>
-          <button type="button" class="variable-chip" (click)="insertToken('Math.min()')">
-            <strong>Math.min()</strong>
-            <small>Menor valor</small>
-          </button>
-        </div>
+            <button type="button" class="variable-chip" (click)="insertToken('Math.max()')">
+              <strong>Math.max()</strong>
+              <small>Maior valor</small>
+            </button>
+            <button type="button" class="variable-chip" (click)="insertToken('Math.min()')">
+              <strong>Math.min()</strong>
+              <small>Menor valor</small>
+            </button>
+          </div>
 
-        <p class="variable-section-title">Fórmulas anteriores</p>
-        <div class="variable-grid" *ngIf="formulaVariables.length; else noFormulaVariables">
-          <button
-            type="button"
-            class="variable-chip formula-variable"
-            *ngFor="let formula of formulaVariables"
-            (click)="insertToken(formula.id)"
-          >
-            <strong>{{ formula.id }}</strong>
-            <small>{{ formula.label }} · ordem {{ formatOrder(formula.order) }}</small>
-          </button>
+          <p class="variable-section-title">Fórmulas anteriores</p>
+          <div class="variable-grid" *ngIf="formulaVariables.length; else noFormulaVariables">
+            <button
+              type="button"
+              class="variable-chip formula-variable"
+              *ngFor="let formula of formulaVariables"
+              (click)="insertToken(formula.id)"
+            >
+              <strong>{{ formula.id }}</strong>
+              <small>{{ formula.label }} · ordem {{ formatOrder(formula.order) }}</small>
+            </button>
+          </div>
+          <ng-template #noFormulaVariables>
+            <p class="variable-empty">Salve uma fórmula com ordem menor para usá-la aqui.</p>
+          </ng-template>
         </div>
-        <ng-template #noFormulaVariables>
-          <p class="variable-empty">Salve uma fórmula com ordem menor para usá-la aqui.</p>
-        </ng-template>
       </po-container>
     </section>
   </div>
