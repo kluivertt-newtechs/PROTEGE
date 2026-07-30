@@ -1,7 +1,7 @@
-<po-page-default p-title="Construtor de Formula">
+<po-page-default p-title="Construtor de Fórmulas">
   <div class="formula-page">
     <section class="formula-grid">
-      <po-container class="formula-list" p-title="Catalogo de formulas">
+      <po-container class="formula-list" p-title="Catálogo de fórmulas">
         <div class="toolbar">
           <po-button
             p-icon="an an-plus"
@@ -10,7 +10,7 @@
           ></po-button>
           <po-button
             p-icon="an an-arrow-clockwise"
-            p-label="Restaurar padrao"
+            p-label="Restaurar padrão"
             (p-click)="resetDefaults()"
           ></po-button>
         </div>
@@ -63,19 +63,19 @@
 
           <po-input
             name="formulaDescription"
-            p-label="Descricao"
+            p-label="Descrição"
             [(ngModel)]="selectedFormula.description"
           ></po-input>
 
           <label class="native-checkbox">
             <input type="checkbox" [(ngModel)]="selectedFormula.enabled" />
-            <span>Formula ativa</span>
+            <span>Fórmula ativa</span>
           </label>
 
           <po-textarea
             name="formulaExpression"
-            p-label="Expressao"
-            p-help="Use operadores + - * /, parenteses, ternario e Math.max, Math.min, Math.round, Math.abs."
+            p-label="Expressão"
+            p-help="Use operadores + - * /, parênteses, ternário e Math.max, Math.min, Math.round, Math.abs."
             [(ngModel)]="selectedFormula.expression"
           ></po-textarea>
 
@@ -104,11 +104,11 @@
         </ng-container>
 
         <ng-template #emptyState>
-          <p class="empty-state">Nenhuma formula selecionada.</p>
+          <p class="empty-state">Nenhuma fórmula selecionada.</p>
         </ng-template>
       </po-container>
 
-      <po-container class="variable-palette" p-title="Variaveis disponiveis">
+      <po-container class="variable-palette" p-title="Variáveis disponíveis">
         <div class="variable-grid">
           <button
             type="button"
@@ -130,7 +130,7 @@
           </button>
           <button type="button" class="variable-chip" (click)="insertToken('targetMarginRate')">
             <strong>resultados anteriores</strong>
-            <small>Use ids de formulas com ordem menor</small>
+            <small>Use ids de fórmulas com ordem menor</small>
           </button>
         </div>
       </po-container>

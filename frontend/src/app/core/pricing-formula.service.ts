@@ -59,8 +59,8 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
   },
   {
     id: 'netPrice',
-    label: 'Preco liquido',
-    description: 'Preco antes dos impostos, considerando despesas e margem.',
+    label: 'Preço líquido',
+    description: 'Preço antes dos impostos, considerando despesas e margem.',
     expression:
       'costTotal / Math.max(0.01, 1 - (operationalExpensesRate + indirectExpensesRate + targetMarginRate))',
     order: 20,
@@ -70,7 +70,7 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
   {
     id: 'operationalExpenses',
     label: 'Despesas operacionais',
-    description: 'Carga operacional aplicada ao preco liquido.',
+    description: 'Carga operacional aplicada ao preço líquido.',
     expression: 'netPrice * operationalExpensesRate',
     order: 30,
     enabled: true,
@@ -79,7 +79,7 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
   {
     id: 'indirectExpenses',
     label: 'Despesas indiretas',
-    description: 'Carga indireta aplicada ao preco liquido.',
+    description: 'Carga indireta aplicada ao preço líquido.',
     expression: 'netPrice * indirectExpensesRate',
     order: 40,
     enabled: true,
@@ -88,7 +88,7 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
   {
     id: 'margin',
     label: 'Margem',
-    description: 'Margem alvo aplicada ao preco liquido.',
+    description: 'Margem alvo aplicada ao preço líquido.',
     expression: 'netPrice * targetMarginRate',
     order: 50,
     enabled: true,
@@ -96,7 +96,7 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
   },
   {
     id: 'taxRate',
-    label: 'Aliquota total',
+    label: 'Alíquota total',
     description: 'Soma de PIS/COFINS com ISS ou ICMS.',
     expression: 'pisCofinsRate + mainTaxRate',
     order: 60,
@@ -105,8 +105,8 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
   },
   {
     id: 'finalPrice',
-    label: 'Preco final',
-    description: 'Preco unitario com impostos embutidos.',
+    label: 'Preço final',
+    description: 'Preço unitário com impostos embutidos.',
     expression: 'netPrice / Math.max(0.01, 1 - taxRate)',
     order: 70,
     enabled: true,
@@ -115,7 +115,7 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
   {
     id: 'taxes',
     label: 'Impostos',
-    description: 'Valor unitario dos impostos.',
+    description: 'Valor unitário dos impostos.',
     expression: 'finalPrice - netPrice',
     order: 80,
     enabled: true,
@@ -123,8 +123,8 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
   },
   {
     id: 'monthlyPrice',
-    label: 'Preco mensal',
-    description: 'Preco final multiplicado pela quantidade.',
+    label: 'Preço mensal',
+    description: 'Preço final multiplicado pela quantidade.',
     expression: 'finalPrice * quantity',
     order: 90,
     enabled: true,
@@ -133,7 +133,7 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
   {
     id: 'ebitdaRate',
     label: 'EBITDA alvo',
-    description: 'Percentual usado como EBITDA alvo da simulacao.',
+    description: 'Percentual usado como EBITDA alvo da simulação.',
     expression: 'targetMarginRate',
     order: 100,
     enabled: true,
@@ -181,7 +181,7 @@ export function executePricingFormulas(
       values: {},
       memory: validation.messages.map((message) => ({
         id: 'formula-validation',
-        label: 'Validacao das formulas',
+        label: 'Validação das fórmulas',
         category: 'resultado',
         expression: '',
         value: 0,
@@ -205,7 +205,7 @@ export function executePricingFormulas(
         expression: formula.expression,
         value: 0,
         status: 'disabled',
-        message: 'Formula desabilitada.',
+        message: 'Fórmula desabilitada.',
       });
       continue;
     }
@@ -213,7 +213,7 @@ export function executePricingFormulas(
     try {
       const value = evaluateExpression(formula.expression, context);
       if (!Number.isFinite(value)) {
-        throw new Error('Resultado nao numerico.');
+        throw new Error('Resultado não numérico.');
       }
 
       context[formula.id] = value;
@@ -227,7 +227,7 @@ export function executePricingFormulas(
         status: 'ok',
       });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Erro ao executar formula.';
+      const message = error instanceof Error ? error.message : 'Erro ao executar fórmula.';
       memory.push({
         id: formula.id,
         label: formula.label,
@@ -240,7 +240,7 @@ export function executePricingFormulas(
       return {
         values,
         memory,
-        warning: `Formula ${formula.id}: ${message}`,
+        warning: `Fórmula ${formula.id}: ${message}`,
       };
     }
   }
@@ -265,11 +265,11 @@ function validateFormulas(formulas: Array<PricingFormula>): FormulaValidationRes
     ids.add(formula.id);
 
     if (!formula.expression.trim()) {
-      messages.push(`Expressao vazia em ${formula.id}.`);
+      messages.push(`Expressão vazia em ${formula.id}.`);
     }
 
     if (!isValidCategory(formula.category)) {
-      messages.push(`Categoria invalida em ${formula.id}.`);
+      messages.push(`Categoria inválida em ${formula.id}.`);
     }
 
     const expressionValidation = validateExpressionReferences(formula.expression, available);
@@ -305,7 +305,7 @@ function validateFormulasForSave(formulas: Array<PricingFormula>): FormulaValida
   );
   const executionErrors = execution.memory
     .filter((step) => step.status === 'error')
-    .map((step) => `${step.id}: ${step.message ?? 'erro de execucao.'}`);
+    .map((step) => `${step.id}: ${step.message ?? 'erro de execução.'}`);
 
   return {
     valid: executionErrors.length === 0,
@@ -320,13 +320,13 @@ function validateExpressionReferences(
   const messages: Array<string> = [];
 
   if (/[^-+*/%().,\s?:<>=!&|0-9A-Za-z_]/.test(expression)) {
-    messages.push('use apenas operadores matematicos, ternario e identificadores.');
+    messages.push('use apenas operadores matemáticos, ternário e identificadores.');
   }
 
   const mathMemberMatches = expression.matchAll(/\bMath\.([A-Za-z_][A-Za-z0-9_]*)/g);
   for (const match of mathMemberMatches) {
     if (!ALLOWED_MATH_FUNCTIONS.includes(match[1])) {
-      messages.push(`funcao Math.${match[1]} nao permitida.`);
+      messages.push(`função Math.${match[1]} não permitida.`);
     }
   }
 
@@ -340,12 +340,12 @@ function validateExpressionReferences(
     }
 
     if (!available.has(identifier)) {
-      messages.push(`referencia inexistente: ${identifier}.`);
+      messages.push(`referência inexistente: ${identifier}.`);
     }
   }
 
   if (/(^|[^A-Za-z0-9_])\.(?!\s*$)/.test(expression.replace(/\bMath\./g, 'Math'))) {
-    messages.push('acesso a propriedades nao e permitido fora de Math.');
+    messages.push('acesso a propriedades não é permitido fora de Math.');
   }
 
   return [...new Set(messages)];

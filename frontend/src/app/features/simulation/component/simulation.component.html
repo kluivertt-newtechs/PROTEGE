@@ -339,18 +339,18 @@
   </ng-template>
 
   <ng-template #calculationMemoryPanel>
-    <po-container class="span-12 calculation-memory-panel" p-title="Memoria de calculo">
+    <po-container class="span-12 calculation-memory-panel" p-title="Memória de cálculo">
       <ng-container *ngIf="(result.calculationMemory ?? []) as memory">
         <div class="memory-empty" *ngIf="memory.length === 0">
-          Nenhuma memoria de calculo disponivel para esta simulacao.
+          Nenhuma memória de cálculo disponível para esta simulação.
         </div>
 
         <div class="memory-list" *ngIf="memory.length > 0">
           <div class="memory-row memory-heading" aria-hidden="true">
             <span>Status</span>
-            <span>Formula</span>
+            <span>Fórmula</span>
             <span>Categoria</span>
-            <span>Expressao</span>
+            <span>Expressão</span>
             <span>Valor calculado</span>
           </div>
 
@@ -369,9 +369,9 @@
                 {{ formatMemoryStatus(step.status) }}
               </span>
             </div>
-            <div class="memory-label" data-label="Formula">{{ step.label }}</div>
+            <div class="memory-label" data-label="Fórmula">{{ step.label }}</div>
             <div class="memory-category" data-label="Categoria">{{ step.category }}</div>
-            <code class="memory-expression" data-label="Expressao">
+            <code class="memory-expression" data-label="Expressão">
               {{ step.expression || step.message || '-' }}
             </code>
             <strong class="memory-value" data-label="Valor calculado">

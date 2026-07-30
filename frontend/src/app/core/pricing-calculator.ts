@@ -113,7 +113,7 @@ export function calculateConsolidatedResult(
       operationLabel:
         simulation.operationMode === 'processing' ? simulation.processingType : simulation.vehicle,
       quantity,
-      quantityLabel: simulation.operationMode === 'processing' ? 'volume mensal' : 'atendimentos/mes',
+      quantityLabel: simulation.operationMode === 'processing' ? 'volume mensal' : 'atendimentos/mês',
       unitPrice: pricing.finalPrice,
     },
     pricing,
@@ -272,11 +272,11 @@ function findVehicleCost(simulation: PricingSimulation) {
 
 function resolveWarning(simulation: PricingSimulation, costTotal: number): string | undefined {
   if (simulation.operationMode === 'transport' && simulation.transportCostOrigin === 'CPE' && costTotal === 0) {
-    return 'Nao ha referencia CPE para a combinacao informada. O custo foi zerado para sinalizar cadastro pendente.';
+    return 'Não há referência CPE para a combinação informada. O custo foi zerado para sinalizar cadastro pendente.';
   }
 
   if (simulation.operationMode === 'processing' && costTotal === 0) {
-    return 'Nao ha custo de processamento cadastrado para a base e tipo selecionados.';
+    return 'Não há custo de processamento cadastrado para a base e tipo selecionados.';
   }
 
   return undefined;

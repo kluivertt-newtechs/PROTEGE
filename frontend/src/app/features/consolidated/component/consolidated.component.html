@@ -3,7 +3,7 @@
     <po-container class="span-8 proposal-panel" p-title="Resumo da proposta">
       <div class="proposal-heading">
         <div>
-          <span class="section-kicker">Proposta unica</span>
+          <span class="section-kicker">Proposta única</span>
           <h2>{{ result.proposal.serviceType }}</h2>
           <p>{{ result.proposal.city }} / {{ result.proposal.uf }} - {{ result.proposal.baseName }}</p>
         </div>
@@ -16,11 +16,11 @@
           <strong>{{ result.proposal.quantity }} {{ result.proposal.quantityLabel }}</strong>
         </div>
         <div class="summary-item">
-          <span>Preco unitario simulado</span>
+          <span>Preço unitário simulado</span>
           <strong>{{ formatCurrency(result.proposal.unitPrice) }}</strong>
         </div>
         <div class="summary-item">
-          <span>Tributacao principal</span>
+          <span>Tributação principal</span>
           <strong>{{ formatPercent(result.mainTaxRate) }}</strong>
         </div>
         <div class="summary-item">
@@ -34,7 +34,7 @@
 
     <aside class="span-4 result-panel">
       <div class="metric primary">
-        <small>Preco unitario de fechamento</small>
+        <small>Preço unitário de fechamento</small>
         <span>{{ formatCurrency(result.finalUnitPrice) }}</span>
       </div>
       <div class="metric">
@@ -47,7 +47,7 @@
       </div>
     </aside>
 
-    <po-container class="span-8" p-title="Parametros de fechamento">
+    <po-container class="span-8" p-title="Parâmetros de fechamento">
       <div class="form-grid parameter-grid">
         <po-input
           name="targetMarginRate"
@@ -63,7 +63,7 @@
         ></po-input>
         <po-input
           name="custodyRate"
-          p-label="Taxa custodia"
+          p-label="Taxa custódia"
           [ngModel]="parameters.custodyRate"
           (ngModelChange)="parameters.custodyRate = $event; recalculate()"
         ></po-input>
@@ -96,7 +96,7 @@
           <strong>{{ formatCurrency(result.adValorem) }}</strong>
         </div>
         <div class="indicator-row">
-          <span>Custodia</span>
+          <span>Custódia</span>
           <strong>{{ formatCurrency(result.custody) }}</strong>
         </div>
         <div class="indicator-row total">
@@ -109,11 +109,11 @@
     <po-container class="span-12 po-mb-3" p-title="DRE Consolidado">
       <div class="dre-header">
         <div>
-          <span>Receita liquida</span>
+          <span>Receita líquida</span>
           <strong>{{ formatCurrency(result.netRevenue) }}</strong>
         </div>
         <div>
-          <span>Preco mensal final</span>
+          <span>Preço mensal final</span>
           <strong>{{ formatCurrency(result.finalMonthlyPrice) }}</strong>
         </div>
         <div>

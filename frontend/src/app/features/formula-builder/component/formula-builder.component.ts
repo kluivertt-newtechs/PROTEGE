@@ -48,7 +48,7 @@ export class FormulaBuilderComponent implements OnInit {
     const nextOrder = Math.max(0, ...this.formulas.map((formula) => formula.order)) + 10;
     this.selectedFormula = {
       id: `formula${this.formulas.length + 1}`,
-      label: 'Nova formula',
+      label: 'Nova fórmula',
       description: '',
       expression: '0',
       order: nextOrder,
@@ -75,7 +75,7 @@ export class FormulaBuilderComponent implements OnInit {
     const validation = this.formulaService.validate(this.buildEditedCatalog());
     this.statusType = validation.valid ? 'success' : 'error';
     this.statusMessage = validation.valid
-      ? 'Formulas validas para execucao.'
+      ? 'Fórmulas válidas para execução.'
       : validation.messages.join(' ');
   }
 
@@ -94,7 +94,7 @@ export class FormulaBuilderComponent implements OnInit {
     this.selectedFormula = selected ? { ...selected } : { ...this.formulas[0] };
     this.selectedFormulaOriginalId = this.selectedFormula?.id ?? '';
     this.statusType = 'success';
-    this.statusMessage = 'Formulas salvas localmente.';
+    this.statusMessage = 'Fórmulas salvas localmente.';
   }
 
   resetDefaults(): void {
@@ -102,7 +102,7 @@ export class FormulaBuilderComponent implements OnInit {
     this.selectedFormula = { ...this.formulas[0] };
     this.selectedFormulaOriginalId = this.selectedFormula.id;
     this.statusType = 'info';
-    this.statusMessage = 'Catalogo padrao restaurado.';
+    this.statusMessage = 'Catálogo padrão restaurado.';
   }
 
   insertToken(token: string): void {

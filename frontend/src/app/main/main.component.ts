@@ -54,8 +54,8 @@ export class MainComponent {
       link: 'pricing',
     },
     {
-      label: 'Construtor de Formula',
-      shortLabel: 'Formula',
+      label: 'Construtor de Fórmulas',
+      shortLabel: 'Fórmulas',
       icon: 'an an-function',
       link: 'formula-builder',
     },

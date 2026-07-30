@@ -42,7 +42,7 @@ export class ConsolidatedComponent implements OnInit {
   dreRows: Array<DreRow> = [];
 
   issIcmsOptions: Array<PoRadioGroupOption> = [
-    { label: 'Nao', value: 'false' },
+    { label: 'Não', value: 'false' },
     { label: 'Sim', value: 'true' },
   ];
 
@@ -100,7 +100,7 @@ export class ConsolidatedComponent implements OnInit {
     return [
       { label: 'Receita bruta', value: this.result.grossRevenue },
       {
-        label: this.parameters.issIcmsIncluded ? 'Preco antes de ISS/ICMS' : 'Base tributada',
+        label: this.parameters.issIcmsIncluded ? 'Preço antes de ISS/ICMS' : 'Base tributada',
         value: this.result.adjustedGrossRevenue,
         detail: this.parameters.issIcmsIncluded ? this.formatPercent(this.result.mainTaxRate) : undefined,
       },
@@ -116,7 +116,7 @@ export class ConsolidatedComponent implements OnInit {
         detail: this.formatPercent(this.result.mainTaxRate),
         negative: true,
       },
-      { label: 'Receita liquida', value: this.result.netRevenue, total: true },
+      { label: 'Receita líquida', value: this.result.netRevenue, total: true },
       { label: 'Custos diretos', value: this.result.directCosts, negative: true },
       { label: 'Despesas operacionais', value: this.result.operationalExpenses, negative: true },
       { label: 'Despesas indiretas', value: this.result.indirectExpenses, negative: true },
@@ -127,7 +127,7 @@ export class ConsolidatedComponent implements OnInit {
         negative: true,
       },
       {
-        label: 'Custodia',
+        label: 'Custódia',
         value: this.result.custody,
         detail: this.formatPercent(this.parameters.custodyRate),
         negative: true,
