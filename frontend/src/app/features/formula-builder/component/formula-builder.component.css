@@ -154,6 +154,18 @@
   gap: 10px;
 }
 
+.variable-section-title {
+  color: #2e343c;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 14px 0 8px;
+  text-transform: uppercase;
+}
+
+.variable-section-title:first-child {
+  margin-top: 0;
+}
+
 .variable-chip {
   background: #fff;
   border: 1px solid #d3d6da;
@@ -171,6 +183,10 @@
   border-color: #0b3d63;
 }
 
+.variable-chip.formula-variable {
+  background: #f8fbfd;
+}
+
 .variable-chip strong {
   font-size: 13px;
   overflow-wrap: anywhere;
@@ -179,6 +195,17 @@
 .variable-chip small {
   color: #69737d;
   line-height: 1.3;
+}
+
+.variable-empty {
+  background: #f4f6f8;
+  border: 1px dashed #d3d6da;
+  border-radius: 4px;
+  color: #69737d;
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 0;
+  padding: 10px;
 }
 
 @media (max-width: 1180px) {

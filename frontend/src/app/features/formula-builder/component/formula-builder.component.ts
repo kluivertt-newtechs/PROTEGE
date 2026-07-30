@@ -34,6 +34,19 @@ export class FormulaBuilderComponent implements OnInit {
 
   constructor(private readonly formulaService: PricingFormulaService) {}
 
+  get formulaVariables(): Array<PricingFormula> {
+    const selectedOrder = Number(this.selectedFormula?.order ?? Number.POSITIVE_INFINITY);
+    const selectedIds = new Set([
+      this.selectedFormula?.id,
+      this.selectedFormulaOriginalId,
+    ].filter(Boolean));
+
+    return this.buildEditedCatalog()
+      .filter((formula) => formula.enabled)
+      .filter((formula) => !selectedIds.has(formula.id))
+      .filter((formula) => Number(formula.order) < selectedOrder);
+  }
+
   ngOnInit(): void {
     this.loadFormulas();
   }
