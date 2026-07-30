@@ -54,11 +54,18 @@ export class MainComponent {
       link: 'pricing',
     },
     {
+      label: 'Construtor de Formula',
+      shortLabel: 'Formula',
+      icon: 'an an-function',
+      link: 'formula-builder',
+    },
+    {
       label: 'Simulação',
       shortLabel: 'Simular',
       icon: 'an an-calculator',
       link: 'simulation',
     },
+
     {
       label: 'Consolidado',
       shortLabel: 'Consolidado',

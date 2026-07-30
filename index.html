@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Laboratório de fórmulas de preço de venda para Datasul">
+  <title>Laboratório de Precificação Datasul</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">Σ</span>
+      <div>
+        <strong>Laboratório de Precificação</strong>
+        <span>ADM de Preço de Venda · Datasul</span>
+      </div>
+    </div>
+    <div class="version-area">
+      <span id="versionBadge" class="status-badge">Rascunho</span>
+      <span id="saveStatus" class="muted">Não salvo</span>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Modelo parametrizável</p>
+        <h1>Monte, simule e prepare fórmulas de preço.</h1>
+        <p>Uma memória de cálculo única para Transporte de Valores, Processamento, PayCash, Ad Valorem, Custódia, Cofre e D0.</p>
+      </div>
+      <div class="hero-actions">
+        <label>
+          Perfil
+          <select id="profileSelect">
+            <option value="captura">PayCash · Captura</option>
+            <option value="carteira">PayCash · Carteira</option>
+            <option value="transporte">Transporte de Valores</option>
+            <option value="vigilancia">Vigilância patrimonial</option>
+          </select>
+        </label>
+        <button id="saveButton" class="button primary">Salvar versão</button>
+      </div>
+    </section>
+
+    <nav class="tabs" aria-label="Áreas do laboratório">
+      <button class="tab is-active" data-tab="simulador">Simulador</button>
+      <button class="tab" data-tab="formulas">Construtor de fórmulas</button>
+      <button class="tab" data-tab="integracao">Integração Datasul</button>
+      <button class="tab" data-tab="analise">Base e governança</button>
+    </nav>
+
+    <section id="simulador" class="tab-panel is-active">
+      <div class="context-bar">
+        <div>
+          <span class="muted">Cenário ativo</span>
+          <strong id="scenarioName">CPE + PayCash · referência 2026</strong>
+        </div>
+        <div class="inline-actions">
+          <button id="resetButton" class="button ghost">Restaurar premissas</button>
+          <button id="exportButton" class="button">Exportar pacote</button>
+        </div>
+      </div>
+
+      <div class="simulation-layout">
+        <section class="panel parameters-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Entradas</p>
+              <h2>Premissas da simulação</h2>
+            </div>
+            <span class="muted">Edite os campos azuis</span>
+          </div>
+          <div id="parameterGroups" class="parameter-groups"></div>
+        </section>
+
+        <section class="results-column">
+          <div id="resultCards" class="result-cards"></div>
+          <section class="panel chart-panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="eyebrow">Composição</p>
+                <h2>Receita e custos por componente</h2>
+              </div>
+              <span id="profitSignal" class="status-badge">Calculando</span>
+            </div>
+            <div id="waterfall" class="waterfall" aria-label="Composição da receita por componente"></div>
+          </section>
+        </section>
+      </div>
+
+      <section class="panel ledger-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Rastreabilidade</p>
+            <h2>Memória de cálculo</h2>
+          </div>
+          <span class="muted">Valores recalculados ao editar uma premissa</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Componente</th><th>Fórmula</th><th class="number">Valor</th><th>Origem</th></tr></thead>
+            <tbody id="ledgerBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <section id="formulas" class="tab-panel">
+      <div class="formula-layout">
+        <aside class="panel formula-list-panel">
+          <div class="panel-heading compact">
+            <div><p class="eyebrow">Catálogo</p><h2>Componentes</h2></div>
+            <button id="newFormulaButton" class="button small">+ Fórmula</button>
+          </div>
+          <div id="formulaList" class="formula-list"></div>
+        </aside>
+
+        <section class="panel editor-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Editor de fórmula</p>
+              <h2 id="formulaTitle">Selecione um componente</h2>
+            </div>
+            <span id="formulaKind" class="status-badge">Componente</span>
+          </div>
+          <label class="wide-field">
+            Identificador técnico
+            <input id="formulaId" type="text" spellcheck="false" autocomplete="off">
+          </label>
+          <label class="wide-field">
+            Expressão executável
+            <textarea id="formulaExpression" rows="5" spellcheck="false" autocomplete="off"></textarea>
+          </label>
+          <p class="formula-hint">Use JavaScript matemático simples: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, parênteses, <code>Math</code> e condição ternária. Percentuais são decimais: 8,65% = <code>0.0865</code>.</p>
+          <div>
+            <span class="field-label">Inserir variável ou componente</span>
+            <div id="tokenPalette" class="token-palette"></div>
+          </div>
+          <div class="editor-actions">
+            <button id="validateFormulaButton" class="button">Validar</button>
+            <button id="applyFormulaButton" class="button primary">Aplicar fórmula</button>
+            <span id="formulaValidation" class="muted"></span>
+          </div>
+          <div class="preview-box">
+            <span>Prévia no cenário:</span>
+            <strong id="formulaPreview">—</strong>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel formula-register">
+        <div class="panel-heading compact">
+          <div><p class="eyebrow">Inventário</p><h2>Registro de fórmulas</h2></div>
+          <span id="formulaCount" class="muted"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Componente</th><th>Expressão</th><th>Dependências</th><th class="number">Resultado</th></tr></thead>
+            <tbody id="formulaRegisterBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <section id="integracao" class="tab-panel">
+      <div class="integration-layout">
+        <section class="panel integration-form">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Contrato de publicação</p>
+              <h2>Mapeamento para ADM de Preço de Venda</h2>
+            </div>
+            <span class="status-badge warn">Requer homologação</span>
+          </div>
+          <p class="muted">O pacote abaixo não altera o Datasul sozinho. Ele cria uma especificação de fórmula, componentes, vigência e testes para o adaptador homologado do seu ambiente.</p>
+          <div class="integration-fields">
+            <label>Empresa<input id="companyInput" type="text" value="PROTEGE"></label>
+            <label>Estabelecimento<input id="branchInput" type="text" value="201"></label>
+            <label>Tabela de preço<input id="priceTableInput" type="text" value="LV-PAYCASH"></label>
+            <label>Item/serviço<input id="itemInput" type="text" value="PAYCASH-COMBO"></label>
+            <label>Moeda<input id="currencyInput" type="text" value="BRL"></label>
+            <label>Início de vigência<input id="effectiveDateInput" type="date"></label>
+          </div>
+          <div class="table-wrap mapping-wrap">
+            <table>
+              <thead><tr><th>Componente lógico</th><th>Código proposto</th><th>Uso na fórmula ADM</th></tr></thead>
+              <tbody id="mappingBody"></tbody>
+            </table>
+          </div>
+          <div class="integration-actions">
+            <button id="buildPayloadButton" class="button primary">Gerar payload de integração</button>
+            <button id="copyPayloadButton" class="button">Copiar JSON</button>
+            <button id="downloadPayloadButton" class="button">Baixar JSON</button>
+          </div>
+          <p id="integrationStatus" class="muted"></p>
+        </section>
+        <section class="panel payload-panel">
+          <div class="panel-heading compact"><div><p class="eyebrow">Saída</p><h2>Payload do adaptador</h2></div></div>
+          <pre id="payloadOutput">Clique em “Gerar payload de integração”.</pre>
+        </section>
+      </div>
+      <section class="panel checklist-panel">
+        <div class="panel-heading"><div><p class="eyebrow">Antes de publicar</p><h2>Checklist de homologação</h2></div></div>
+        <ol>
+          <li>Validar os códigos reais de tabela, item, componentes e sequência de cálculo na versão Datasul instalada.</li>
+          <li>Confirmar o método de integração disponível no ambiente (API, EAI, programa customizado ou carga controlada).</li>
+          <li>Executar os cenários de teste com preços esperados e aprovar a vigência antes da publicação.</li>
+          <li>Registrar a versão, os responsáveis e o conjunto de premissas utilizado na decisão comercial.</li>
+        </ol>
+      </section>
+    </section>
+
+    <section id="analise" class="tab-panel">
+      <div class="governance-grid">
+        <section class="panel">
+          <p class="eyebrow">Modelo identificado</p>
+          <h2>Fluxo de precificação</h2>
+          <ol class="flow-list">
+            <li><strong>Condição operacional</strong><span>CPE ou SOP: base, cidade/UF, veículo, rota, tempos, km e atendimentos.</span></li>
+            <li><strong>Custo operacional</strong><span>Mão de obra, veículo fixo, km, pedágio e processamento/ATM.</span></li>
+            <li><strong>Preço unitário</strong><span>Custos + despesas operacionais + indiretas + margem, com imposto separado por serviço.</span></li>
+            <li><strong>Combo PayCash</strong><span>Transporte, cofre, processamento, ad valorem, custódia e D0 consolidados no DRE.</span></li>
+            <li><strong>Publicação</strong><span>Versão, vigência, mapeamento de componentes e testes homologados no Datasul.</span></li>
+          </ol>
+        </section>
+        <section class="panel">
+          <p class="eyebrow">Controles recomendados</p>
+          <h2>Alertas de governança</h2>
+          <ul class="risk-list">
+            <li>Tratar chaves de custo por base + veículo + rota e por cidade/UF como cadastros vigentes, não como texto livre.</li>
+            <li>Versionar alíquotas, CPE, custo de processamento, cofre e provisões de dissídio com data de efeito.</li>
+            <li>Bloquear publicação se houver referência não resolvida, imposto ausente, divisão por zero ou margem abaixo do limite.</li>
+            <li>Separar preço calculado, preço negociado e justificativa comercial em registros auditáveis.</li>
+          </ul>
+        </section>
+      </div>
+      <section class="panel sources-panel">
+        <div class="panel-heading"><div><p class="eyebrow">Rastreabilidade da análise</p><h2>Fontes incorporadas ao desenho</h2></div></div>
+        <div id="sourceList" class="source-list"></div>
+      </section>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

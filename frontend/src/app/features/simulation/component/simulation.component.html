@@ -332,6 +332,24 @@
           <strong>{{ formatCurrency(result.finalPrice) }}</strong>
         </div>
       </po-container>
+
+      <po-container p-title="Memoria de calculo">
+        <div class="memory-list">
+          <div
+            class="memory-row"
+            *ngFor="let step of result.calculationMemory ?? []"
+            [class.error]="step.status === 'error'"
+            [class.disabled]="step.status === 'disabled'"
+          >
+            <div class="memory-header">
+              <span>{{ step.label }}</span>
+              <strong>{{ formatCurrency(step.value) }}</strong>
+            </div>
+            <code>{{ step.expression || step.message }}</code>
+            <small>{{ step.status }} · {{ step.category }}</small>
+          </div>
+        </div>
+      </po-container>
     </aside>
   </ng-template>
 </po-page-default>

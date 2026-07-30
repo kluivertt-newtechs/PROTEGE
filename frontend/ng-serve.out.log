@@ -1,0 +1,65 @@
+
+> project@0.0.0 dev
+> ng serve --configuration=development --host 127.0.0.1 --port 4200
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mAngular[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+[33m❯[39m Building...
+[32m✔[39m Building...
+[1mInitial chunk files[22m                  [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mstyles.css[39m                           [2m | [22m[2mstyles[22m                   [2m | [22m[36m597.73 kB[39m[2m | [22m
+[32mmain.js[39m                              [2m | [22m[2mmain[22m                     [2m | [22m  [36m8.25 kB[39m[2m | [22m
+[32mchunk-CZJLB7T5.js[39m                    [2m | [22m[2m-[22m                        [2m | [22m  [36m1.08 kB[39m[2m | [22m
+[32mpolyfills.js[39m                         [2m | [22m[2mpolyfills[22m                [2m | [22m [36m95 bytes[39m[2m | [22m
+
+[1m [22m                                    [2m | [22m[1mInitial total[22m            [2m | [22m[1m607.15 kB[22m
+
+[1mLazy chunk files[22m                     [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32msimulation.component-ZXKTIZ3R.js[39m     [2m | [22m[2msimulation-component[22m     [2m | [22m [36m65.75 kB[39m[2m | [22m
+[32mconsolidated.component-XJHWUUFD.js[39m   [2m | [22m[2mconsolidated-component[22m   [2m | [22m [36m39.31 kB[39m[2m | [22m
+[32mformula-builder.component-UGVJOTKX.js[39m[2m | [22m[2mformula-builder-component[22m[2m | [22m [36m37.24 kB[39m[2m | [22m
+[32mpricing.component-6NUWL2W7.js[39m        [2m | [22m[2mpricing-component[22m        [2m | [22m [36m22.33 kB[39m[2m | [22m
+[32mchunk-ONWDHHKJ.js[39m                    [2m | [22m[2m-[22m                        [2m | [22m [36m19.32 kB[39m[2m | [22m
+[32mchunk-AHPVW5DS.js[39m                    [2m | [22m[2m-[22m                        [2m | [22m [36m12.30 kB[39m[2m | [22m
+[32mlogin.component-NYY7V7NH.js[39m          [2m | [22m[2mlogin-component[22m          [2m | [22m  [36m8.11 kB[39m[2m | [22m
+[32mformula-builder.routes-SPVNIHFT.js[39m   [2m | [22m[2mformula-builder-routes[22m   [2m | [22m[36m356 bytes[39m[2m | [22m
+[32mconsolidated.routes-JVAKELSJ.js[39m      [2m | [22m[2mconsolidated-routes[22m      [2m | [22m[36m338 bytes[39m[2m | [22m
+[32msimulation.routes-AUD3WCUJ.js[39m        [2m | [22m[2msimulation-routes[22m        [2m | [22m[36m324 bytes[39m[2m | [22m
+[32mpricing.routes-72DTZZZ7.js[39m           [2m | [22m[2mpricing-routes[22m           [2m | [22m[36m303 bytes[39m[2m | [22m
+[32mlogin.routes-5ZOPMKVL.js[39m             [2m | [22m[2mlogin-routes[22m             [2m | [22m[36m289 bytes[39m[2m | [22m
+
+Application bundle generation complete. [11.453 seconds] - 2026-07-30T21:55:18.407Z
+
+Watch mode enabled. Watching for file changes...
+NOTE: Raw file sizes do not reflect development server per-request transformations.
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m4200[22m/[39m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [2.865 seconds] - 2026-07-30T22:06:31.635Z
+
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m                  [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mstyles.css[39m                           [2m | [22m[2mstyles[22m                   [2m | [22m[36m597.73 kB[39m[2m | [22m
+[32mmain.js[39m                              [2m | [22m[2mmain[22m                     [2m | [22m  [36m8.25 kB[39m[2m | [22m
+[32mchunk-CZJLB7T5.js[39m                    [2m | [22m[2m-[22m                        [2m | [22m  [36m1.08 kB[39m[2m | [22m
+[32mpolyfills.js[39m                         [2m | [22m[2mpolyfills[22m                [2m | [22m [36m95 bytes[39m[2m | [22m
+
+[1m [22m                                    [2m | [22m[1mInitial total[22m            [2m | [22m[1m607.15 kB[22m
+
+[1mLazy chunk files[22m                     [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32msimulation.component-ZXKTIZ3R.js[39m     [2m | [22m[2msimulation-component[22m     [2m | [22m [36m65.75 kB[39m[2m | [22m
+[32mconsolidated.component-XJHWUUFD.js[39m   [2m | [22m[2mconsolidated-component[22m   [2m | [22m [36m39.31 kB[39m[2m | [22m
+[32mformula-builder.component-UGVJOTKX.js[39m[2m | [22m[2mformula-builder-component[22m[2m | [22m [36m37.24 kB[39m[2m | [22m
+[32mpricing.component-6NUWL2W7.js[39m        [2m | [22m[2mpricing-component[22m        [2m | [22m [36m22.33 kB[39m[2m | [22m
+[32mchunk-ONWDHHKJ.js[39m                    [2m | [22m[2m-[22m                        [2m | [22m [36m19.32 kB[39m[2m | [22m
+[32mchunk-AHPVW5DS.js[39m                    [2m | [22m[2m-[22m                        [2m | [22m [36m12.30 kB[39m[2m | [22m
+[32mlogin.component-NYY7V7NH.js[39m          [2m | [22m[2mlogin-component[22m          [2m | [22m  [36m8.11 kB[39m[2m | [22m
+[32mformula-builder.routes-SPVNIHFT.js[39m   [2m | [22m[2mformula-builder-routes[22m   [2m | [22m[36m356 bytes[39m[2m | [22m
+[32mconsolidated.routes-JVAKELSJ.js[39m      [2m | [22m[2mconsolidated-routes[22m      [2m | [22m[36m338 bytes[39m[2m | [22m
+[32msimulation.routes-AUD3WCUJ.js[39m        [2m | [22m[2msimulation-routes[22m        [2m | [22m[36m324 bytes[39m[2m | [22m
+[32mpricing.routes-72DTZZZ7.js[39m           [2m | [22m[2mpricing-routes[22m           [2m | [22m[36m303 bytes[39m[2m | [22m
+[32mlogin.routes-5ZOPMKVL.js[39m             [2m | [22m[2mlogin-routes[22m             [2m | [22m[36m289 bytes[39m[2m | [22m
+
+Application bundle generation complete. [1.300 seconds] - 2026-07-30T22:06:36.928Z
+
+Page reload sent to client(s).

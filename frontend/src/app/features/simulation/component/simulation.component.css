@@ -175,6 +175,65 @@
   padding: 10px 12px;
 }
 
+.memory-list {
+  display: grid;
+  gap: 10px;
+}
+
+.memory-row {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  display: grid;
+  gap: 5px;
+  padding: 9px 10px;
+}
+
+.memory-row.error {
+  background: #fff1f1;
+  border-color: #f0a7a7;
+}
+
+.memory-row.disabled {
+  opacity: 0.64;
+}
+
+.memory-header {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.memory-header span,
+.memory-header strong,
+.memory-row code {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.memory-header span {
+  color: #2e343c;
+  font-weight: 700;
+}
+
+.memory-header strong {
+  color: #0b3d63;
+  text-align: right;
+}
+
+.memory-row code {
+  color: #54595e;
+  font-size: 12px;
+  white-space: normal;
+}
+
+.memory-row small {
+  color: #69737d;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
 .compact-table {
   display: block;
   margin-top: 16px;

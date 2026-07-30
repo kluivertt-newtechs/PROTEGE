@@ -12,6 +12,7 @@ import {
   processingCosts,
   vehicleCosts,
 } from './mock';
+import { executePricingFormulas } from './pricing-formula.service';
 
 const CORRECTION_TARGETS = {
   cpeReference: 'cpeReference',
@@ -37,29 +38,33 @@ export function calculatePricingResult(
     simulation.operationMode === 'processing'
       ? calculateProcessingCost(simulation)
       : calculateTransportCost(simulation);
-
-  const commercialLoad =
-    parameters.operationalExpensesRate +
-    parameters.indirectExpensesRate +
-    parameters.targetMarginRate;
-  const denominator = Math.max(0.01, 1 - commercialLoad);
-  const netPrice = costTotal / denominator;
-  const taxRate = resolveTaxRate(simulation, parameters);
-  const finalPrice = netPrice / Math.max(0.01, 1 - taxRate);
   const quantity = resolveQuantity(simulation);
+  const formulaResult = executePricingFormulas({
+    costBase: costTotal,
+    quantity,
+    operationalExpensesRate: parameters.operationalExpensesRate,
+    indirectExpensesRate: parameters.indirectExpensesRate,
+    targetMarginRate: parameters.targetMarginRate,
+    pisCofinsRate: parameters.pisCofinsRate,
+    mainTaxRate: resolveMainTaxRate(simulation),
+  });
+  const warning = [resolveWarning(simulation, costTotal), formulaResult.warning]
+    .filter(Boolean)
+    .join(' ');
 
   return {
-    costTotal,
-    operationalExpenses: netPrice * parameters.operationalExpensesRate,
-    indirectExpenses: netPrice * parameters.indirectExpensesRate,
-    margin: netPrice * parameters.targetMarginRate,
-    netPrice,
-    taxRate,
-    taxes: finalPrice - netPrice,
-    finalPrice,
-    monthlyPrice: finalPrice * quantity,
-    ebitdaRate: parameters.targetMarginRate,
-    warning: resolveWarning(simulation, costTotal),
+    costTotal: formulaResult.values['costTotal'] ?? 0,
+    operationalExpenses: formulaResult.values['operationalExpenses'] ?? 0,
+    indirectExpenses: formulaResult.values['indirectExpenses'] ?? 0,
+    margin: formulaResult.values['margin'] ?? 0,
+    netPrice: formulaResult.values['netPrice'] ?? 0,
+    taxRate: formulaResult.values['taxRate'] ?? 0,
+    taxes: formulaResult.values['taxes'] ?? 0,
+    finalPrice: formulaResult.values['finalPrice'] ?? 0,
+    monthlyPrice: formulaResult.values['monthlyPrice'] ?? 0,
+    ebitdaRate: formulaResult.values['ebitdaRate'] ?? 0,
+    warning: warning || undefined,
+    calculationMemory: formulaResult.memory,
   };
 }
 

@@ -32,6 +32,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'formula-builder',
+        loadChildren: () =>
+          import('./features/formula-builder/formula-builder.routes').then(
+            (r) => r.formulaBuilderRoutes,
+          ),
+      },
+      {
         path: 'consolidated',
         loadChildren: () =>
           import('./features/consolidated/consolidated.routes').then(

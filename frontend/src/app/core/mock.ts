@@ -79,6 +79,29 @@ export interface PricingResult {
   monthlyPrice: number;
   ebitdaRate: number;
   warning?: string;
+  calculationMemory?: Array<FormulaExecutionStep>;
+}
+
+export type PricingFormulaCategory = 'custo' | 'comercial' | 'imposto' | 'resultado';
+
+export interface PricingFormula {
+  id: string;
+  label: string;
+  description: string;
+  expression: string;
+  order: number;
+  enabled: boolean;
+  category: PricingFormulaCategory;
+}
+
+export interface FormulaExecutionStep {
+  id: string;
+  label: string;
+  category: PricingFormulaCategory;
+  expression: string;
+  value: number;
+  status: 'ok' | 'error' | 'disabled';
+  message?: string;
 }
 
 export interface ConsolidatedProposal {
