@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
   FormulaExecutionStep,
+  PricingBusinessBranch,
   PricingFormula,
   PricingFormulaCategory,
 } from './mock';
@@ -22,6 +23,7 @@ interface FormulaDependencyResult {
 }
 
 const STORAGE_KEY = 'protege.pricing.formulas';
+const BUSINESS_BRANCHES: Array<PricingBusinessBranch> = ['transport', 'processing'];
 
 const ALLOWED_MATH_FUNCTIONS = [
   'abs',
@@ -62,6 +64,7 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     expression: 'costBase',
     enabled: true,
     category: 'custo',
+    businessBranches: ['transport', 'processing'],
   },
   {
     id: 'netPrice',
@@ -71,6 +74,7 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
       'costTotal / Math.max(0.01, 1 - (operationalExpensesRate + indirectExpensesRate + targetMarginRate))',
     enabled: true,
     category: 'comercial',
+    businessBranches: ['transport', 'processing'],
   },
   {
     id: 'operationalExpenses',
@@ -79,6 +83,7 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     expression: 'netPrice * operationalExpensesRate',
     enabled: true,
     category: 'comercial',
+    businessBranches: ['transport', 'processing'],
   },
   {
     id: 'indirectExpenses',
@@ -87,6 +92,7 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     expression: 'netPrice * indirectExpensesRate',
     enabled: true,
     category: 'comercial',
+    businessBranches: ['transport', 'processing'],
   },
   {
     id: 'margin',
@@ -95,6 +101,7 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     expression: 'netPrice * targetMarginRate',
     enabled: true,
     category: 'comercial',
+    businessBranches: ['transport', 'processing'],
   },
   {
     id: 'taxRate',
@@ -103,6 +110,7 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     expression: 'pisCofinsRate + mainTaxRate',
     enabled: true,
     category: 'imposto',
+    businessBranches: ['transport', 'processing'],
   },
   {
     id: 'finalPrice',
@@ -111,6 +119,7 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     expression: 'netPrice / Math.max(0.01, 1 - taxRate)',
     enabled: true,
     category: 'resultado',
+    businessBranches: ['transport', 'processing'],
   },
   {
     id: 'taxes',
@@ -119,6 +128,7 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     expression: 'finalPrice - netPrice',
     enabled: true,
     category: 'imposto',
+    businessBranches: ['transport', 'processing'],
   },
   {
     id: 'monthlyPrice',
@@ -127,6 +137,7 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     expression: 'finalPrice * quantity',
     enabled: true,
     category: 'resultado',
+    businessBranches: ['transport', 'processing'],
   },
   {
     id: 'ebitdaRate',
@@ -135,6 +146,7 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     expression: 'targetMarginRate',
     enabled: true,
     category: 'resultado',
+    businessBranches: ['transport', 'processing'],
   },
 ];
 
@@ -169,8 +181,9 @@ export class PricingFormulaService {
 export function executePricingFormulas(
   baseContext: Record<string, number>,
   formulas: Array<PricingFormula> = readStoredFormulas() ?? DEFAULT_PRICING_FORMULAS,
+  businessBranch?: PricingBusinessBranch,
 ): FormulaExecutionResult {
-  const normalized = normalizeFormulas(formulas);
+  const normalized = filterFormulasByBusinessBranch(normalizeFormulas(formulas), businessBranch);
   const validation = validateFormulas(normalized);
 
   if (!validation.valid) {
@@ -323,25 +336,35 @@ function validateFormulasForSave(formulas: Array<PricingFormula>): FormulaValida
     return validation;
   }
 
-  const execution = executePricingFormulas(
-    {
-      costBase: 1000,
-      quantity: 10,
-      operationalExpensesRate: 0.14,
-      indirectExpensesRate: 0.141,
-      targetMarginRate: 0.08,
-      pisCofinsRate: 0.0365,
-      mainTaxRate: 0.05,
-    },
-    formulas,
+  const branchValidationMessages = BUSINESS_BRANCHES.flatMap((branch) =>
+    validateFormulas(filterFormulasByBusinessBranch(formulas, branch)).messages,
   );
-  const executionErrors = execution.memory
+
+  if (branchValidationMessages.length) {
+    return {
+      valid: false,
+      messages: [...new Set(branchValidationMessages)],
+    };
+  }
+
+  const sampleContext = {
+    costBase: 1000,
+    quantity: 10,
+    operationalExpensesRate: 0.14,
+    indirectExpensesRate: 0.141,
+    targetMarginRate: 0.08,
+    pisCofinsRate: 0.0365,
+    mainTaxRate: 0.05,
+  };
+  const executionErrors = BUSINESS_BRANCHES.flatMap((branch) =>
+    executePricingFormulas(sampleContext, formulas, branch).memory,
+  )
     .filter((step) => step.status === 'error')
     .map((step) => `${step.id}: ${step.message ?? 'erro de execução.'}`);
 
   return {
     valid: executionErrors.length === 0,
-    messages: executionErrors,
+    messages: [...new Set(executionErrors)],
   };
 }
 
@@ -467,15 +490,34 @@ function normalizeFormulas(formulas: Array<PricingFormula>): Array<PricingFormul
     expression: String(formula.expression ?? '').trim(),
     enabled: formula.enabled !== false,
     category: formula.category,
+    businessBranches: normalizeBusinessBranches(formula.businessBranches),
   }));
 }
 
 function cloneFormulas(formulas: Array<PricingFormula>): Array<PricingFormula> {
-  return formulas.map((formula) => ({ ...formula }));
+  return normalizeFormulas(formulas);
 }
 
 function isValidCategory(category: PricingFormulaCategory): boolean {
   return ['custo', 'comercial', 'imposto', 'resultado'].includes(category);
+}
+
+function normalizeBusinessBranches(branches: Array<PricingBusinessBranch> | undefined): Array<PricingBusinessBranch> {
+  const normalized = (branches ?? [])
+    .filter((branch): branch is PricingBusinessBranch => BUSINESS_BRANCHES.includes(branch));
+
+  return normalized.length ? [...new Set(normalized)] : [...BUSINESS_BRANCHES];
+}
+
+function filterFormulasByBusinessBranch(
+  formulas: Array<PricingFormula>,
+  businessBranch?: PricingBusinessBranch,
+): Array<PricingFormula> {
+  if (!businessBranch) {
+    return formulas;
+  }
+
+  return formulas.filter((formula) => formula.businessBranches.includes(businessBranch));
 }
 
 function readStoredFormulas(): Array<PricingFormula> | undefined {

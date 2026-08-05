@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { PoSelectOption } from '@po-ui/ng-components';
+import { PoMultiselectOption, PoSelectOption } from '@po-ui/ng-components';
 import {
   DEFAULT_PRICING_FORMULAS,
   PRICING_FORMULA_VARIABLES,
   PricingFormulaService,
 } from 'src/app/core/pricing-formula.service';
-import { PricingFormula, PricingFormulaCategory } from 'src/app/core/mock';
+import { PricingBusinessBranch, PricingFormula, PricingFormulaCategory } from 'src/app/core/mock';
 import { SHARED_MODULES } from 'src/app/shared/shared';
 
 type FormulaTokenKind = 'variable' | 'formula' | 'function' | 'operator' | 'number' | 'text';
@@ -41,6 +41,7 @@ export class FormulaBuilderComponent implements OnInit {
 
   readonly variables = PRICING_FORMULA_VARIABLES;
   readonly defaultFormulaIds = DEFAULT_PRICING_FORMULAS.map((formula) => formula.id);
+  readonly defaultBusinessBranches: Array<PricingBusinessBranch> = ['transport', 'processing'];
   readonly operatorTokens = ['+', '-', '*', '/', '(', ')', ',', '?', ':'];
   readonly quickFunctionTokens = [
     { id: 'Math.max()', label: 'Maior valor' },
@@ -51,6 +52,10 @@ export class FormulaBuilderComponent implements OnInit {
     { label: 'Comercial', value: 'comercial' },
     { label: 'Imposto', value: 'imposto' },
     { label: 'Resultado', value: 'resultado' },
+  ];
+  readonly businessBranchOptions: Array<PoMultiselectOption> = [
+    { label: 'Transporte de Valores', value: 'transport' },
+    { label: 'Processamento', value: 'processing' },
   ];
 
   constructor(private readonly formulaService: PricingFormulaService) {}
@@ -85,6 +90,7 @@ export class FormulaBuilderComponent implements OnInit {
       expression: '0',
       enabled: true,
       category: 'resultado',
+      businessBranches: [...this.defaultBusinessBranches],
     };
     this.selectedFormulaOriginalId = '';
     this.refreshExpressionTokens();
@@ -278,6 +284,14 @@ export class FormulaBuilderComponent implements OnInit {
 
   getCategoryLabel(category: PricingFormulaCategory): string {
     return this.categoryOptions.find((option) => option.value === category)?.label ?? category;
+  }
+
+  getBusinessBranchLabel(branches: Array<PricingBusinessBranch> | undefined): string {
+    const selectedBranches = branches?.length ? branches : this.defaultBusinessBranches;
+
+    return selectedBranches
+      .map((branch) => this.businessBranchOptions.find((option) => option.value === branch)?.label ?? branch)
+      .join(', ');
   }
 
   getExpressionTokenLabel(token: FormulaExpressionToken): string {

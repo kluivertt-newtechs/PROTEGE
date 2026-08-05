@@ -43,8 +43,10 @@ export interface ProcessingCost {
   issRate: number;
 }
 
+export type PricingBusinessBranch = 'transport' | 'processing';
+
 export interface PricingSimulation {
-  operationMode: 'transport' | 'processing';
+  operationMode: PricingBusinessBranch;
   transportCostOrigin: 'CPE' | 'SOP';
   baseId: string;
   city: string;
@@ -91,6 +93,7 @@ export interface PricingFormula {
   expression: string;
   enabled: boolean;
   category: PricingFormulaCategory;
+  businessBranches: Array<PricingBusinessBranch>;
 }
 
 export interface FormulaExecutionStep {

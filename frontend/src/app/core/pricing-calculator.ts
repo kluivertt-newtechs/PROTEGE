@@ -57,7 +57,7 @@ export function calculatePricingResult(
     targetMarginRate: parameters.targetMarginRate,
     pisCofinsRate: parameters.pisCofinsRate,
     mainTaxRate: resolveMainTaxRate(simulation, costCatalogs),
-  });
+  }, undefined, simulation.operationMode);
   const warning = [resolveWarning(simulation, costTotal), formulaResult.warning]
     .filter(Boolean)
     .join(' ');
