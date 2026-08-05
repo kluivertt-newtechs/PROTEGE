@@ -75,12 +75,84 @@
               <span>Fórmula ativa</span>
             </label>
 
-            <po-textarea
-              name="formulaExpression"
-              p-label="Expressão"
-              p-help="Use operadores + - * /, parênteses, ternário e Math.max, Math.min, Math.round, Math.abs."
-              [(ngModel)]="selectedFormula.expression"
-            ></po-textarea>
+            <div class="expression-builder">
+              <div class="expression-heading">
+                <span class="expression-label">Expressão</span>
+                <span class="expression-help">
+                  Arraste variáveis, fórmulas e funções para montar a expressão.
+                </span>
+              </div>
+
+              <div class="operator-toolbar" aria-label="Operadores comuns">
+                <button
+                  type="button"
+                  class="operator-button"
+                  *ngFor="let operator of operatorTokens"
+                  (click)="insertToken(operator)"
+                  [attr.aria-label]="'Inserir ' + operator"
+                >
+                  {{ operator }}
+                </button>
+              </div>
+
+              <div
+                class="expression-dropzone"
+                [class.empty]="!expressionTokens.length"
+                role="textbox"
+                tabindex="0"
+                aria-label="Área visual de montagem da expressão"
+                (dragover)="allowExpressionDrop($event)"
+                (drop)="dropOnExpression($event)"
+                (keydown)="handleExpressionKeydown($event)"
+              >
+                <ng-container *ngIf="expressionTokens.length; else expressionDropHint">
+                  <span
+                    class="expression-token"
+                    *ngFor="let token of expressionTokens; let index = index"
+                    [class.variable]="token.kind === 'variable'"
+                    [class.formula]="token.kind === 'formula'"
+                    [class.function]="token.kind === 'function'"
+                    [class.operator]="token.kind === 'operator'"
+                    [class.number]="token.kind === 'number'"
+                    [attr.draggable]="true"
+                    [style.order]="index * 2 + 1"
+                    (click)="setExpressionCursor(index + 1)"
+                    (dragstart)="beginExpressionTokenDrag($event, index)"
+                    (dragover)="allowExpressionDrop($event)"
+                    (drop)="dropOnExpression($event, index)"
+                    [attr.title]="getExpressionTokenLabel(token)"
+                  >
+                    <span class="token-value">{{ token.value }}</span>
+                    <button
+                      type="button"
+                      class="token-remove"
+                      (click)="removeExpressionToken(index, $event)"
+                      [attr.aria-label]="'Remover ' + token.value"
+                    >
+                      ×
+                    </button>
+                  </span>
+                </ng-container>
+
+                <ng-template #expressionDropHint>
+                  <span class="expression-placeholder">Solte variáveis aqui, clique nos chips ou digite números e operadores.</span>
+                </ng-template>
+
+                <span
+                  class="expression-caret"
+                  [style.order]="expressionCursorIndex * 2"
+                  aria-hidden="true"
+                ></span>
+              </div>
+
+              <po-textarea
+                name="formulaExpression"
+                p-label="Prévia da expressão"
+                p-help="Expressão gerada pela montagem visual. Clique na área acima para digitar números e operadores pelo teclado."
+                [p-readonly]="true"
+                [ngModel]="selectedFormula.expression"
+              ></po-textarea>
+            </div>
 
             <div class="actions">
               <po-button
@@ -120,19 +192,27 @@
               type="button"
               class="variable-chip"
               *ngFor="let variable of variables"
+              [attr.draggable]="true"
+              (dragstart)="beginPaletteDrag($event, variable.id)"
               (click)="insertToken(variable.id)"
             >
               <strong>{{ variable.id }}</strong>
               <small>{{ variable.label }}</small>
             </button>
+          </div>
 
-            <button type="button" class="variable-chip" (click)="insertToken('Math.max()')">
-              <strong>Math.max()</strong>
-              <small>Maior valor</small>
-            </button>
-            <button type="button" class="variable-chip" (click)="insertToken('Math.min()')">
-              <strong>Math.min()</strong>
-              <small>Menor valor</small>
+          <p class="variable-section-title">Funções rápidas</p>
+          <div class="variable-grid">
+            <button
+              type="button"
+              class="variable-chip function-chip"
+              *ngFor="let functionToken of quickFunctionTokens"
+              [attr.draggable]="true"
+              (dragstart)="beginPaletteDrag($event, functionToken.id)"
+              (click)="insertToken(functionToken.id)"
+            >
+              <strong>{{ functionToken.id }}</strong>
+              <small>{{ functionToken.label }}</small>
             </button>
           </div>
 
@@ -142,6 +222,8 @@
               type="button"
               class="variable-chip formula-variable"
               *ngFor="let formula of formulaVariables"
+              [attr.draggable]="true"
+              (dragstart)="beginPaletteDrag($event, formula.id)"
               (click)="insertToken(formula.id)"
             >
               <strong>{{ formula.id }}</strong>
