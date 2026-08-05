@@ -58,7 +58,7 @@
   cursor: pointer;
   display: grid;
   gap: 10px;
-  grid-template-columns: 44px minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   min-height: 58px;
   padding: 10px 12px;
   text-align: left;
@@ -75,12 +75,6 @@
 
 .formula-row.disabled {
   opacity: 0.62;
-}
-
-.order {
-  color: #69737d;
-  font-size: 12px;
-  font-weight: 700;
 }
 
 .formula-main {
@@ -438,10 +432,6 @@
   .editor-grid,
   .variable-grid {
     grid-template-columns: 1fr;
-  }
-
-  .formula-row {
-    grid-template-columns: 38px minmax(0, 1fr);
   }
 
   .status {

@@ -89,7 +89,6 @@ export interface PricingFormula {
   label: string;
   description: string;
   expression: string;
-  order: number;
   enabled: boolean;
   category: PricingFormulaCategory;
 }

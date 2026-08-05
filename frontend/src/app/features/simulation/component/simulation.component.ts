@@ -10,10 +10,10 @@ import {
   FormulaExecutionStep,
   PricingResult,
   PricingSimulation,
+  ProcessingCost,
+  VehicleCost,
   cpeReferences,
   pricingBases,
-  processingCosts,
-  vehicleCosts,
 } from 'src/app/core/mock';
 import { PricingMockStateService } from 'src/app/core/pricing-mock-state.service';
 import { SHARED_MODULES } from 'src/app/shared/shared';
@@ -36,9 +36,9 @@ interface CostCorrectionOption {
 })
 export class SimulationComponent implements OnInit {
   readonly bases = pricingBases;
-  readonly vehicleCosts = vehicleCosts;
   readonly cpeReferences = cpeReferences;
-  readonly processingCosts = processingCosts;
+  vehicleCosts: Array<VehicleCost> = [];
+  processingCosts: Array<ProcessingCost> = [];
 
   parameters: CommercialParameters;
   simulation: PricingSimulation;
@@ -109,6 +109,7 @@ export class SimulationComponent implements OnInit {
   constructor(private readonly mockState: PricingMockStateService) {
     this.parameters = this.mockState.getCommercialParameters();
     this.simulation = this.mockState.getLastSimulation();
+    this.refreshCostCatalogs();
   }
 
   ngOnInit(): void {
@@ -162,6 +163,7 @@ export class SimulationComponent implements OnInit {
 
   recalculate(): void {
     this.parameters = this.mockState.getCommercialParameters();
+    this.refreshCostCatalogs();
     this.result = this.mockState.updateSimulation(this.simulation);
   }
 
@@ -244,9 +246,15 @@ export class SimulationComponent implements OnInit {
   }
 
   private refreshBaseDependentOptions(): void {
+    this.refreshCostCatalogs();
     this.vehicleOptions = this.buildVehicleOptions();
     this.processingTypeOptions = this.buildProcessingTypeOptions();
     this.processingItems = this.buildProcessingItems();
+  }
+
+  private refreshCostCatalogs(): void {
+    this.vehicleCosts = this.mockState.getVehicleCosts();
+    this.processingCosts = this.mockState.getProcessingCosts();
   }
 
   private syncCostCorrectionTargets(forceSelectAll = false): void {

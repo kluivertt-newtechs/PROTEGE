@@ -54,6 +54,10 @@ export class ConsolidatedComponent implements OnInit {
       this.simulation,
       this.parameters,
       this.commercialParameters,
+      {
+        vehicleCosts: this.mockState.getVehicleCosts(),
+        processingCosts: this.mockState.getProcessingCosts(),
+      },
     );
   }
 
@@ -75,6 +79,10 @@ export class ConsolidatedComponent implements OnInit {
       this.simulation,
       this.parameters,
       this.commercialParameters,
+      {
+        vehicleCosts: this.mockState.getVehicleCosts(),
+        processingCosts: this.mockState.getProcessingCosts(),
+      },
     );
     this.dreRows = this.buildDreRows();
   }

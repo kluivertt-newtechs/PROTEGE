@@ -56,7 +56,6 @@ export class FormulaBuilderComponent implements OnInit {
   constructor(private readonly formulaService: PricingFormulaService) {}
 
   get formulaVariables(): Array<PricingFormula> {
-    const selectedOrder = Number(this.selectedFormula?.order ?? Number.POSITIVE_INFINITY);
     const selectedIds = new Set([
       this.selectedFormula?.id,
       this.selectedFormulaOriginalId,
@@ -64,8 +63,7 @@ export class FormulaBuilderComponent implements OnInit {
 
     return this.buildEditedCatalog()
       .filter((formula) => formula.enabled)
-      .filter((formula) => !selectedIds.has(formula.id))
-      .filter((formula) => Number(formula.order) < selectedOrder);
+      .filter((formula) => !selectedIds.has(formula.id));
   }
 
   ngOnInit(): void {
@@ -80,13 +78,11 @@ export class FormulaBuilderComponent implements OnInit {
   }
 
   addFormula(): void {
-    const nextOrder = Math.max(0, ...this.formulas.map((formula) => formula.order)) + 10;
     this.selectedFormula = {
       id: `formula${this.formulas.length + 1}`,
       label: 'Nova fórmula',
       description: '',
       expression: '0',
-      order: nextOrder,
       enabled: true,
       category: 'resultado',
     };
@@ -126,7 +122,7 @@ export class FormulaBuilderComponent implements OnInit {
       return;
     }
 
-    this.formulas = this.sortFormulas(catalog);
+    this.formulas = this.formulaService.getFormulas();
     const selected = this.formulas.find((formula) => formula.id === this.selectedFormula?.id);
     this.selectedFormula = selected ? { ...selected } : { ...this.formulas[0] };
     this.selectedFormulaOriginalId = this.selectedFormula?.id ?? '';
@@ -284,17 +280,13 @@ export class FormulaBuilderComponent implements OnInit {
     return this.categoryOptions.find((option) => option.value === category)?.label ?? category;
   }
 
-  formatOrder(order: number): string {
-    return String(order).padStart(3, '0');
-  }
-
   getExpressionTokenLabel(token: FormulaExpressionToken): string {
     if (token.kind === 'variable') {
       return 'Variável de entrada';
     }
 
     if (token.kind === 'formula') {
-      return 'Fórmula anterior';
+      return 'Fórmula disponível';
     }
 
     if (token.kind === 'function') {
@@ -305,7 +297,7 @@ export class FormulaBuilderComponent implements OnInit {
   }
 
   private loadFormulas(): void {
-    this.formulas = this.sortFormulas(this.formulaService.getFormulas());
+    this.formulas = this.formulaService.getFormulas();
     this.selectedFormula = this.formulas[0] ? { ...this.formulas[0] } : undefined;
     this.selectedFormulaOriginalId = this.selectedFormula?.id ?? '';
     this.refreshExpressionTokens();
@@ -325,11 +317,7 @@ export class FormulaBuilderComponent implements OnInit {
         )
       : [...this.formulas, editedFormula];
 
-    return this.sortFormulas(catalog);
-  }
-
-  private sortFormulas(formulas: Array<PricingFormula>): Array<PricingFormula> {
-    return [...formulas].sort((a, b) => a.order - b.order || a.id.localeCompare(b.id));
+    return catalog;
   }
 
   private refreshExpressionTokens(): void {

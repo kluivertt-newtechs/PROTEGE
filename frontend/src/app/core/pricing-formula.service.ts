@@ -16,6 +16,11 @@ export interface FormulaExecutionResult {
   warning?: string;
 }
 
+interface FormulaDependencyResult {
+  formulas: Array<PricingFormula>;
+  messages: Array<string>;
+}
+
 const STORAGE_KEY = 'protege.pricing.formulas';
 
 const ALLOWED_MATH_FUNCTIONS = [
@@ -47,13 +52,14 @@ export const PRICING_FORMULA_VARIABLES: Array<{ id: string; label: string }> = [
   { id: 'mainTaxRate', label: 'ISS/ICMS principal' },
 ];
 
+const BASE_VARIABLE_IDS = new Set(PRICING_FORMULA_VARIABLES.map((variable) => variable.id));
+
 export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
   {
     id: 'costTotal',
     label: 'Custo total',
     description: 'Custo direto apurado pela origem operacional selecionada.',
     expression: 'costBase',
-    order: 10,
     enabled: true,
     category: 'custo',
   },
@@ -63,7 +69,6 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     description: 'Preço antes dos impostos, considerando despesas e margem.',
     expression:
       'costTotal / Math.max(0.01, 1 - (operationalExpensesRate + indirectExpensesRate + targetMarginRate))',
-    order: 20,
     enabled: true,
     category: 'comercial',
   },
@@ -72,7 +77,6 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     label: 'Despesas operacionais',
     description: 'Carga operacional aplicada ao preço líquido.',
     expression: 'netPrice * operationalExpensesRate',
-    order: 30,
     enabled: true,
     category: 'comercial',
   },
@@ -81,7 +85,6 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     label: 'Despesas indiretas',
     description: 'Carga indireta aplicada ao preço líquido.',
     expression: 'netPrice * indirectExpensesRate',
-    order: 40,
     enabled: true,
     category: 'comercial',
   },
@@ -90,7 +93,6 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     label: 'Margem',
     description: 'Margem alvo aplicada ao preço líquido.',
     expression: 'netPrice * targetMarginRate',
-    order: 50,
     enabled: true,
     category: 'comercial',
   },
@@ -99,7 +101,6 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     label: 'Alíquota total',
     description: 'Soma de PIS/COFINS com ISS ou ICMS.',
     expression: 'pisCofinsRate + mainTaxRate',
-    order: 60,
     enabled: true,
     category: 'imposto',
   },
@@ -108,7 +109,6 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     label: 'Preço final',
     description: 'Preço unitário com impostos embutidos.',
     expression: 'netPrice / Math.max(0.01, 1 - taxRate)',
-    order: 70,
     enabled: true,
     category: 'resultado',
   },
@@ -117,7 +117,6 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     label: 'Impostos',
     description: 'Valor unitário dos impostos.',
     expression: 'finalPrice - netPrice',
-    order: 80,
     enabled: true,
     category: 'imposto',
   },
@@ -126,7 +125,6 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     label: 'Preço mensal',
     description: 'Preço final multiplicado pela quantidade.',
     expression: 'finalPrice * quantity',
-    order: 90,
     enabled: true,
     category: 'resultado',
   },
@@ -135,7 +133,6 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     label: 'EBITDA alvo',
     description: 'Percentual usado como EBITDA alvo da simulação.',
     expression: 'targetMarginRate',
-    order: 100,
     enabled: true,
     category: 'resultado',
   },
@@ -195,8 +192,25 @@ export function executePricingFormulas(
   const values: Record<string, number> = {};
   const context: Record<string, number> = { ...baseContext };
   const memory: Array<FormulaExecutionStep> = [];
+  const dependencyResult = resolveFormulaExecutionOrder(normalized);
 
-  for (const formula of sortFormulas(normalized)) {
+  if (dependencyResult.messages.length) {
+    return {
+      values: {},
+      memory: dependencyResult.messages.map((message) => ({
+        id: 'formula-validation',
+        label: 'Validação das fórmulas',
+        category: 'resultado',
+        expression: '',
+        value: 0,
+        status: 'error',
+        message,
+      })),
+      warning: dependencyResult.messages.join(' '),
+    };
+  }
+
+  for (const formula of dependencyResult.formulas) {
     if (!formula.enabled) {
       memory.push({
         id: formula.id,
@@ -251,9 +265,8 @@ export function executePricingFormulas(
 function validateFormulas(formulas: Array<PricingFormula>): FormulaValidationResult {
   const messages: Array<string> = [];
   const ids = new Set<string>();
-  const available = new Set(PRICING_FORMULA_VARIABLES.map((variable) => variable.id));
 
-  for (const formula of sortFormulas(formulas)) {
+  for (const formula of formulas) {
     if (!formula.id.trim()) {
       messages.push('Identificador vazio.');
       continue;
@@ -263,7 +276,15 @@ function validateFormulas(formulas: Array<PricingFormula>): FormulaValidationRes
       messages.push(`Identificador duplicado: ${formula.id}.`);
     }
     ids.add(formula.id);
+  }
 
+  const enabledIds = new Set(
+    formulas
+      .filter((formula) => formula.enabled)
+      .map((formula) => formula.id),
+  );
+
+  for (const formula of formulas) {
     if (!formula.expression.trim()) {
       messages.push(`Expressão vazia em ${formula.id}.`);
     }
@@ -272,10 +293,21 @@ function validateFormulas(formulas: Array<PricingFormula>): FormulaValidationRes
       messages.push(`Categoria inválida em ${formula.id}.`);
     }
 
-    const expressionValidation = validateExpressionReferences(formula.expression, available);
+    const expressionValidation = validateExpressionReferences(formula.expression, ids);
     messages.push(...expressionValidation.map((message) => `${formula.id}: ${message}`));
 
-    available.add(formula.id);
+    if (formula.enabled) {
+      const disabledReferences = extractFormulaReferences(formula.expression, ids)
+        .filter((reference) => !enabledIds.has(reference));
+      messages.push(
+        ...disabledReferences.map((reference) => `${formula.id}: referência a fórmula desabilitada: ${reference}.`),
+      );
+    }
+  }
+
+  const dependencyResult = resolveFormulaExecutionOrder(formulas);
+  if (dependencyResult.messages.length) {
+    messages.push(...dependencyResult.messages);
   }
 
   return {
@@ -315,7 +347,7 @@ function validateFormulasForSave(formulas: Array<PricingFormula>): FormulaValida
 
 function validateExpressionReferences(
   expression: string,
-  available: Set<string>,
+  formulaIds: Set<string>,
 ): Array<string> {
   const messages: Array<string> = [];
 
@@ -339,7 +371,7 @@ function validateExpressionReferences(
       continue;
     }
 
-    if (!available.has(identifier)) {
+    if (!BASE_VARIABLE_IDS.has(identifier) && !formulaIds.has(identifier)) {
       messages.push(`referência inexistente: ${identifier}.`);
     }
   }
@@ -349,6 +381,70 @@ function validateExpressionReferences(
   }
 
   return [...new Set(messages)];
+}
+
+function resolveFormulaExecutionOrder(formulas: Array<PricingFormula>): FormulaDependencyResult {
+  const enabledById = new Map(
+    formulas
+      .filter((formula) => formula.enabled)
+      .map((formula) => [formula.id, formula]),
+  );
+  const states = new Map<string, 'visiting' | 'visited'>();
+  const sorted: Array<PricingFormula> = [];
+  const messages: Array<string> = [];
+
+  const visit = (formula: PricingFormula, path: Array<string>): void => {
+    const state = states.get(formula.id);
+
+    if (state === 'visited') {
+      return;
+    }
+
+    if (state === 'visiting') {
+      const cycleStart = path.indexOf(formula.id);
+      const cycle = [...path.slice(Math.max(0, cycleStart)), formula.id].join(' -> ');
+      messages.push(`Referência circular entre fórmulas: ${cycle}.`);
+      return;
+    }
+
+    states.set(formula.id, 'visiting');
+
+    for (const dependencyId of extractFormulaReferences(formula.expression, new Set(enabledById.keys()))) {
+      const dependency = enabledById.get(dependencyId);
+
+      if (dependency) {
+        visit(dependency, [...path, formula.id]);
+      }
+    }
+
+    states.set(formula.id, 'visited');
+    sorted.push(formula);
+  };
+
+  for (const formula of enabledById.values()) {
+    visit(formula, []);
+  }
+
+  return {
+    formulas: [
+      ...sorted,
+      ...formulas.filter((formula) => !formula.enabled),
+    ],
+    messages: [...new Set(messages)],
+  };
+}
+
+function extractFormulaReferences(expression: string, formulaIds: Set<string>): Array<string> {
+  return extractIdentifiers(expression).filter((identifier) => formulaIds.has(identifier));
+}
+
+function extractIdentifiers(expression: string): Array<string> {
+  const identifiers = expression.match(/\b[A-Za-z_][A-Za-z0-9_]*\b/g) ?? [];
+
+  return [...new Set(identifiers.filter((identifier) =>
+    !RESERVED_IDENTIFIERS.has(identifier) &&
+    !ALLOWED_MATH_FUNCTIONS.includes(identifier)
+  ))];
 }
 
 function evaluateExpression(expression: string, context: Record<string, number>): number {
@@ -369,14 +465,9 @@ function normalizeFormulas(formulas: Array<PricingFormula>): Array<PricingFormul
     label: String(formula.label ?? '').trim() || String(formula.id ?? '').trim(),
     description: String(formula.description ?? '').trim(),
     expression: String(formula.expression ?? '').trim(),
-    order: Number.isFinite(Number(formula.order)) ? Number(formula.order) : 0,
     enabled: formula.enabled !== false,
     category: formula.category,
   }));
-}
-
-function sortFormulas(formulas: Array<PricingFormula>): Array<PricingFormula> {
-  return [...formulas].sort((a, b) => a.order - b.order || a.id.localeCompare(b.id));
 }
 
 function cloneFormulas(formulas: Array<PricingFormula>): Array<PricingFormula> {

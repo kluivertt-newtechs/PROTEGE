@@ -4,6 +4,8 @@ import {
   ConsolidatedResult,
   PricingResult,
   PricingSimulation,
+  ProcessingCost,
+  VehicleCost,
   cpeReferences,
   commercialParametersMock,
   initialPricingSimulation,
@@ -30,14 +32,22 @@ interface CostComponent {
   value: number;
 }
 
+export interface PricingCostCatalogs {
+  vehicleCosts?: Array<VehicleCost>;
+  processingCosts?: Array<ProcessingCost>;
+}
+
 export function calculatePricingResult(
   simulation: PricingSimulation,
   parameters: CommercialParameters = commercialParametersMock,
+  costCatalogs: PricingCostCatalogs = {},
 ): PricingResult {
+  const currentVehicleCosts = costCatalogs.vehicleCosts ?? vehicleCosts;
+  const currentProcessingCosts = costCatalogs.processingCosts ?? processingCosts;
   const costTotal =
     simulation.operationMode === 'processing'
-      ? calculateProcessingCost(simulation)
-      : calculateTransportCost(simulation);
+      ? calculateProcessingCost(simulation, currentProcessingCosts)
+      : calculateTransportCost(simulation, currentVehicleCosts);
   const quantity = resolveQuantity(simulation);
   const formulaResult = executePricingFormulas({
     costBase: costTotal,
@@ -46,7 +56,7 @@ export function calculatePricingResult(
     indirectExpensesRate: parameters.indirectExpensesRate,
     targetMarginRate: parameters.targetMarginRate,
     pisCofinsRate: parameters.pisCofinsRate,
-    mainTaxRate: resolveMainTaxRate(simulation),
+    mainTaxRate: resolveMainTaxRate(simulation, costCatalogs),
   });
   const warning = [resolveWarning(simulation, costTotal), formulaResult.warning]
     .filter(Boolean)
@@ -72,14 +82,15 @@ export function calculateConsolidatedResult(
   simulation: PricingSimulation = initialPricingSimulation,
   parameters: ConsolidatedParameters,
   savedCommercialParameters: CommercialParameters = commercialParametersMock,
+  costCatalogs: PricingCostCatalogs = {},
 ): ConsolidatedResult {
   const commercialParameters: CommercialParameters = {
     ...savedCommercialParameters,
     targetMarginRate: normalizeRate(parameters.targetMarginRate),
   };
-  const pricing = calculatePricingResult(simulation, commercialParameters);
+  const pricing = calculatePricingResult(simulation, commercialParameters, costCatalogs);
   const quantity = resolveQuantity(simulation);
-  const mainTaxRate = resolveMainTaxRate(simulation);
+  const mainTaxRate = resolveMainTaxRate(simulation, costCatalogs);
   const pisCofinsRate = commercialParameters.pisCofinsRate;
   const unitPriceBeforeIssIcms = parameters.issIcmsIncluded
     ? pricing.finalPrice * (1 - mainTaxRate)
@@ -137,16 +148,22 @@ export function calculateConsolidatedResult(
   };
 }
 
-export function resolveMainTaxRate(simulation: PricingSimulation): number {
+export function resolveMainTaxRate(
+  simulation: PricingSimulation,
+  costCatalogs: PricingCostCatalogs = {},
+): number {
+  const currentVehicleCosts = costCatalogs.vehicleCosts ?? vehicleCosts;
+  const currentProcessingCosts = costCatalogs.processingCosts ?? processingCosts;
+
   if (simulation.operationMode === 'processing') {
     return (
-      processingCosts.find(
+      currentProcessingCosts.find(
         (cost) => cost.baseId === simulation.baseId && cost.type === simulation.processingType,
       )?.issRate ?? 0
     );
   }
 
-  const vehicleCost = findVehicleCost(simulation);
+  const vehicleCost = findVehicleCost(simulation, currentVehicleCosts);
 
   if (simulation.taxOperation === 'URBAN') {
     return vehicleCost?.issRate ?? 0;
@@ -163,7 +180,10 @@ export function resolveMainTaxRate(simulation: PricingSimulation): number {
   return vehicleCost?.icmsRate ?? 0;
 }
 
-function calculateTransportCost(simulation: PricingSimulation): number {
+function calculateTransportCost(
+  simulation: PricingSimulation,
+  currentVehicleCosts: Array<VehicleCost>,
+): number {
   if (simulation.transportCostOrigin === 'CPE') {
     const reference = findCpeReference(simulation);
     return sumCorrectedCostComponents(simulation, [
@@ -172,7 +192,7 @@ function calculateTransportCost(simulation: PricingSimulation): number {
     ]);
   }
 
-  const vehicleCost = findVehicleCost(simulation);
+  const vehicleCost = findVehicleCost(simulation, currentVehicleCosts);
   if (!vehicleCost) {
     return sumCorrectedCostComponents(simulation, [
       { target: CORRECTION_TARGETS.otherCosts, value: safeNumber(simulation.otherCosts) },
@@ -209,12 +229,15 @@ function calculateTransportCost(simulation: PricingSimulation): number {
   ]);
 }
 
-function calculateProcessingCost(simulation: PricingSimulation): number {
+function calculateProcessingCost(
+  simulation: PricingSimulation,
+  currentProcessingCosts: Array<ProcessingCost>,
+): number {
   return sumCorrectedCostComponents(simulation, [
     {
       target: CORRECTION_TARGETS.processingCostPerThousand,
       value:
-        processingCosts.find(
+        currentProcessingCosts.find(
           (cost) => cost.baseId === simulation.baseId && cost.type === simulation.processingType,
         )?.costPerThousand ?? 0,
     },
@@ -264,8 +287,8 @@ function findCpeReference(simulation: PricingSimulation) {
   );
 }
 
-function findVehicleCost(simulation: PricingSimulation) {
-  return vehicleCosts.find(
+function findVehicleCost(simulation: PricingSimulation, currentVehicleCosts: Array<VehicleCost>) {
+  return currentVehicleCosts.find(
     (cost) => cost.baseId === simulation.baseId && cost.vehicle === simulation.vehicle,
   );
 }

@@ -25,7 +25,6 @@
               [class.disabled]="!formula.enabled"
               (click)="selectFormula(formula)"
             >
-              <span class="order">{{ formatOrder(formula.order) }}</span>
               <span class="formula-main">
                 <strong>{{ formula.label }}</strong>
                 <small>{{ formula.id }} · {{ getCategoryLabel(formula.category) }}</small>
@@ -57,11 +56,6 @@
                 [ngModel]="selectedFormula.category"
                 (ngModelChange)="updateSelectedCategory($event)"
               ></po-select>
-              <po-input
-                name="formulaOrder"
-                p-label="Ordem"
-                [(ngModel)]="selectedFormula.order"
-              ></po-input>
             </div>
 
             <po-input
@@ -216,7 +210,7 @@
             </button>
           </div>
 
-          <p class="variable-section-title">Fórmulas anteriores</p>
+          <p class="variable-section-title">Fórmulas disponíveis</p>
           <div class="variable-grid" *ngIf="formulaVariables.length; else noFormulaVariables">
             <button
               type="button"
@@ -227,11 +221,11 @@
               (click)="insertToken(formula.id)"
             >
               <strong>{{ formula.id }}</strong>
-              <small>{{ formula.label }} · ordem {{ formatOrder(formula.order) }}</small>
+              <small>{{ formula.label }}</small>
             </button>
           </div>
           <ng-template #noFormulaVariables>
-            <p class="variable-empty">Salve uma fórmula com ordem menor para usá-la aqui.</p>
+            <p class="variable-empty">Salve outra fórmula ativa para usá-la aqui.</p>
           </ng-template>
         </div>
       </po-container>
