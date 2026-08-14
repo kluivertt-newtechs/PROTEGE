@@ -3,8 +3,8 @@ import { Component, ViewChild } from '@angular/core';
 import { PoModalComponent, PoSelectOption } from '@po-ui/ng-components';
 import {
   CatalogComponentType,
+  PriceComponent,
   ProductCatalogService,
-  ProductComponent,
   ProductComponentOption,
 } from 'src/app/core/product-catalog.service';
 import { SHARED_MODULES } from 'src/app/shared/shared';
@@ -12,30 +12,28 @@ import { SHARED_MODULES } from 'src/app/shared/shared';
 type StatusFilter = 'all' | 'active' | 'inactive';
 
 @Component({
-  selector: 'app-product-components',
-  templateUrl: './product-components.component.html',
-  styleUrls: ['./product-components.component.css'],
+  selector: 'app-price-components',
+  templateUrl: './price-components.component.html',
+  styleUrls: ['./price-components.component.css'],
   standalone: true,
   imports: [...SHARED_MODULES, CommonModule],
 })
-export class ProductComponentsComponent {
+export class PriceComponentsComponent {
   @ViewChild('componentModal') componentModal!: PoModalComponent;
 
   searchTerm = '';
   groupFilter = '';
   statusFilter: StatusFilter = 'all';
-  rows: Array<ProductComponent> = [];
+  rows: Array<PriceComponent> = [];
   expanded = new Set<string>();
-  editModel: ProductComponent = this.catalog.createEmptyComponent('product');
+  editModel: PriceComponent = this.catalog.createEmptyComponent('price');
   optionDraft = '';
   statusMessage = '';
 
   readonly typeOptions: Array<PoSelectOption> = [
-    { label: 'Numero', value: 'number' },
-    { label: 'Texto', value: 'text' },
-    { label: 'Selecao', value: 'select' },
-    { label: 'Booleano', value: 'boolean' },
     { label: 'Taxa', value: 'rate' },
+    { label: 'Numero', value: 'number' },
+    { label: 'Selecao', value: 'select' },
   ];
   readonly statusOptions: Array<PoSelectOption> = [
     { label: 'Todos', value: 'all' },
@@ -49,16 +47,13 @@ export class ProductComponentsComponent {
   }
 
   newComponent(): void {
-    this.editModel = this.catalog.createEmptyComponent('product');
+    this.editModel = this.catalog.createEmptyComponent('price');
     this.optionDraft = '';
     this.componentModal.open();
   }
 
-  edit(component: ProductComponent): void {
-    this.editModel = {
-      ...component,
-      options: component.options.map((option) => ({ ...option })),
-    };
+  edit(component: PriceComponent): void {
+    this.editModel = { ...component, options: component.options.map((option) => ({ ...option })) };
     this.optionDraft = this.optionsToDraft(this.editModel.options);
     this.componentModal.open();
   }
@@ -66,14 +61,14 @@ export class ProductComponentsComponent {
   save(): void {
     this.editModel.options = this.parseOptions(this.optionDraft);
     this.editModel.type = String(this.editModel.type) as CatalogComponentType;
-    this.catalog.saveComponent(this.editModel);
-    this.statusMessage = 'Componente salvo localmente.';
+    this.catalog.savePriceComponent(this.editModel);
+    this.statusMessage = 'Componente de preco salvo localmente.';
     this.componentModal.close();
     this.refresh();
   }
 
-  toggle(component: ProductComponent): void {
-    this.catalog.setComponentActive(component.id, !component.active);
+  toggle(component: PriceComponent): void {
+    this.catalog.setPriceComponentActive(component.id, !component.active);
     this.statusMessage = component.active ? 'Componente inativado.' : 'Componente ativado.';
     this.refresh();
   }
@@ -90,8 +85,8 @@ export class ProductComponentsComponent {
     return this.expanded.has(componentId);
   }
 
-  selectOption(component: ProductComponent, option: ProductComponentOption): void {
-    this.catalog.updateOptionSelection('product', component.id, option.code, !option.selected);
+  selectOption(component: PriceComponent, option: ProductComponentOption): void {
+    this.catalog.updateOptionSelection('price', component.id, option.code, !option.selected);
     this.refresh();
   }
 
@@ -99,33 +94,26 @@ export class ProductComponentsComponent {
     this.refresh();
   }
 
-  selectedSummary(component: ProductComponent): string {
+  selectedSummary(component: PriceComponent): string {
     const selected = component.options.filter((option) => option.selected);
     if (!selected.length) {
       return '--';
     }
 
-    if (selected.length > 1) {
-      return `${selected.length} opcoes`;
-    }
-
-    return this.formatValue(selected[0].calculatedValue);
+    return selected.length > 1 ? `${selected.length} opcoes` : this.formatPercent(selected[0].calculatedValue);
   }
 
-  formatValue(value: number): string {
-    if (Math.abs(value) > 0 && Math.abs(value) < 1) {
-      return value.toLocaleString('pt-BR', { style: 'percent', maximumFractionDigits: 3 });
-    }
-
-    return value.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+  formatPercent(value: number): string {
+    const decimal = Math.abs(value) > 1 ? value / 100 : value;
+    return decimal.toLocaleString('pt-BR', { style: 'percent', minimumFractionDigits: 2, maximumFractionDigits: 3 });
   }
 
   private refresh(): void {
     this.groupOptions = [
       { label: 'Todos', value: '' },
-      ...this.catalog.getGroups('product').map((group) => ({ label: group, value: group })),
+      ...this.catalog.getGroups('price').map((group) => ({ label: group, value: group })),
     ];
-    this.rows = this.catalog.searchComponents(this.searchTerm, this.groupFilter, this.statusFilter);
+    this.rows = this.catalog.searchPriceComponents(this.searchTerm, this.groupFilter, this.statusFilter);
   }
 
   private parseOptions(value: string): Array<ProductComponentOption> {

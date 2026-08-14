@@ -1,7 +1,14 @@
 .catalog-page {
   display: grid;
   gap: 18px;
-  padding: 20px 0 24px;
+  padding: 18px 0 24px;
+}
+
+.catalog-toolbar {
+  background: #fff;
+  border: 1px solid #d9dee5;
+  border-radius: 8px;
+  padding: 16px;
 }
 
 .filter-grid,
@@ -12,7 +19,8 @@
 }
 
 .actions-row,
-.checkbox-row {
+.checkbox-row,
+.card-actions {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -25,6 +33,114 @@
   font-size: 13px;
 }
 
+.component-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.component-card {
+  background: #fff;
+  border: 1px solid #d9dee5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.component-card.inactive {
+  opacity: .68;
+}
+
+.card-head {
+  align-items: center;
+  background: #fff;
+  border: 0;
+  color: #1d2733;
+  cursor: pointer;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 14px 16px;
+  text-align: left;
+  width: 100%;
+}
+
+.card-head span,
+.meta-grid span,
+.option-row span {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.card-head strong,
+.option-row strong {
+  overflow-wrap: anywhere;
+}
+
+.card-head small,
+.meta-grid small,
+.option-row small,
+.empty-state {
+  color: #687381;
+  font-size: 12px;
+}
+
+.head-meta {
+  justify-items: end;
+}
+
+.head-meta b {
+  color: #00829b;
+}
+
+.head-meta em {
+  background: #eef7f0;
+  border-radius: 999px;
+  color: #22652e;
+  font-style: normal;
+  padding: 3px 9px;
+}
+
+.component-card.inactive .head-meta em {
+  background: #f1f2f4;
+  color: #6c747d;
+}
+
+.card-body {
+  border-top: 1px solid #e6e9ed;
+  display: grid;
+  gap: 14px;
+  padding: 14px 16px 16px;
+}
+
+.meta-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.option-list {
+  display: grid;
+  gap: 8px;
+}
+
+.option-row {
+  align-items: center;
+  background: #f9fbfc;
+  border: 1px solid #d9dee5;
+  border-radius: 6px;
+  cursor: pointer;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.option-row.selected {
+  background: #e9f7fa;
+  border-color: #00a0c0;
+}
+
 .checkbox-row label {
   align-items: center;
   color: #2e343c;
@@ -32,14 +148,15 @@
   gap: 8px;
 }
 
-.empty-state {
-  color: #69737d;
-  margin: 12px 0 0;
-}
-
 @media (max-width: 760px) {
   .filter-grid,
-  .form-grid {
+  .form-grid,
+  .meta-grid,
+  .card-head {
     grid-template-columns: 1fr;
+  }
+
+  .head-meta {
+    justify-items: start;
   }
 }

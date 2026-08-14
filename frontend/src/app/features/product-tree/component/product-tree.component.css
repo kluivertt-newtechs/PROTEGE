@@ -8,9 +8,16 @@
 
 .tree-list,
 .composition-zone,
-.library-zone {
+.library-zone,
+.create-panel {
   display: grid;
   gap: 10px;
+}
+
+.create-panel {
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
 }
 
 .group-title {
@@ -80,6 +87,12 @@ small,
 .actions-row span {
   color: #69737d;
   font-size: 12px;
+}
+
+.status-message {
+  color: #1f6a2d;
+  font-size: 13px;
+  margin: 10px 0 0;
 }
 
 .composition-zone {

@@ -1,27 +1,10 @@
-<po-page-default p-title="Componentes de Produto">
+<po-page-default p-title="Componentes de Preco">
   <div class="catalog-page">
     <section class="catalog-toolbar">
       <div class="filter-grid">
-        <po-input
-          name="searchTerm"
-          p-label="Buscar"
-          [(ngModel)]="searchTerm"
-          (ngModelChange)="onFilterChange()"
-        ></po-input>
-        <po-select
-          name="groupFilter"
-          p-label="Grupo"
-          [p-options]="groupOptions"
-          [ngModel]="groupFilter"
-          (ngModelChange)="groupFilter = $event; onFilterChange()"
-        ></po-select>
-        <po-select
-          name="statusFilter"
-          p-label="Status"
-          [p-options]="statusOptions"
-          [ngModel]="statusFilter"
-          (ngModelChange)="statusFilter = $event; onFilterChange()"
-        ></po-select>
+        <po-input name="searchTerm" p-label="Buscar" [(ngModel)]="searchTerm" (ngModelChange)="onFilterChange()"></po-input>
+        <po-select name="groupFilter" p-label="Grupo" [p-options]="groupOptions" [ngModel]="groupFilter" (ngModelChange)="groupFilter = $event; onFilterChange()"></po-select>
+        <po-select name="statusFilter" p-label="Status" [p-options]="statusOptions" [ngModel]="statusFilter" (ngModelChange)="statusFilter = $event; onFilterChange()"></po-select>
       </div>
       <div class="actions-row">
         <po-button p-icon="an an-plus" p-label="Novo componente" p-kind="primary" (p-click)="newComponent()"></po-button>
@@ -50,29 +33,18 @@
           </div>
 
           <div class="option-list" *ngIf="component.options.length">
-            <button
-              type="button"
-              class="option-row"
-              *ngFor="let option of component.options"
-              [class.selected]="option.selected"
-              (click)="selectOption(component, option)"
-            >
+            <button type="button" class="option-row" *ngFor="let option of component.options" [class.selected]="option.selected" (click)="selectOption(component, option)">
               <span>
                 <strong>{{ option.code }}</strong>
                 <small>{{ option.description }}</small>
               </span>
-              <b>{{ formatValue(option.calculatedValue) }}</b>
+              <b>{{ formatPercent(option.calculatedValue) }}</b>
             </button>
           </div>
-          <p class="empty-state" *ngIf="!component.options.length">Componente sem opcoes predefinidas.</p>
 
           <div class="card-actions">
             <po-button p-icon="an an-pencil-simple" p-label="Editar" (p-click)="edit(component)"></po-button>
-            <po-button
-              p-icon="an an-power"
-              [p-label]="component.active ? 'Inativar' : 'Ativar'"
-              (p-click)="toggle(component)"
-            ></po-button>
+            <po-button p-icon="an an-power" [p-label]="component.active ? 'Inativar' : 'Ativar'" (p-click)="toggle(component)"></po-button>
           </div>
         </div>
       </article>
@@ -80,17 +52,11 @@
     </section>
   </div>
 
-  <po-modal #componentModal p-title="Componente de produto">
+  <po-modal #componentModal p-title="Componente de preco">
     <div class="form-grid">
       <po-input name="code" p-label="Codigo" [(ngModel)]="editModel.code"></po-input>
       <po-input name="description" p-label="Descricao" [(ngModel)]="editModel.description"></po-input>
-      <po-select
-        name="type"
-        p-label="Tipo"
-        [p-options]="typeOptions"
-        [ngModel]="editModel.type"
-        (ngModelChange)="editModel.type = $event"
-      ></po-select>
+      <po-select name="type" p-label="Tipo" [p-options]="typeOptions" [ngModel]="editModel.type" (ngModelChange)="editModel.type = $event"></po-select>
       <po-input name="unit" p-label="Unidade" [(ngModel)]="editModel.unit"></po-input>
       <po-input name="group" p-label="Grupo" [(ngModel)]="editModel.group"></po-input>
       <po-input name="varAPV" p-label="Variavel APV" [(ngModel)]="editModel.varAPV"></po-input>
@@ -105,7 +71,7 @@
     <po-textarea
       name="options"
       p-label="Opcoes"
-      p-help="Uma opcao por linha: CODIGO=Descricao | valor calculado | valor custo | default"
+      p-help="Uma opcao por linha: CODIGO=Descricao | percentual | valor custo | default"
       [(ngModel)]="optionDraft"
     ></po-textarea>
 

@@ -1,19 +1,20 @@
-<po-page-default p-title="Preço de Venda">
+<po-page-default p-title="Simulacao Preco de Venda">
   <div class="sale-grid">
     <po-container p-title="Produto">
       <po-select
         name="product"
-        p-label="Produto ou serviço"
+        p-label="Produto ou servico"
         [p-options]="productOptions"
         [ngModel]="selectedProductId"
         (ngModelChange)="onProductChange($event)"
       ></po-select>
-      <p class="empty-state" *ngIf="!components.length">
-        Produto sem composição. Vincule componentes na Árvore de Produto.
+      <p class="empty-state" *ngIf="!selectedProductId">Selecione um produto para iniciar.</p>
+      <p class="empty-state" *ngIf="selectedProductId && !components.length">
+        Produto sem composicao. Vincule componentes na Arvore de Produto.
       </p>
     </po-container>
 
-    <po-container p-title="Componentes da simulação">
+    <po-container p-title="Componentes da simulacao">
       <div class="dynamic-grid" *ngIf="components.length">
         <ng-container *ngFor="let component of components">
           <po-input
@@ -53,25 +54,46 @@
       </div>
     </po-container>
 
+    <po-container p-title="Componentes de preco">
+      <div class="price-list">
+        <article class="price-row" *ngFor="let component of priceComponents">
+          <span>
+            <strong>{{ component.description }}</strong>
+            <small>{{ component.varAPV }}</small>
+          </span>
+          <div class="price-options">
+            <button
+              type="button"
+              *ngFor="let option of component.options"
+              [class.selected]="option.selected"
+              (click)="selectCatalogOption(component, option, 'price')"
+            >
+              {{ option.description }}
+            </button>
+          </div>
+        </article>
+      </div>
+    </po-container>
+
     <po-container p-title="Resultado">
       <div class="result-grid">
         <div class="metric">
-          <small>Preço unitário</small>
+          <small>Preco unitario</small>
           <strong>{{ formatCurrency(finalPrice) }}</strong>
         </div>
         <div class="metric">
-          <small>Preço mensal</small>
+          <small>Preco mensal</small>
           <strong>{{ formatCurrency(monthlyPrice) }}</strong>
         </div>
         <div class="metric">
-          <small>Alíquota total</small>
+          <small>Aliquota total</small>
           <strong>{{ formatPercent(resultValues['taxRate'] || 0) }}</strong>
         </div>
       </div>
       <p class="warning" *ngIf="warning">{{ warning }}</p>
     </po-container>
 
-    <po-container class="span-2" p-title="Memória de cálculo">
+    <po-container class="span-2" p-title="Memoria de calculo">
       <div class="memory-list" *ngIf="memory.length; else noMemory">
         <div class="memory-row" *ngFor="let step of memory" [class.error]="step.status === 'error'">
           <span>
@@ -83,7 +105,7 @@
         </div>
       </div>
       <ng-template #noMemory>
-        <p class="empty-state">Sem memória de cálculo.</p>
+        <p class="empty-state">Sem memoria de calculo.</p>
       </ng-template>
     </po-container>
   </div>

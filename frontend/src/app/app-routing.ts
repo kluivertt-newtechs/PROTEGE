@@ -12,18 +12,10 @@ export const routes: Routes = [
     component: MainComponent,
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'product-components' },
-      // {
-      //   path: 'home',
-      //   loadChildren: () =>
-      //     import('./features/home/home.routes').then((r) => r.homeRoutes),
-      // },
-      {
-        path: 'pricing',
-        loadChildren: () =>
-          import('./features/pricing/pricing.routes').then(
-            (r) => r.pricingRoutes,
-          ),
-      },
+      { path: 'pricing', redirectTo: 'product-components' },
+      { path: 'simulation', redirectTo: 'product-components' },
+      { path: 'formula-builder', redirectTo: 'product-components' },
+      { path: 'consolidated', redirectTo: 'product-components' },
       {
         path: 'product-components',
         loadChildren: () =>
@@ -33,14 +25,10 @@ export const routes: Routes = [
       },
       {
         path: 'price-components',
-        loadComponent: () =>
-          import('./features/formula-builder/component/formula-builder.component').then(
-            (c) => c.FormulaBuilderComponent,
+        loadChildren: () =>
+          import('./features/price-components/price-components.routes').then(
+            (r) => r.priceComponentsRoutes,
           ),
-        data: {
-          title: 'Componentes de Preço',
-          catalogTitle: 'Catálogo de componentes de preço',
-        },
       },
       {
         path: 'product-tree',
@@ -56,28 +44,7 @@ export const routes: Routes = [
             (r) => r.salePriceRoutes,
           ),
       },
-      {
-        path: 'simulation',
-        loadChildren: () =>
-          import('./features/simulation/simulation.routes').then(
-            (r) => r.simulationRoutes,
-          ),
-      },
-      {
-        path: 'formula-builder',
-        loadChildren: () =>
-          import('./features/formula-builder/formula-builder.routes').then(
-            (r) => r.formulaBuilderRoutes,
-          ),
-      },
-      {
-        path: 'consolidated',
-        loadChildren: () =>
-          import('./features/consolidated/consolidated.routes').then(
-            (r) => r.consolidatedRoutes,
-          ),
-      },
     ],
   },
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: 'product-components' },
 ];

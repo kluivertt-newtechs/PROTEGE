@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { PoSelectOption } from '@po-ui/ng-components';
-import { CommercialParameters, FormulaExecutionStep } from 'src/app/core/mock';
+import { FormulaExecutionStep } from 'src/app/core/mock';
 import {
+  PriceComponent,
   ProductCatalogService,
   ProductComponent,
   ProductComponentOption,
 } from 'src/app/core/product-catalog.service';
 import { PricingFormulaService, executePricingFormulas } from 'src/app/core/pricing-formula.service';
-import { PricingMockStateService } from 'src/app/core/pricing-mock-state.service';
 import { SHARED_MODULES } from 'src/app/shared/shared';
 
 @Component({
@@ -22,8 +22,8 @@ export class SalePriceComponent {
   productOptions: Array<PoSelectOption> = [];
   selectedProductId = '';
   components: Array<ProductComponent> = [];
+  priceComponents: Array<PriceComponent> = [];
   values: Record<string, number | string | boolean> = {};
-  parameters: CommercialParameters;
   resultValues: Record<string, number> = {};
   memory: Array<FormulaExecutionStep> = [];
   warning = '';
@@ -31,14 +31,13 @@ export class SalePriceComponent {
   constructor(
     private readonly catalog: ProductCatalogService,
     private readonly formulaService: PricingFormulaService,
-    private readonly mockState: PricingMockStateService,
   ) {
-    this.parameters = this.mockState.getCommercialParameters();
     this.productOptions = this.catalog.getProducts().map((product) => ({
       label: `${product.code} - ${product.name}`,
       value: product.id,
     }));
     this.selectedProductId = this.catalog.getSelectedProductId() || String(this.productOptions[0]?.value ?? '');
+    this.priceComponents = this.catalog.listPriceComponents(false);
     this.loadComposition();
   }
 
@@ -50,6 +49,10 @@ export class SalePriceComponent {
     return this.resultValues['monthlyPrice'] ?? this.finalPrice * (this.getContextValue('quantity') || 1);
   }
 
+  get selectedProductLabel(): string {
+    return String(this.productOptions.find((option) => option.value === this.selectedProductId)?.label ?? '');
+  }
+
   onProductChange(productId: string): void {
     this.selectedProductId = productId;
     this.catalog.setSelectedProductId(productId);
@@ -57,7 +60,20 @@ export class SalePriceComponent {
   }
 
   recalculate(): void {
-    this.parameters = this.mockState.getCommercialParameters();
+    if (!this.selectedProductId) {
+      this.warning = 'Selecione um produto para simular.';
+      this.resultValues = {};
+      this.memory = [];
+      return;
+    }
+
+    if (!this.components.length) {
+      this.warning = 'Produto sem composicao. Vincule componentes na Arvore de Produto.';
+      this.resultValues = {};
+      this.memory = [];
+      return;
+    }
+
     const context = this.buildFormulaContext();
     const execution = executePricingFormulas(context, this.formulaService.getFormulas());
 
@@ -75,7 +91,15 @@ export class SalePriceComponent {
   }
 
   getSelectOptions(component: ProductComponent): Array<PoSelectOption> {
-    return component.options.map((option) => ({ label: option.label, value: option.value }));
+    return component.options.map((option) => ({ label: option.description, value: option.code }));
+  }
+
+  selectCatalogOption(component: ProductComponent, option: ProductComponentOption, kind: 'product' | 'price'): void {
+    this.catalog.updateOptionSelection(kind, component.id, option.code, !option.selected);
+    this.components = this.catalog.getCompositionComponents(this.selectedProductId);
+    this.priceComponents = this.catalog.listPriceComponents(false);
+    this.applySelectedDefaults();
+    this.recalculate();
   }
 
   private loadComposition(): void {
@@ -86,25 +110,39 @@ export class SalePriceComponent {
       if (component.type === 'boolean') {
         this.values[component.id] = false;
       } else if (component.type === 'select') {
-        this.values[component.id] = component.options[0]?.value ?? '';
+        this.values[component.id] = component.options.find((option) => option.selected)?.code ?? component.options[0]?.code ?? '';
       } else {
         this.values[component.id] = this.defaultValueFor(component);
       }
     }
 
+    this.applySelectedDefaults();
     this.recalculate();
+  }
+
+  private applySelectedDefaults(): void {
+    for (const component of this.components) {
+      if (component.type === 'select' && !this.values[component.id]) {
+        this.values[component.id] = component.options.find((option) => option.selected)?.code ?? component.options[0]?.code ?? '';
+      }
+    }
   }
 
   private buildFormulaContext(): Record<string, number> {
     const context: Record<string, number> = {
-      operationalExpensesRate: this.parameters.operationalExpensesRate,
-      indirectExpensesRate: this.parameters.indirectExpensesRate,
-      targetMarginRate: this.parameters.targetMarginRate,
-      pisCofinsRate: this.parameters.pisCofinsRate,
-      mainTaxRate: 0,
-      costBase: 0,
+      operationalExpensesRate: 0.14,
+      indirectExpensesRate: 0.141,
+      targetMarginRate: 0.2,
+      pisCofinsRate: 0.141,
+      mainTaxRate: 0.05,
+      costBase: 1000,
       quantity: 1,
+      SELIC: 0.1475,
     };
+
+    for (const component of this.priceComponents) {
+      context[component.varAPV] = this.normalizeRate(this.catalog.getSelectedComponentValue(component));
+    }
 
     for (const component of this.components) {
       context[component.varAPV] = this.resolveComponentNumber(component);
@@ -121,12 +159,11 @@ export class SalePriceComponent {
     }
 
     if (component.type === 'select') {
-      return this.findOption(component, String(value))?.numericValue ?? 0;
+      return this.findOption(component, String(value))?.calculatedValue ?? this.catalog.getSelectedComponentValue(component);
     }
 
     if (component.type === 'rate') {
-      const numeric = this.safeNumber(value);
-      return numeric > 1 ? numeric / 100 : numeric;
+      return this.normalizeRate(this.safeNumber(value));
     }
 
     if (component.type === 'text') {
@@ -137,7 +174,7 @@ export class SalePriceComponent {
   }
 
   private findOption(component: ProductComponent, value: string): ProductComponentOption | undefined {
-    return component.options.find((option) => option.value === value);
+    return component.options.find((option) => option.code === value);
   }
 
   private defaultValueFor(component: ProductComponent): number | string {
@@ -150,7 +187,7 @@ export class SalePriceComponent {
     }
 
     if (component.type === 'rate') {
-      return component.varAPV === 'mainTaxRate' ? 5 : 0;
+      return 0;
     }
 
     return component.type === 'text' ? '' : 0;
@@ -158,6 +195,10 @@ export class SalePriceComponent {
 
   private safeNumber(value: unknown): number {
     return Number.isFinite(Number(value)) ? Number(value) : 0;
+  }
+
+  private normalizeRate(value: number): number {
+    return Math.abs(value) > 1 ? value / 100 : value;
   }
 
   private getContextValue(key: string): number {
