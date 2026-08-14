@@ -155,7 +155,10 @@ export class SalePriceComponent {
   }
 
   getSelectOptions(component: ProductComponent): Array<PoSelectOption> {
-    return component.options.map((option) => ({ label: this.displayText(option.description), value: option.code }));
+    return this.getEffectiveOptions(component).map((option) => ({
+      label: this.displayText(option.description),
+      value: option.code,
+    }));
   }
 
   selectCatalogOption(component: ProductComponent, option: ProductComponentOption, kind: 'product' | 'price'): void {
@@ -245,7 +248,8 @@ export class SalePriceComponent {
       if (component.type === 'boolean') {
         this.values[component.id] = false;
       } else if (component.type === 'select') {
-        this.values[component.id] = component.options.find((option) => option.selected)?.code ?? component.options[0]?.code ?? '';
+        const options = this.getEffectiveOptions(component);
+        this.values[component.id] = options.find((option) => option.selected)?.code ?? options[0]?.code ?? '';
       } else {
         this.values[component.id] = this.defaultValueFor(component);
       }
@@ -258,7 +262,8 @@ export class SalePriceComponent {
   private applySelectedDefaults(): void {
     for (const component of this.components) {
       if (component.type === 'select' && !this.values[component.id]) {
-        this.values[component.id] = component.options.find((option) => option.selected)?.code ?? component.options[0]?.code ?? '';
+        const options = this.getEffectiveOptions(component);
+        this.values[component.id] = options.find((option) => option.selected)?.code ?? options[0]?.code ?? '';
       }
     }
   }
@@ -309,7 +314,26 @@ export class SalePriceComponent {
   }
 
   private findOption(component: ProductComponent, value: string): ProductComponentOption | undefined {
-    return component.options.find((option) => option.code === value);
+    return this.getEffectiveOptions(component).find((option) => option.code === value);
+  }
+
+  private getEffectiveOptions(component: ProductComponent): Array<ProductComponentOption> {
+    if (component.options.length) {
+      return component.options;
+    }
+
+    if (!component.varAPV) {
+      return [];
+    }
+
+    const optionSource = [...this.catalog.listComponents(false), ...this.catalog.listPriceComponents(false)]
+      .find((candidate) =>
+        candidate.id !== component.id &&
+        candidate.varAPV === component.varAPV &&
+        candidate.options.length,
+      );
+
+    return optionSource?.options ?? [];
   }
 
   private defaultValueFor(component: ProductComponent): number | string {
