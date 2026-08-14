@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { PoMultiselectOption, PoSelectOption } from '@po-ui/ng-components';
 import {
   DEFAULT_PRICING_FORMULAS,
-  PRICING_FORMULA_VARIABLES,
   PricingFormulaService,
 } from 'src/app/core/pricing-formula.service';
 import { PricingBusinessBranch, PricingFormula, PricingFormulaCategory } from 'src/app/core/mock';
@@ -38,8 +38,10 @@ export class FormulaBuilderComponent implements OnInit {
   statusType: 'success' | 'error' | 'info' = 'info';
   expressionTokens: Array<FormulaExpressionToken> = [];
   expressionCursorIndex = 0;
+  pageTitle = 'Construtor de Fórmulas';
+  catalogTitle = 'Catálogo de fórmulas';
 
-  readonly variables = PRICING_FORMULA_VARIABLES;
+  variables: Array<{ id: string; label: string }> = [];
   readonly defaultFormulaIds = DEFAULT_PRICING_FORMULAS.map((formula) => formula.id);
   readonly defaultBusinessBranches: Array<PricingBusinessBranch> = ['transport', 'processing'];
   readonly operatorTokens = ['+', '-', '*', '/', '(', ')', ',', '?', ':'];
@@ -58,7 +60,10 @@ export class FormulaBuilderComponent implements OnInit {
     { label: 'Processamento', value: 'processing' },
   ];
 
-  constructor(private readonly formulaService: PricingFormulaService) {}
+  constructor(
+    private readonly formulaService: PricingFormulaService,
+    private readonly route: ActivatedRoute,
+  ) {}
 
   get formulaVariables(): Array<PricingFormula> {
     const selectedIds = new Set([
@@ -72,6 +77,9 @@ export class FormulaBuilderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.pageTitle = this.route.snapshot.data['title'] ?? this.pageTitle;
+    this.catalogTitle = this.route.snapshot.data['catalogTitle'] ?? this.catalogTitle;
+    this.variables = this.formulaService.getAvailableVariables();
     this.loadFormulas();
   }
 

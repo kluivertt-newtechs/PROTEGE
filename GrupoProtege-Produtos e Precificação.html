@@ -1,0 +1,2346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produtos e Precificação | NewTech · Grupo Protege</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/tabler-icons.min.css" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --nt-dark:#1A5880;--nt-cyan:#00A0C0;--nt-light:#E8F4FA;--nt-mid:#B8D8EA;--nt-900:#0D3B5E;--nt-50:#F0F8FC;
+  --bg:#F2F4F7;--surface:#FFFFFF;--surface-2:#F8F9FB;
+  --border:#E2E5EA;--border-2:#CBD0D8;
+  --txt:#1C2333;--txt-2:#5A6478;--txt-3:#9AA3B2;
+  --success:#16A34A;--warn:#D97706;--danger:#DC2626;
+  --radius:6px;--radius-lg:10px;
+  --font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 12px rgba(0,0,0,.10),0 2px 4px rgba(0,0,0,.06);
+}
+body{font-family:var(--font);font-size:13px;color:var(--txt);background:var(--bg);height:100vh;display:flex;flex-direction:column;overflow:hidden;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:var(--nt-mid)}
+
+/* HEADER */
+.hdr{height:54px;background:var(--nt-dark);display:flex;align-items:center;padding:0 16px;gap:12px;flex-shrink:0;border-bottom:2px solid #c0102a}
+.hdr-logo-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.hdr-protege-logo{height:36px;width:auto;display:block;border-radius:4px;padding:3px 6px;background:#fff}
+.hdr-sep{color:#4a7fa0;font-size:18px;font-weight:200;margin:0 2px}
+.hdr-title{color:#fff;font-size:13px;font-weight:500;white-space:nowrap}
+.hdr-client{margin-left:auto;display:flex;align-items:center;gap:6px;color:#6fa8c8;font-size:11px}
+.hdr-client strong{color:#b8d8ea}
+
+/* VIEW TABS */
+.view-tabs{height:36px;background:var(--nt-900);display:flex;align-items:flex-end;padding:0 14px;gap:2px;flex-shrink:0}
+.view-tab{padding:6px 14px;font-size:11px;font-weight:500;color:#6fa8c8;cursor:pointer;border-radius:5px 5px 0 0;border:none;background:transparent;transition:background .15s,color .15s;display:flex;align-items:center;gap:5px}
+.view-tab:hover{background:rgba(255,255,255,.08);color:#b8d8ea}
+.view-tab.active{background:var(--bg);color:var(--nt-dark);font-weight:600}
+.view-tab i{font-size:13px}
+
+/* LAYOUT */
+.workspace{display:flex;flex:1;overflow:hidden}
+
+/* TREE */
+.tree-panel{width:240px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+.panel-hd{padding:10px 12px 8px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:6px}
+.panel-hd-row{display:flex;align-items:center;gap:6px}
+.panel-hd h3{font-size:11px;font-weight:600;color:var(--txt-2);text-transform:uppercase;letter-spacing:.5px}
+.search-wrap{position:relative}
+.search-wrap i{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--txt-3);pointer-events:none}
+.search-box{width:100%;border:1px solid var(--border);border-radius:var(--radius);padding:5px 8px 5px 28px;font-size:11px;background:var(--surface-2);color:var(--txt);font-family:var(--font);transition:border-color .15s}
+.search-box:focus{outline:none;border-color:var(--nt-cyan)}
+.tree-body{flex:1;overflow-y:auto;padding:2px 0}
+.t-row{display:flex;align-items:center;gap:3px;padding:5px 8px;cursor:pointer;transition:background .1s}
+.t-row-actions{display:none;gap:2px;margin-left:auto;flex-shrink:0}
+.t-row:hover .t-row-actions,.t-row.selected .t-row-actions{display:flex}
+.t-row-btn{background:none;border:none;cursor:pointer;font-size:11px;padding:2px 5px;border-radius:3px;display:flex;align-items:center;gap:2px;transition:color .1s,background .1s;white-space:nowrap;font-weight:600}
+.t-row-btn.add{color:var(--nt-cyan)}
+.t-row-btn.add:hover{background:var(--nt-light);color:var(--nt-dark)}
+.t-row-btn.del{color:var(--txt-3)}
+.t-row-btn.del:hover{background:#fee2e2;color:var(--danger)}
+/* Modal tree */
+.tree-tipo-toggle{display:flex;gap:0;border:1px solid var(--border-2);border-radius:var(--radius);overflow:hidden;grid-column:span 2;margin-bottom:2px}
+.tree-tipo-btn{flex:1;padding:8px 12px;border:none;cursor:pointer;font-size:12px;font-weight:600;background:var(--surface-2);color:var(--txt-2);transition:background .15s,color .15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.tree-tipo-btn.active{background:var(--nt-dark);color:#fff}
+.mt-section{display:none;flex-direction:column;gap:10px;grid-column:span 2}
+.mt-section.show{display:flex}
+.code-preview{font-family:var(--mono);font-size:12px;color:var(--nt-dark);background:var(--nt-light);padding:4px 10px;border-radius:5px;border:1px solid var(--nt-mid);font-weight:700}
+.t-row:hover{background:var(--nt-light)}
+.t-row.selected{background:#dbedf8}
+.t-row.selected .t-label{color:var(--nt-dark);font-weight:600}
+.t-row.drop-target{background:#dcfce7;outline:2px dashed #16a34a;outline-offset:-2px;border-radius:4px}
+.t-toggle{width:14px;flex-shrink:0;color:var(--txt-3);font-size:11px;display:flex;align-items:center;justify-content:center}
+.t-icon{font-size:14px;flex-shrink:0}
+.t-label{font-size:11.5px;line-height:1.3;flex:1;min-width:0}
+.t-code{font-size:9.5px;color:var(--txt-3);font-family:var(--mono);flex-shrink:0}
+.t-badge{background:var(--nt-cyan);color:#fff;font-size:9px;padding:1px 5px;border-radius:10px;font-weight:600;flex-shrink:0}
+.t-children{border-left:1.5px solid var(--nt-mid);margin-left:18px}
+
+/* LIBRARY */
+.lib-panel{width:252px;background:var(--surface-2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+.lib-body{flex:1;overflow-y:auto;padding:8px}
+.lib-group{margin-bottom:12px}
+.lib-group-hd{font-size:9.5px;font-weight:700;color:var(--txt-3);text-transform:uppercase;letter-spacing:.7px;padding:2px 4px 4px;border-bottom:1px solid var(--border);margin-bottom:5px;display:flex;align-items:center;gap:4px}
+.spec-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;margin-bottom:5px;cursor:grab;transition:border-color .15s,box-shadow .15s,transform .1s;user-select:none;position:relative}
+.spec-card:hover{border-color:var(--nt-cyan);box-shadow:var(--shadow-sm)}
+.spec-card:active{cursor:grabbing}
+.spec-card.dragging{opacity:.4;transform:scale(.96);cursor:grabbing}
+.spec-card.in-use{border-color:var(--nt-mid);background:var(--nt-50)}
+.sc-top{display:flex;align-items:center;gap:5px;margin-bottom:3px}
+.sc-code{font-size:10px;font-family:var(--mono);font-weight:600;color:var(--nt-dark);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-desc{font-size:11px;color:var(--txt-2);line-height:1.35}
+.sc-meta{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;align-items:center}
+.sc-un{font-size:9.5px;font-family:var(--mono);color:var(--txt-3)}
+.drag-grip{position:absolute;top:7px;right:7px;color:var(--border-2);font-size:13px;line-height:1}
+.in-use-badge{font-size:9px;color:var(--nt-cyan);font-weight:600;background:var(--nt-light);padding:1px 5px;border-radius:8px}
+
+/* TAGS */
+.tag{display:inline-flex;align-items:center;padding:1px 6px;border-radius:10px;font-size:9.5px;font-weight:600;line-height:1.5;flex-shrink:0}
+.tN{background:#ede9fe;color:#5b21b6}
+.tT{background:#dcfce7;color:#15803d}
+.tM{background:#ffedd5;color:#c2410c}
+.tB{background:#dbeafe;color:#1d4ed8}
+.tS{background:#fef9c3;color:#92400e}
+.tR{background:#fce7f3;color:#9d174d}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.breadcrumb{padding:7px 16px;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:center;gap:6px;font-size:11px;color:var(--txt-3);flex-shrink:0}
+.breadcrumb .bc-item{color:var(--nt-dark);font-weight:600}
+.view{display:none;flex:1;flex-direction:column;overflow:hidden}
+.view.active{display:flex}
+
+/* DROP ZONE */
+.dz-wrap{flex:1;display:flex;flex-direction:column;padding:12px 16px 10px;overflow:hidden;gap:10px;min-height:0}
+.dz-header{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.dz-header h3{font-size:13px;font-weight:600;color:var(--nt-dark);flex:1}
+.dz-counter{font-size:11px;color:var(--txt-3);background:var(--surface-2);padding:2px 8px;border-radius:10px;border:1px solid var(--border)}
+.drop-zone{flex:1;overflow-y:auto;overflow-x:hidden;border:2px dashed var(--border-2);border-radius:var(--radius-lg);padding:8px;background:var(--surface);transition:border-color .2s,background .2s;min-height:0}
+.drop-zone.drag-over{border-color:var(--nt-cyan);background:var(--nt-50)}
+.dz-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:8px;color:var(--txt-3);pointer-events:none}
+.dz-empty i{font-size:40px;opacity:.25}
+.dz-empty p{font-size:12px}
+.dz-empty small{font-size:11px}
+/* Spec-row resultado inline */
+.spec-row-results{background:var(--nt-50);border:1px solid var(--nt-mid);border-radius:var(--radius);margin:3px 0 6px 32px;overflow:hidden}
+.srr-header{display:flex;align-items:center;gap:6px;padding:6px 10px;border-bottom:1px solid var(--border);background:var(--nt-light);cursor:pointer;user-select:none}
+.srr-header:hover{background:#dbeafe22}
+.srr-title{font-size:10px;font-weight:700;color:var(--nt-dark);text-transform:uppercase;letter-spacing:.4px;flex:1}
+.srr-chevron{font-size:11px;color:var(--txt-3);transition:transform .18s;flex-shrink:0}
+.srr-opts{display:flex;flex-direction:column;gap:0}
+.spec-row-results.collapsed{display:none}
+.srr-opt{display:flex;align-items:center;gap:8px;padding:5px 10px;cursor:pointer;transition:background .1s;border-bottom:1px solid var(--border)}
+.srr-opt:last-child{border-bottom:none}
+.srr-opt:hover{background:var(--nt-light)}
+.srr-opt.sel{background:#f0fdf4}
+.srr-chk{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--border-2);background:var(--surface);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.srr-opt.sel .srr-chk{background:#16a34a;border-color:#16a34a}
+.srr-opt.sel .srr-chk::after{content:'';display:block;width:6px;height:4px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+.srr-seq{font-family:var(--mono);font-size:10px;color:var(--txt-3);width:24px;flex-shrink:0}
+.srr-cod{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--nt-dark);width:90px;flex-shrink:0}
+.srr-desc{font-size:11px;color:var(--txt-2);flex:1}
+.srr-val-input{width:80px;font-family:var(--mono);font-size:11px;text-align:right;padding:2px 6px;border:1px solid var(--border);border-radius:3px;background:var(--surface);color:var(--nt-dark);flex-shrink:0}
+.srr-val-input:focus{outline:none;border-color:var(--nt-cyan);background:#fff}
+.srr-sel-badge{font-size:10px;font-weight:700;color:#15803d;font-family:var(--mono);background:#dcfce7;padding:2px 7px;border-radius:4px;border:1px solid #86efac;flex-shrink:0;white-space:nowrap}
+.spec-row{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:7px 10px;cursor:grab;transition:box-shadow .12s,border-color .12s;animation:rowIn .18s ease;position:relative;min-width:0;box-sizing:border-box}
+.spec-row:hover{border-color:var(--nt-cyan);box-shadow:var(--shadow-sm)}
+.spec-row:active{cursor:grabbing}
+.spec-row.dragging-row{opacity:.3;cursor:grabbing}
+.spec-row.drop-above{border-top:2.5px solid var(--nt-cyan)}
+.spec-row.drop-below{border-bottom:2.5px solid var(--nt-cyan)}
+@keyframes rowIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.row-seq{width:28px;height:28px;border-radius:50%;background:var(--nt-dark);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:var(--mono);flex-shrink:0}
+.row-grip{color:var(--border-2);font-size:15px;flex-shrink:0;cursor:grab}
+.row-info{flex:1;min-width:0}
+.row-code{font-size:10.5px;font-weight:700;font-family:var(--mono);color:var(--nt-dark)}
+.row-desc{font-size:11px;color:var(--txt-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-badges{display:flex;gap:3px;flex-shrink:0;align-items:center}
+.row-un{font-size:9.5px;font-family:var(--mono);color:var(--txt-3);background:var(--surface-2);padding:1px 5px;border-radius:8px;border:1px solid var(--border)}
+.btn-icon{background:none;border:none;cursor:pointer;color:var(--txt-3);font-size:15px;padding:3px;border-radius:4px;display:flex;align-items:center;transition:color .1s,background .1s;flex-shrink:0}
+.btn-icon:hover{background:var(--border);color:var(--txt)}
+.btn-icon.danger:hover{background:#fee2e2;color:var(--danger)}
+
+.action-row{display:flex;gap:6px;align-items:center;flex-shrink:0;padding-top:4px}
+.spacer{flex:1}
+
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border-radius:var(--radius);font-size:12px;font-weight:500;cursor:pointer;border:1px solid transparent;font-family:var(--font);transition:opacity .15s,transform .1s,background .15s;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn i{font-size:14px}
+.btn-primary{background:var(--nt-cyan);color:#fff;border-color:var(--nt-cyan)}
+.btn-primary:hover{opacity:.88}
+.btn-secondary{background:var(--surface);color:var(--nt-dark);border-color:var(--border-2)}
+.btn-secondary:hover{background:var(--nt-light);border-color:var(--nt-cyan)}
+.btn-ghost{background:transparent;color:var(--txt-2);border-color:var(--border)}
+.btn-ghost:hover{background:var(--surface-2);color:var(--txt)}
+.btn-sm{padding:4px 10px;font-size:11px}
+
+/* RESULTS VIEW */
+.results-wrap,.links-wrap{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.results-toolbar{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.rt-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.rt-card-hd{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;transition:background .1s;border-bottom:1px solid transparent}
+.rt-card-hd:hover{background:var(--surface-2)}
+.rt-card-hd.open{border-color:var(--border)}
+.rt-icon{width:34px;height:34px;border-radius:var(--radius);background:var(--nt-light);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rt-icon i{font-size:16px;color:var(--nt-cyan)}
+.rt-info{flex:1}
+.rt-code{font-size:11px;font-weight:700;font-family:var(--mono);color:var(--nt-dark)}
+.rt-desc{font-size:12px;color:var(--txt-2)}
+.rt-stats{font-size:10px;color:var(--txt-3)}
+.rt-chevron{color:var(--txt-3);font-size:14px;transition:transform .2s}
+.rt-chevron.open{transform:rotate(90deg)}
+.rt-body{display:none;padding:10px 14px;background:var(--surface-2)}
+.rt-body.open{display:block}
+.rt-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin-bottom:12px}
+.field{display:flex;flex-direction:column;gap:3px}
+.field label{font-size:10.5px;font-weight:600;color:var(--txt-2)}
+.field label .req{color:var(--danger);margin-left:2px}
+input,select,textarea{border:1px solid var(--border);border-radius:var(--radius);padding:5px 8px;font-size:12px;background:var(--surface);color:var(--txt);font-family:var(--font);transition:border-color .15s;width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--nt-cyan)}
+select{cursor:pointer}
+textarea{resize:vertical;min-height:52px;line-height:1.5}
+input[readonly]{background:var(--surface-2);color:var(--txt-2)}
+.opts-table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{background:var(--nt-dark);color:#fff;padding:6px 10px;text-align:left;font-weight:600;font-size:10.5px;white-space:nowrap}
+th:first-child{border-radius:5px 0 0 0}
+th:last-child{border-radius:0 5px 0 0}
+td{padding:6px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--nt-50)}
+td input{padding:3px 6px;font-size:11px}
+
+.filter-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.filter-body{padding:12px 14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 16px}
+.filter-footer{padding:8px 14px;border-top:1px solid var(--border);background:var(--surface-2);display:flex;gap:6px}
+
+/* STATUS BAR */
+.statusbar{height:26px;background:var(--nt-900);display:flex;align-items:center;padding:0 12px;gap:10px;flex-shrink:0}
+.statusbar span{color:#6fa8c8;font-size:10.5px}
+.statusbar .ok{color:#4ade80}
+.statusbar .sep{color:#2c5f7a}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px}
+.modal-box{background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);width:100%;max-width:520px;overflow:hidden;animation:modalIn .18s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(-8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-hd{display:flex;align-items:center;gap:8px;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--surface-2)}
+.modal-hd h3{font-size:13px;font-weight:600;color:var(--nt-dark);flex:1}
+.modal-body{padding:16px}
+.modal-footer{padding:10px 16px;border-top:1px solid var(--border);background:var(--surface-2);display:flex;justify-content:flex-end;gap:6px}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px}
+.modal-grid .span2{grid-column:span 2}
+
+/* TOAST */
+.toast{position:fixed;bottom:38px;right:16px;background:var(--nt-dark);color:#fff;padding:8px 14px;border-radius:var(--radius);font-size:11.5px;box-shadow:var(--shadow-md);opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s;pointer-events:none;z-index:999;display:flex;align-items:center;gap:6px;max-width:340px}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast i{font-size:14px;flex-shrink:0}
+.toast.err{background:#7f1d1d}
+.toast.ok-green{background:#14532d}
+
+/* DRAG GHOST */
+#drag-ghost{position:fixed;pointer-events:none;z-index:999;background:var(--nt-dark);color:#fff;padding:5px 12px;border-radius:var(--radius);font-size:11px;font-weight:500;box-shadow:var(--shadow-md);opacity:0;display:flex;align-items:center;gap:5px;white-space:nowrap}
+
+.divider{border:none;border-top:1px solid var(--border);margin:8px 0}
+.empty-table{text-align:center;color:var(--txt-3);padding:24px;font-size:12px}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:500;background:var(--surface-2);border:1px solid var(--border);color:var(--txt-2)}
+.chip.active{background:#dcfce7;border-color:#86efac;color:#15803d}
+.chip.inactive{background:#fee2e2;border-color:#fca5a5;color:#b91c1c}
+
+/* VALUE BADGE */
+.val-badge{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--nt-dark);background:var(--nt-light);padding:1px 6px;border-radius:4px;border:1px solid var(--nt-mid)}
+
+.hide-panels .tree-panel,.hide-panels .lib-panel{display:none!important}
+.tr-row-sel td{background:#f0fdf4}
+
+/* ── COMPONENTES WIDGET GRID ── */
+.comp-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.comp-toolbar{display:flex;align-items:center;gap:8px;padding:12px 16px 0;flex-shrink:0}
+.comp-toolbar h3{font-size:13px;font-weight:600;color:var(--nt-dark);flex:1}
+.comp-filters{display:flex;gap:6px;padding:8px 16px;flex-shrink:0;align-items:center}
+.comp-filters input,.comp-filters select{max-width:180px;flex:1}
+
+/* Grid: scroll vertical funcional */
+.comp-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+  gap:10px;
+  padding:10px 16px 14px;
+  overflow-y:scroll;
+  overflow-x:hidden;
+  flex:1;
+  min-height:0;
+  align-content:start;
+  box-sizing:border-box;
+}
+
+/* Widget collapsed */
+.comp-widget{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  transition:box-shadow .2s,border-color .2s;
+  align-self:start;
+  position:relative;
+  z-index:1;
+}
+.comp-widget:hover{border-color:var(--nt-cyan);box-shadow:var(--shadow-sm)}
+.comp-widget.open{
+  border-color:var(--nt-cyan);
+  box-shadow:var(--shadow-md);
+  grid-column:1 / -1;
+  z-index:10;
+}
+
+/* Header — sempre visível */
+.cw-header{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;user-select:none}
+.comp-widget.open .cw-header{border-bottom:1px solid var(--border);background:var(--nt-50);cursor:default}
+.cw-icon{width:30px;height:30px;border-radius:var(--radius);background:var(--nt-dark);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cw-icon i{font-size:14px;color:#fff}
+.comp-widget.open .cw-icon{background:var(--nt-cyan)}
+.cw-hd-info{flex:1;min-width:0;overflow:hidden}
+.cw-code{font-size:12px;font-weight:700;font-family:var(--mono);color:var(--nt-dark)}
+.cw-var{font-size:9.5px;font-family:var(--mono);color:var(--txt-3);margin-left:5px}
+.cw-desc{font-size:11px;color:var(--txt-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cw-hd-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.cw-val-badge{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--nt-dark);background:var(--nt-light);padding:2px 8px;border-radius:5px;border:1px solid var(--nt-mid);min-width:44px;text-align:center;white-space:nowrap}
+.cw-val-badge.has-val{color:#15803d;background:#dcfce7;border-color:#86efac}
+.cw-val-badge.no-val{color:var(--txt-3);opacity:.6}
+.cw-chevron{font-size:13px;color:var(--txt-3);transition:transform .2s;flex-shrink:0}
+.comp-widget.open .cw-chevron{transform:rotate(90deg);color:var(--nt-cyan)}
+
+/* Body — VISIBILIDADE controlada por atributo data-open, não por CSS cascade */
+.cw-body{flex-direction:column;padding:10px 12px;gap:8px;background:var(--surface);display:none}
+.cw-footer{gap:6px;padding:8px 12px;border-top:1px solid var(--border);background:var(--surface-2);align-items:center;justify-content:flex-end;display:none}
+
+/* Metadados */
+.cw-meta{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin-bottom:2px}
+.cw-meta-item{display:flex;flex-direction:column;gap:3px}
+.cw-meta-item.span2{grid-column:span 2}
+.cw-meta-label{font-size:9px;font-weight:700;color:var(--txt-3);text-transform:uppercase;letter-spacing:.5px}
+.cw-meta-val{border:1px solid var(--border);border-radius:var(--radius);padding:4px 7px;font-size:11px;font-family:var(--mono);color:var(--nt-dark);background:var(--surface-2);width:100%;box-sizing:border-box}
+.cw-meta-val:focus{outline:none;border-color:var(--nt-cyan);background:var(--surface)}
+
+/* Tabela de opções */
+.cw-table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border)}
+.cw-table{width:100%;border-collapse:collapse;font-size:11.5px}
+.cw-table th{background:var(--nt-dark);color:#fff;padding:5px 10px;text-align:left;font-weight:600;font-size:10px;white-space:nowrap}
+.cw-table th:first-child{border-radius:var(--radius) 0 0 0}
+.cw-table th.th-sel{background:#0d5c30;text-align:center;border-radius:0 var(--radius) 0 0}
+.cw-table td{padding:6px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.cw-table tr:last-child td{border-bottom:none}
+.cw-table tr.opt-selected td{background:#f0fdf4}
+.cw-table tr:hover td{background:var(--nt-50)}
+.cw-table tr.opt-selected:hover td{background:#e7fef0}
+.cw-td-seq{font-family:var(--mono);font-size:10px;color:var(--txt-3);width:36px}
+.cw-td-cod{font-family:var(--mono);font-weight:700;color:var(--nt-dark);width:110px}
+.cw-td-desc{color:var(--txt-2)}
+.cw-td-val{font-family:var(--mono);color:var(--txt-2);width:90px;text-align:right}
+.cw-td-custo{font-family:var(--mono);color:var(--txt-2);width:90px;text-align:right}
+.cw-td-pad{width:40px;text-align:center;color:#16a34a;font-size:13px}
+.cw-td-sel{width:90px;text-align:center}
+.cw-sel-btn{padding:3px 10px;border-radius:4px;border:1.5px solid var(--border-2);background:var(--surface);color:var(--txt-2);cursor:pointer;font-size:11px;font-weight:600;transition:background .1s,border-color .1s,color .1s;white-space:nowrap;font-family:var(--font)}
+.cw-sel-btn:hover{border-color:var(--nt-cyan);color:var(--nt-dark)}
+.cw-sel-btn.selected{border-color:#16a34a;background:#dcfce7;color:#15803d}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-logo-wrap">
+    <img class="hdr-protege-logo" src="https://www.protege.com.br/media/1013/logo-protege-real.png" alt="Grupo Protege">
+  </div>
+  <span class="hdr-sep">|</span>
+  <span class="hdr-title">Produtos e Precificação</span>
+  <div class="hdr-client">
+    <i class="ti ti-building-bank" style="font-size:13px" aria-hidden="true"></i>
+    Cliente: <strong>Grupo Protege</strong>
+  </div>
+</header>
+
+<div class="view-tabs" role="tablist">
+  <button class="view-tab active" onclick="switchView('componentes')" role="tab">
+    <i class="ti ti-list-numbers" aria-hidden="true"></i> Componentes de Produto
+  </button>
+  <button class="view-tab" onclick="switchView('precos')" role="tab">
+    <i class="ti ti-percentage" aria-hidden="true"></i> Componentes de Preço
+  </button>
+  <button class="view-tab" onclick="switchView('folha')" role="tab">
+    <i class="ti ti-sitemap" aria-hidden="true"></i> Arvore de Produto
+  </button>
+  <button class="view-tab" onclick="switchView('resultados')" role="tab">
+    <i class="ti ti-chart-line" aria-hidden="true"></i> Simulação Preço de Venda
+  </button>
+</div>
+
+<div class="workspace">
+
+  <!-- ÁRVORE DE SERVIÇOS / PROJETOS -->
+  <nav class="tree-panel" aria-label="Árvore de composição do serviço">
+    <div class="panel-hd">
+      <div class="panel-hd-row">
+        <i class="ti ti-sitemap" style="font-size:14px;color:var(--nt-cyan)" aria-hidden="true"></i>
+        <h3>Composição do Serviço</h3>
+        <button class="btn btn-sm btn-ghost" onclick="openNewTreeModal()" title="Nova árvore / produto" style="margin-left:auto;padding:3px 7px">
+          <i class="ti ti-plus" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="search-wrap">
+        <i class="ti ti-search" aria-hidden="true"></i>
+        <input class="search-box" type="search" placeholder="Buscar projeto ou código…" oninput="filterTree(this.value)" aria-label="Buscar na árvore">
+      </div>
+    </div>
+    <div class="tree-body" id="tree-body"></div>
+  </nav>
+
+  <!-- BIBLIOTECA DE SPECS -->
+  <aside class="lib-panel" aria-label="Biblioteca de especificações de serviço">
+    <div class="panel-hd">
+      <div class="panel-hd-row">
+        <i class="ti ti-books" style="font-size:14px;color:var(--nt-cyan)" aria-hidden="true"></i>
+        <h3>Componentes de Produto</h3>
+      </div>
+      <div class="search-wrap">
+        <i class="ti ti-search" aria-hidden="true"></i>
+        <input class="search-box" type="search" placeholder="Filtrar componentes…" oninput="filterLib(this.value)" aria-label="Filtrar componentes">
+      </div>
+    </div>
+    <div class="lib-body" id="lib-body"></div>
+  </aside>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="main">
+    <div class="breadcrumb" id="breadcrumb" aria-label="Caminho do serviço">
+      <i class="ti ti-home" aria-hidden="true" style="font-size:12px"></i>
+      <span style="color:var(--border-2)">›</span>
+      <span id="bc-text" class="bc-item">Selecione um projeto/componente na árvore</span>
+    </div>
+
+    <!-- VIEW: FOLHA DE ESPECIFICAÇÃO -->
+
+    <!-- VIEW: COMPONENTES DE PRODUTO -->
+    <div class="view active" id="view-componentes" role="tabpanel">
+      <div class="comp-wrap">
+        <div class="comp-toolbar">
+          <i class="ti ti-list-numbers" style="font-size:15px;color:var(--nt-cyan)" aria-hidden="true"></i>
+          <h3>Componentes de Produto — Cadastro Geral</h3>
+          <span class="dz-counter" id="comp-counter" aria-live="polite">—</span>
+          <button class="btn btn-secondary btn-sm" onclick="openEditRTModal(null)"><i class="ti ti-plus" aria-hidden="true"></i> Novo Componente</button>
+        </div>
+        <div class="comp-filters">
+          <div class="search-wrap" style="flex:1;max-width:260px">
+            <i class="ti ti-search" aria-hidden="true"></i>
+            <input class="search-box" type="search" id="comp-search" placeholder="Buscar código ou descrição…" oninput="filterCompWidgets()">
+          </div>
+          <select style="max-width:140px;font-size:11px;padding:5px 8px" id="comp-flt-sit" onchange="filterCompWidgets()">
+            <option value="">Todos status</option>
+            <option value="Ativo">Ativo</option>
+            <option value="Inativo">Inativo</option>
+          </select>
+          <select style="max-width:160px;font-size:11px;padding:5px 8px" id="comp-flt-multi" onchange="filterCompWidgets()">
+            <option value="">Seleção simples/múltipla</option>
+            <option value="0">Seleção simples</option>
+            <option value="1">Múltipla seleção</option>
+          </select>
+        </div>
+        <div class="comp-grid" id="comp-widget-grid"></div>
+      </div>
+    </div>
+
+    <!-- VIEW: COMPONENTES DE PREÇO -->
+    <div class="view" id="view-precos" role="tabpanel">
+      <div class="comp-wrap">
+        <div class="comp-toolbar">
+          <i class="ti ti-percentage" style="font-size:15px;color:var(--nt-cyan)" aria-hidden="true"></i>
+          <h3>Componentes de Preço — Cadastro Geral</h3>
+          <span class="dz-counter" id="preco-counter" aria-live="polite">—</span>
+          <button class="btn btn-secondary btn-sm" onclick="openEditPTModal(null)"><i class="ti ti-plus" aria-hidden="true"></i> Novo Componente</button>
+        </div>
+        <div class="comp-filters">
+          <div class="search-wrap" style="flex:1;max-width:260px">
+            <i class="ti ti-search" aria-hidden="true"></i>
+            <input class="search-box" type="search" id="preco-search" placeholder="Buscar código ou descrição…" oninput="filterPrecoWidgets()">
+          </div>
+          <select style="max-width:140px;font-size:11px;padding:5px 8px" id="preco-flt-sit" onchange="filterPrecoWidgets()">
+            <option value="">Todos status</option>
+            <option value="Ativo">Ativo</option>
+            <option value="Inativo">Inativo</option>
+          </select>
+          <select style="max-width:160px;font-size:11px;padding:5px 8px" id="preco-flt-multi" onchange="filterPrecoWidgets()">
+            <option value="">Seleção simples/múltipla</option>
+            <option value="0">Seleção simples</option>
+            <option value="1">Múltipla seleção</option>
+          </select>
+        </div>
+        <div class="comp-grid" id="preco-widget-grid"></div>
+      </div>
+    </div>
+
+    <div class="view" id="view-folha" role="tabpanel">
+      <div class="dz-wrap">
+        <div class="dz-header">
+          <h3 id="dz-title">Especificações do Serviço</h3>
+          <span class="dz-counter" id="dz-counter" aria-live="polite">Nenhum serviço selecionado</span>
+          <button class="btn btn-sm btn-ghost" id="btn-clear" onclick="clearAll()" style="display:none" title="Remover todas">
+            <i class="ti ti-trash" aria-hidden="true"></i> Limpar
+          </button>
+          <button class="btn btn-sm btn-secondary" id="btn-sort" onclick="autoSort()" style="display:none" title="Reordenar">
+            <i class="ti ti-sort-ascending-letters" aria-hidden="true"></i> Reordenar
+          </button>
+        </div>
+        <div class="drop-zone" id="drop-zone"
+          ondragover="onZoneDragOver(event)"
+          ondragleave="onZoneDragLeave(event)"
+          ondrop="onZoneDrop(event)"
+          role="region" aria-label="Zona de especificações do serviço">
+          <div class="dz-empty" id="dz-empty">
+            <i class="ti ti-arrows-transfer-down" aria-hidden="true"></i>
+            <p>Selecione um projeto e arraste especificações da biblioteca</p>
+            <small>Ou solte diretamente sobre um item na árvore de composição</small>
+          </div>
+          <div class="spec-rows" id="spec-rows"></div>
+        </div>
+        <div class="action-row" id="action-row" style="display:none">
+          <span style="font-size:11px;color:var(--txt-3)" id="action-info"></span>
+          <div class="spacer"></div>
+          <button class="btn btn-ghost" onclick="revertChanges()"><i class="ti ti-arrow-back" aria-hidden="true"></i> Reverter</button>
+          <button class="btn btn-primary" onclick="saveItem()"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar Folha</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW: TABELA DE RESULTADOS -->
+    <div class="view" id="view-resultados" role="tabpanel">
+      <div class="results-wrap">
+        <div class="results-toolbar">
+          <i class="ti ti-chart-line" style="font-size:15px;color:var(--nt-cyan)"></i>
+          <div style="flex:1">
+            <h3 style="font-size:13px;font-weight:600;color:var(--nt-dark);margin:0">Simulação Preço de Venda</h3>
+            <span id="sim-produto-label" style="font-size:11px;color:var(--txt-3)">Selecione um produto na Árvore de Produto para simular</span>
+          </div>
+        </div>
+        
+        <div id="apv-panel" style="background:linear-gradient(135deg,#0D3B5E 0%,#1A5880 100%);border-radius:10px;padding:14px 16px;color:#fff;flex-shrink:0;margin-bottom:10px">
+          <div style="font-size:11px;font-weight:600;color:#B8D8EA;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;display:flex;align-items:center;gap:6px">
+            <i class="ti ti-function" aria-hidden="true"></i> Simulação de Preço de Venda - Módulo APV
+          </div>
+          <div id="apv-vars" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px"></div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:7px;align-items:center">
+            <button onclick="apvAppend('+')" style="padding:3px 9px;border-radius:14px;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;cursor:pointer;font-size:14px;font-weight:700;font-family:monospace">+</button>
+            <button onclick="apvAppend('-')" style="padding:3px 9px;border-radius:14px;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;cursor:pointer;font-size:14px;font-weight:700;font-family:monospace">-</button>
+            <button onclick="apvAppend('x')" style="padding:3px 9px;border-radius:14px;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;cursor:pointer;font-size:14px;font-weight:700;font-family:monospace">x</button>
+            <button onclick="apvAppend('/')" style="padding:3px 9px;border-radius:14px;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;cursor:pointer;font-size:14px;font-weight:700;font-family:monospace">/</button>
+            <button onclick="apvAppend('(')" style="padding:3px 9px;border-radius:14px;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;cursor:pointer;font-size:14px;font-weight:700;font-family:monospace">(</button>
+            <button onclick="apvAppend(')')" style="padding:3px 9px;border-radius:14px;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;cursor:pointer;font-size:14px;font-weight:700;font-family:monospace">)</button>
+            <button onclick="apvUndo()" style="padding:3px 10px;border-radius:14px;border:1.5px solid #f87171;background:rgba(220,38,38,.25);color:#fca5a5;cursor:pointer;font-size:11px">Apagar</button>
+            <button onclick="apvClear()" style="padding:3px 10px;border-radius:14px;border:1.5px solid #f87171;background:rgba(220,38,38,.25);color:#fca5a5;cursor:pointer;font-size:11px">Limpar</button>
+            <button onclick="apvCalc()" style="margin-left:auto;padding:4px 14px;border-radius:14px;border:1.5px solid #4ade80;background:rgba(22,163,74,.3);color:#bbf7d0;cursor:pointer;font-size:12px;font-weight:600">Calcular</button>
+          </div>
+          <div id="apv-display" style="background:rgba(0,0,0,.3);border-radius:5px;padding:8px 12px;font-family:monospace;font-size:12px;color:#e2e8f0;min-height:32px;word-break:break-all;border:1px solid rgba(255,255,255,.1);margin-bottom:8px">--</div>
+          <div style="display:flex;gap:16px;padding-top:10px;border-top:1px solid rgba(255,255,255,.12);flex-wrap:wrap">
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:9px;color:#6fa8c8;text-transform:uppercase">Custo Base</span><span id="apvr-custo" style="font-size:14px;font-weight:700;color:#4ade80;font-family:monospace">R$ --</span></div>
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:9px;color:#6fa8c8;text-transform:uppercase">Impostos %</span><span id="apvr-imp" style="font-size:14px;font-weight:700;color:#fbbf24;font-family:monospace">-- %</span></div>
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:9px;color:#6fa8c8;text-transform:uppercase">Preco Bruto Final</span><span id="apvr-bruto" style="font-size:20px;font-weight:700;color:#34d399;font-family:monospace">R$ --</span></div>
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:9px;color:#6fa8c8;text-transform:uppercase">EBITDA</span><span id="apvr-ebitda" style="font-size:14px;font-weight:700;color:#fbbf24;font-family:monospace">-- %</span></div>
+          </div>
+        </div>
+<div id="sim-empty" style="text-align:center;padding:32px;color:var(--txt-3);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:8px">
+  <i class="ti ti-arrow-left" style="font-size:28px;opacity:.3"></i>
+  <span>Selecione um produto na aba <strong>Árvore de Produto</strong> e volte aqui para simular</span>
+</div>
+<div id="sim-content" style="display:none;flex-direction:column;gap:0">
+  <div style="font-size:11px;font-weight:700;color:var(--txt-3);text-transform:uppercase;letter-spacing:.5px;padding:10px 4px 6px;border-bottom:2px solid var(--nt-mid);margin-bottom:8px;display:flex;align-items:center;gap:6px">
+    <i class="ti ti-list-numbers" style="color:var(--nt-cyan)"></i> Componentes de Produto vinculados
+    <span id="sim-prod-count" style="font-size:10px;background:var(--nt-light);border:1px solid var(--nt-mid);padding:1px 7px;border-radius:10px;color:var(--nt-dark);font-weight:700;margin-left:4px"></span>
+  </div>
+  <div class="rt-list" id="rt-list"></div>
+  <div style="font-size:11px;font-weight:700;color:var(--txt-3);text-transform:uppercase;letter-spacing:.5px;padding:14px 4px 6px;border-bottom:2px solid #a78bfa55;margin-bottom:8px;display:flex;align-items:center;gap:6px">
+    <i class="ti ti-percentage" style="color:#7c3aed"></i> Componentes de Preço
+    <span id="sim-preco-count" style="font-size:10px;background:#f3e8ff;border:1px solid #d8b4fe;padding:1px 7px;border-radius:10px;color:#7c3aed;font-weight:700;margin-left:4px"></span>
+  </div>
+  <div class="rt-list" id="rt-list-precos"></div>
+</div>
+      </div>
+    </div>
+
+    <!-- VIEW: VÍNCULOS -->
+    <div class="view" 
+    </div>
+  </main>
+</div>
+
+<div class="statusbar" aria-live="polite">
+  <span id="sb-item">Nenhum serviço selecionado</span>
+  <span class="sep">·</span>
+  <span class="ok" id="sb-msg">Pronto</span>
+  <span class="sep" style="margin-left:auto">·</span>
+  <span>NewTech Soluções · Datasul CD0213 · PayCash Transporte de Valores</span>
+</div>
+
+<div id="drag-ghost"><i class="ti ti-grip-horizontal" aria-hidden="true"></i><span id="drag-ghost-label"></span></div>
+<div class="toast" id="toast-el" role="alert" aria-live="assertive">
+  <i class="ti ti-check-circle" id="toast-icon" aria-hidden="true"></i>
+  <span id="toast-msg"></span>
+</div>
+
+<!-- MODAL: Nova Spec -->
+<div class="modal-overlay" id="modal-spec" style="display:none" role="dialog" aria-modal="true" aria-labelledby="modal-spec-title">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <i class="ti ti-file-plus" style="font-size:16px;color:var(--nt-cyan)" aria-hidden="true"></i>
+      <h3 id="modal-spec-title">Nova Especificação</h3>
+      <button class="btn-icon" onclick="closeModal('modal-spec')" aria-label="Fechar"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-grid">
+        <div class="field"><label>Código <span class="req">*</span></label><input type="text" id="ms-cod" placeholder="ex: ADVAL, FREQ_COLETA" style="font-family:var(--mono)"></div>
+        <div class="field"><label>Tipo <span class="req">*</span></label>
+          <select id="ms-tipo" onchange="toggleMsFields()">
+            <option value="N">Numérico</option><option value="T">Texto livre</option>
+            <option value="M">Múltipla escolha</option><option value="B">Booleano (S/N)</option>
+            <option value="R">Percentual / Taxa</option>
+          </select>
+        </div>
+        <div class="field span2"><label>Descrição <span class="req">*</span></label><input type="text" id="ms-desc" placeholder="Descrição da especificação"></div>
+        <div class="field"><label>Grupo</label>
+          <select id="ms-group">
+            <option>Precificação</option><option>Operacional</option><option>Financeiro</option>
+            <option>Contratual</option><option>Tecnologia</option><option>Outro</option>
+          </select>
+        </div>
+        <div class="field"><label>Unidade</label><input type="text" id="ms-un" placeholder="R$, %, dias, qtd…"></div>
+        <div class="field" id="ms-vmin-wrap"><label>Valor Mínimo</label><input type="number" id="ms-vmin" step="any" placeholder="—"></div>
+        <div class="field" id="ms-vmax-wrap"><label>Valor Máximo</label><input type="number" id="ms-vmax" step="any" placeholder="—"></div>
+        <div class="field" id="ms-tabres-wrap" style="display:none">
+          <label>Tabela de Resultados <span class="req">*</span></label>
+          <select id="ms-tabres"><option value="">— Selecione —</option></select>
+        </div>
+        <div class="field span2"><label>Instrução / Parâmetro Contratual</label><textarea id="ms-instr" placeholder="Referência contratual, norma ou método de cálculo…"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-spec')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveNewSpec()"><i class="ti ti-check" aria-hidden="true"></i> Adicionar à biblioteca</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Nova Tabela RT -->
+<div class="modal-overlay" id="modal-rt" style="display:none" role="dialog" aria-modal="true" aria-labelledby="modal-rt-title">
+  <div class="modal-box" style="max-width:680px">
+    <div class="modal-hd">
+      <i class="ti ti-list-numbers" style="font-size:16px;color:var(--nt-cyan)" aria-hidden="true"></i>
+      <h3 id="modal-rt-title">Novo Componente</h3>
+      <button class="btn-icon" onclick="closeModal('modal-rt')" aria-label="Fechar"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-grid" style="margin-bottom:12px;grid-template-columns:1fr 1fr 1fr 1fr">
+        <div class="field"><label>Código <span class="req">*</span></label><input type="text" id="mrt-cod" placeholder="ex: TR010" style="font-family:var(--mono)"></div>
+        <div class="field" style="grid-column:span 2"><label>Descrição <span class="req">*</span></label><input type="text" id="mrt-desc" placeholder="Nome do componente"></div>
+        <div class="field"><label>Situação</label><select id="mrt-sit"><option>Ativo</option><option>Inativo</option></select></div>
+        <div class="field"><label>Variável APV</label><input type="text" id="mrt-var" placeholder="ex: CPE_SOP" style="font-family:var(--mono)"></div>
+        <div class="field" style="grid-column:span 2"><label>Fórmula de Cálculo</label><input type="text" id="mrt-formula" placeholder="ex: CUSTO_EMBARQUE x QTD_ATEND" style="font-family:var(--mono);font-size:11px"></div>
+        <div class="field"><label>Múltipla seleção</label><select id="mrt-multi"><option>Não</option><option>Sim</option></select></div>
+      </div>
+      <hr class="divider">
+      <div style="display:flex;align-items:center;gap:8px;margin:8px 0 6px">
+        <span style="font-size:11px;font-weight:600;color:var(--txt-2)">Opções de Resposta</span>
+        <button class="btn btn-sm btn-secondary" onclick="addRTOption()"><i class="ti ti-plus" aria-hidden="true"></i> Opção</button>
+      </div>
+      <div class="opts-table-wrap">
+        <table><thead><tr>
+          <th style="width:46px">Seq.</th>
+          <th style="width:80px">Código</th>
+          <th>Descrição</th>
+          <th style="width:90px">Val. Calc.</th>
+          <th style="width:110px">Val. Custo</th>
+          <th style="width:50px">Padrão</th>
+          <th style="width:36px"></th>
+        </tr></thead>
+          <tbody id="rt-opts-tbody"><tr><td colspan="7" class="empty-table">Adicione opções</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-rt')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveNewRT()"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar Componente</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Componente de Preço -->
+<div class="modal-overlay" id="modal-pt" style="display:none" role="dialog" aria-modal="true" aria-labelledby="modal-pt-title">
+  <div class="modal-box" style="max-width:620px">
+    <div class="modal-hd">
+      <i class="ti ti-percentage" style="font-size:16px;color:var(--nt-cyan)" aria-hidden="true"></i>
+      <h3 id="modal-pt-title">Novo Componente de Preço</h3>
+      <button class="btn-icon" onclick="closeModal('modal-pt')" aria-label="Fechar"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-grid" style="margin-bottom:12px;grid-template-columns:1fr 1fr 1fr 1fr">
+        <div class="field"><label>Código <span class="req">*</span></label><input type="text" id="mpt-cod" placeholder="ex: TP001" style="font-family:var(--mono)"></div>
+        <div class="field" style="grid-column:span 2"><label>Descrição <span class="req">*</span></label><input type="text" id="mpt-desc" placeholder="Nome do componente de preço"></div>
+        <div class="field"><label>Situação</label><select id="mpt-sit"><option>Ativo</option><option>Inativo</option></select></div>
+        <div class="field"><label>Variável APV</label><input type="text" id="mpt-var" placeholder="ex: ISS, PIS_COF" style="font-family:var(--mono)"></div>
+        <div class="field" style="grid-column:span 2"><label>Fórmula de Cálculo</label><input type="text" id="mpt-formula" placeholder="ex: PRECO_BRUTO x ISS" style="font-family:var(--mono);font-size:11px"></div>
+        <div class="field"><label>Múltipla seleção</label><select id="mpt-multi"><option>Não</option><option>Sim</option></select></div>
+      </div>
+      <hr class="divider">
+      <div style="display:flex;align-items:center;gap:8px;margin:8px 0 6px">
+        <span style="font-size:11px;font-weight:600;color:var(--txt-2)">Opções de Resposta</span>
+        <button class="btn btn-sm btn-secondary" onclick="addPTOption()"><i class="ti ti-plus" aria-hidden="true"></i> Opção</button>
+      </div>
+      <div class="opts-table-wrap">
+        <table><thead><tr>
+          <th style="width:46px">Seq.</th>
+          <th style="width:80px">Código</th>
+          <th>Descrição</th>
+          <th style="width:100px">Val. Calc. (%)</th>
+          <th style="width:50px">Padrão</th>
+          <th style="width:36px"></th>
+        </tr></thead>
+          <tbody id="pt-opts-tbody"><tr><td colspan="6" class="empty-table">Adicione opções</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-pt')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveNewPT()"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar Componente</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Nova Árvore / Produto -->
+<div class="modal-overlay" id="modal-tree" style="display:none" role="dialog" aria-modal="true" aria-labelledby="modal-tree-title">
+  <div class="modal-box" style="max-width:500px">
+    <div class="modal-hd">
+      <i class="ti ti-sitemap" style="font-size:16px;color:var(--nt-cyan)" aria-hidden="true"></i>
+      <h3 id="modal-tree-title">Novo Item na Árvore</h3>
+      <button class="btn-icon" onclick="closeModal('modal-tree')" aria-label="Fechar"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-grid" style="grid-template-columns:1fr 1fr">
+
+        <!-- Toggle Grupo / Produto -->
+        <div class="tree-tipo-toggle">
+          <button class="tree-tipo-btn active" id="mt-btn-group" onclick="setTreeTipo('group')">
+            <i class="ti ti-folder"></i> Grupo de Produtos
+          </button>
+          <button class="tree-tipo-btn" id="mt-btn-item" onclick="setTreeTipo('item')">
+            <i class="ti ti-package"></i> Produto / Serviço
+          </button>
+        </div>
+
+        <!-- Seção GRUPO -->
+        <div class="mt-section show" id="mt-sec-group">
+          <div class="modal-grid" style="grid-template-columns:1fr 1fr;gap:10px">
+            <div class="field">
+              <label>Código do Grupo <span class="req">*</span></label>
+              <input type="text" id="mt-g-code" placeholder="ex: LOGISTICA" style="font-family:var(--mono);text-transform:uppercase"
+                oninput="this.value=this.value.toUpperCase()">
+            </div>
+            <div class="field">
+              <label>Ícone</label>
+              <select id="mt-g-icon">
+                <option value="ti-safe">🔒 Cofre</option>
+                <option value="ti-truck">🚚 Transporte</option>
+                <option value="ti-currency-dollar">💰 Financeiro</option>
+                <option value="ti-lock">🔐 Custódia</option>
+                <option value="ti-notes">📋 Processamento</option>
+                <option value="ti-credit-card-pay">💳 Pagamento</option>
+                <option value="ti-building">🏢 Empresa</option>
+                <option value="ti-building-bank">🏦 Banco</option>
+                <option value="ti-building-store">🏪 Loja</option>
+                <option value="ti-route">🗺️ Rota</option>
+                <option value="ti-box">📦 Caixa</option>
+                <option value="ti-sitemap">🔀 Estrutura</option>
+                <option value="ti-settings">⚙️ Configuração</option>
+              </select>
+            </div>
+            <div class="field" style="grid-column:span 2">
+              <label>Nome do Grupo <span class="req">*</span></label>
+              <input type="text" id="mt-g-label" placeholder="ex: Logística e Distribuição">
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção PRODUTO -->
+        <div class="mt-section" id="mt-sec-item">
+          <div class="modal-grid" style="grid-template-columns:1fr 1fr;gap:10px">
+            <div class="field">
+              <label>Grupo pai <span class="req">*</span></label>
+              <select id="mt-i-parent" onchange="updateCodePreview()">
+                <option value="">— Selecione o grupo —</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Ícone</label>
+              <select id="mt-i-icon">
+                <option value="ti-building-store">🏪 Loja/Varejo</option>
+                <option value="ti-gas-station">⛽ Combustível</option>
+                <option value="ti-first-aid-kit">💊 Farmácia</option>
+                <option value="ti-building-bank">🏦 Banco</option>
+                <option value="ti-building">🏢 Empresa</option>
+                <option value="ti-route">🗺️ Rota Capital</option>
+                <option value="ti-route-2">🗺️ Rota Interior</option>
+                <option value="ti-package-import">📦 Embarque</option>
+                <option value="ti-notes">📋 Cédulas</option>
+                <option value="ti-coin">🪙 Moedas</option>
+                <option value="ti-receipt">🧾 Cheques</option>
+                <option value="ti-vault">🏛️ Custódia</option>
+                <option value="ti-archive">🗃️ Malote</option>
+                <option value="ti-credit-card-pay">💳 PayCash</option>
+              </select>
+            </div>
+            <div class="field" style="grid-column:span 2">
+              <label>Nome do Produto / Serviço <span class="req">*</span></label>
+              <input type="text" id="mt-i-label" placeholder="ex: Cofre Inteligente — Supermercado" oninput="updateCodePreview()">
+            </div>
+            <div class="field" style="grid-column:span 2">
+              <label>Código gerado</label>
+              <div class="code-preview" id="mt-i-code-preview">Selecione o grupo para gerar o código</div>
+              <input type="hidden" id="mt-i-code">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-tree')">Cancelar</button>
+      <button class="btn btn-primary" id="mt-save-btn" onclick="saveNewTree()">
+        <i class="ti ti-check" aria-hidden="true"></i> Adicionar Grupo
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════ DATA ═══════════════ */
+const TIPO_LABEL={N:'Numérico',T:'Texto',M:'Multi',B:'Bool',R:'Taxa %',O:'%'};
+const TIPO_CLS  ={N:'tN',T:'tT',M:'tM',B:'tB',R:'tR',O:'tO'};
+
+/* Tabelas de Resultados extraídas das planilhas PayCash */
+let resultTables=[
+  {id:'rt01',cod:'TR001',desc:'Condição Operacional CPE/SOP',varAPV:'CPE_SOP',formula:'CUSTO_EMBARQUE x QTD_ATEND',sit:'Ativo',multi:false,opts:[
+    {seq:10,cod:'CPE',    desc:'CPE — Cofre Particular no Estabelecimento',  val:1,dflt:true,selected:true},
+    {seq:20,cod:'SOP',    desc:'SOP — Sem Cofre Particular',                 val:2,dflt:false,selected:false},
+  ]},
+  {id:'rt02',cod:'TR002',desc:'Modelo de Cofre Inteligente',varAPV:'COFRE_AT',formula:'CUSTO_COFRE + SEGURO_COFRE',sit:'Ativo',multi:false,opts:[
+    {seq:10,cod:'PROTEGE1',desc:'Protege One — Cofre compacto',              val:1,dflt:true,selected:true},
+    {seq:20,cod:'PROTEGE2',desc:'Protege Two — Cofre duplo',                 val:2,dflt:false,selected:false},
+    {seq:30,cod:'COFRE_STD',desc:'Cofre padrão — Sem inteligência embarcada',val:3,dflt:false,selected:false},
+  ]},
+  {id:'rt03',cod:'TR003',desc:'Frequência de Coleta',varAPV:'FREQ',formula:'EMBARQUES_MES x CUSTO_EMBARQUE',sit:'Ativo',multi:false,opts:[
+    {seq:10,cod:'DIARIA',   desc:'Diária — coleta todo dia útil',            val:22,dflt:false,selected:false},
+    {seq:20,cod:'SEMANAL',  desc:'Semanal — 1x por semana',                  val:4,dflt:false,selected:false},
+    {seq:30,cod:'QUINZENAL',desc:'Quinzenal — 2x por mês',                   val:2,dflt:false,selected:false},
+    {seq:40,cod:'MENSAL',   desc:'Mensal — 1x por mês',                      val:1,dflt:false,selected:false},
+    {seq:50,cod:'INTELIGENTE',desc:'Inteligente — sob demanda (cofre cheio)',val:0,dflt:true,selected:true},
+  ]},
+  {id:'rt04',cod:'TR004',desc:'Base Operacional / Região',varAPV:'BASE_OP',formula:'HR_NORMAL x CUSTO_HR',sit:'Ativo',multi:false,opts:[
+    {seq:10,cod:'BASE_SP_O', desc:'Base Oeste — São Paulo/SP',               val:1,dflt:true,selected:true},
+    {seq:20,cod:'BASE_SP_L', desc:'Base Leste — São Paulo/SP',               val:2,dflt:false,selected:false},
+    {seq:30,cod:'BASE_RJ',   desc:'Base Rio de Janeiro/RJ',                  val:3,dflt:false,selected:false},
+    {seq:40,cod:'BASE_MG',   desc:'Base Belo Horizonte/MG',                  val:4,dflt:false,selected:false},
+    {seq:50,cod:'BASE_RS',   desc:'Base Porto Alegre/RS',                    val:5,dflt:false,selected:false},
+  ]},
+  {id:'rt05',cod:'TR005',desc:'Taxa de Antecipação (D0 Bancarização)',varAPV:'MARGEM',formula:'PRECO_ROL x MARGEM',sit:'Ativo',multi:false,opts:[
+    {seq:10,cod:'D0_015',   desc:'0,15% a.m. — Taxa Selic (padrão)',         val:0.0015,dflt:true,selected:true},
+    {seq:20,cod:'D0_010',   desc:'0,10% a.m. — Taxa negociada',              val:0.001, dflt:false,selected:false},
+    {seq:30,cod:'D0_ZERO',  desc:'Sem antecipação',                          val:0,     dflt:false,selected:false},
+  ]},
+  {id:'rt06',cod:'TR006',desc:'Nível de Serviço (SLA Coleta)',varAPV:'SLA',formula:'SLA_HORAS x CUSTO_HR',sit:'Ativo',multi:false,opts:[
+    {seq:10,cod:'SLA_2H',  desc:'SLA 2h — Coleta em até 2 horas',           val:2, dflt:false,selected:false},
+    {seq:20,cod:'SLA_4H',  desc:'SLA 4h — Coleta em até 4 horas',           val:4, dflt:false,selected:false},
+    {seq:30,cod:'SLA_D1',  desc:'SLA D+1 — Coleta no próximo dia útil',     val:24,dflt:true,selected:true},
+    {seq:40,cod:'SLA_D2',  desc:'SLA D+2 — Coleta em até 2 dias úteis',     val:48,dflt:false,selected:false},
+  ]},
+  {id:'rt07',cod:'TR007',desc:'Tipo de Custo de Processamento (NUM)',varAPV:'PROC_TP',formula:'QTD_MALOTES x CUSTO_PROC',sit:'Ativo',multi:false,opts:[
+    {seq:10,cod:'NUM_FIXO',  desc:'Fixo por numerário (por malote)',         val:6.059,dflt:false,selected:false},
+    {seq:20,cod:'NUM_PERC',  desc:'Percentual sobre valor processado',       val:0.0015,dflt:true,selected:true},
+    {seq:30,cod:'NUM_COMBO', desc:'Combinado — fixo + percentual',           val:0,    dflt:false,selected:false},
+  ]},
+  {id:'rt08',cod:'TR008',desc:'Prazo de Floating (Dias)',varAPV:'FLOAT',formula:'MONTANTE x SELIC x FLOAT',sit:'Ativo',multi:false,opts:[
+    {seq:10,cod:'D0',   desc:'D+0 — Crédito no mesmo dia (Bancarização)',   val:0,dflt:false,selected:false},
+    {seq:20,cod:'D1',   desc:'D+1 — Crédito em 1 dia útil',                val:1,dflt:false,selected:false},
+    {seq:30,cod:'D2',   desc:'D+2 — Crédito em 2 dias úteis',              val:2,dflt:false,selected:false},
+    {seq:40,cod:'D3',   desc:'D+3 — Crédito em 3 dias úteis (padrão)',     val:3,dflt:true,selected:true},
+  ]},
+  {id:'rt09',cod:'TR009',desc:'Seguro Cofre — Modalidade',varAPV:'SEG',formula:'LIMITE_SEG x TAXA_SEG',sit:'Ativo',multi:false,opts:[
+    {seq:10,cod:'SEG_COL',  desc:'Seguro por coleta negociada',             val:200000,dflt:false,selected:false},
+    {seq:20,cod:'SEG_PAD',  desc:'Seguro padrão (coleta inteligente)',      val:300000,dflt:true,selected:true},
+    {seq:30,cod:'SEG_AMP',  desc:'Seguro ampliado — limite customizado',    val:500000,dflt:false,selected:false},
+  ]},
+,
+  {id:'rt10',cod:'TR006',desc:'Modelo Cofre Projetado (PayCash)',sit:'Ativo',multi:false,varAPV:'COFRE_PR',formula:'CUSTO_COFRE + SEGURO_COFRE',opts:[
+    {seq:10,cod:'PROTEGE_ONE',  desc:'Protege One (R$ 447,42/mes)',val:447.42,dflt:true, selected:true},
+    {seq:20,cod:'GRAND_GLORY',  desc:'Grand Glory (R$ 380,00/mes)',val:380.00,dflt:false,selected:false},
+    {seq:30,cod:'GRAND_DIEBOLD',desc:'Grand Diebold / Tecnoservice',val:290.00,dflt:false,selected:false},
+    {seq:40,cod:'ATM_PADRAO',   desc:'ATM / Caixa Eletronico',val:520.00,dflt:false,selected:false},
+    {seq:50,cod:'MID',          desc:'MID - Cofre compacto',val:260.00,dflt:false,selected:false},
+  ]},
+  {id:'rt11',cod:'TR007',desc:'Taxa de Advalorem sobre montante',sit:'Ativo',multi:false,varAPV:'ADVALOREM',formula:'MONTANTE x TX_ADV',opts:[
+    {seq:10,cod:'ADV_056',desc:'0,056% s/ montante (padrao Protege Cash)',val:0.00056,dflt:true, selected:true},
+    {seq:20,cod:'ADV_05', desc:'0,50 por mil s/ montante',val:0.0005,dflt:false,selected:false},
+    {seq:30,cod:'ADV_1',  desc:'1,00 por mil s/ montante',val:0.001, dflt:false,selected:false},
+  ]},
+  {id:'rt12',cod:'TR008',desc:'Taxa de Custodia sobre montante',sit:'Ativo',multi:false,varAPV:'CUSTODIA',formula:'MONTANTE_CST x TX_CTV',opts:[
+    {seq:10,cod:'CTV_014',desc:'0,014% s/ montante custodiado (padrao)',val:0.00014,dflt:true, selected:true},
+    {seq:20,cod:'CTV_01', desc:'0,10 por mil s/ montante',val:0.001,dflt:false,selected:false},
+    {seq:30,cod:'CTV_NEG',desc:'Negociado / a definir',val:0,dflt:false,selected:false},
+  ]},
+  {id:'rt13',cod:'TR009',desc:'Tipo de Custo Processamento (NUM)',sit:'Ativo',multi:false,varAPV:'PROC',formula:'QTD_MILH x CUSTO_PROC',opts:[
+    {seq:10,cod:'NUM_PERC', desc:'Percentual sobre valor processado (0,15 por mil)',val:0.0015,dflt:true, selected:true},
+    {seq:20,cod:'NUM_FIXO', desc:'Fixo por numerario - por malote (R$ 6,059)',val:6.059,dflt:false,selected:false},
+    {seq:30,cod:'NUM_COMBO',desc:'Combinado - fixo + percentual',val:0,dflt:false,selected:false},
+  ]},
+  {id:'rt14',cod:'TR010',desc:'Prazo de Floating (dias)',sit:'Ativo',multi:false,varAPV:'FLOATING',formula:'MONTANTE x SELIC x FLOATING',opts:[
+    {seq:10,cod:'D3',desc:'D+3 - Credito em 3 dias uteis (padrao)',val:3,dflt:true, selected:true},
+    {seq:20,cod:'D2',desc:'D+2 - Credito em 2 dias uteis',val:2,dflt:false,selected:false},
+    {seq:30,cod:'D1',desc:'D+1 - Credito em 1 dia util',val:1,dflt:false,selected:false},
+    {seq:40,cod:'D0',desc:'D+0 - Bancario mesmo dia',val:0,dflt:false,selected:false},
+  ]}];
+
+/* ═══════════════ PRICE TABLES (Componentes de Preço — %) ═══════════════ */
+let priceTables=[
+  {id:'pt01',cod:'TP001',desc:'ISS — Imposto Sobre Serviços',varAPV:'ISS',formula:'PRECO_BRUTO x ISS',sit:'Ativo',multi:false,opts:[
+    {seq:10,cod:'ISS_5',  desc:'ISS 5% (padrão municípios)',    val:5,   dflt:true, selected:true},
+    {seq:20,cod:'ISS_2',  desc:'ISS 2% (municípios reduzidos)', val:2,   dflt:false,selected:false},
+    {seq:30,cod:'ISS_3',  desc:'ISS 3%',                        val:3,   dflt:false,selected:false},
+  ]},
+  {id:'pt02',cod:'TP002',desc:'PIS/COFINS — Contribuições Federais',varAPV:'PIS_COF',formula:'PRECO_BRUTO x PIS_COF',sit:'Ativo',multi:false,opts:[
+    {seq:10,cod:'PISCOF_141',desc:'PIS/COFINS 14,1% (lucro presumido)',val:14.1,dflt:true, selected:true},
+    {seq:20,cod:'PISCOF_925',desc:'PIS/COFINS 9,25% (lucro real)',    val:9.25,dflt:false,selected:false},
+  ]},
+  {id:'pt03',cod:'TP003',desc:'Despesas Operacionais',varAPV:'DESP_OP',formula:'PRECO_BRUTO x DESP_OP',sit:'Ativo',multi:false,opts:[
+    {seq:10,cod:'DESP_14', desc:'14% sobre preço bruto (padrão)',  val:14,  dflt:true, selected:true},
+    {seq:20,cod:'DESP_12', desc:'12% sobre preço bruto',           val:12,  dflt:false,selected:false},
+    {seq:30,cod:'DESP_16', desc:'16% sobre preço bruto (premium)', val:16,  dflt:false,selected:false},
+  ]},
+  {id:'pt04',cod:'TP004',desc:'Despesas Indiretas',varAPV:'DESP_IND',formula:'PRECO_BRUTO x DESP_IND',sit:'Ativo',multi:false,opts:[
+    {seq:10,cod:'IND_141',desc:'14,1% sobre preço bruto (padrão)',val:14.1,dflt:true, selected:true},
+    {seq:20,cod:'IND_10', desc:'10% sobre preço bruto',           val:10,  dflt:false,selected:false},
+  ]},
+  {id:'pt05',cod:'TP005',desc:'Margem de Lucro (EBITDA)',varAPV:'MARGEM',formula:'(PRECO_BRUTO - CUSTOS) / PRECO_BRUTO',sit:'Ativo',multi:false,opts:[
+    {seq:10,cod:'MARG_15',desc:'15% margem desejada',val:15,dflt:false,selected:false},
+    {seq:20,cod:'MARG_20',desc:'20% margem desejada',val:20,dflt:true, selected:true},
+    {seq:30,cod:'MARG_25',desc:'25% margem desejada',val:25,dflt:false,selected:false},
+    {seq:40,cod:'MARG_30',desc:'30% margem desejada',val:30,dflt:false,selected:false},
+  ]},
+];
+let library=[
+  /* Ponto de Atendimento */
+  {id:'s01',cod:'PONTO_ATEND',   desc:'Nome do ponto de atendimento',              tipo:'T',un:'',      group:'Ponto de Atendimento'},
+  {id:'s02',cod:'CIDADE_UF',     desc:'Cidade / UF do ponto',                      tipo:'T',un:'',      group:'Ponto de Atendimento'},
+  {id:'s03',cod:'BASE_OPERAC',   desc:'Base operacional de origem',                tipo:'M',un:'',      tabres:'TR004',group:'Ponto de Atendimento'},
+  {id:'s04',cod:'ISS_COBRADO',   desc:'ISS cobrado a parte do cliente?',           tipo:'B',un:'',      group:'Ponto de Atendimento'},
+  {id:'s05',cod:'ATEND_ATUAL',   desc:'Atendemos o ponto atualmente?',             tipo:'B',un:'',      group:'Ponto de Atendimento'},
+  /* Operacional */
+  {id:'s06',cod:'COND_OPER',     desc:'Condicao operacional CPE / SOP',            tipo:'M',un:'',      tabres:'TR001',group:'Operacional'},
+  {id:'s07',cod:'TIPO_SERVICO',  desc:'Tipo de servico desejado',                  tipo:'M',un:'',      tabres:'TR002',group:'Operacional'},
+  {id:'s08',cod:'FREQ_COLETA',   desc:'Frequencia de coleta desejada',             tipo:'M',un:'',      tabres:'TR003',group:'Operacional'},
+  {id:'s09',cod:'VOL_TRANS_AT',  desc:'Volume transportado atual (R$)',            tipo:'N',un:'R$',    group:'Operacional'},
+  {id:'s10',cod:'VOL_TRANS_PR',  desc:'Volume transportado projetado (R$)',        tipo:'N',un:'R$',    group:'Operacional'},
+  {id:'s11',cod:'QTD_EMB_ATUAL', desc:'Quantidade de embarques atual / mes',       tipo:'N',un:'un.',   group:'Operacional'},
+  {id:'s12',cod:'QTD_EMB_PROJ',  desc:'Quantidade de embarques projetados / mes', tipo:'N',un:'un.',   group:'Operacional'},
+  {id:'s13',cod:'CUSTO_EMB_AT',  desc:'Custo embarque atual (R$/emb)',             tipo:'N',un:'R$',    group:'Operacional'},
+  {id:'s14',cod:'PRECO_EMB_AT',  desc:'Preco embarque atual (R$/emb)',             tipo:'N',un:'R$',    group:'Operacional'},
+  {id:'s15',cod:'MARGEM_DESEJ',  desc:'Margem de lucro desejada',                  tipo:'M',un:'',      tabres:'TR005',group:'Operacional'},
+  /* Cofre Inteligente */
+  {id:'s16',cod:'POSSUI_COFRE',  desc:'Cliente possui cofre atualmente?',          tipo:'B',un:'',      group:'Cofre Inteligente'},
+  {id:'s17',cod:'MODELO_COF_AT', desc:'Modelo de cofre atual',                     tipo:'T',un:'',      group:'Cofre Inteligente'},
+  {id:'s18',cod:'PRECO_COF_AT',  desc:'Preco cofre atual (R$/mes)',                tipo:'N',un:'R$',    group:'Cofre Inteligente'},
+  {id:'s19',cod:'SEG_COF_AT',    desc:'Seguro cofre atual (R$/mes)',                tipo:'N',un:'R$',    group:'Cofre Inteligente'},
+  {id:'s20',cod:'MODELO_COF_PR', desc:'Modelo cofre projetado PayCash',            tipo:'M',un:'',      tabres:'TR006',group:'Cofre Inteligente'},
+  {id:'s21',cod:'SEG_COF_PR',    desc:'Seguro cofre projetado (R$/mes)',            tipo:'N',un:'R$',    group:'Cofre Inteligente'},
+  /* Advalorem e Custodia */
+  {id:'s22',cod:'TX_ADVALOREM',  desc:'Taxa advalorem sobre o montante',            tipo:'M',un:'',      tabres:'TR007',group:'Advalorem e Custodia'},
+  {id:'s23',cod:'MONTANTE_CST',  desc:'Montante custodiado (R$)',                   tipo:'N',un:'R$',    group:'Advalorem e Custodia'},
+  {id:'s24',cod:'TX_CUSTODIA',   desc:'Taxa de custodia sobre montante',            tipo:'M',un:'',      tabres:'TR008',group:'Advalorem e Custodia'},
+  /* Processamento */
+  {id:'s25',cod:'PRECO_MILH',    desc:'Preco por milheiro processado (R$/mil)',     tipo:'N',un:'R$/mil',group:'Processamento'},
+  {id:'s26',cod:'QTD_MILHEIROS', desc:'Quantidade de milheiros processados / mes', tipo:'N',un:'mil',   group:'Processamento'},
+  {id:'s27',cod:'CUSTO_PROC',    desc:'Custo de processamento atual (R$/mil)',      tipo:'N',un:'R$/mil',group:'Processamento'},
+  {id:'s28',cod:'TIPO_NUM',      desc:'Tipo de custo de processamento (NUM)',       tipo:'M',un:'',      tabres:'TR009',group:'Processamento'},
+  /* D0 e Bancarizacao */
+  {id:'s29',cod:'TAXA_D0',       desc:'Taxa de antecipacao D0 - bancarizacao',     tipo:'M',un:'',      tabres:'TR005',group:'D0 e Bancarizacao'},
+  {id:'s30',cod:'PRAZO_FLOAT',   desc:'Prazo de floating (dias)',                   tipo:'M',un:'',      tabres:'TR010',group:'D0 e Bancarizacao'},
+];
+
+/* Árvore de projetos/composição de serviço PayCash */
+const TREE_DATA=[
+  {id:'G01',code:'CAPTURA',  label:'Captura (Cofre Inteligente)',  icon:'ti-safe',   isGroup:true,children:[
+    {id:'P01',code:'PC-CAP-001',label:'Cofre Inteligente — Varejo',       icon:'ti-building-store', children:[]},
+    {id:'P02',code:'PC-CAP-002',label:'Cofre Inteligente — Posto de Combustível',icon:'ti-gas-station',children:[]},
+    {id:'P03',code:'PC-CAP-003',label:'Cofre Inteligente — Farmácia',     icon:'ti-first-aid-kit',  children:[]},
+  ]},
+  {id:'G02',code:'TRANSPORTE',label:'Transporte de Valores',        icon:'ti-truck',  isGroup:true,children:[
+    {id:'P04',code:'PC-TRN-001',label:'Rota Padrão — Capital',            icon:'ti-route',          children:[]},
+    {id:'P05',code:'PC-TRN-002',label:'Rota Especial — Interior/MPE',     icon:'ti-route-2',        children:[]},
+    {id:'P06',code:'PC-TRN-003',label:'Embarque Avulso / Spot',           icon:'ti-package-import', children:[]},
+  ]},
+  {id:'G03',code:'PROCESSAMENTO',label:'Processamento de Numerário',icon:'ti-currency-dollar',isGroup:true,children:[
+    {id:'P07',code:'PC-NUM-001',label:'Processamento — Cédulas',          icon:'ti-notes',          children:[]},
+    {id:'P08',code:'PC-NUM-002',label:'Processamento — Moedas',           icon:'ti-coin',           children:[]},
+    {id:'P09',code:'PC-NUM-003',label:'Processamento — Cheques',          icon:'ti-receipt',        children:[]},
+  ]},
+  {id:'G04',code:'CUSTODIA',  label:'Custódia de Valores',          icon:'ti-lock',   isGroup:true,children:[
+    {id:'P10',code:'PC-CTV-001',label:'Custódia — Caixa Forte CVC',       icon:'ti-vault',          children:[]},
+    {id:'P11',code:'PC-CTV-002',label:'Custódia — Malote Lacrado',        icon:'ti-archive',        children:[]},
+  ]},
+  {id:'G05',code:'PAYCASH',   label:'PayCash — Serviço Completo',   icon:'ti-credit-card-pay',isGroup:true,children:[
+    {id:'P12',code:'PC-FULL-001',label:'PayCash — Ponto de Atendimento SP/Capital',icon:'ti-building-bank',children:[]},
+    {id:'P13',code:'PC-FULL-002',label:'PayCash — Ponto Interior (MPE)',  icon:'ti-building',       children:[]},
+  ]},
+];
+
+/* Sem vínculos pré-carregados — relacionamentos feitos via drag & drop */
+const PRELOADED={};
+
+/* ═════════ STATE ═════════ */
+let itemSpecs={};
+let savedSpecs={};
+let treeExpanded={G01:true,G05:true};
+let selNode=null;
+let dragType=null,dragSrcSpec=null,dragSrcIdx=null,dragTargetIdx=null;
+
+/* Estado widgets componentes — deve ficar antes do IIFE */
+var cwExpanded={};
+var cwExpandedP={};
+var srrCollapsed=new Set(); // IDs de painéis de resultado recolhidos
+function fmtVal(v){
+  if(typeof v==='number'&&v>0&&v<1)return (v*100).toFixed(3).replace(/\.?0+$/,'')+'%';
+  if(typeof v==='number')return v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  return v||'—';
+}
+
+/* ═════════ INIT ═════════ */
+(function(){
+  // Garantir campo custo em todas as opções existentes
+  // Se custo ainda não foi definido (ou é 0) e val tem valor de referência, migrar val → custo
+  resultTables.forEach(function(rt){
+    rt.opts.forEach(function(o){
+      if(o.custo===undefined||o.custo===0){
+        var n=parseFloat(o.val);
+        o.custo=(isNaN(n)||n===0)?0:n;
+      }
+    });
+  });
+  for(const[id,ids]of Object.entries(PRELOADED)){
+    itemSpecs[id]=ids.map(sid=>({...getSpec(sid)})).filter(Boolean);
+    savedSpecs[id]=ids.map(sid=>({...getSpec(sid)})).filter(Boolean);
+  }
+  buildTree();buildLibrary();buildRTList();buildCompWidgets();buildPrecoWidgets();updateRTSelect();
+  document.querySelector('.workspace')?.classList.add('hide-panels');
+  buildAPVVars();
+})();
+
+// getSpec busca na library (dados internos/PRELOADED usam IDs s01..s28)
+// A *exibição* da biblioteca lateral usa resultTables, mas os dados de drop-zone são da library
+function getSpec(id){return library.find(s=>s.id===id)||resultTables.find(s=>s.id===id)}
+function getRT(cod){return resultTables.find(t=>t.cod===cod)}
+function uid(){return 's'+Math.random().toString(36).slice(2,7)}
+
+/* ═════════ TREE ═════════ */
+function buildTree(filter=''){
+  document.getElementById('tree-body').innerHTML=renderTree(TREE_DATA,0,filter.toLowerCase());
+}
+function renderTree(nodes,depth,filter){
+  return nodes.map(n=>{
+    const hasKids=n.children&&n.children.length;
+    const isOpen=treeExpanded[n.id];
+    const cnt=(itemSpecs[n.id]||[]).length;
+    const mSelf=!filter||n.label.toLowerCase().includes(filter)||n.code.toLowerCase().includes(filter);
+    let kids='';
+    if(hasKids){kids=renderTree(n.children,depth+1,filter);if(!kids&&!mSelf)return '';}
+    else if(!mSelf)return '';
+    // Botões de ação inline (aparecem no hover)
+    const actionsHtml=n.isGroup
+      ?`<div class="t-row-actions" onclick="event.stopPropagation()">
+          <button class="t-row-btn add" onclick="openAddProductModal('${n.id}')" title="Adicionar produto neste grupo"><i class="ti ti-plus"></i></button>
+          <button class="t-row-btn del" onclick="deleteTreeNode('${n.id}',null)" title="Excluir grupo"><i class="ti ti-trash"></i></button>
+        </div>`
+      :`<div class="t-row-actions" onclick="event.stopPropagation()">
+          <button class="t-row-btn del" onclick="deleteTreeNode('${n.id}','${n.id}')" title="Excluir produto"><i class="ti ti-trash"></i></button>
+        </div>`;
+    return`<div class="t-node">
+      <div class="t-row${selNode===n.id?' selected':''}"
+        onclick="treeClick('${n.id}',event)"
+        ondragover="onTreeDragOver(event,'${n.id}')"
+        ondragleave="onTreeDragLeave(event,'${n.id}')"
+        ondrop="onTreeDrop(event,'${n.id}')"
+        data-id="${n.id}" style="padding-left:${6+depth*14}px">
+        <span class="t-toggle">${hasKids?`<i class="ti ${isOpen?'ti-chevron-down':'ti-chevron-right'}" style="font-size:10px"></i>`:'<span style="width:10px;display:inline-block"></span>'}</span>
+        <i class="ti ${n.icon} t-icon" style="color:${n.isGroup?'var(--nt-dark)':'var(--nt-cyan)'}" aria-hidden="true"></i>
+        <span class="t-label">${n.label}</span>
+        <span class="t-code">${n.code}</span>
+        ${(!n.isGroup&&cnt)?`<span class="t-badge">${cnt}</span>`:''}
+        ${actionsHtml}
+      </div>
+      ${hasKids&&(isOpen||filter)?`<div class="t-children">${kids}</div>`:''}
+    </div>`;
+  }).join('');
+}
+function filterTree(v){buildTree(v)}
+function findNode(id,nodes=TREE_DATA){for(const n of nodes){if(n.id===id)return n;if(n.children){const f=findNode(id,n.children);if(f)return f;}}return null}
+
+/* ═════════ TREE MODAL — Nova Árvore/Produto ═════════ */
+var _treeModalTipo='group'; // estado interno do modal
+
+function openNewTreeModal(forceTipo){
+  _treeModalTipo=forceTipo||'group';
+  // Limpar campos
+  ['mt-g-code','mt-g-label','mt-i-label'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('mt-g-icon').value='ti-box';
+  document.getElementById('mt-i-icon').value='ti-building-store';
+  // Popular grupos pai
+  var sel=document.getElementById('mt-i-parent');
+  sel.innerHTML='<option value="">— Selecione o grupo —</option>';
+  TREE_DATA.filter(function(g){return g.isGroup;}).forEach(function(g){
+    sel.innerHTML+=`<option value="${g.id}">${g.code} — ${g.label}</option>`;
+  });
+  document.getElementById('mt-i-code-preview').textContent='Selecione o grupo para gerar o código';
+  setTreeTipo(_treeModalTipo);
+  document.getElementById('modal-tree').style.display='flex';
+}
+
+function openAddProductModal(groupId){
+  openNewTreeModal('item');
+  // Pré-selecionar o grupo
+  setTimeout(function(){
+    var sel=document.getElementById('mt-i-parent');
+    sel.value=groupId;
+    updateCodePreview();
+  },10);
+}
+
+function setTreeTipo(tipo){
+  _treeModalTipo=tipo;
+  document.getElementById('mt-btn-group').classList.toggle('active',tipo==='group');
+  document.getElementById('mt-btn-item').classList.toggle('active',tipo==='item');
+  document.getElementById('mt-sec-group').classList.toggle('show',tipo==='group');
+  document.getElementById('mt-sec-item').classList.toggle('show',tipo==='item');
+  document.getElementById('mt-save-btn').innerHTML=tipo==='group'
+    ?'<i class="ti ti-check"></i> Adicionar Grupo'
+    :'<i class="ti ti-check"></i> Adicionar Produto';
+}
+
+// Gera código sequencial no padrão PC-XXX-NNN baseado nos filhos existentes do grupo
+function updateCodePreview(){
+  var parentId=document.getElementById('mt-i-parent').value;
+  var preview=document.getElementById('mt-i-code-preview');
+  var hidden=document.getElementById('mt-i-code');
+  if(!parentId){preview.textContent='Selecione o grupo para gerar o código';hidden.value='';return;}
+  var parent=TREE_DATA.find(function(g){return g.id===parentId;});
+  if(!parent){preview.textContent='Grupo não encontrado';return;}
+  // Detectar prefixo baseado no código do grupo (ex: CAPTURA → CAP, TRANSPORTE → TRN)
+  var abbrevMap={
+    'CAPTURA':'CAP','TRANSPORTE':'TRN','PROCESSAMENTO':'NUM',
+    'CUSTODIA':'CTV','PAYCASH':'FULL'
+  };
+  var gCode=parent.code.toUpperCase();
+  var abbrev=abbrevMap[gCode]||gCode.slice(0,3);
+  var prefix='PC-'+abbrev+'-';
+  // Próximo sequencial
+  var nums=(parent.children||[]).map(function(c){
+    var m=c.code.match(/-(\d+)$/);return m?parseInt(m[1]):0;
+  }).filter(Boolean);
+  var next=nums.length?Math.max.apply(null,nums)+1:1;
+  var code=prefix+String(next).padStart(3,'0');
+  preview.textContent=code;
+  hidden.value=code;
+}
+
+function saveNewTree(){
+  if(_treeModalTipo==='group'){
+    var code=document.getElementById('mt-g-code').value.trim().toUpperCase();
+    var label=document.getElementById('mt-g-label').value.trim();
+    var icon=document.getElementById('mt-g-icon').value;
+    if(!code||!label){toast('Preencha Código e Nome do grupo.','err');return;}
+    if(TREE_DATA.find(function(g){return g.code===code;})){toast('Código de grupo já existe.','err');return;}
+    var newId='G'+Date.now();
+    TREE_DATA.push({id:newId,code:code,label:label,icon:icon,isGroup:true,children:[]});
+    treeExpanded[newId]=true;
+    closeModal('modal-tree');buildTree();
+    toast(`Grupo "${code} — ${label}" criado.`,'ok');
+  } else {
+    var parentId=document.getElementById('mt-i-parent').value;
+    var iLabel=document.getElementById('mt-i-label').value.trim();
+    var iCode=document.getElementById('mt-i-code').value;
+    var iIcon=document.getElementById('mt-i-icon').value;
+    if(!parentId){toast('Selecione o grupo pai.','err');return;}
+    if(!iLabel){toast('Informe o nome do produto.','err');return;}
+    if(!iCode){updateCodePreview();iCode=document.getElementById('mt-i-code').value;}
+    var parent=TREE_DATA.find(function(g){return g.id===parentId;});
+    if(!parent){toast('Grupo não encontrado.','err');return;}
+    var newId='P'+Date.now();
+    parent.children=parent.children||[];
+    parent.children.push({id:newId,code:iCode,label:iLabel,icon:iIcon,children:[]});
+    treeExpanded[parentId]=true;
+    if(!itemSpecs[newId])itemSpecs[newId]=[];
+    if(!savedSpecs[newId])savedSpecs[newId]=[];
+    closeModal('modal-tree');buildTree();
+    toast(`Produto "${iCode} — ${iLabel}" adicionado.`,'ok');
+  }
+}
+
+function deleteTreeNode(id,parentChildId){
+  var n=findNode(id);
+  if(!n)return;
+  if(!confirm(`Excluir "${n.label}"?`))return;
+  // Remover de TREE_DATA (grupo raiz)
+  var ri=TREE_DATA.findIndex(function(g){return g.id===id;});
+  if(ri>=0){TREE_DATA.splice(ri,1);buildTree();toast(`"${n.label}" excluído.`);return;}
+  // Remover de filhos
+  for(var i=0;i<TREE_DATA.length;i++){
+    var ci=TREE_DATA[i].children?TREE_DATA[i].children.findIndex(function(c){return c.id===id;}):-1;
+    if(ci>=0){TREE_DATA[i].children.splice(ci,1);if(selNode===id){selNode=null;}buildTree();toast(`"${n.label}" excluído.`);return;}
+  }
+}
+
+function toggleTreeModalFields(){} // compatibilidade retroativa
+function treeClick(id,e){
+  e.stopPropagation();
+  const n=findNode(id);if(!n)return;
+  if(n.isGroup||(n.children&&n.children.length))treeExpanded[id]=!treeExpanded[id];
+  if(!n.isGroup){
+    selNode=id;
+    document.getElementById('bc-text').textContent=`${n.code} — ${n.label}`;
+    document.getElementById('sb-item').textContent=`Serviço: ${n.code} · ${n.label}`;
+    document.getElementById('dz-title').textContent=`Especificações de ${n.code}`;
+    if(!itemSpecs[id])itemSpecs[id]=[];
+    if(!savedSpecs[id])savedSpecs[id]=[];
+    renderDropZone();refreshLibInUse();buildRTList();
+  }
+  buildTree();
+}
+
+/* ═════════ LIBRARY — gerada a partir de Componentes de Produto ═════════ */
+function buildLibrary(filter=''){
+  const inUse=new Set((itemSpecs[selNode]||[]).map(s=>s.id));
+  const q=filter.toLowerCase();
+  // Gera cards a partir de resultTables (Componentes de Produto)
+  const items=resultTables.filter(function(rt){
+    return rt.sit==='Ativo'&&(!q||rt.cod.toLowerCase().includes(q)||rt.desc.toLowerCase().includes(q)||(rt.varAPV||'').toLowerCase().includes(q));
+  });
+  const libEl=document.getElementById('lib-body');
+  if(!items.length){
+    libEl.innerHTML='<div style="padding:16px;text-align:center;color:var(--txt-3);font-size:11px"><i class="ti ti-mood-empty" style="font-size:28px;display:block;margin-bottom:6px;opacity:.3"></i>Nenhum componente cadastrado</div>';
+    return;
+  }
+  libEl.innerHTML=items.map(function(rt){
+    const used=inUse.has(rt.id);
+    const selOpts=rt.opts.filter(function(o){return o.selected;});
+    const valTxt=selOpts.length?fmtVal(selOpts[0].val):'--';
+    return`<div class="spec-card${used?' in-use':''}" draggable="true" data-spec-id="${rt.id}"
+      ondragstart="onLibDragStart(event,'${rt.id}')" ondragend="onLibDragEnd(event)">
+      <i class="ti ti-grip-vertical drag-grip" aria-hidden="true"></i>
+      <div class="sc-top">
+        <span class="sc-code">${rt.cod}</span>
+        ${rt.varAPV?`<span class="tag tN" style="font-size:9px">${rt.varAPV}</span>`:''}
+        <span class="chip ${rt.sit==='Ativo'?'active':'inactive'}" style="font-size:9px">${rt.sit}</span>
+      </div>
+      <div class="sc-desc">${rt.desc}</div>
+      <div class="sc-meta">
+        ${rt.multi?'<span class="tag tM" style="font-size:9px">Multi</span>':''}
+        ${selOpts.length?`<span class="sc-un">${valTxt}</span>`:''}
+        ${used?'<span class="in-use-badge">Na árvore</span>':''}
+      </div>
+    </div>`;
+  }).join('');
+}
+function filterLib(v){buildLibrary(v)}
+function refreshLibInUse(){buildLibrary()}
+
+/* ═════════ DROP ZONE ═════════ */
+function renderDropZone(){
+  const specs=itemSpecs[selNode]||[];
+  const hasData=specs.length>0;
+  const dz=document.getElementById('dz-empty');
+  const rows=document.getElementById('spec-rows');
+  const counter=document.getElementById('dz-counter');
+  const actRow=document.getElementById('action-row');
+  const actInfo=document.getElementById('action-info');
+  document.getElementById('btn-clear').style.display=hasData?'inline-flex':'none';
+  document.getElementById('btn-sort').style.display=hasData?'inline-flex':'none';
+  counter.textContent=hasData?`${specs.length} componente${specs.length!==1?'s':''} vinculado${specs.length!==1?'s':''}`:selNode?'Vazia':'Nenhum produto selecionado';
+  dz.style.display=hasData?'none':'flex';
+  actRow.style.display=selNode?'flex':'none';
+  const saved=savedSpecs[selNode]||[];
+  const dirty=JSON.stringify(specs.map(s=>s.id))!==JSON.stringify(saved.map(s=>s.id));
+  actInfo.textContent=dirty?'● Alterações não salvas':'';
+  actInfo.style.color=dirty?'var(--warn)':'var(--txt-3)';
+
+  rows.innerHTML=specs.map(function(s,i){
+    // Buscar dados atuais do componente em resultTables
+    const rt=resultTables.find(function(t){return t.id===s.id;})||s;
+    const selOpts=rt.opts.filter(function(o){return o.selected;});
+    const hasVal=selOpts.length>0;
+    const selTxt=hasVal?(selOpts.length===1?selOpts[0].desc:selOpts.length+' selecionados'):'';
+    // Painel de resultados inline — respeita estado collapsed persistido
+    const isCollapsed=srrCollapsed.has(s.id);
+    const resultsHtml=`<div class="spec-row-results${isCollapsed?' collapsed':''}" id="srr-${s.id}">
+      <div class="srr-header" onclick="toggleSRR('${s.id}')">
+        <i class="ti ti-list-check" style="font-size:11px;color:var(--nt-cyan)"></i>
+        <span class="srr-title">Selecionar resultado${rt.multi?' (múltiplo)':''}</span>
+        ${hasVal?`<span class="srr-sel-badge" id="srr-badge-${s.id}">${selTxt}</span>`:`<span id="srr-badge-${s.id}" style="font-size:10px;color:var(--warn)">⚠ Nenhum selecionado</span>`}
+        <i class="ti ti-chevron-up srr-chevron" id="srr-chev-${s.id}"></i>
+      </div>
+      <div class="srr-opts" id="srr-opts-${s.id}">
+        <div style="display:flex;align-items:center;gap:0;padding:4px 10px 3px;border-bottom:1px solid var(--border);background:var(--surface-2)">
+          <span style="font-size:9px;font-weight:700;color:var(--txt-3);text-transform:uppercase;width:24px"></span>
+          <span style="font-size:9px;font-weight:700;color:var(--txt-3);text-transform:uppercase;width:90px;margin-left:22px">Código</span>
+          <span style="font-size:9px;font-weight:700;color:var(--txt-3);text-transform:uppercase;flex:1">Descrição</span>
+          <span style="font-size:9px;font-weight:700;color:var(--txt-3);text-transform:uppercase;width:90px;text-align:right">Val. Calc.</span>
+        </div>
+        ${rt.opts.map(function(o,oi){return`
+        <div class="srr-opt${o.selected?' sel':''}" onclick="selectResultInline('${s.id}',${oi},event)">
+          <span class="srr-chk"></span>
+          <span class="srr-seq">${o.seq}</span>
+          <span class="srr-cod">${o.cod}</span>
+          <span class="srr-desc">${o.desc}</span>
+          <input class="srr-val-input" type="text" value="${o.val}" 
+            onclick="event.stopPropagation()"
+            onchange="updateOptValFromTree('${s.id}',${oi},this.value)">
+        </div>`;}).join('')}
+      </div>
+    </div>`;
+
+    return`<div class="spec-row" draggable="true" data-idx="${i}"
+      ondragstart="onRowDragStart(event,${i})" ondragend="onRowDragEnd(event)"
+      ondragover="onRowDragOver(event,${i})" ondragleave="onRowDragLeave(event,${i})"
+      ondrop="onRowDrop(event,${i})"
+      onclick="toggleSRR('${s.id}')"
+      style="cursor:pointer" role="listitem">
+      <span class="row-seq">${(i+1)*10}</span>
+      <i class="ti ti-grip-vertical row-grip" aria-hidden="true" onclick="event.stopPropagation()"></i>
+      <div class="row-info">
+        <div class="row-code">${s.cod}${s.varAPV?` <span style="font-size:9px;color:var(--txt-3);font-family:var(--mono)">[${s.varAPV}]</span>`:''}</div>
+        <div class="row-desc">${s.desc}</div>
+      </div>
+      <div class="row-badges">
+        ${rt.multi?'<span class="tag tM" style="font-size:9px">Multi</span>':''}
+        ${hasVal?`<span style="font-size:10px;font-weight:700;color:#15803d;font-family:var(--mono)" id="srow-badge-${s.id}">${selTxt}</span>`:`<span style="font-size:10px;color:var(--warn)" id="srow-badge-${s.id}">⚠ Pendente</span>`}
+      </div>
+      <i class="${isCollapsed?'ti ti-chevron-right':'ti ti-chevron-down'}" id="srr-toggle-icon-${s.id}" style="font-size:13px;color:var(--nt-cyan);flex-shrink:0"></i>
+      <button class="btn-icon danger" onclick="removeSpec(${i});event.stopPropagation()" title="Remover" aria-label="Remover ${s.cod}">
+        <i class="ti ti-x" aria-hidden="true"></i>
+      </button>
+    </div>
+    ${resultsHtml}`;
+  }).join('');
+}
+
+function toggleSRR(rtId){
+  var panel=document.getElementById('srr-'+rtId);
+  var icon=document.getElementById('srr-toggle-icon-'+rtId);
+  if(!panel)return;
+  if(srrCollapsed.has(rtId)){
+    srrCollapsed.delete(rtId);
+    panel.classList.remove('collapsed');
+    if(icon)icon.className='ti ti-chevron-down';
+  } else {
+    srrCollapsed.add(rtId);
+    panel.classList.add('collapsed');
+    if(icon)icon.className='ti ti-chevron-right';
+  }
+}
+
+function selectResultInline(rtId,optIdx,event){
+  if(event)event.stopPropagation();
+  const rt=resultTables.find(function(t){return t.id===rtId;});
+  if(!rt)return;
+  if(rt.multi){rt.opts[optIdx].selected=!rt.opts[optIdx].selected;}
+  else{rt.opts.forEach(function(o,i){o.selected=(i===optIdx);});}
+  const selOpts=rt.opts.filter(function(o){return o.selected;});
+  const hasVal=selOpts.length>0;
+  const selTxt=hasVal?(selOpts.length===1?selOpts[0].desc:selOpts.length+' selecionados'):'';
+  // Atualizar badge
+  const badge=document.getElementById('srr-badge-'+rtId);
+  if(badge){
+    badge.textContent=hasVal?selTxt:'⚠ Nenhum selecionado';
+    badge.style.cssText=hasVal?'':'font-size:10px;color:var(--warn)';
+    badge.className=hasVal?'srr-sel-badge':'';
+  }
+  // Atualizar classes das opções
+  const optsEl=document.getElementById('srr-opts-'+rtId);
+  if(optsEl){
+    optsEl.querySelectorAll('.srr-opt').forEach(function(el,i){
+      el.classList.toggle('sel',!!rt.opts[i]&&!!rt.opts[i].selected);
+      const chk=el.querySelector('.srr-chk');
+      if(chk)chk.className='srr-chk';// força repaint do ::after via class
+    });
+  }
+  // Atualizar badge na spec-row via id
+  const srowBadge=document.getElementById('srow-badge-'+rtId);
+  if(srowBadge){
+    srowBadge.textContent=hasVal?selTxt:'⚠ Pendente';
+    srowBadge.style.cssText=hasVal?'font-size:10px;font-weight:700;color:#15803d;font-family:var(--mono)':'font-size:10px;color:var(--warn)';
+  }
+  buildTree();
+  var tbodyR=document.getElementById('rtb-'+rtId);
+  if(tbodyR)tbodyR.innerHTML=renderRTOpts(rt);
+  buildAPVVars();
+}
+
+function updateOptValFromTree(rtId,optIdx,raw){
+  const rt=resultTables.find(function(t){return t.id===rtId;});
+  if(!rt)return;
+  const num=parseFloat(String(raw).replace(',','.'));
+  rt.opts[optIdx].val=isNaN(num)?raw:num;
+  // Sincronizar com widget e view Cálculo
+  const optsEl=document.getElementById('cwopts-'+rtId);
+  if(optsEl)optsEl.innerHTML=renderCompOptsTable(rt);
+  const tbodyR=document.getElementById('rtb-'+rtId);
+  if(tbodyR)tbodyR.innerHTML=renderRTOpts(rt);
+  buildAPVVars();
+}
+function removeSpec(i){if(!selNode)return;const s=itemSpecs[selNode].splice(i,1)[0];renderDropZone();refreshLibInUse();buildTree();buildRTList();toast(`"${s.cod}" removido.`,'ok')}
+function clearAll(){if(!selNode)return;itemSpecs[selNode]=[];renderDropZone();refreshLibInUse();buildTree();toast('Componentes removidos.')}
+function autoSort(){if(!selNode)return;itemSpecs[selNode].sort((a,b)=>a.cod.localeCompare(b.cod));renderDropZone();toast('Reordenado por código.')}
+function revertChanges(){if(!selNode)return;itemSpecs[selNode]=(savedSpecs[selNode]||[]).map(s=>({...s}));renderDropZone();refreshLibInUse();toast('Alterações revertidas.')}
+function saveItem(){if(!selNode)return;savedSpecs[selNode]=(itemSpecs[selNode]||[]).map(s=>({...s}));renderDropZone();buildTree();const n=findNode(selNode);toast(`Produto "${n?n.code:selNode}" salvo com ${(itemSpecs[selNode]||[]).length} componentes.`,'ok')}
+
+/* ═════════ DRAG LIB ═════════ */
+function onLibDragStart(e,specId){
+  dragType='lib';dragSrcSpec=specId;e.dataTransfer.effectAllowed='copy';e.dataTransfer.setData('text/plain',specId);
+  const spec=getSpec(specId);showGhost(e,spec?spec.cod:specId);
+  setTimeout(()=>{const c=e.target.closest('.spec-card');if(c)c.classList.add('dragging')},0);
+}
+function onLibDragEnd(e){const c=e.target.closest('.spec-card');if(c)c.classList.remove('dragging');hideGhost();dragType=null;dragSrcSpec=null}
+function onZoneDragOver(e){if(dragType!=='lib')return;e.preventDefault();e.dataTransfer.dropEffect='copy';document.getElementById('drop-zone').classList.add('drag-over');moveGhost(e)}
+function onZoneDragLeave(e){const dz=document.getElementById('drop-zone');if(!dz.contains(e.relatedTarget))dz.classList.remove('drag-over')}
+function onZoneDrop(e){e.preventDefault();document.getElementById('drop-zone').classList.remove('drag-over');if(!selNode){toast('Selecione um serviço na árvore primeiro.','err');return}if(dragType!=='lib')return;addSpecToItem(selNode,e.dataTransfer.getData('text/plain'))}
+function onTreeDragOver(e,nodeId){const n=findNode(nodeId);if(!n||n.isGroup)return;e.preventDefault();e.stopPropagation();e.dataTransfer.dropEffect='copy';document.querySelector(`.t-row[data-id="${nodeId}"]`)?.classList.add('drop-target');moveGhost(e)}
+function onTreeDragLeave(e,nodeId){document.querySelector(`.t-row[data-id="${nodeId}"]`)?.classList.remove('drop-target')}
+function onTreeDrop(e,nodeId){e.preventDefault();e.stopPropagation();document.querySelector(`.t-row[data-id="${nodeId}"]`)?.classList.remove('drop-target');const n=findNode(nodeId);if(!n||n.isGroup)return;if(dragType==='lib'){addSpecToItem(nodeId,e.dataTransfer.getData('text/plain'),false);if(selNode===nodeId){renderDropZone();refreshLibInUse();}buildTree();}}
+function addSpecToItem(nodeId,specId,renderZone=true){
+  // Buscar exclusivamente em resultTables
+  const spec=resultTables.find(function(rt){return rt.id===specId;});
+  if(!spec){toast('Componente não encontrado.','err');return;}
+  if(!itemSpecs[nodeId])itemSpecs[nodeId]=[];
+  if(itemSpecs[nodeId].find(function(s){return s.id===specId;})){
+    toast(`"${spec.cod}" já está vinculado a este produto.`,'err');return;
+  }
+  // Guardar referência ao id do componente (não cópia da library)
+  itemSpecs[nodeId].push({id:spec.id,cod:spec.cod,desc:spec.desc,varAPV:spec.varAPV,formula:spec.formula,sit:spec.sit,multi:spec.multi,opts:spec.opts});
+  if(renderZone&&selNode===nodeId)renderDropZone();
+  refreshLibInUse();buildTree();buildRTList();
+  toast(`"${spec.cod}" vinculado. Selecione um resultado abaixo.`,'ok');
+}
+
+/* ═════════ DRAG ROWS ═════════ */
+function onRowDragStart(e,idx){
+  dragType='row';dragSrcIdx=idx;
+  e.dataTransfer.effectAllowed='move';
+  e.dataTransfer.setData('text/plain','row:'+idx);
+  const spec=(itemSpecs[selNode]||[])[idx];
+  showGhost(e,spec?spec.cod:'#'+idx);
+  setTimeout(()=>e.currentTarget.classList.add('dragging-row'),0);
+}
+function onRowDragEnd(e){e.currentTarget.classList.remove('dragging-row');document.querySelectorAll('.spec-row').forEach(r=>r.classList.remove('drop-above','drop-below'));hideGhost();dragType=null;dragSrcIdx=null;dragTargetIdx=null}
+function onRowDragOver(e,toIdx){if(dragType!=='row')return;e.preventDefault();e.stopPropagation();e.dataTransfer.dropEffect='move';moveGhost(e);document.querySelectorAll('.spec-row').forEach((r,i)=>{r.classList.remove('drop-above','drop-below');if(i===toIdx&&toIdx!==dragSrcIdx)r.classList.add(toIdx<dragSrcIdx?'drop-above':'drop-below');});dragTargetIdx=toIdx}
+function onRowDragLeave(e){if(!e.currentTarget.contains(e.relatedTarget))e.currentTarget.classList.remove('drop-above','drop-below')}
+function onRowDrop(e,toIdx){e.preventDefault();e.stopPropagation();if(dragType!=='row'||dragSrcIdx===null||!selNode)return;if(dragSrcIdx===toIdx){renderDropZone();return}const arr=itemSpecs[selNode];const[moved]=arr.splice(dragSrcIdx,1);arr.splice(toIdx,0,moved);renderDropZone();toast(`Spec movida para posição ${toIdx+1}.`)}
+
+/* GHOST */
+function showGhost(e,label){const g=document.getElementById('drag-ghost');document.getElementById('drag-ghost-label').textContent=label;g.style.opacity='1';moveGhost(e)}
+function moveGhost(e){const g=document.getElementById('drag-ghost');g.style.left=(e.clientX+14)+'px';g.style.top=(e.clientY+10)+'px'}
+function hideGhost(){document.getElementById('drag-ghost').style.opacity='0'}
+document.addEventListener('dragover',e=>{if(dragType)moveGhost(e)});
+document.addEventListener('dragend',()=>hideGhost());
+
+/* ═════════ VIEW TABS ═════════ */
+function switchView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  const order=['componentes','precos','folha','resultados'];
+  document.querySelectorAll('.view-tab')[order.indexOf(id)]?.classList.add('active');
+  const ws=document.querySelector('.workspace');
+  if(ws) ws.classList.toggle('hide-panels', id==='componentes'||id==='precos'||id==='resultados');
+  if(id==='resultados') buildRTList();
+}
+
+/* ═════════ RESULT TABLES — Simulação ═════════ */
+function selValDisplay(rt){
+  var sel=rt.opts.filter(function(o){return o.selected;});
+  if(!sel.length)return '<span style="color:var(--txt-3);font-size:11px">-- selecione</span>';
+  var v=sel.length===1?sel[0].val:sel.reduce(function(a,o){return a+Number(o.val);},0);
+  var fmt=typeof v==='number'&&v>0&&v<1?(v*100).toFixed(3).replace(/\.?0+$/,'')+'%':
+           typeof v==='number'?v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}):v;
+  return '<span style="font-family:var(--mono);font-size:12px;font-weight:700;color:#15803d;background:#dcfce7;padding:2px 8px;border-radius:6px">'+(sel.length>1?'soma ':'')+fmt+'</span>';
+}
+
+function buildRTList(){
+  // Componentes de Produto: só os vinculados ao produto selecionado
+  const prodSpecs=selNode?(itemSpecs[selNode]||[]):[];
+  const linkedIds=new Set(prodSpecs.map(function(s){return s.id;}));
+  const simEmpty=document.getElementById('sim-empty');
+  const simContent=document.getElementById('sim-content');
+
+  if(!selNode||linkedIds.size===0){
+    // Sem produto ou sem vínculos: mostrar estado vazio mas ainda renderizar tudo
+    if(simEmpty)simEmpty.style.display=selNode?'none':'flex';
+    if(simContent)simContent.style.display=selNode?'flex':'none';
+  } else {
+    if(simEmpty)simEmpty.style.display='none';
+    if(simContent)simContent.style.display='flex';
+  }
+
+  // Atualizar label do produto
+  const labelEl=document.getElementById('sim-produto-label');
+  if(labelEl){
+    const n=selNode?findNode(selNode):null;
+    labelEl.textContent=n?`Produto: ${n.code} — ${n.label}`:'Selecione um produto na Árvore de Produto para simular';
+  }
+
+  // Componentes de Produto vinculados
+  const linkedRTs=resultTables.filter(function(rt){return linkedIds.has(rt.id);});
+  const countEl=document.getElementById('sim-prod-count');
+  if(countEl)countEl.textContent=linkedRTs.length+' componente'+(linkedRTs.length!==1?'s':'');
+
+  const rtList=document.getElementById('rt-list');
+  if(rtList){
+    rtList.innerHTML=linkedRTs.length
+      ?linkedRTs.map(function(rt){return renderRTCard(rt,'#0D3B5E');}).join('')
+      :'<div style="padding:12px 4px;color:var(--txt-3);font-size:12px"><i class="ti ti-arrows-transfer-down" style="margin-right:6px"></i>Arraste componentes da biblioteca para o produto na Árvore de Produto</div>';
+  }
+
+  // Componentes de Preço: todos os cadastrados
+  const priceList=document.getElementById('rt-list-precos');
+  const priceCount=document.getElementById('sim-preco-count');
+  if(priceCount)priceCount.textContent=priceTables.length+' componente'+(priceTables.length!==1?'s':'');
+  if(priceList){
+    priceList.innerHTML=priceTables.length
+      ?priceTables.map(function(pt){return renderRTCard(pt,'#5b21b6',true);}).join('')
+      :'<div style="padding:12px 4px;color:var(--txt-3);font-size:12px">Nenhum componente de preço cadastrado</div>';
+  }
+
+  buildAPVVars();
+  if(typeof buildRTListSimple==='function')buildRTListSimple();
+}
+
+function renderRTCard(rt,accentColor,isPriceComp){
+  return `
+    <div class="rt-card" id="rtcard-${rt.id}">
+      <div class="rt-card-hd" id="rthd-${rt.id}" onclick="toggleRT('${rt.id}')">
+        <div class="rt-icon" style="background:${accentColor}1a;border:1px solid ${accentColor}33">
+          <i class="ti ${isPriceComp?'ti-percentage':'ti-adjustments-horizontal'}" style="color:${accentColor}" aria-hidden="true"></i>
+        </div>
+        <div class="rt-info">
+          <div class="rt-code">${rt.cod}<span style="font-size:9px;font-family:var(--mono);color:var(--txt-3);margin-left:6px">[${rt.varAPV||'--'}]</span></div>
+          <div class="rt-desc">${rt.desc}</div>
+          <div class="rt-stats" style="font-style:italic">Fórmula: ${rt.formula||'--'} · ${rt.opts.length} opções</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">${selValDisplay(rt)}<span class="chip ${rt.sit==='Ativo'?'active':'inactive'}">${rt.sit}</span></div>
+        <i class="ti ti-chevron-right rt-chevron" id="rtchev-${rt.id}" aria-hidden="true"></i>
+      </div>
+      <div class="rt-body" id="rtbody-${rt.id}">
+        <div class="rt-form-grid" style="margin-bottom:10px">
+          <div class="field"><label>Código</label><input type="text" value="${rt.cod}" id="rtf-cod-${rt.id}" style="font-family:var(--mono)"></div>
+          <div class="field"><label>Variável APV</label><input type="text" value="${rt.varAPV||''}" id="rtf-var-${rt.id}" style="font-family:var(--mono)"></div>
+          <div class="field" style="grid-column:span 2"><label>Fórmula de cálculo</label><input type="text" value="${rt.formula||''}" id="rtf-fml-${rt.id}" style="font-family:var(--mono);font-size:11px"></div>
+          <div class="field"><label>Situação</label><select id="rtf-sit-${rt.id}"><option${rt.sit==='Ativo'?' selected':''}>Ativo</option><option${rt.sit==='Inativo'?' selected':''}>Inativo</option></select></div>
+          <div class="field"><label>Múltipla seleção</label><select id="rtf-multi-${rt.id}"><option${!rt.multi?' selected':''}>Não</option><option${rt.multi?' selected':''}>Sim</option></select></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span style="font-size:11px;font-weight:600;color:var(--txt-2)">Opções — clique em Selecionar para definir o valor</span>
+          <button class="btn btn-sm btn-secondary" onclick="addRTOptInline('${rt.id}')"><i class="ti ti-plus"></i> Opção</button>
+          <button class="btn btn-sm btn-primary" style="margin-left:auto" onclick="saveRT('${rt.id}')"><i class="ti ti-device-floppy"></i> Salvar</button>
+        </div>
+        <div class="opts-table-wrap"><table>
+          <thead><tr>
+            <th style="width:46px">Seq.</th><th style="width:100px">Código</th><th>Descrição</th>
+            <th style="width:100px">Valor calc.</th><th style="width:60px">Padrão</th>
+            <th style="width:90px;background:#0d5c30;text-align:center">Selecionar</th>
+            <th style="width:46px"></th>
+          </tr></thead>
+          <tbody id="rtb-${rt.id}">${renderRTOpts(rt)}</tbody>
+        </table></div>
+      </div>
+    </div>`;
+}
+
+function renderRTOpts(rt){
+  return rt.opts.map(function(o,i){return `
+    <tr style="${o.selected?'background:#f0fdf4;':''}">
+      <td><input type="number" value="${o.seq}" style="width:38px;text-align:center" onchange="updateOpt('${rt.id}',${i},'seq',this.value)"></td>
+      <td><input type="text" value="${o.cod}" style="font-family:var(--mono);width:92px" onchange="updateOpt('${rt.id}',${i},'cod',this.value)"></td>
+      <td><input type="text" value="${o.desc}" onchange="updateOpt('${rt.id}',${i},'desc',this.value)"></td>
+      <td><input type="text" value="${o.val}" style="width:90px;font-family:var(--mono)" onchange="updateOpt('${rt.id}',${i},'val',this.value)"></td>
+      <td style="text-align:center"><input type="checkbox"${o.dflt?' checked':''} onchange="updateOpt('${rt.id}',${i},'dflt',this.checked)"></td>
+      <td style="text-align:center">
+        <button onclick="selectOpt('${rt.id}',${i})" style="padding:3px 10px;border-radius:4px;border:1.5px solid ${o.selected?'#16a34a':'var(--border-2)'};background:${o.selected?'#dcfce7':'var(--surface)'};color:${o.selected?'#15803d':'var(--txt-2)'};cursor:pointer;font-size:11px;font-weight:600">
+          ${o.selected?'Selecionado':'Selecionar'}
+        </button>
+      </td>
+      <td><button class="btn-icon danger" onclick="removeRTOpt('${rt.id}',${i})" title="Remover"><i class="ti ti-trash"></i></button></td>
+    </tr>`;}).join('');
+}
+
+function toggleRT(id){const body=document.getElementById('rtbody-'+id);const chev=document.getElementById('rtchev-'+id);const hd=document.getElementById('rthd-'+id);const isOpen=body.classList.toggle('open');chev.classList.toggle('open',isOpen);hd.classList.toggle('open',isOpen)}
+function countRTUsage(cod){return library.filter(s=>s.tabres===cod).length}
+function updateOpt(rtId,idx,field,val){const rt=resultTables.find(t=>t.id===rtId);if(!rt)return;rt.opts[idx][field]=field==='dflt'?!!val:val}
+function addRTOptInline(rtId){const rt=resultTables.find(t=>t.id===rtId);if(!rt)return;const seq=(rt.opts.length+1)*10;rt.opts.push({seq,cod:'OPT'+seq,desc:'Nova opção',val:0,dflt:false});document.getElementById('rtb-'+rtId).innerHTML=renderRTOpts(rt)}
+function removeRTOpt(rtId,idx){const rt=resultTables.find(t=>t.id===rtId);if(!rt)return;rt.opts.splice(idx,1);document.getElementById('rtb-'+rtId).innerHTML=renderRTOpts(rt)}
+function saveRT(rtId){const rt=resultTables.find(t=>t.id===rtId);if(!rt)return;rt.cod=document.getElementById('rtf-cod-'+rtId).value;rt.varAPV=document.getElementById('rtf-var-'+rtId).value;rt.formula=document.getElementById('rtf-fml-'+rtId).value;rt.sit=document.getElementById('rtf-sit-'+rtId).value;rt.multi=document.getElementById('rtf-multi-'+rtId).value==='Sim';buildRTList();buildCompWidgets();updateRTSelect();toast('Componente salvo.','ok')}
+
+/* ═════════ MODAL SPEC ═════════ */
+function openNewSpecModal(){
+  document.getElementById('ms-cod').value='';document.getElementById('ms-desc').value='';
+  document.getElementById('ms-tipo').value='N';document.getElementById('ms-group').value='Precificação';
+  document.getElementById('ms-un').value='';document.getElementById('ms-instr').value='';
+  toggleMsFields();document.getElementById('modal-spec').style.display='flex';
+}
+function toggleMsFields(){const t=document.getElementById('ms-tipo').value;document.getElementById('ms-vmin-wrap').style.display=t==='N'?'flex':'none';document.getElementById('ms-vmax-wrap').style.display=t==='N'?'flex':'none';document.getElementById('ms-tabres-wrap').style.display=t==='M'?'flex':'none'}
+function saveNewSpec(){
+  const cod=document.getElementById('ms-cod').value.trim().toUpperCase();const desc=document.getElementById('ms-desc').value.trim();
+  if(!cod||!desc){toast('Preencha Código e Descrição.','err');return}
+  if(library.find(s=>s.cod===cod)){toast('Código já existe.','err');return}
+  const tipo=document.getElementById('ms-tipo').value;const tabres=tipo==='M'?document.getElementById('ms-tabres').value:'';
+  if(tipo==='M'&&!tabres){toast('Selecione a Tabela de Resultados.','err');return}
+  library.push({id:uid(),cod,desc,tipo,un:document.getElementById('ms-un').value,tabres,group:document.getElementById('ms-group').value,instr:document.getElementById('ms-instr').value});
+  buildLibrary();closeModal('modal-spec');toast(`"${cod}" adicionado à biblioteca.`,'ok');
+}
+function updateRTSelect(){const sel=document.getElementById('ms-tabres');sel.innerHTML='<option value="">— Selecione —</option>'+resultTables.map(rt=>`<option value="${rt.cod}">${rt.cod} — ${rt.desc}</option>`).join('')}
+
+/* ═════════ MODAL RT ═════════ */
+function openNewRTModal(){document.getElementById('mrt-cod').value='';document.getElementById('mrt-desc').value='';document.getElementById('rt-opts-tbody').innerHTML='<tr><td colspan="6" class="empty-table">Adicione opções</td></tr>';document.getElementById('modal-rt').style.display='flex'}
+function addRTOption(){const tbody=document.getElementById('rt-opts-tbody');if(tbody.querySelector('td[colspan]'))tbody.innerHTML='';const seq=(tbody.querySelectorAll('tr').length+1)*10;const tr=document.createElement('tr');tr.innerHTML=`<td><input type="number" value="${seq}" style="width:38px;text-align:center"></td><td><input type="text" placeholder="COD" style="font-family:var(--mono);width:72px"></td><td><input type="text" placeholder="Descrição da opção"></td><td><input type="text" placeholder="0" style="width:80px;font-family:var(--mono);text-align:right"></td><td><input type="text" placeholder="R$ 0,00" style="width:100px;font-family:var(--mono);text-align:right" oninput="maskBRL(this)" onfocus="if(this.value==='R$ 0,00'||!this.value)this.value=''" onblur="if(!this.value)this.value='R$ 0,00'"></td><td style="text-align:center"><input type="checkbox"></td><td><button class="btn-icon danger" onclick="this.closest('tr').remove()"><i class="ti ti-trash"></i></button></td>`;tbody.appendChild(tr)}
+function saveNewRT(){
+  const cod=document.getElementById('mrt-cod').value.trim().toUpperCase();const desc=document.getElementById('mrt-desc').value.trim();
+  if(!cod||!desc){toast('Preencha Código e Descrição.','err');return}
+  const editId=document.getElementById('modal-rt').dataset.editId||'';
+  const existing=resultTables.find(t=>t.cod===cod);
+  if(existing&&existing.id!==editId){toast('Código já existe.','err');return}
+  const varAPV=document.getElementById('mrt-var').value.trim().toUpperCase();
+  const formula=document.getElementById('mrt-formula').value.trim();
+  const rows=document.querySelectorAll('#rt-opts-tbody tr:not([colspan])');const opts=[];
+  rows.forEach((tr,i)=>{
+    const ins=tr.querySelectorAll('input');
+    const custoRaw=ins[4]?ins[4].value:'';
+    opts.push({
+      seq:parseInt(ins[0].value)||(i+1)*10,
+      cod:ins[1].value||'OPT'+((i+1)*10),
+      desc:ins[2].value||'—',
+      val:parseFloat(ins[3].value)||0,
+      custo:parseBRL(custoRaw),
+      dflt:ins[5]?ins[5].checked:false,
+      selected:false
+    });
+  });
+  if(editId){
+    const rt=resultTables.find(t=>t.id===editId);
+    if(rt){rt.cod=cod;rt.desc=desc;rt.sit=document.getElementById('mrt-sit').value;rt.multi=document.getElementById('mrt-multi').value==='Sim';rt.varAPV=varAPV;rt.formula=formula;rt.opts=opts;toast(`Componente "${cod}" atualizado.`,'ok');}
+  } else {
+    resultTables.push({id:'rt'+Date.now(),cod,desc,sit:document.getElementById('mrt-sit').value,multi:document.getElementById('mrt-multi').value==='Sim',varAPV,formula,opts});
+    toast(`Componente "${cod}" criado.`,'ok');
+  }
+  buildRTList();buildCompWidgets();updateRTSelect();closeModal('modal-rt');
+}
+
+
+/* ═════ COMPONENTES DE PRODUTO — widget grid (cadastro geral) ═════ */
+
+function buildCompWidgets(){
+  var grid=document.getElementById('comp-widget-grid');
+  if(!grid)return;
+  var search=(document.getElementById('comp-search')||{}).value||'';
+  var fSit=(document.getElementById('comp-flt-sit')||{}).value||'';
+  var fMulti=(document.getElementById('comp-flt-multi')||{}).value||'';
+  var filtered=resultTables.filter(function(rt){
+    var q=search.toLowerCase();
+    var matchQ=!q||(rt.cod.toLowerCase().includes(q)||rt.desc.toLowerCase().includes(q)||(rt.varAPV||'').toLowerCase().includes(q));
+    var matchSit=!fSit||rt.sit===fSit;
+    var matchMulti=fMulti===''||String(rt.multi?1:0)===fMulti;
+    return matchQ&&matchSit&&matchMulti;
+  });
+  var counter=document.getElementById('comp-counter');
+  if(counter)counter.textContent=filtered.length+' componente'+(filtered.length!==1?'s':'');
+
+  grid.innerHTML=filtered.map(function(rt){
+    var selOpts=rt.opts.filter(function(o){return o.selected;});
+    var hasVal=selOpts.length>0;
+    var valDisplay=hasVal?(selOpts.length===1?fmtVal(selOpts[0].val):selOpts.length+' sel.'):null;
+    var isOpen=!!cwExpanded[rt.id];
+    return renderCompWidget(rt,isOpen,hasVal,valDisplay);
+  }).join('')||'<div style="grid-column:1/-1;text-align:center;color:var(--txt-3);padding:48px;font-size:12px"><i class="ti ti-mood-empty" style="font-size:36px;display:block;margin-bottom:10px;opacity:.25"></i>Nenhum componente encontrado</div>';
+}
+
+function renderCompWidget(rt,isOpen,hasVal,valDisplay){
+  var selOpts=rt.opts.filter(function(o){return o.selected;});
+  hasVal=hasVal!==undefined?hasVal:selOpts.length>0;
+  valDisplay=valDisplay!==undefined?valDisplay:(hasVal?(selOpts.length===1?fmtVal(selOpts[0].val):selOpts.length+' sel.'):null);
+  // body e footer sempre ocultos no HTML; toggleCompWidget os abre via JS
+  return `
+  <div class="comp-widget" id="cw-${rt.id}">
+    <div class="cw-header" onclick="toggleCompWidget('${rt.id}')">
+      <div class="cw-icon" style="${isOpen?'background:var(--nt-cyan)':''}"><i class="ti ti-adjustments-horizontal" aria-hidden="true"></i></div>
+      <div class="cw-hd-info">
+        <div><span class="cw-code">${rt.cod}</span>${rt.varAPV?`<span class="cw-var">[${rt.varAPV}]</span>`:''}</div>
+        <div class="cw-desc" title="${rt.desc}">${rt.desc}</div>
+      </div>
+      <div class="cw-hd-right">
+        <span class="cw-val-badge ${hasVal?'has-val':'no-val'}" id="cwval-${rt.id}">${hasVal?valDisplay:'--'}</span>
+        <span class="chip ${rt.sit==='Ativo'?'active':'inactive'}">${rt.sit}</span>
+        ${rt.multi?'<span class="tag tM" style="font-size:9px">Multi</span>':''}
+        <i class="ti ti-chevron-right cw-chevron" style="${isOpen?'transform:rotate(90deg);color:var(--nt-cyan)':''}" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="cw-body" style="${isOpen?'display:flex':'display:none'}">
+      <div class="cw-meta">
+        <div class="cw-meta-item">
+          <span class="cw-meta-label">Variável Preço de Venda</span>
+          <input class="cw-meta-val" type="text" value="${rt.varAPV||''}" placeholder="ex: CPE_SOP"
+            onclick="event.stopPropagation()"
+            onchange="updateRTField('${rt.id}','varAPV',this.value)">
+        </div>
+        <div class="cw-meta-item">
+          <span class="cw-meta-label">Seleção</span>
+          <select class="cw-meta-val" onclick="event.stopPropagation()" onchange="updateRTField('${rt.id}','multi',this.value==='Múltipla')">
+            <option${rt.multi?'':' selected'}>Simples</option>
+            <option${rt.multi?' selected':''}>Múltipla</option>
+          </select>
+        </div>
+        <div class="cw-meta-item span2">
+          <span class="cw-meta-label">Fórmula</span>
+          <input class="cw-meta-val" type="text" value="${rt.formula||''}" placeholder="ex: CUSTO_EMBARQUE x QTD_ATEND" style="font-size:11px"
+            onclick="event.stopPropagation()"
+            onchange="updateRTField('${rt.id}','formula',this.value)">
+        </div>
+      </div>
+      <div class="cw-table-wrap">
+        <table class="cw-table">
+          <thead><tr>
+            <th class="cw-td-seq">Seq.</th>
+            <th>Código</th>
+            <th>Descrição</th>
+            <th style="text-align:right">Val. Calc.</th>
+            <th style="text-align:right">Val. Custo</th>
+            <th class="cw-td-pad">Pad.</th>
+            <th class="th-sel">Selecionar</th>
+          </tr></thead>
+          <tbody id="cwopts-${rt.id}">${renderCompOptsTable(rt)}</tbody>
+        </table>
+      </div>
+    </div>
+    <div class="cw-footer" style="${isOpen?'display:flex':'display:none'}">
+      <button class="btn btn-sm btn-ghost" onclick="openEditRTModal('${rt.id}');event.stopPropagation()">
+        <i class="ti ti-pencil" aria-hidden="true"></i> Editar
+      </button>
+      <button class="btn btn-sm btn-secondary" onclick="addOptInlineWidget('${rt.id}');event.stopPropagation()">
+        <i class="ti ti-plus" aria-hidden="true"></i> Nova Opção
+      </button>
+      <div style="flex:1"></div>
+      <button class="btn btn-sm btn-secondary" onclick="toggleCompWidget('${rt.id}');event.stopPropagation()">
+        <i class="ti ti-chevron-up" aria-hidden="true"></i> Recolher
+      </button>
+    </div>
+  </div>`;
+}
+
+function fmtBRL(v){
+  var n=parseFloat(String(v).replace(',','.'));
+  if(isNaN(n))return 'R$ 0,00';
+  return 'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function parseBRL(s){
+  // Remove "R$", espaços, pontos de milhar; substitui vírgula decimal por ponto
+  var clean=String(s).replace(/R\$\s*/,'').replace(/\./g,'').replace(',','.');
+  var n=parseFloat(clean);
+  return isNaN(n)?0:n;
+}
+function maskBRL(input){
+  // Formata enquanto digita: só dígitos → monta valor centesimal
+  var digits=input.value.replace(/\D/g,'');
+  if(!digits){input.value='R$ 0,00';return;}
+  var cents=parseInt(digits,10);
+  var reais=cents/100;
+  input.value='R$ '+reais.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function renderCompOptsTable(rt){
+  return rt.opts.map(function(o,i){
+    return `<tr class="${o.selected?'opt-selected':''}">
+      <td class="cw-td-seq">${o.seq}</td>
+      <td class="cw-td-cod">${o.cod}</td>
+      <td class="cw-td-desc">${o.desc}</td>
+      <td class="cw-td-val">
+        <input type="text" value="${o.val}"
+          style="width:90px;font-family:var(--mono);font-size:11px;text-align:right;padding:2px 5px;border:1px solid var(--border);border-radius:3px;background:var(--surface)"
+          onclick="event.stopPropagation()"
+          onchange="updateOptValInline('${rt.id}',${i},'val',this.value)">
+      </td>
+      <td class="cw-td-custo">
+        <input type="text" value="${fmtBRL(o.custo!==undefined?o.custo:0)}"
+          style="width:110px;font-family:var(--mono);font-size:11px;text-align:right;padding:2px 5px;border:1px solid var(--border);border-radius:3px;background:var(--surface)"
+          onclick="event.stopPropagation()"
+          oninput="maskBRL(this)"
+          onchange="updateOptValInline('${rt.id}',${i},'custo',parseBRL(this.value));this.value=fmtBRL(parseBRL(this.value))">
+      </td>
+      <td class="cw-td-pad">${o.dflt?'<i class="ti ti-check" style="color:#16a34a"></i>':''}</td>
+      <td class="cw-td-sel">
+        <button class="cw-sel-btn${o.selected?' selected':''}" onclick="selectOptComp('${rt.id}',${i});event.stopPropagation()">
+          ${o.selected?'Selecionado':'Selecionar'}
+        </button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function updateOptValInline(rtId,idx,field,raw){
+  var rt=resultTables.find(function(t){return t.id===rtId;});
+  if(!rt)return;
+  var num=typeof raw==='number'?raw:parseBRL(raw);
+  rt.opts[idx][field]=num;
+  if(field==='val'){
+    var selOpts=rt.opts.filter(function(o){return o.selected;});
+    var hasVal=selOpts.length>0;
+    var valEl=document.getElementById('cwval-'+rtId);
+    if(valEl&&hasVal){
+      var v=selOpts.length===1?selOpts[0].val:selOpts.reduce(function(a,o){return a+Number(o.val);},0);
+      valEl.textContent=selOpts.length===1?fmtVal(v):selOpts.length+' sel.';
+      valEl.className='cw-val-badge has-val';
+    }
+    var tbodyR=document.getElementById('rtb-'+rtId);
+    if(tbodyR)tbodyR.innerHTML=renderRTOpts(rt);
+    buildAPVVars();
+  }
+}
+
+function toggleCompWidget(id){
+  var opening=!cwExpanded[id];
+
+  // Fechar todos os widgets abertos
+  Object.keys(cwExpanded).forEach(function(k){
+    if(cwExpanded[k]){
+      cwExpanded[k]=false;
+      var w=document.getElementById('cw-'+k);
+      if(!w)return;
+      w.classList.remove('open');
+      var b=w.querySelector('.cw-body');
+      var f=w.querySelector('.cw-footer');
+      var chev=w.querySelector('.cw-chevron');
+      var icon=w.querySelector('.cw-icon');
+      if(b)b.style.display='none';
+      if(f)f.style.display='none';
+      if(chev){chev.style.transform='';chev.style.color='';}
+      if(icon)icon.style.background='';
+    }
+  });
+
+  cwExpanded[id]=opening;
+  var el=document.getElementById('cw-'+id);
+  if(!el)return;
+
+  if(opening){
+    el.classList.add('open');  // ← necessário para grid-column:1/-1
+    var body=el.querySelector('.cw-body');
+    var footer=el.querySelector('.cw-footer');
+    var chev=el.querySelector('.cw-chevron');
+    var icon=el.querySelector('.cw-icon');
+    if(body)body.style.display='flex';
+    if(footer)footer.style.display='flex';
+    if(chev){chev.style.transform='rotate(90deg)';chev.style.color='var(--nt-cyan)';}
+    if(icon)icon.style.background='var(--nt-cyan)';
+    setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'nearest'});},80);
+  }
+}
+
+function filterCompWidgets(){buildCompWidgets();}
+
+function selectOptComp(rtId,optIdx){
+  var rt=resultTables.find(function(t){return t.id===rtId;});
+  if(!rt)return;
+  if(rt.multi){rt.opts[optIdx].selected=!rt.opts[optIdx].selected;}
+  else{rt.opts.forEach(function(o,i){o.selected=(i===optIdx);});}
+  // Atualizar tabela do widget
+  var optsEl=document.getElementById('cwopts-'+rtId);
+  if(optsEl)optsEl.innerHTML=renderCompOptsTable(rt);
+  // Atualizar badge de valor no header do widget
+  var selOpts=rt.opts.filter(function(o){return o.selected;});
+  var hasVal=selOpts.length>0;
+  var valEl=document.getElementById('cwval-'+rtId);
+  if(valEl){
+    var v=hasVal?(selOpts.length===1?selOpts[0].val:selOpts.reduce(function(a,o){return a+Number(o.val);},0)):null;
+    valEl.textContent=hasVal?(selOpts.length===1?fmtVal(v):selOpts.length+' sel.'):'--';
+    valEl.className='cw-val-badge '+(hasVal?'has-val':'no-val');
+  }
+  // Sincronizar com view Calculo Preco de Venda
+  var tbodyR=document.getElementById('rtb-'+rtId);
+  if(tbodyR)tbodyR.innerHTML=renderRTOpts(rt);
+  var cardR=document.getElementById('rtcard-'+rtId);
+  if(cardR){var hdsR=cardR.querySelectorAll('.rt-card-hd > div');if(hdsR[2])hdsR[2].innerHTML=selValDisplay(rt)+'<span class="chip '+(rt.sit==='Ativo'?'active':'inactive')+'">'+rt.sit+'</span>';}
+  buildAPVVars();
+  toast((rt.varAPV||rt.cod)+' → "'+(rt.opts[optIdx]?rt.opts[optIdx].desc:'?')+'" '+(rt.opts[optIdx]&&(rt.opts[optIdx].selected||!rt.multi)?'selecionado':'desmarcado')+'.','ok');
+}
+
+/* Modal de edição de componente (Cadastro Geral) */
+function openEditRTModal(rtId){
+  var rt=rtId?resultTables.find(function(t){return t.id===rtId;}):null;
+  document.getElementById('mrt-cod').value=rt?rt.cod:'';
+  document.getElementById('mrt-desc').value=rt?rt.desc:'';
+  document.getElementById('mrt-sit').value=rt?rt.sit:'Ativo';
+  document.getElementById('mrt-multi').value=(rt&&rt.multi)?'Sim':'Não';
+  document.getElementById('mrt-var').value=rt?(rt.varAPV||''):'';
+  document.getElementById('mrt-formula').value=rt?(rt.formula||''):'';
+  document.getElementById('modal-rt').dataset.editId=rtId||'';
+  document.getElementById('modal-rt-title').textContent=rt?'Editar Componente':'Novo Componente';
+  var tbody=document.getElementById('rt-opts-tbody');
+  if(rt&&rt.opts.length){
+    tbody.innerHTML=rt.opts.map(function(o){
+      return `<tr>
+        <td><input type="number" value="${o.seq}" style="width:38px;text-align:center"></td>
+        <td><input type="text" value="${o.cod}" style="font-family:var(--mono);width:72px"></td>
+        <td><input type="text" value="${o.desc}"></td>
+        <td><input type="text" value="${o.val}" style="width:80px;font-family:var(--mono);text-align:right"></td>
+        <td><input type="text" value="${fmtBRL(o.custo||0)}" style="width:100px;font-family:var(--mono);text-align:right" oninput="maskBRL(this)" onfocus="if(this.value==='R$ 0,00')this.value=''" onblur="if(!this.value)this.value='R$ 0,00'"></td>
+        <td style="text-align:center"><input type="checkbox"${o.dflt?' checked':''}></td>
+        <td><button class="btn-icon danger" onclick="this.closest('tr').remove()"><i class="ti ti-trash"></i></button></td>
+      </tr>`;
+    }).join('');
+  } else {
+    tbody.innerHTML='<tr><td colspan="7" class="empty-table">Adicione opções</td></tr>';
+  }
+  document.getElementById('modal-rt').style.display='flex';
+}
+
+function buildRTListSimple(){buildCompWidgets();}
+
+/* ═════ COMPONENTES DE PREÇO — widget grid (%) ═════ */
+
+function fmtPct(v){
+  var n=parseFloat(v);
+  if(isNaN(n))return '0,00 %';
+  return n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:4})+' %';
+}
+function parsePct(s){
+  var clean=String(s).replace(/%/g,'').replace(/\s/g,'').replace(',','.');
+  var n=parseFloat(clean);
+  return isNaN(n)?0:n;
+}
+function maskPct(input){
+  var raw=input.value.replace(/[^0-9,\.]/g,'');
+  input.value=raw;
+}
+
+function buildPrecoWidgets(){
+  var grid=document.getElementById('preco-widget-grid');
+  if(!grid)return;
+  var search=(document.getElementById('preco-search')||{}).value||'';
+  var fSit=(document.getElementById('preco-flt-sit')||{}).value||'';
+  var fMulti=(document.getElementById('preco-flt-multi')||{}).value||'';
+  var filtered=priceTables.filter(function(pt){
+    var q=search.toLowerCase();
+    var matchQ=!q||(pt.cod.toLowerCase().includes(q)||pt.desc.toLowerCase().includes(q)||(pt.varAPV||'').toLowerCase().includes(q));
+    var matchSit=!fSit||pt.sit===fSit;
+    var matchMulti=fMulti===''||String(pt.multi?1:0)===fMulti;
+    return matchQ&&matchSit&&matchMulti;
+  });
+  var counter=document.getElementById('preco-counter');
+  if(counter)counter.textContent=filtered.length+' componente'+(filtered.length!==1?'s':'');
+  grid.innerHTML=filtered.map(function(pt){
+    var selOpts=pt.opts.filter(function(o){return o.selected;});
+    var hasVal=selOpts.length>0;
+    var valDisplay=hasVal?(selOpts.length===1?fmtPct(selOpts[0].val):selOpts.length+' sel.'):null;
+    var isOpen=!!cwExpandedP[pt.id];
+    return renderPrecoWidget(pt,isOpen,hasVal,valDisplay);
+  }).join('')||'<div style="grid-column:1/-1;text-align:center;color:var(--txt-3);padding:48px;font-size:12px"><i class="ti ti-mood-empty" style="font-size:36px;display:block;margin-bottom:10px;opacity:.25"></i>Nenhum componente encontrado</div>';
+}
+
+function renderPrecoWidget(pt,isOpen,hasVal,valDisplay){
+  var selOpts=pt.opts.filter(function(o){return o.selected;});
+  hasVal=hasVal!==undefined?hasVal:selOpts.length>0;
+  valDisplay=valDisplay!==undefined?valDisplay:(hasVal?(selOpts.length===1?fmtPct(selOpts[0].val):selOpts.length+' sel.'):null);
+  return `
+  <div class="comp-widget${isOpen?' open':''}" id="pw-${pt.id}">
+    <div class="cw-header" onclick="togglePrecoWidget('${pt.id}')">
+      <div class="cw-icon" style="${isOpen?'background:var(--nt-cyan)':''}"><i class="ti ti-percentage" aria-hidden="true"></i></div>
+      <div class="cw-hd-info">
+        <div><span class="cw-code">${pt.cod}</span>${pt.varAPV?`<span class="cw-var">[${pt.varAPV}]</span>`:''}</div>
+        <div class="cw-desc" title="${pt.desc}">${pt.desc}</div>
+      </div>
+      <div class="cw-hd-right">
+        <span class="cw-val-badge ${hasVal?'has-val':'no-val'}" id="pwval-${pt.id}">${hasVal?valDisplay:'--'}</span>
+        <span class="chip ${pt.sit==='Ativo'?'active':'inactive'}">${pt.sit}</span>
+        ${pt.multi?'<span class="tag tM" style="font-size:9px">Multi</span>':''}
+        <i class="ti ti-chevron-right cw-chevron" style="${isOpen?'transform:rotate(90deg);color:var(--nt-cyan)':''}" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="cw-body" style="${isOpen?'display:flex':'display:none'}">
+      <div class="cw-meta">
+        <div class="cw-meta-item">
+          <span class="cw-meta-label">Variável Preço de Venda</span>
+          <input class="cw-meta-val" type="text" value="${pt.varAPV||''}" placeholder="ex: ISS"
+            onclick="event.stopPropagation()"
+            onchange="updatePTField('${pt.id}','varAPV',this.value)">
+        </div>
+        <div class="cw-meta-item">
+          <span class="cw-meta-label">Seleção</span>
+          <select class="cw-meta-val" onclick="event.stopPropagation()" onchange="updatePTField('${pt.id}','multi',this.value==='Múltipla')">
+            <option${pt.multi?'':' selected'}>Simples</option>
+            <option${pt.multi?' selected':''}>Múltipla</option>
+          </select>
+        </div>
+        <div class="cw-meta-item span2">
+          <span class="cw-meta-label">Fórmula</span>
+          <input class="cw-meta-val" type="text" value="${pt.formula||''}" placeholder="ex: PRECO_BRUTO x ISS" style="font-size:11px"
+            onclick="event.stopPropagation()"
+            onchange="updatePTField('${pt.id}','formula',this.value)">
+        </div>
+      </div>
+      <div class="cw-table-wrap">
+        <table class="cw-table">
+          <thead><tr>
+            <th class="cw-td-seq">Seq.</th>
+            <th>Código</th>
+            <th>Descrição</th>
+            <th style="text-align:right">Val. Calc. (%)</th>
+            <th class="cw-td-pad">Pad.</th>
+            <th class="th-sel">Selecionar</th>
+          </tr></thead>
+          <tbody id="pwopts-${pt.id}">${renderPrecoOptsTable(pt)}</tbody>
+        </table>
+      </div>
+    </div>
+    <div class="cw-footer" style="${isOpen?'display:flex':'display:none'}">
+      <button class="btn btn-sm btn-ghost" onclick="openEditPTModal('${pt.id}');event.stopPropagation()">
+        <i class="ti ti-pencil" aria-hidden="true"></i> Editar
+      </button>
+      <button class="btn btn-sm btn-secondary" onclick="addOptInlinePreco('${pt.id}');event.stopPropagation()">
+        <i class="ti ti-plus" aria-hidden="true"></i> Nova Opção
+      </button>
+      <div style="flex:1"></div>
+      <button class="btn btn-sm btn-secondary" onclick="togglePrecoWidget('${pt.id}');event.stopPropagation()">
+        <i class="ti ti-chevron-up" aria-hidden="true"></i> Recolher
+      </button>
+    </div>
+  </div>`;
+}
+
+function renderPrecoOptsTable(pt){
+  return pt.opts.map(function(o,i){
+    return `<tr class="${o.selected?'opt-selected':''}">
+      <td class="cw-td-seq">${o.seq}</td>
+      <td class="cw-td-cod">${o.cod}</td>
+      <td class="cw-td-desc">${o.desc}</td>
+      <td class="cw-td-val">
+        <input type="text" value="${fmtPct(o.val)}"
+          style="width:100px;font-family:var(--mono);font-size:11px;text-align:right;padding:2px 5px;border:1px solid var(--border);border-radius:3px;background:var(--surface)"
+          onclick="event.stopPropagation()"
+          oninput="maskPct(this)"
+          onchange="updatePTOptVal('${pt.id}',${i},this.value);this.value=fmtPct(parsePct(this.value))">
+      </td>
+      <td class="cw-td-pad">${o.dflt?'<i class="ti ti-check" style="color:#16a34a"></i>':''}</td>
+      <td class="cw-td-sel">
+        <button class="cw-sel-btn${o.selected?' selected':''}" onclick="selectOptPreco('${pt.id}',${i});event.stopPropagation()">
+          ${o.selected?'Selecionado':'Selecionar'}
+        </button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function togglePrecoWidget(id){
+  var opening=!cwExpandedP[id];
+  Object.keys(cwExpandedP).forEach(function(k){
+    if(cwExpandedP[k]){
+      cwExpandedP[k]=false;
+      var w=document.getElementById('pw-'+k);
+      if(!w)return;
+      w.classList.remove('open');
+      var b=w.querySelector('.cw-body');var f=w.querySelector('.cw-footer');
+      var chev=w.querySelector('.cw-chevron');var icon=w.querySelector('.cw-icon');
+      if(b)b.style.display='none';if(f)f.style.display='none';
+      if(chev){chev.style.transform='';chev.style.color='';}
+      if(icon)icon.style.background='';
+    }
+  });
+  cwExpandedP[id]=opening;
+  var el=document.getElementById('pw-'+id);
+  if(!el)return;
+  if(opening){
+    el.classList.add('open');
+    var body=el.querySelector('.cw-body');var footer=el.querySelector('.cw-footer');
+    var chev=el.querySelector('.cw-chevron');var icon=el.querySelector('.cw-icon');
+    if(body)body.style.display='flex';if(footer)footer.style.display='flex';
+    if(chev){chev.style.transform='rotate(90deg)';chev.style.color='var(--nt-cyan)';}
+    if(icon)icon.style.background='var(--nt-cyan)';
+    setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'nearest'});},80);
+  }
+}
+
+function selectOptPreco(ptId,optIdx){
+  var pt=priceTables.find(function(t){return t.id===ptId;});
+  if(!pt)return;
+  if(pt.multi){pt.opts[optIdx].selected=!pt.opts[optIdx].selected;}
+  else{pt.opts.forEach(function(o,i){o.selected=(i===optIdx);});}
+  var optsEl=document.getElementById('pwopts-'+ptId);
+  if(optsEl)optsEl.innerHTML=renderPrecoOptsTable(pt);
+  var selOpts=pt.opts.filter(function(o){return o.selected;});
+  var hasVal=selOpts.length>0;
+  var valEl=document.getElementById('pwval-'+ptId);
+  if(valEl){
+    var v=hasVal?(selOpts.length===1?selOpts[0].val:selOpts.reduce(function(a,o){return a+Number(o.val);},0)):null;
+    valEl.textContent=hasVal?(selOpts.length===1?fmtPct(v):selOpts.length+' sel.'):'--';
+    valEl.className='cw-val-badge '+(hasVal?'has-val':'no-val');
+  }
+  toast((pt.varAPV||pt.cod)+' → "'+(pt.opts[optIdx]?pt.opts[optIdx].desc:'?')+'" '+(pt.opts[optIdx]&&(pt.opts[optIdx].selected||!pt.multi)?'selecionado':'desmarcado')+'.','ok');
+}
+
+function updatePTOptVal(ptId,idx,raw){
+  var pt=priceTables.find(function(t){return t.id===ptId;});
+  if(!pt)return;
+  pt.opts[idx].val=parsePct(raw);
+  var selOpts=pt.opts.filter(function(o){return o.selected;});
+  var hasVal=selOpts.length>0;
+  var valEl=document.getElementById('pwval-'+ptId);
+  if(valEl&&hasVal){
+    var v=selOpts.length===1?selOpts[0].val:selOpts.reduce(function(a,o){return a+Number(o.val);},0);
+    valEl.textContent=selOpts.length===1?fmtPct(v):selOpts.length+' sel.';
+  }
+}
+
+function updatePTField(ptId,field,value){
+  var pt=priceTables.find(function(t){return t.id===ptId;});
+  if(pt)pt[field]=value;
+}
+
+function addOptInlinePreco(ptId){
+  var pt=priceTables.find(function(t){return t.id===ptId;});
+  if(!pt)return;
+  var seq=(pt.opts.length+1)*10;
+  pt.opts.push({seq:seq,cod:'OPT'+seq,desc:'Nova opção',val:0,dflt:false,selected:false});
+  var tbody=document.getElementById('pwopts-'+ptId);
+  if(tbody)tbody.innerHTML=renderPrecoOptsTable(pt);
+  toast('Nova opção adicionada.','ok');
+}
+
+function filterPrecoWidgets(){buildPrecoWidgets();}
+
+function openEditPTModal(ptId){
+  var pt=ptId?priceTables.find(function(t){return t.id===ptId;}):null;
+  document.getElementById('mpt-cod').value=pt?pt.cod:'';
+  document.getElementById('mpt-desc').value=pt?pt.desc:'';
+  document.getElementById('mpt-sit').value=pt?pt.sit:'Ativo';
+  document.getElementById('mpt-multi').value=(pt&&pt.multi)?'Sim':'Não';
+  document.getElementById('mpt-var').value=pt?(pt.varAPV||''):'';
+  document.getElementById('mpt-formula').value=pt?(pt.formula||''):'';
+  document.getElementById('modal-pt').dataset.editId=ptId||'';
+  document.getElementById('modal-pt-title').textContent=pt?'Editar Componente de Preço':'Novo Componente de Preço';
+  var tbody=document.getElementById('pt-opts-tbody');
+  if(pt&&pt.opts.length){
+    tbody.innerHTML=pt.opts.map(function(o){
+      return `<tr>
+        <td><input type="number" value="${o.seq}" style="width:38px;text-align:center"></td>
+        <td><input type="text" value="${o.cod}" style="font-family:var(--mono);width:72px"></td>
+        <td><input type="text" value="${o.desc}"></td>
+        <td><input type="text" value="${fmtPct(o.val)}" style="width:90px;font-family:var(--mono);text-align:right" oninput="maskPct(this)"></td>
+        <td style="text-align:center"><input type="checkbox"${o.dflt?' checked':''}></td>
+        <td><button class="btn-icon danger" onclick="this.closest('tr').remove()"><i class="ti ti-trash"></i></button></td>
+      </tr>`;
+    }).join('');
+  } else {
+    tbody.innerHTML='<tr><td colspan="6" class="empty-table">Adicione opções</td></tr>';
+  }
+  document.getElementById('modal-pt').style.display='flex';
+}
+
+function addPTOption(){
+  var tbody=document.getElementById('pt-opts-tbody');
+  if(tbody.querySelector('td[colspan]'))tbody.innerHTML='';
+  var seq=(tbody.querySelectorAll('tr').length+1)*10;
+  var tr=document.createElement('tr');
+  tr.innerHTML=`<td><input type="number" value="${seq}" style="width:38px;text-align:center"></td><td><input type="text" placeholder="COD" style="font-family:var(--mono);width:72px"></td><td><input type="text" placeholder="Descrição da opção"></td><td><input type="text" placeholder="0,00 %" style="width:90px;font-family:var(--mono);text-align:right" oninput="maskPct(this)"></td><td style="text-align:center"><input type="checkbox"></td><td><button class="btn-icon danger" onclick="this.closest('tr').remove()"><i class="ti ti-trash"></i></button></td>`;
+  tbody.appendChild(tr);
+}
+
+function saveNewPT(){
+  const cod=document.getElementById('mpt-cod').value.trim().toUpperCase();
+  const desc=document.getElementById('mpt-desc').value.trim();
+  if(!cod||!desc){toast('Preencha Código e Descrição.','err');return;}
+  const editId=document.getElementById('modal-pt').dataset.editId||'';
+  const existing=priceTables.find(t=>t.cod===cod);
+  if(existing&&existing.id!==editId){toast('Código já existe.','err');return;}
+  const varAPV=document.getElementById('mpt-var').value.trim().toUpperCase();
+  const formula=document.getElementById('mpt-formula').value.trim();
+  const rows=document.querySelectorAll('#pt-opts-tbody tr:not([colspan])');
+  const opts=[];
+  rows.forEach((tr,i)=>{
+    const ins=tr.querySelectorAll('input');
+    opts.push({seq:parseInt(ins[0].value)||(i+1)*10,cod:ins[1].value||'OPT'+((i+1)*10),desc:ins[2].value||'—',val:parsePct(ins[3].value),dflt:ins[4].checked,selected:false});
+  });
+  if(editId){
+    const pt=priceTables.find(t=>t.id===editId);
+    if(pt){pt.cod=cod;pt.desc=desc;pt.sit=document.getElementById('mpt-sit').value;pt.multi=document.getElementById('mpt-multi').value==='Sim';pt.varAPV=varAPV;pt.formula=formula;pt.opts=opts;toast(`Componente "${cod}" atualizado.`,'ok');}
+  } else {
+    priceTables.push({id:'pt'+Date.now(),cod,desc,sit:document.getElementById('mpt-sit').value,multi:document.getElementById('mpt-multi').value==='Sim',varAPV,formula,opts});
+    toast(`Componente "${cod}" criado.`,'ok');
+  }
+  buildPrecoWidgets();closeModal('modal-pt');
+}
+
+function updateRTField(rtId,field,value){
+  var rt=resultTables.find(function(t){return t.id===rtId;});
+  if(!rt)return;
+  rt[field]=value;
+  // Sincronizar view Cálculo se necessário
+  var cardR=document.getElementById('rtcard-'+rtId);
+  if(cardR){
+    var codeEl=cardR.querySelector('.rt-code');
+    if(codeEl&&field==='varAPV')codeEl.innerHTML=rt.cod+'<span style="font-size:9px;font-family:var(--mono);color:var(--txt-3);margin-left:6px">['+rt.varAPV+']</span>';
+    var fmlEl=cardR.querySelector('.rt-stats');
+    if(fmlEl&&field==='formula')fmlEl.textContent='Formula: '+(rt.formula||'--')+' - '+rt.opts.length+' opcoes';
+  }
+  buildAPVVars();
+}
+
+function addOptInlineWidget(rtId){
+  var rt=resultTables.find(function(t){return t.id===rtId;});
+  if(!rt)return;
+  var seq=(rt.opts.length+1)*10;
+  rt.opts.push({seq:seq,cod:'OPT'+seq,desc:'Nova opção',val:0,custo:0,dflt:false,selected:false});
+  var tbody=document.getElementById('cwopts-'+rtId);
+  if(tbody)tbody.innerHTML=renderCompOptsTable(rt);
+  toast('Nova opção adicionada.','ok');
+}
+
+
+function selectOpt(rtId,optIdx){
+  var rt=resultTables.find(function(t){return t.id===rtId;});if(!rt)return;
+  if(rt.multi){rt.opts[optIdx].selected=!rt.opts[optIdx].selected;}
+  else{rt.opts.forEach(function(o,i){o.selected=(i===optIdx);});}
+  // Atualizar view detalhada (Calculo Preco de Venda)
+  var tbody=document.getElementById('rtb-'+rtId);
+  if(tbody)tbody.innerHTML=renderRTOpts(rt);
+  var card=document.getElementById('rtcard-'+rtId);
+  if(card){
+    var hds=card.querySelectorAll('.rt-card-hd > div');
+    if(hds[2])hds[2].innerHTML=selValDisplay(rt)+'<span class="chip '+(rt.sit==='Ativo'?'active':'inactive')+'">'+rt.sit+'</span>';
+  }
+  // Sincronizar widgets Componentes de Produto
+  var optsEl2=document.getElementById('cwopts-'+rtId);
+  if(optsEl2)optsEl2.innerHTML=renderCompOptsTable(rt);
+  var selOpts2=rt.opts.filter(function(o){return o.selected;});
+  var hasVal2=selOpts2.length>0;
+  var valEl2=document.getElementById('cwval-'+rtId);
+  if(valEl2){var v2=hasVal2?(selOpts2.length===1?selOpts2[0].val:selOpts2.reduce(function(a,o){return a+Number(o.val);},0)):null;valEl2.textContent=hasVal2?(selOpts2.length===1?fmtVal(v2):selOpts2.length+' sel.'):'--';valEl2.className='cw-val-badge '+(hasVal2?'has-val':'no-val');}
+  // Sincronizar view Calculo Preco de Venda
+  var tbodyR=document.getElementById('rtb-'+rtId);
+  if(tbodyR)tbodyR.innerHTML=renderRTOpts(rt);
+  var cardR=document.getElementById('rtcard-'+rtId);
+  if(cardR){var hdsR=cardR.querySelectorAll('.rt-card-hd > div');if(hdsR[2])hdsR[2].innerHTML=selValDisplay(rt)+'<span class="chip '+(rt.sit==='Ativo'?'active':'inactive')+'">'+rt.sit+'</span>';}
+  buildAPVVars();
+  toast((rt.varAPV||rt.cod)+' -> "'+rt.opts[optIdx].desc+'" '+(rt.opts[optIdx].selected||!rt.multi?'selecionado':'desmarcado')+'.','ok');
+}
+
+var apvTokens=[];
+function buildAPVVars(){
+  var c=document.getElementById('apv-vars');if(!c)return;
+  // Componentes do produto selecionado
+  const linkedIds=new Set((selNode?(itemSpecs[selNode]||[]):[]).map(function(s){return s.id;}));
+  const prodRTs=resultTables.filter(function(rt){return linkedIds.has(rt.id);});
+  // + Componentes de Preço
+  const allRTs=[...prodRTs,...priceTables];
+  c.innerHTML=allRTs.map(function(rt){
+    var sel=rt.opts.filter(function(o){return o.selected;});
+    var hasVal=sel.length>0;
+    var dv=hasVal?(sel.length===1?sel[0].cod:'multi'):'?';
+    var isPT=priceTables.includes(rt);
+    return '<button onclick="apvAppend(\''+(rt.varAPV||rt.cod)+'\')" title="'+rt.desc+(hasVal?' = '+sel.map(function(o){return o.val;}).join('+'):'')+'" style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:11px;cursor:pointer;border:1.5px solid '+(isPT?'#a78bfa':'#00A0C0')+';background:rgba('+(isPT?'167,139,250':'0,160,192')+','+(hasVal?'.2':'.05')+');color:'+(hasVal?(isPT?'#c4b5fd':'#b8e8f5'):(isPT?'#7c3aed':'#6fa8c8'))+';font-family:var(--font)"><i class=\"ti '+(isPT?'ti-percentage':'ti-variable')+'" style=\"font-size:10px\"></i> '+(rt.varAPV||rt.cod)+'<span style=\"font-size:9px;opacity:.7\">'+ dv +'</span></button>';
+  }).join('');}
+function apvAppend(tok){apvTokens.push(tok);apvRender();}
+function apvUndo(){apvTokens.pop();apvRender();}
+function apvClear(){
+  apvTokens=[];apvRender();
+  ['apvr-custo','apvr-imp','apvr-bruto','apvr-ebitda'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el)el.textContent=(id.indexOf('imp')>-1||id.indexOf('ebitda')>-1)?'-- %':'R$ --';
+  });
+}
+function apvRender(){var d=document.getElementById('apv-display');if(d)d.textContent=apvTokens.length?apvTokens.join(' '):'--';}
+function apvCalc(){
+  if(!apvTokens.length){toast('Componha a formula antes de calcular.','err');return;}
+  var expr=apvTokens.join(' ');
+  resultTables.forEach(function(rt){
+    var sel=rt.opts.filter(function(o){return o.selected;});
+    var v=sel.length===1?Number(sel[0].val):sel.reduce(function(a,o){return a+Number(o.val);},0);
+    if(rt.varAPV)expr=expr.split(rt.varAPV).join(String(isNaN(v)?0:v));
+  });
+  expr=expr.split('SELIC').join('0.1475').split('PIS_COF').join('0.141').split('DESP_OP').join('0.14').split('DESP_IND').join('0.141');
+  expr=expr.split('x').join('*').split('/').join('/');
+  var custo=0;
+  try{custo=Function('"use strict";return ('+expr+')')();}
+  catch(e){toast('Expressao invalida: '+e.message,'err');return;}
+  if(isNaN(custo)||!isFinite(custo)){toast('Resultado invalido.','err');return;}
+  var iss=0.05,pisCof=0.141,totalImp=iss+pisCof;
+  var precoBruto=custo/(1-totalImp);
+  var despOp=0.14*precoBruto,despInd=0.141*precoBruto;
+  var ebitda=(precoBruto-custo-despOp-despInd)/precoBruto;
+  function fmt(v,m){
+    if(m===false)return (v*100).toFixed(2).replace('.',',')+' %';
+    return 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+  document.getElementById('apvr-custo').textContent=fmt(custo);
+  document.getElementById('apvr-imp').textContent=fmt(totalImp,false);
+  document.getElementById('apvr-bruto').textContent=fmt(precoBruto);
+  document.getElementById('apvr-ebitda').textContent=fmt(ebitda,false);
+  toast('Preco Bruto Final: '+fmt(precoBruto),'ok');
+}
+
+/* ═════════ LINKS ═════════ */
+const LINKS_SAMPLE=[
+  {item:'PC-FULL-001',desc:'PayCash — Ponto SP/Capital',  folha:'FE-PC-2025-001',specs:13,vig:'01/05/2025',sit:'Ativo',tipo:'PAYCASH'},
+  {item:'PC-CAP-001', desc:'Cofre Inteligente — Varejo',  folha:'FE-PC-2025-002',specs:7, vig:'01/05/2025',sit:'Ativo',tipo:'CAPTURA'},
+  {item:'PC-TRN-001', desc:'Rota Padrão — Capital',       folha:'FE-PC-2025-003',specs:6, vig:'01/05/2025',sit:'Ativo',tipo:'TRANSPORTE'},
+  {item:'PC-NUM-001', desc:'Processamento — Cédulas',     folha:'FE-PC-2024-008',specs:4, vig:'01/01/2024',sit:'Ativo',tipo:'PROCESSAMENTO'},
+  {item:'PC-CTV-001', desc:'Custódia — Caixa Forte',      folha:'FE-PC-2024-009',specs:3, vig:'01/01/2024',sit:'Ativo',tipo:'CUSTÓDIA'},
+  {item:'PC-FULL-002',desc:'PayCash — Interior (MPE)',    folha:'FE-PC-2023-014',specs:11,vig:'01/06/2023',sit:'Inativo',tipo:'PAYCASH'},
+];
+function loadLinks(){
+  const fCode=document.getElementById('flt-code').value.toLowerCase();
+  const fGroup=document.getElementById('flt-group').value;
+  const fSit=document.getElementById('flt-sit').value;
+  const data=LINKS_SAMPLE.filter(r=>(!fCode||r.item.toLowerCase().includes(fCode)||r.desc.toLowerCase().includes(fCode))&&(!fGroup||r.tipo===fGroup)&&(!fSit||r.sit===fSit));
+  document.getElementById('links-count').textContent=`${data.length} registro${data.length!==1?'s':''}`;
+  document.getElementById('links-tbody').innerHTML=data.length?data.map(r=>`
+    <tr>
+      <td><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--nt-dark)">${r.item}</span></td>
+      <td>${r.desc}</td>
+      <td><span style="font-family:var(--mono);font-size:11px">${r.folha}</span></td>
+      <td style="text-align:center"><span class="tag tN">${r.specs}</span></td>
+      <td>${r.vig}</td>
+      <td><span class="chip ${r.sit==='Ativo'?'active':'inactive'}">${r.sit}</span></td>
+      <td>
+        <button class="btn-icon" onclick="toast('Abrindo ${r.item}...')" aria-label="Editar ${r.item}"><i class="ti ti-edit" aria-hidden="true"></i></button>
+        <button class="btn-icon danger" onclick="toast('Vínculo removido.')" aria-label="Remover ${r.item}"><i class="ti ti-trash" aria-hidden="true"></i></button>
+      </td>
+    </tr>`).join(''):'<tr><td colspan="7" class="empty-table">Nenhum registro encontrado</td></tr>';
+}
+function clearLinks(){document.getElementById('flt-code').value='';document.getElementById('flt-group').value='';document.getElementById('flt-sit').value='';document.getElementById('links-count').textContent='—';document.getElementById('links-tbody').innerHTML='<tr><td colspan="7" class="empty-table">Clique em "Pesquisar" para carregar</td></tr>'}
+
+/* ═════════ UTILS ═════════ */
+function closeModal(id){document.getElementById(id).style.display='none'}
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.style.display='none'}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay').forEach(m=>m.style.display='none')});
+function toast(msg,type=''){
+  const el=document.getElementById('toast-el');const icon=document.getElementById('toast-icon');const msgEl=document.getElementById('toast-msg');
+  el.className='toast show'+(type==='err'?' err':type==='ok'?' ok-green':'');
+  icon.className='ti '+(type==='err'?'ti-alert-circle':'ti-check-circle');
+  msgEl.textContent=msg;document.getElementById('sb-msg').textContent=msg;
+  clearTimeout(window._toast);window._toast=setTimeout(()=>el.classList.remove('show'),3000);
+}
+</script>
+</body>
+</html>

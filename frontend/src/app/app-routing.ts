@@ -11,7 +11,7 @@ export const routes: Routes = [
     path: '',
     component: MainComponent,
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'pricing' },
+      { path: '', pathMatch: 'full', redirectTo: 'product-components' },
       // {
       //   path: 'home',
       //   loadChildren: () =>
@@ -22,6 +22,38 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/pricing/pricing.routes').then(
             (r) => r.pricingRoutes,
+          ),
+      },
+      {
+        path: 'product-components',
+        loadChildren: () =>
+          import('./features/product-components/product-components.routes').then(
+            (r) => r.productComponentsRoutes,
+          ),
+      },
+      {
+        path: 'price-components',
+        loadComponent: () =>
+          import('./features/formula-builder/component/formula-builder.component').then(
+            (c) => c.FormulaBuilderComponent,
+          ),
+        data: {
+          title: 'Componentes de Preço',
+          catalogTitle: 'Catálogo de componentes de preço',
+        },
+      },
+      {
+        path: 'product-tree',
+        loadChildren: () =>
+          import('./features/product-tree/product-tree.routes').then(
+            (r) => r.productTreeRoutes,
+          ),
+      },
+      {
+        path: 'sale-price',
+        loadChildren: () =>
+          import('./features/sale-price/sale-price.routes').then(
+            (r) => r.salePriceRoutes,
           ),
       },
       {

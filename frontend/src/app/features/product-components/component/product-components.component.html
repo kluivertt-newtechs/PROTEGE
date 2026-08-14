@@ -1,0 +1,77 @@
+<po-page-default p-title="Componentes de Produto">
+  <div class="catalog-page">
+    <po-container p-title="Filtros">
+      <div class="filter-grid">
+        <po-input
+          name="searchTerm"
+          p-label="Buscar"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onFilterChange()"
+        ></po-input>
+        <po-select
+          name="groupFilter"
+          p-label="Grupo"
+          [p-options]="groupOptions"
+          [ngModel]="groupFilter"
+          (ngModelChange)="groupFilter = $event; onFilterChange()"
+        ></po-select>
+        <po-select
+          name="statusFilter"
+          p-label="Status"
+          [p-options]="statusOptions"
+          [ngModel]="statusFilter"
+          (ngModelChange)="statusFilter = $event; onFilterChange()"
+        ></po-select>
+      </div>
+      <div class="actions-row">
+        <po-button p-icon="an an-plus" p-label="Novo componente" p-kind="primary" (p-click)="newComponent()"></po-button>
+        <span *ngIf="statusMessage">{{ statusMessage }}</span>
+      </div>
+    </po-container>
+
+    <po-container p-title="Catálogo">
+      <po-table
+        [p-columns]="columns"
+        [p-items]="rows"
+        [p-actions]="actions"
+        [p-hide-table-search]="true"
+        [p-sort]="true"
+      ></po-table>
+      <p class="empty-state" *ngIf="!rows.length">Nenhum componente encontrado.</p>
+    </po-container>
+  </div>
+
+  <po-modal #componentModal p-title="Componente de produto">
+    <div class="form-grid">
+      <po-input name="code" p-label="Código" [(ngModel)]="editModel.code"></po-input>
+      <po-input name="description" p-label="Descrição" [(ngModel)]="editModel.description"></po-input>
+      <po-select
+        name="type"
+        p-label="Tipo"
+        [p-options]="typeOptions"
+        [ngModel]="editModel.type"
+        (ngModelChange)="editModel.type = $event"
+      ></po-select>
+      <po-input name="unit" p-label="Unidade" [(ngModel)]="editModel.unit"></po-input>
+      <po-input name="group" p-label="Grupo" [(ngModel)]="editModel.group"></po-input>
+      <po-input name="varAPV" p-label="Variável APV" [(ngModel)]="editModel.varAPV"></po-input>
+    </div>
+
+    <div class="checkbox-row">
+      <label><input type="checkbox" [(ngModel)]="editModel.active" /> Ativo</label>
+      <label><input type="checkbox" [(ngModel)]="editModel.multiple" /> Múltipla seleção</label>
+    </div>
+
+    <po-textarea
+      name="options"
+      p-label="Opções"
+      p-help="Uma opção por linha: Rótulo=valor | número opcional"
+      [(ngModel)]="optionDraft"
+    ></po-textarea>
+
+    <po-modal-footer>
+      <po-button p-label="Cancelar" (p-click)="componentModal.close()"></po-button>
+      <po-button p-kind="primary" p-label="Salvar" (p-click)="save()"></po-button>
+    </po-modal-footer>
+  </po-modal>
+</po-page-default>

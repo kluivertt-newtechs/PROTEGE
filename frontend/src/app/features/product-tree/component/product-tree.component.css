@@ -1,0 +1,109 @@
+.tree-grid {
+  align-items: start;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(250px, 3fr) minmax(360px, 5fr) minmax(260px, 3fr);
+  padding: 20px 0 24px;
+}
+
+.tree-list,
+.composition-zone,
+.library-zone {
+  display: grid;
+  gap: 10px;
+}
+
+.group-title {
+  color: #2e343c;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+.product-row,
+.library-chip,
+.component-row {
+  background: #fff;
+  border: 1px solid #d3d6da;
+  border-radius: 4px;
+  color: #2e343c;
+  cursor: pointer;
+  min-width: 0;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.product-row {
+  display: grid;
+  gap: 2px;
+}
+
+.product-row.active {
+  background: #edf6ff;
+  border-color: #0b3d63;
+}
+
+.component-row {
+  align-items: center;
+  cursor: grab;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 30px minmax(0, 1fr) 30px;
+}
+
+.component-row button {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.order {
+  align-items: center;
+  background: #f4f6f8;
+  border-radius: 4px;
+  display: inline-flex;
+  height: 28px;
+  justify-content: center;
+  width: 28px;
+}
+
+.library-chip {
+  display: grid;
+  gap: 3px;
+}
+
+small,
+.empty-state,
+.composition-zone.empty p,
+.actions-row span {
+  color: #69737d;
+  font-size: 12px;
+}
+
+.composition-zone {
+  border: 2px dashed #d3d6da;
+  border-radius: 4px;
+  min-height: 220px;
+  padding: 12px;
+}
+
+.composition-zone.empty {
+  align-items: center;
+  justify-items: center;
+}
+
+.actions-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+@media (max-width: 1120px) {
+  .tree-grid {
+    grid-template-columns: 1fr;
+  }
+}

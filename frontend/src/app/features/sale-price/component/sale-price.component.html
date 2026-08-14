@@ -1,0 +1,90 @@
+<po-page-default p-title="Preço de Venda">
+  <div class="sale-grid">
+    <po-container p-title="Produto">
+      <po-select
+        name="product"
+        p-label="Produto ou serviço"
+        [p-options]="productOptions"
+        [ngModel]="selectedProductId"
+        (ngModelChange)="onProductChange($event)"
+      ></po-select>
+      <p class="empty-state" *ngIf="!components.length">
+        Produto sem composição. Vincule componentes na Árvore de Produto.
+      </p>
+    </po-container>
+
+    <po-container p-title="Componentes da simulação">
+      <div class="dynamic-grid" *ngIf="components.length">
+        <ng-container *ngFor="let component of components">
+          <po-input
+            *ngIf="component.type === 'number' || component.type === 'rate'"
+            [name]="component.id"
+            [p-label]="component.description"
+            p-type="number"
+            [p-help]="component.unit + ' · ' + component.varAPV"
+            [(ngModel)]="values[component.id]"
+            (ngModelChange)="recalculate()"
+          ></po-input>
+
+          <po-input
+            *ngIf="component.type === 'text'"
+            [name]="component.id"
+            [p-label]="component.description"
+            [p-help]="component.varAPV"
+            [(ngModel)]="values[component.id]"
+            (ngModelChange)="recalculate()"
+          ></po-input>
+
+          <po-select
+            *ngIf="component.type === 'select'"
+            [name]="component.id"
+            [p-label]="component.description"
+            [p-options]="getSelectOptions(component)"
+            [p-help]="component.varAPV"
+            [ngModel]="values[component.id]"
+            (ngModelChange)="values[component.id] = $event; recalculate()"
+          ></po-select>
+
+          <label class="native-checkbox" *ngIf="component.type === 'boolean'">
+            <input type="checkbox" [(ngModel)]="values[component.id]" (ngModelChange)="recalculate()" />
+            <span>{{ component.description }} · {{ component.varAPV }}</span>
+          </label>
+        </ng-container>
+      </div>
+    </po-container>
+
+    <po-container p-title="Resultado">
+      <div class="result-grid">
+        <div class="metric">
+          <small>Preço unitário</small>
+          <strong>{{ formatCurrency(finalPrice) }}</strong>
+        </div>
+        <div class="metric">
+          <small>Preço mensal</small>
+          <strong>{{ formatCurrency(monthlyPrice) }}</strong>
+        </div>
+        <div class="metric">
+          <small>Alíquota total</small>
+          <strong>{{ formatPercent(resultValues['taxRate'] || 0) }}</strong>
+        </div>
+      </div>
+      <p class="warning" *ngIf="warning">{{ warning }}</p>
+    </po-container>
+
+    <po-container class="span-2" p-title="Memória de cálculo">
+      <div class="memory-list" *ngIf="memory.length; else noMemory">
+        <div class="memory-row" *ngFor="let step of memory" [class.error]="step.status === 'error'">
+          <span>
+            <strong>{{ step.label }}</strong>
+            <small>{{ step.expression }}</small>
+            <small *ngIf="step.message">{{ step.message }}</small>
+          </span>
+          <b>{{ formatCurrency(step.value) }}</b>
+        </div>
+      </div>
+      <ng-template #noMemory>
+        <p class="empty-state">Sem memória de cálculo.</p>
+      </ng-template>
+    </po-container>
+  </div>
+</po-page-default>

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import {
-  PoMenuModule,
   PoMenuItem,
-  PoToolbarModule,
+  PoMenuModule,
   PoToolbarAction,
+  PoToolbarModule,
   PoToolbarProfile,
 } from '@po-ui/ng-components';
 import { Router, RouterOutlet } from '@angular/router';
@@ -41,36 +41,29 @@ export class MainComponent {
   ];
 
   menu: Array<PoMenuItem> = [
-    // {
-    //   label: 'Home',
-    //   shortLabel: 'Home',
-    //   icon: 'an an-house',
-    //   link: 'home',
-    // },
     {
-      label: 'Precificação',
+      label: 'Componentes de Produto',
+      shortLabel: 'Produto',
+      icon: 'an an-package',
+      link: 'product-components',
+    },
+    {
+      label: 'Componentes de Preço',
       shortLabel: 'Preço',
-      icon: 'an an-currency-circle-dollar',
-      link: 'pricing',
-    },
-    {
-      label: 'Construtor de Fórmulas',
-      shortLabel: 'Fórmulas',
       icon: 'an an-function',
-      link: 'formula-builder',
+      link: 'price-components',
     },
     {
-      label: 'Simulação',
-      shortLabel: 'Simular',
-      icon: 'an an-calculator',
-      link: 'simulation',
+      label: 'Árvore de Produto',
+      shortLabel: 'Árvore',
+      icon: 'an an-tree-structure',
+      link: 'product-tree',
     },
-
     {
-      label: 'Consolidado',
-      shortLabel: 'Consolidado',
-      icon: 'an an-chart-line-up',
-      link: 'consolidated',
+      label: 'Preço de Venda',
+      shortLabel: 'Venda',
+      icon: 'an an-currency-circle-dollar',
+      link: 'sale-price',
     },
   ];
 

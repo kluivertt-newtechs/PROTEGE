@@ -1,0 +1,74 @@
+<po-page-default p-title="Árvore de Produto">
+  <div class="tree-grid">
+    <po-container p-title="Produtos e serviços">
+      <div class="tree-list">
+        <ng-container *ngFor="let group of tree">
+          <div class="group-title">{{ group.code }} - {{ group.name }}</div>
+          <button
+            type="button"
+            class="product-row"
+            *ngFor="let product of group.children"
+            [class.active]="product.id === selectedProductId"
+            (click)="selectProduct(product.id)"
+          >
+            <strong>{{ product.name }}</strong>
+            <small>{{ product.code }}</small>
+          </button>
+        </ng-container>
+      </div>
+    </po-container>
+
+    <po-container [p-title]="'Composição - ' + (selectedProduct?.name || '')">
+      <div
+        class="composition-zone"
+        [class.empty]="!selectedComponents.length"
+        (dragover)="allowDrop($event)"
+        (drop)="dropOnComposition($event)"
+      >
+        <ng-container *ngIf="selectedComponents.length; else noComposition">
+          <div
+            class="component-row"
+            *ngFor="let component of selectedComponents; let index = index"
+            draggable="true"
+            (dragstart)="beginComponentDrag($event, component.id, 'composition')"
+            (dragover)="allowDrop($event)"
+            (drop)="dropOnComposition($event, index)"
+          >
+            <span class="order">{{ index + 1 }}</span>
+            <span>
+              <strong>{{ component.description }}</strong>
+              <small>{{ component.code }} · {{ component.varAPV }}</small>
+            </span>
+            <button type="button" (click)="removeComponent(component.id)" aria-label="Remover">×</button>
+          </div>
+        </ng-container>
+        <ng-template #noComposition>
+          <p>Arraste componentes para montar a composição.</p>
+        </ng-template>
+      </div>
+
+      <div class="actions-row">
+        <po-button p-kind="primary" p-icon="an an-floppy-disk" p-label="Salvar composição" (p-click)="saveComposition()"></po-button>
+        <span>{{ selectedComponents.length }} componentes</span>
+        <span *ngIf="statusMessage">{{ statusMessage }}</span>
+      </div>
+    </po-container>
+
+    <po-container p-title="Biblioteca de componentes">
+      <div class="library-zone" (dragover)="allowDrop($event)" (drop)="dropOnLibrary($event)">
+        <button
+          type="button"
+          class="library-chip"
+          *ngFor="let component of availableComponents"
+          draggable="true"
+          (dragstart)="beginComponentDrag($event, component.id, 'library')"
+          (click)="addComponent(component.id)"
+        >
+          <strong>{{ component.description }}</strong>
+          <small>{{ component.group }} · {{ component.varAPV }}</small>
+        </button>
+        <p class="empty-state" *ngIf="!availableComponents.length">Todos os componentes ativos já estão vinculados.</p>
+      </div>
+    </po-container>
+  </div>
+</po-page-default>

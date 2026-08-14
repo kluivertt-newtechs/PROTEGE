@@ -1,0 +1,45 @@
+.catalog-page {
+  display: grid;
+  gap: 18px;
+  padding: 20px 0 24px;
+}
+
+.filter-grid,
+.form-grid {
+  display: grid;
+  gap: 14px 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.actions-row,
+.checkbox-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.actions-row span {
+  color: #1f6a2d;
+  font-size: 13px;
+}
+
+.checkbox-row label {
+  align-items: center;
+  color: #2e343c;
+  display: inline-flex;
+  gap: 8px;
+}
+
+.empty-state {
+  color: #69737d;
+  margin: 12px 0 0;
+}
+
+@media (max-width: 760px) {
+  .filter-grid,
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

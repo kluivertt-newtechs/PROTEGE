@@ -5,6 +5,7 @@ import {
   PricingFormula,
   PricingFormulaCategory,
 } from './mock';
+import { ProductCatalogService } from './product-catalog.service';
 
 export interface FormulaValidationResult {
   valid: boolean;
@@ -152,13 +153,15 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
 
 @Injectable({ providedIn: 'root' })
 export class PricingFormulaService {
+  constructor(private readonly productCatalog: ProductCatalogService) {}
+
   getFormulas(): Array<PricingFormula> {
     return cloneFormulas(readStoredFormulas() ?? DEFAULT_PRICING_FORMULAS);
   }
 
   saveFormulas(formulas: Array<PricingFormula>): FormulaValidationResult {
     const normalized = normalizeFormulas(formulas);
-    const validation = validateFormulasForSave(normalized);
+    const validation = validateFormulasForSave(normalized, this.getAllowedVariableIds());
 
     if (!validation.valid) {
       return validation;
@@ -174,7 +177,25 @@ export class PricingFormulaService {
   }
 
   validate(formulas: Array<PricingFormula>): FormulaValidationResult {
-    return validateFormulasForSave(normalizeFormulas(formulas));
+    return validateFormulasForSave(normalizeFormulas(formulas), this.getAllowedVariableIds());
+  }
+
+  getAvailableVariables(): Array<{ id: string; label: string }> {
+    const variables = [...PRICING_FORMULA_VARIABLES, ...this.productCatalog.getFormulaVariables()];
+    const usedIds = new Set<string>();
+
+    return variables.filter((variable) => {
+      if (usedIds.has(variable.id)) {
+        return false;
+      }
+
+      usedIds.add(variable.id);
+      return true;
+    });
+  }
+
+  private getAllowedVariableIds(): Set<string> {
+    return new Set(this.getAvailableVariables().map((variable) => variable.id));
   }
 }
 
@@ -184,7 +205,10 @@ export function executePricingFormulas(
   businessBranch?: PricingBusinessBranch,
 ): FormulaExecutionResult {
   const normalized = filterFormulasByBusinessBranch(normalizeFormulas(formulas), businessBranch);
-  const validation = validateFormulas(normalized);
+  const validation = validateFormulas(
+    normalized,
+    new Set([...BASE_VARIABLE_IDS, ...Object.keys(baseContext)]),
+  );
 
   if (!validation.valid) {
     return {
@@ -275,7 +299,10 @@ export function executePricingFormulas(
   return { values, memory };
 }
 
-function validateFormulas(formulas: Array<PricingFormula>): FormulaValidationResult {
+function validateFormulas(
+  formulas: Array<PricingFormula>,
+  allowedVariableIds: Set<string> = BASE_VARIABLE_IDS,
+): FormulaValidationResult {
   const messages: Array<string> = [];
   const ids = new Set<string>();
 
@@ -306,7 +333,7 @@ function validateFormulas(formulas: Array<PricingFormula>): FormulaValidationRes
       messages.push(`Categoria inválida em ${formula.id}.`);
     }
 
-    const expressionValidation = validateExpressionReferences(formula.expression, ids);
+    const expressionValidation = validateExpressionReferences(formula.expression, ids, allowedVariableIds);
     messages.push(...expressionValidation.map((message) => `${formula.id}: ${message}`));
 
     if (formula.enabled) {
@@ -329,15 +356,18 @@ function validateFormulas(formulas: Array<PricingFormula>): FormulaValidationRes
   };
 }
 
-function validateFormulasForSave(formulas: Array<PricingFormula>): FormulaValidationResult {
-  const validation = validateFormulas(formulas);
+function validateFormulasForSave(
+  formulas: Array<PricingFormula>,
+  allowedVariableIds: Set<string> = BASE_VARIABLE_IDS,
+): FormulaValidationResult {
+  const validation = validateFormulas(formulas, allowedVariableIds);
 
   if (!validation.valid) {
     return validation;
   }
 
   const branchValidationMessages = BUSINESS_BRANCHES.flatMap((branch) =>
-    validateFormulas(filterFormulasByBusinessBranch(formulas, branch)).messages,
+    validateFormulas(filterFormulasByBusinessBranch(formulas, branch), allowedVariableIds).messages,
   );
 
   if (branchValidationMessages.length) {
@@ -355,6 +385,8 @@ function validateFormulasForSave(formulas: Array<PricingFormula>): FormulaValida
     targetMarginRate: 0.08,
     pisCofinsRate: 0.0365,
     mainTaxRate: 0.05,
+    riskRate: 0.03,
+    insuranceEnabled: 1,
   };
   const executionErrors = BUSINESS_BRANCHES.flatMap((branch) =>
     executePricingFormulas(sampleContext, formulas, branch).memory,
@@ -371,6 +403,7 @@ function validateFormulasForSave(formulas: Array<PricingFormula>): FormulaValida
 function validateExpressionReferences(
   expression: string,
   formulaIds: Set<string>,
+  allowedVariableIds: Set<string>,
 ): Array<string> {
   const messages: Array<string> = [];
 
@@ -394,7 +427,7 @@ function validateExpressionReferences(
       continue;
     }
 
-    if (!BASE_VARIABLE_IDS.has(identifier) && !formulaIds.has(identifier)) {
+    if (!allowedVariableIds.has(identifier) && !formulaIds.has(identifier)) {
       messages.push(`referência inexistente: ${identifier}.`);
     }
   }
