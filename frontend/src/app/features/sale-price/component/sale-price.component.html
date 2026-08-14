@@ -1,112 +1,180 @@
 <po-page-default p-title="Simulação de Preço de Venda">
-  <div class="sale-grid">
-    <po-container p-title="Produto">
-      <po-select
-        name="product"
-        p-label="Produto ou serviço"
-        [p-options]="productOptions"
-        [ngModel]="selectedProductId"
-        (ngModelChange)="onProductChange($event)"
-      ></po-select>
-      <p class="empty-state" *ngIf="!selectedProductId">Selecione um produto para iniciar.</p>
-      <p class="empty-state" *ngIf="selectedProductId && !components.length">
-        Produto sem composição. Vincule componentes na Árvore de Produto.
-      </p>
-    </po-container>
+  <section class="simulation-shell">
+    <header class="simulation-header">
+      <div class="product-picker">
+        <po-select
+          name="product"
+          p-label="Produto ou serviço"
+          [p-options]="productOptions"
+          [ngModel]="selectedProductId"
+          (ngModelChange)="onProductChange($event)"
+        ></po-select>
+      </div>
 
-    <po-container p-title="Componentes da simulação">
-      <div class="dynamic-grid" *ngIf="components.length">
-        <ng-container *ngFor="let component of components">
-          <po-input
-            *ngIf="component.type === 'number' || component.type === 'rate'"
-            [name]="component.id"
-            [p-label]="component.description"
-            p-type="number"
-            [p-help]="component.unit + ' · ' + component.varAPV"
-            [(ngModel)]="values[component.id]"
-            (ngModelChange)="recalculate()"
-          ></po-input>
+      <div class="product-summary" *ngIf="selectedProductId">
+        <span class="summary-kicker">Produto selecionado</span>
+        <strong>{{ selectedProductLabel }}</strong>
+        <div class="summary-counters">
+          <span>{{ componentCount }} componentes</span>
+          <span>{{ selectedComponentCount }} entradas ativas</span>
+          <span>{{ priceComponentCount }} parâmetros de preço</span>
+        </div>
+      </div>
+    </header>
 
-          <po-input
-            *ngIf="component.type === 'text'"
-            [name]="component.id"
-            [p-label]="component.description"
-            [p-help]="component.varAPV"
-            [(ngModel)]="values[component.id]"
-            (ngModelChange)="recalculate()"
-          ></po-input>
+    <div class="decision-grid">
+      <main class="input-column">
+        <section class="empty-panel" *ngIf="!selectedProductId">
+          <strong>Selecione um produto para iniciar.</strong>
+          <span>A simulação será recalculada automaticamente após a seleção.</span>
+        </section>
 
-          <po-select
-            *ngIf="component.type === 'select'"
-            [name]="component.id"
-            [p-label]="component.description"
-            [p-options]="getSelectOptions(component)"
-            [p-help]="component.varAPV"
-            [ngModel]="values[component.id]"
-            (ngModelChange)="values[component.id] = $event; recalculate()"
-          ></po-select>
+        <section class="empty-panel" *ngIf="selectedProductId && !components.length">
+          <strong>Produto sem composição.</strong>
+          <span>
+            Vincule componentes na
+            <a routerLink="/product-tree">Árvore de Produto</a>
+            para habilitar a simulação.
+          </span>
+        </section>
 
-          <label class="native-checkbox" *ngIf="component.type === 'boolean'">
-            <input type="checkbox" [(ngModel)]="values[component.id]" (ngModelChange)="recalculate()" />
-            <span>{{ component.description }} · {{ component.varAPV }}</span>
-          </label>
+        <ng-container *ngIf="hasComposition">
+          <section
+            class="component-section"
+            *ngFor="let group of groupedComponents; trackBy: trackByGroup"
+          >
+            <div class="section-heading">
+              <h2>{{ group.name }}</h2>
+              <span>{{ group.components.length }} itens</span>
+            </div>
+
+            <div class="component-grid">
+              <article
+                class="field-card"
+                *ngFor="let component of group.components; trackBy: trackByComponent"
+              >
+                <div class="field-heading">
+                  <label [attr.for]="component.id">{{ displayText(component.description) }}</label>
+                  <small *ngIf="componentMeta(component)">{{ componentMeta(component) }}</small>
+                </div>
+
+                <po-input
+                  *ngIf="component.type === 'number' || component.type === 'rate'"
+                  [name]="component.id"
+                  p-type="number"
+                  [(ngModel)]="values[component.id]"
+                  (ngModelChange)="recalculate()"
+                ></po-input>
+
+                <po-input
+                  *ngIf="component.type === 'text'"
+                  [name]="component.id"
+                  [(ngModel)]="values[component.id]"
+                  (ngModelChange)="recalculate()"
+                ></po-input>
+
+                <po-select
+                  *ngIf="component.type === 'select'"
+                  [name]="component.id"
+                  [p-options]="getSelectOptions(component)"
+                  [ngModel]="values[component.id]"
+                  (ngModelChange)="values[component.id] = $event; recalculate()"
+                ></po-select>
+
+                <label class="switch-field" *ngIf="component.type === 'boolean'">
+                  <input type="checkbox" [(ngModel)]="values[component.id]" (ngModelChange)="recalculate()" />
+                  <span class="switch-track" aria-hidden="true"></span>
+                  <span>{{ values[component.id] ? 'Sim' : 'Não' }}</span>
+                </label>
+              </article>
+            </div>
+          </section>
         </ng-container>
-      </div>
-    </po-container>
+      </main>
 
-    <po-container p-title="Componentes de preço">
-      <div class="price-list">
-        <article class="price-row" *ngFor="let component of priceComponents">
-          <span>
-            <strong>{{ component.description }}</strong>
-            <small>{{ component.varAPV }}</small>
-          </span>
-          <div class="price-options">
-            <button
-              type="button"
-              *ngFor="let option of component.options"
-              [class.selected]="option.selected"
-              (click)="selectCatalogOption(component, option, 'price')"
-            >
-              {{ option.description }}
-            </button>
+      <aside class="result-column" aria-label="Resultado da simulação">
+        <section class="result-panel">
+          <div class="result-heading">
+            <span>Resultado financeiro</span>
+            <strong>{{ formatCurrency(finalPrice) }}</strong>
           </div>
-        </article>
-      </div>
-    </po-container>
 
-    <po-container p-title="Resultado">
-      <div class="result-grid">
-        <div class="metric">
-          <small>Preço unitário</small>
-          <strong>{{ formatCurrency(finalPrice) }}</strong>
-        </div>
-        <div class="metric">
-          <small>Preço mensal</small>
-          <strong>{{ formatCurrency(monthlyPrice) }}</strong>
-        </div>
-        <div class="metric">
-          <small>Alíquota total</small>
-          <strong>{{ formatPercent(resultValues['taxRate'] || 0) }}</strong>
-        </div>
-      </div>
-      <p class="warning" *ngIf="warning">{{ warning }}</p>
-    </po-container>
+          <div class="result-metrics">
+            <article
+              class="metric"
+              *ngFor="let metric of resultMetrics; trackBy: trackByMetric"
+              [class.featured]="metric.featured"
+              [class.muted]="metric.muted"
+            >
+              <small>{{ metric.label }}</small>
+              <strong>{{ metric.value }}</strong>
+            </article>
+          </div>
 
-    <po-container class="span-2" p-title="Memória de cálculo">
-      <div class="memory-list" *ngIf="memory.length; else noMemory">
-        <div class="memory-row" *ngFor="let step of memory" [class.error]="step.status === 'error'">
+          <p class="warning" *ngIf="warning">{{ warning }}</p>
+        </section>
+      </aside>
+    </div>
+
+    <section class="secondary-grid">
+      <section class="price-components-panel">
+        <div class="section-heading">
+          <h2>Componentes de preço</h2>
+          <span>{{ priceComponentCount }} parâmetros</span>
+        </div>
+
+        <div class="price-list">
+          <article class="price-row" *ngFor="let component of priceComponents; trackBy: trackByComponent">
+            <div class="price-row-title">
+              <strong>{{ displayText(component.description) }}</strong>
+              <small>{{ component.varAPV }}</small>
+            </div>
+
+            <div class="segmented-options">
+              <button
+                type="button"
+                *ngFor="let option of component.options; trackBy: trackByOption"
+                [class.selected]="option.selected"
+                (click)="selectCatalogOption(component, option, 'price')"
+              >
+                <span>{{ displayText(option.description) }}</span>
+                <small>{{ optionValueLabel(option) }}</small>
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <details class="memory-panel" [class.has-issues]="hasMemoryIssues" open>
+        <summary>
           <span>
-            <strong>{{ step.label }}</strong>
-            <small>{{ step.expression }}</small>
-            <small *ngIf="step.message">{{ step.message }}</small>
+            <strong>Memória de cálculo</strong>
+            <small>{{ memory.length || 0 }} etapas</small>
           </span>
-          <b>{{ formatCurrency(step.value) }}</b>
+          <b *ngIf="hasMemoryIssues">Revisar</b>
+        </summary>
+
+        <div class="memory-list" *ngIf="memory.length; else noMemory">
+          <article
+            class="memory-row"
+            *ngFor="let step of memory; trackBy: trackByMemory"
+            [class.error]="step.status === 'error'"
+            [class.disabled]="step.status === 'disabled'"
+          >
+            <div>
+              <strong>{{ displayText(step.label) }}</strong>
+              <small>{{ step.expression }}</small>
+              <small *ngIf="step.message">{{ displayText(step.message) }}</small>
+            </div>
+            <span class="memory-status">{{ memoryStatusLabel(step) }}</span>
+            <b>{{ formatCurrency(step.value) }}</b>
+          </article>
         </div>
-      </div>
-      <ng-template #noMemory>
-        <p class="empty-state">Sem memória de cálculo.</p>
-      </ng-template>
-    </po-container>
-  </div>
+
+        <ng-template #noMemory>
+          <p class="empty-state">Sem memória de cálculo.</p>
+        </ng-template>
+      </details>
+    </section>
+  </section>
 </po-page-default>

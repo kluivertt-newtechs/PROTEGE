@@ -11,6 +11,18 @@ import {
 import { PricingFormulaService, executePricingFormulas } from 'src/app/core/pricing-formula.service';
 import { SHARED_MODULES } from 'src/app/shared/shared';
 
+interface ComponentGroup {
+  name: string;
+  components: Array<ProductComponent>;
+}
+
+interface ResultMetric {
+  label: string;
+  value: string;
+  featured?: boolean;
+  muted?: boolean;
+}
+
 @Component({
   selector: 'app-sale-price',
   templateUrl: './sale-price.component.html',
@@ -33,7 +45,7 @@ export class SalePriceComponent {
     private readonly formulaService: PricingFormulaService,
   ) {
     this.productOptions = this.catalog.getProducts().map((product) => ({
-      label: `${product.code} - ${product.name}`,
+      label: this.displayText(`${product.code} - ${product.name}`),
       value: product.id,
     }));
     this.selectedProductId = this.catalog.getSelectedProductId() || String(this.productOptions[0]?.value ?? '');
@@ -51,6 +63,58 @@ export class SalePriceComponent {
 
   get selectedProductLabel(): string {
     return String(this.productOptions.find((option) => option.value === this.selectedProductId)?.label ?? '');
+  }
+
+  get groupedComponents(): Array<ComponentGroup> {
+    const groups = new Map<string, Array<ProductComponent>>();
+
+    for (const component of this.components) {
+      const group = this.displayText(component.group || 'Geral');
+      groups.set(group, [...(groups.get(group) ?? []), component]);
+    }
+
+    return [...groups.entries()].map(([name, groupComponents]) => ({
+      name,
+      components: groupComponents,
+    }));
+  }
+
+  get componentCount(): number {
+    return this.components.length;
+  }
+
+  get selectedComponentCount(): number {
+    return this.components.filter((component) =>
+      component.type !== 'select' || Boolean(this.values[component.id]),
+    ).length;
+  }
+
+  get priceComponentCount(): number {
+    return this.priceComponents.length;
+  }
+
+  get hasComposition(): boolean {
+    return Boolean(this.selectedProductId && this.components.length);
+  }
+
+  get resultMetrics(): Array<ResultMetric> {
+    return [
+      { label: 'Preço unitário', value: this.formatCurrency(this.finalPrice), featured: true },
+      { label: 'Preço mensal', value: this.formatCurrency(this.monthlyPrice), featured: true },
+      { label: 'Alíquota total', value: this.formatPercent(this.resultValues['taxRate'] || 0) },
+      { label: 'Custo', value: this.formatCurrency(this.resultValues['costTotal'] || 0) },
+      { label: 'Preço líquido', value: this.formatCurrency(this.resultValues['netPrice'] || 0) },
+      { label: 'Impostos', value: this.formatCurrency(this.resultValues['taxes'] || 0) },
+      {
+        label: 'Margem / EBITDA',
+        value: this.formatPercent(this.resultValues['ebitdaRate'] || 0),
+        muted: !this.hasResultValue('ebitdaRate'),
+      },
+    ];
+  }
+
+  get hasMemoryIssues(): boolean {
+    return this.memory.some((step) => step.status !== 'ok');
   }
 
   onProductChange(productId: string): void {
@@ -79,7 +143,7 @@ export class SalePriceComponent {
 
     this.resultValues = execution.values;
     this.memory = execution.memory;
-    this.warning = execution.warning ?? '';
+    this.warning = execution.warning ? this.displayText(execution.warning) : '';
   }
 
   formatCurrency(value: number): string {
@@ -91,7 +155,7 @@ export class SalePriceComponent {
   }
 
   getSelectOptions(component: ProductComponent): Array<PoSelectOption> {
-    return component.options.map((option) => ({ label: option.description, value: option.code }));
+    return component.options.map((option) => ({ label: this.displayText(option.description), value: option.code }));
   }
 
   selectCatalogOption(component: ProductComponent, option: ProductComponentOption, kind: 'product' | 'price'): void {
@@ -100,6 +164,77 @@ export class SalePriceComponent {
     this.priceComponents = this.catalog.listPriceComponents(false);
     this.applySelectedDefaults();
     this.recalculate();
+  }
+
+  displayText(value: string): string {
+    const text = String(value ?? '');
+
+    if (!/[\u00c3\u00c2\u0080-\u009f\ufffd]/.test(text)) {
+      return text;
+    }
+
+    try {
+      const bytes = new Uint8Array([...text].map((char) => char.charCodeAt(0) & 255));
+      return new TextDecoder('utf-8').decode(bytes).replace(/\uFFFD/g, '');
+    } catch {
+      return text
+        .replace(/\u00c3\u00a7/g, 'ç')
+        .replace(/\u00c3\u00a3/g, 'ã')
+        .replace(/\u00c3\u00a1/g, 'á')
+        .replace(/\u00c3\u00a9/g, 'é')
+        .replace(/\u00c3\u00ad/g, 'í')
+        .replace(/\u00c3\u00b3/g, 'ó')
+        .replace(/\u00c3\u00ba/g, 'ú')
+        .replace(/\u00c3\u00aa/g, 'ê')
+        .replace(/\u00c3\u0087/g, 'Ç')
+        .replace(/\u00c3\u0081/g, 'Á');
+    }
+  }
+
+  componentMeta(component: ProductComponent): string {
+    return [component.unit, component.varAPV].filter(Boolean).join(' · ');
+  }
+
+  optionValueLabel(option: ProductComponentOption): string {
+    const value = option.calculatedValue;
+
+    if (!Number.isFinite(value)) {
+      return '';
+    }
+
+    return Math.abs(value) < 1 && value !== 0 ? this.formatPercent(value) : String(value).replace('.', ',');
+  }
+
+  memoryStatusLabel(step: FormulaExecutionStep): string {
+    if (step.status === 'error') {
+      return 'Erro';
+    }
+
+    if (step.status === 'disabled') {
+      return 'Desabilitada';
+    }
+
+    return 'Ok';
+  }
+
+  trackByGroup(_: number, group: ComponentGroup): string {
+    return group.name;
+  }
+
+  trackByComponent(_: number, component: ProductComponent): string {
+    return component.id;
+  }
+
+  trackByOption(_: number, option: ProductComponentOption): string {
+    return option.code;
+  }
+
+  trackByMetric(_: number, metric: ResultMetric): string {
+    return metric.label;
+  }
+
+  trackByMemory(_: number, step: FormulaExecutionStep): string {
+    return step.id;
   }
 
   private loadComposition(): void {
@@ -203,5 +338,9 @@ export class SalePriceComponent {
 
   private getContextValue(key: string): number {
     return this.buildFormulaContext()[key] ?? 0;
+  }
+
+  private hasResultValue(key: string): boolean {
+    return Object.prototype.hasOwnProperty.call(this.resultValues, key);
   }
 }
