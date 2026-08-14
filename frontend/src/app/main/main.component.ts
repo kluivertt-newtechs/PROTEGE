@@ -50,7 +50,7 @@ export class MainComponent {
     {
       label: 'Componentes de Preço',
       shortLabel: 'Preço',
-      icon: 'an an-function',
+      icon: 'an an-currency-circle-dollar',
       link: 'price-components',
     },
     {
@@ -60,9 +60,9 @@ export class MainComponent {
       link: 'product-tree',
     },
     {
-      label: 'Preço de Venda',
-      shortLabel: 'Venda',
-      icon: 'an an-currency-circle-dollar',
+      label: 'Simulação',
+      shortLabel: 'Simulação',
+      icon: 'an an-function',
       link: 'sale-price',
     },
   ];
