@@ -113,20 +113,42 @@
           </div>
         </div>
 
-        <po-input name="formula" p-label="Expressão" [(ngModel)]="editModel.formula"></po-input>
+        <label class="formula-field">
+          <span>Expressão</span>
+          <input #formulaExpression type="text" name="formula" [(ngModel)]="editModel.formula" />
+        </label>
 
         <div class="chip-group">
-          <button type="button" class="chip" (click)="insertFormulaToken(editModel.varAPV || 'varAPV')">varAPV</button>
-          <button type="button" class="chip" *ngFor="let variable of formulaVariables" (click)="insertFormulaToken(variable.id)">
+          <button
+            type="button"
+            class="chip"
+            title="Inserir variável APV"
+            (mousedown)="insertFormulaToken(editModel.varAPV || 'varAPV', $event, formulaExpression)"
+          >
+            varAPV
+          </button>
+          <button
+            type="button"
+            class="chip"
+            *ngFor="let variable of formulaVariables"
+            [title]="variable.label"
+            (mousedown)="insertFormulaToken(variable.id, $event, formulaExpression)"
+          >
             {{ variable.id }}
           </button>
-          <button type="button" class="chip operator" *ngFor="let token of operatorTokens" (click)="insertFormulaToken(token)">
+          <button
+            type="button"
+            class="chip operator"
+            *ngFor="let token of operatorTokens"
+            title="Inserir operador"
+            (mousedown)="insertFormulaToken(token, $event, formulaExpression)"
+          >
             {{ token }}
           </button>
         </div>
 
         <div class="example-list">
-          <button type="button" *ngFor="let example of exampleFormulas" (click)="useFormulaExample(example)">
+          <button type="button" *ngFor="let example of exampleFormulas" (mousedown)="useFormulaExample(example, $event, formulaExpression)">
             {{ example }}
           </button>
         </div>
@@ -134,6 +156,7 @@
         <div class="formula-issues" *ngIf="formulaIssues.length">
           <span *ngFor="let issue of formulaIssues">{{ issue }}</span>
         </div>
+        <p class="formula-feedback" *ngIf="formulaInteractionMessage">{{ formulaInteractionMessage }}</p>
       </section>
 
       <section class="editor-section options-panel">

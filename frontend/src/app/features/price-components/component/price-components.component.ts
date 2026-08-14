@@ -37,6 +37,7 @@ export class PriceComponentsComponent {
   editModel: PriceComponent = this.catalog.createEmptyComponent('price');
   optionDraft = '';
   optionRows: Array<ProductComponentOption> = [];
+  formulaInteractionMessage = '';
   statusMessage = '';
 
   readonly typeOptions: Array<PoSelectOption> = [
@@ -65,6 +66,7 @@ export class PriceComponentsComponent {
     this.editModel = this.catalog.createEmptyComponent('price');
     this.optionDraft = '';
     this.optionRows = [];
+    this.formulaInteractionMessage = '';
     this.componentModal.open();
   }
 
@@ -94,6 +96,7 @@ export class PriceComponentsComponent {
     this.editModel = { ...component, options: component.options.map((option) => ({ ...option })) };
     this.optionDraft = this.optionsToDraft(this.editModel.options);
     this.optionRows = this.cloneOptions(this.editModel.options);
+    this.formulaInteractionMessage = '';
     this.componentModal.open();
   }
 
@@ -200,14 +203,22 @@ export class PriceComponentsComponent {
     return this.editModel.type === 'select' && this.optionRows.length === 0;
   }
 
-  insertFormulaToken(token: string): void {
-    const current = String(this.editModel.formula ?? '').trim();
+  insertFormulaToken(token: string, event?: Event, input?: HTMLInputElement): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+
+    const current = String(input?.value ?? this.editModel.formula ?? '').trim();
     const separator = current && !current.endsWith('(') && token !== ')' ? ' ' : '';
-    this.editModel.formula = `${current}${separator}${token}`.trim();
+    this.setFormulaValue(`${current}${separator}${token}`.trim(), input);
+    this.formulaInteractionMessage = `Inserido: ${token}`;
   }
 
-  useFormulaExample(example: string): void {
-    this.editModel.formula = example.replace(/varAPV/g, this.editModel.varAPV || 'varAPV');
+  useFormulaExample(example: string, event?: Event, input?: HTMLInputElement): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+
+    this.setFormulaValue(example.replace(/varAPV/g, this.editModel.varAPV || 'varAPV'), input);
+    this.formulaInteractionMessage = 'Exemplo aplicado.';
   }
 
   addOption(): void {
@@ -299,6 +310,16 @@ export class PriceComponentsComponent {
     return options
       .map((option) => `${option.code}=${option.description} | ${option.calculatedValue} | ${option.costValue}${option.default ? ' | default' : ''}`)
       .join('\n');
+  }
+
+  private setFormulaValue(value: string, input?: HTMLInputElement): void {
+    this.editModel.formula = value;
+
+    if (input) {
+      input.value = value;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      window.setTimeout(() => input.focus());
+    }
   }
 
   private cloneOptions(options: Array<ProductComponentOption>): Array<ProductComponentOption> {
