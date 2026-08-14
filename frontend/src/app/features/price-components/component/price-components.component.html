@@ -37,6 +37,7 @@
               <b>{{ formatPercent(option.calculatedValue) }}</b>
             </button>
           </div>
+          <p class="empty-state" *ngIf="!component.options.length">Componente sem opções predefinidas.</p>
 
           <div class="card-actions">
             <po-button p-icon="an an-pencil-simple" p-label="Editar" (p-click)="edit(component)"></po-button>
@@ -78,33 +79,111 @@
   </po-page-slide>
 
   <po-modal #componentModal p-title="Componente de preço">
-    <div class="form-grid">
-      <po-input name="code" p-label="Código" [(ngModel)]="editModel.code"></po-input>
-      <po-input name="description" p-label="Descrição" [(ngModel)]="editModel.description"></po-input>
-      <po-select
-        name="type"
-        p-label="Tipo"
-        [p-options]="typeOptions"
-        [ngModel]="editModel.type"
-        (ngModelChange)="editModel.type = $event"
-      ></po-select>
-      <po-input name="unit" p-label="Unidade" [(ngModel)]="editModel.unit"></po-input>
-      <po-input name="group" p-label="Grupo" [(ngModel)]="editModel.group"></po-input>
-      <po-input name="varAPV" p-label="Variável APV" [(ngModel)]="editModel.varAPV"></po-input>
-      <po-input name="formula" p-label="Fórmula" [(ngModel)]="editModel.formula"></po-input>
-    </div>
+    <div class="modal-sections">
+      <section class="editor-section">
+        <div class="form-grid">
+          <po-input name="code" p-label="Código" [(ngModel)]="editModel.code"></po-input>
+          <po-input name="description" p-label="Descrição" [(ngModel)]="editModel.description"></po-input>
+          <po-select
+            name="type"
+            p-label="Tipo"
+            [p-options]="typeOptions"
+            [ngModel]="editModel.type"
+            (ngModelChange)="editModel.type = $event"
+          ></po-select>
+          <po-input name="unit" p-label="Unidade" [(ngModel)]="editModel.unit"></po-input>
+          <po-input name="group" p-label="Grupo" [(ngModel)]="editModel.group"></po-input>
+          <po-input name="varAPV" p-label="Variável APV" [(ngModel)]="editModel.varAPV"></po-input>
+        </div>
 
-    <div class="checkbox-row">
-      <label><input type="checkbox" [(ngModel)]="editModel.active" /> Ativo</label>
-      <label><input type="checkbox" [(ngModel)]="editModel.multiple" /> Múltipla seleção</label>
-    </div>
+        <div class="checkbox-row">
+          <label><input type="checkbox" [(ngModel)]="editModel.active" /> Ativo</label>
+          <label>
+            <input type="checkbox" [(ngModel)]="editModel.multiple" (ngModelChange)="enforceDefaultMode()" />
+            Múltipla seleção
+          </label>
+        </div>
+      </section>
 
-    <po-textarea
-      name="options"
-      p-label="Opções"
-      p-help="Uma opção por linha: CÓDIGO=Descrição | percentual | valor custo | padrão"
-      [(ngModel)]="optionDraft"
-    ></po-textarea>
+      <section class="editor-section formula-panel">
+        <div class="section-head">
+          <div>
+            <h3>Fórmula</h3>
+            <p>{{ formulaPreview }}</p>
+          </div>
+        </div>
+
+        <po-input name="formula" p-label="Expressão" [(ngModel)]="editModel.formula"></po-input>
+
+        <div class="chip-group">
+          <button type="button" class="chip" (click)="insertFormulaToken(editModel.varAPV || 'varAPV')">varAPV</button>
+          <button type="button" class="chip" *ngFor="let variable of formulaVariables" (click)="insertFormulaToken(variable.id)">
+            {{ variable.id }}
+          </button>
+          <button type="button" class="chip operator" *ngFor="let token of operatorTokens" (click)="insertFormulaToken(token)">
+            {{ token }}
+          </button>
+        </div>
+
+        <div class="example-list">
+          <button type="button" *ngFor="let example of exampleFormulas" (click)="useFormulaExample(example)">
+            {{ example }}
+          </button>
+        </div>
+
+        <div class="formula-issues" *ngIf="formulaIssues.length">
+          <span *ngFor="let issue of formulaIssues">{{ issue }}</span>
+        </div>
+      </section>
+
+      <section class="editor-section options-panel">
+        <div class="section-head">
+          <div>
+            <h3>Opções</h3>
+            <p>{{ optionsSummary }}</p>
+          </div>
+          <po-button p-icon="an an-plus" p-label="Adicionar opção" (p-click)="addOption()"></po-button>
+        </div>
+
+        <p class="warning-message" *ngIf="showSelectWithoutOptionsWarning">Componentes do tipo seleção precisam de pelo menos uma opção.</p>
+
+        <div class="option-editor" *ngIf="optionRows.length">
+          <div class="option-editor-head">
+            <span>Código</span>
+            <span>Descrição</span>
+            <span>Percentual/taxa</span>
+            <span>Valor custo</span>
+            <span>Padrão</span>
+            <span></span>
+          </div>
+
+          <div class="option-editor-row" *ngFor="let option of optionRows; let index = index">
+            <input type="text" [(ngModel)]="option.code" [name]="'optionCode' + index" aria-label="Código" />
+            <input type="text" [(ngModel)]="option.description" [name]="'optionDescription' + index" aria-label="Descrição" />
+            <input
+              type="number"
+              [(ngModel)]="option.calculatedValue"
+              [name]="'optionCalculated' + index"
+              aria-label="Percentual ou taxa"
+            />
+            <input type="number" [(ngModel)]="option.costValue" [name]="'optionCost' + index" aria-label="Valor custo" />
+            <button
+              type="button"
+              class="default-toggle"
+              [class.selected]="option.default || option.selected"
+              (click)="toggleDefault(index)"
+            >
+              {{ option.default || option.selected ? 'Sim' : 'Não' }}
+            </button>
+            <button type="button" class="icon-button" (click)="removeOption(index)" aria-label="Remover opção">
+              <span class="an an-trash"></span>
+            </button>
+          </div>
+        </div>
+
+        <p class="empty-state" *ngIf="!optionRows.length">Nenhuma opção cadastrada.</p>
+      </section>
+    </div>
 
     <po-modal-footer>
       <po-button p-label="Cancelar" (p-click)="componentModal.close()"></po-button>

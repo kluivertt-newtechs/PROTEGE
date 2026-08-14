@@ -36,6 +36,7 @@ export class ProductComponentsComponent {
   expanded = new Set<string>();
   editModel: ProductComponent = this.catalog.createEmptyComponent('product');
   optionDraft = '';
+  optionRows: Array<ProductComponentOption> = [];
   statusMessage = '';
 
   readonly typeOptions: Array<PoSelectOption> = [
@@ -50,6 +51,8 @@ export class ProductComponentsComponent {
     { label: 'Ativos', value: 'active' },
     { label: 'Inativos', value: 'inactive' },
   ];
+  readonly operatorTokens = ['+', '-', '*', '/', '(', ')'];
+  readonly exampleFormulas = ['varAPV * quantity', 'costBase + varAPV', '(varAPV * quantity) + costBase'];
   groupOptions: Array<PoSelectOption> = [];
   readonly pageActions: Array<PoPageAction> = [
     { label: 'Filtros', icon: 'an an-funnel', action: () => this.openFilters() },
@@ -63,6 +66,7 @@ export class ProductComponentsComponent {
   newComponent(): void {
     this.editModel = this.catalog.createEmptyComponent('product');
     this.optionDraft = '';
+    this.optionRows = [];
     this.componentModal.open();
   }
 
@@ -94,11 +98,17 @@ export class ProductComponentsComponent {
       options: component.options.map((option) => ({ ...option })),
     };
     this.optionDraft = this.optionsToDraft(this.editModel.options);
+    this.optionRows = this.cloneOptions(this.editModel.options);
     this.componentModal.open();
   }
 
   save(): void {
-    this.editModel.options = this.parseOptions(this.optionDraft);
+    if (this.hasFormulaBlockingError()) {
+      this.statusMessage = 'Revise a fórmula: há parênteses desbalanceados ou operadores duplicados.';
+      return;
+    }
+
+    this.editModel.options = this.normalizeOptionRows();
     this.editModel.type = String(this.editModel.type) as CatalogComponentType;
     this.catalog.saveComponent(this.editModel);
     this.statusMessage = 'Componente salvo localmente.';
@@ -140,6 +150,113 @@ export class ProductComponentsComponent {
     }
 
     return this.formatValue(selected[0].calculatedValue);
+  }
+
+  get formulaVariables(): Array<{ id: string; label: string }> {
+    const variables = this.catalog.getFormulaVariables();
+    const currentVariable = String(this.editModel.varAPV ?? '').trim();
+
+    if (currentVariable && !variables.some((variable) => variable.id === currentVariable)) {
+      return [{ id: currentVariable, label: 'Variável deste componente' }, ...variables];
+    }
+
+    return variables;
+  }
+
+  get formulaPreview(): string {
+    const formula = String(this.editModel.formula ?? '').trim();
+
+    if (!formula) {
+      return 'Sem fórmula definida.';
+    }
+
+    const usedVariable = this.formulaVariables.find((variable) => this.expressionUsesToken(formula, variable.id));
+    if (usedVariable) {
+      return `Usa variável ${usedVariable.id}`;
+    }
+
+    return 'Expressão informativa cadastrada.';
+  }
+
+  get formulaIssues(): Array<string> {
+    const formula = String(this.editModel.formula ?? '').trim();
+
+    if (!formula) {
+      return ['Fórmula vazia.'];
+    }
+
+    const issues: Array<string> = [];
+    if (!this.hasBalancedParentheses(formula)) {
+      issues.push('Parênteses desbalanceados.');
+    }
+
+    if (this.hasDuplicatedOperators(formula)) {
+      issues.push('Operadores duplicados.');
+    }
+
+    return issues;
+  }
+
+  get optionsSummary(): string {
+    const defaults = this.optionRows.filter((option) => option.default || option.selected).length;
+    const total = this.optionRows.length;
+    const suffix = defaults === 1 ? '1 padrão/selecionada' : `${defaults} padrão/selecionadas`;
+
+    return `${total} ${total === 1 ? 'opção' : 'opções'} · ${suffix}`;
+  }
+
+  get showSelectWithoutOptionsWarning(): boolean {
+    return this.editModel.type === 'select' && this.optionRows.length === 0;
+  }
+
+  insertFormulaToken(token: string): void {
+    const current = String(this.editModel.formula ?? '').trim();
+    const separator = current && !current.endsWith('(') && token !== ')' ? ' ' : '';
+    this.editModel.formula = `${current}${separator}${token}`.trim();
+  }
+
+  useFormulaExample(example: string): void {
+    this.editModel.formula = example.replace(/varAPV/g, this.editModel.varAPV || 'varAPV');
+  }
+
+  addOption(): void {
+    const sequence = this.nextOptionSequence();
+    this.optionRows = [
+      ...this.optionRows,
+      {
+        sequence,
+        code: `OPT${sequence}`,
+        description: `Opção ${this.optionRows.length + 1}`,
+        calculatedValue: 0,
+        costValue: 0,
+        default: false,
+        selected: false,
+      },
+    ];
+  }
+
+  removeOption(index: number): void {
+    this.optionRows = this.optionRows.filter((_, optionIndex) => optionIndex !== index);
+  }
+
+  toggleDefault(index: number): void {
+    this.optionRows = this.optionRows.map((option, optionIndex) => {
+      const selected = optionIndex === index ? !(option.default || option.selected) : this.editModel.multiple && (option.default || option.selected);
+      return { ...option, default: selected, selected };
+    });
+  }
+
+  enforceDefaultMode(): void {
+    if (this.editModel.multiple) {
+      return;
+    }
+
+    let selectedFound = false;
+    this.optionRows = this.optionRows.map((option) => {
+      const selected = !selectedFound && (option.default || option.selected);
+      selectedFound = selectedFound || selected;
+      return { ...option, default: selected, selected };
+    });
   }
 
   formatValue(value: number): string {
@@ -194,5 +311,75 @@ export class ProductComponentsComponent {
     return options
       .map((option) => `${option.code}=${option.description} | ${option.calculatedValue} | ${option.costValue}${option.default ? ' | default' : ''}`)
       .join('\n');
+  }
+
+  private cloneOptions(options: Array<ProductComponentOption>): Array<ProductComponentOption> {
+    return options.map((option) => ({ ...option }));
+  }
+
+  private normalizeOptionRows(): Array<ProductComponentOption> {
+    const rows = this.optionRows.length ? this.optionRows : this.parseOptions(this.optionDraft);
+    let selectedFound = false;
+
+    return rows
+      .filter((option) => option.code || option.description)
+      .map((option, index) => {
+        const calculatedValue = Number(option.calculatedValue);
+        const costValue = Number(option.costValue);
+        const selected = this.editModel.multiple
+          ? option.default === true || option.selected === true
+          : !selectedFound && (option.default === true || option.selected === true);
+
+        selectedFound = selectedFound || selected;
+
+        return {
+          sequence: Number(option.sequence) || (index + 1) * 10,
+          code: String(option.code || `OPT${(index + 1) * 10}`).trim(),
+          description: String(option.description || option.code || `Opção ${index + 1}`).trim(),
+          calculatedValue: Number.isFinite(calculatedValue) ? calculatedValue : 0,
+          costValue: Number.isFinite(costValue) ? costValue : Number.isFinite(calculatedValue) ? calculatedValue : 0,
+          default: selected,
+          selected,
+        };
+      });
+  }
+
+  private nextOptionSequence(): number {
+    const maxSequence = this.optionRows.reduce((max, option) => Math.max(max, Number(option.sequence) || 0), 0);
+    return Math.max(10, Math.ceil((maxSequence + 1) / 10) * 10);
+  }
+
+  private hasFormulaBlockingError(): boolean {
+    const formula = String(this.editModel.formula ?? '').trim();
+    return Boolean(formula) && (!this.hasBalancedParentheses(formula) || this.hasDuplicatedOperators(formula));
+  }
+
+  private hasBalancedParentheses(value: string): boolean {
+    let balance = 0;
+    for (const char of value) {
+      if (char === '(') {
+        balance += 1;
+      }
+      if (char === ')') {
+        balance -= 1;
+      }
+      if (balance < 0) {
+        return false;
+      }
+    }
+
+    return balance === 0;
+  }
+
+  private hasDuplicatedOperators(value: string): boolean {
+    return /[+*/]{2,}|--|-\+|\+-/.test(value.replace(/\s+/g, ''));
+  }
+
+  private expressionUsesToken(expression: string, token: string): boolean {
+    return new RegExp(`(^|[^A-Za-z0-9_])${this.escapeRegExp(token)}([^A-Za-z0-9_]|$)`).test(expression);
+  }
+
+  private escapeRegExp(value: string): string {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 }
