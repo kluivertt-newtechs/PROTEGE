@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { PoSelectOption } from '@po-ui/ng-components';
+import { Component, ViewChild } from '@angular/core';
+import { PoModalComponent, PoPageAction, PoSelectOption } from '@po-ui/ng-components';
 import {
   ProductCatalogService,
   ProductComponent,
@@ -16,6 +16,9 @@ import { SHARED_MODULES } from 'src/app/shared/shared';
   imports: [...SHARED_MODULES, CommonModule],
 })
 export class ProductTreeComponent {
+  @ViewChild('groupModal') groupModal!: PoModalComponent;
+  @ViewChild('productModal') productModal!: PoModalComponent;
+
   tree: Array<ProductNode> = [];
   products: Array<ProductNode> = [];
   components: Array<ProductComponent> = [];
@@ -27,6 +30,18 @@ export class ProductTreeComponent {
   groupModel = { code: '', name: '', icon: 'ti-folder' };
   productModel = { groupId: '', code: '', name: '', icon: 'ti-package' };
   groupOptions: Array<PoSelectOption> = [];
+  readonly pageActions: Array<PoPageAction> = [
+    {
+      label: 'Criar grupo',
+      icon: 'an an-plus',
+      action: () => this.openGroupModal(),
+    },
+    {
+      label: 'Criar produto',
+      icon: 'an an-plus',
+      action: () => this.openProductModal(),
+    },
+  ];
 
   constructor(private readonly catalog: ProductCatalogService) {
     this.refresh();
@@ -77,6 +92,7 @@ export class ProductTreeComponent {
     this.groupModel = { code: '', name: '', icon: 'ti-folder' };
     this.refresh();
     this.statusMessage = 'Grupo criado.';
+    this.groupModal?.close();
   }
 
   addProduct(): void {
@@ -104,6 +120,16 @@ export class ProductTreeComponent {
     this.refresh();
     this.selectProduct(product.id);
     this.statusMessage = 'Produto criado.';
+    this.productModal?.close();
+  }
+
+  openGroupModal(): void {
+    this.groupModal.open();
+  }
+
+  openProductModal(): void {
+    this.productModel.groupId = this.productModel.groupId || this.tree[0]?.id || '';
+    this.productModal.open();
   }
 
   addComponent(componentId: string): void {

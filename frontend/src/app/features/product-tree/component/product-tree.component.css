@@ -8,16 +8,9 @@
 
 .tree-list,
 .composition-zone,
-.library-zone,
-.create-panel {
+.library-zone {
   display: grid;
   gap: 10px;
-}
-
-.create-panel {
-  border-bottom: 1px solid #e5e7eb;
-  margin-bottom: 12px;
-  padding-bottom: 12px;
 }
 
 .group-title {

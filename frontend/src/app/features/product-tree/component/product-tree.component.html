@@ -1,24 +1,6 @@
-<po-page-default p-title="Árvore de Produto">
+<po-page-default p-title="Árvore de Produto" [p-actions]="pageActions">
   <div class="tree-grid">
     <po-container p-title="Produtos">
-      <div class="create-panel">
-        <po-input name="groupCode" p-label="Código do grupo" [(ngModel)]="groupModel.code"></po-input>
-        <po-input name="groupName" p-label="Nome do grupo" [(ngModel)]="groupModel.name"></po-input>
-        <po-button p-icon="an an-plus" p-label="Grupo" (p-click)="addGroup()"></po-button>
-      </div>
-      <div class="create-panel">
-        <po-select
-          name="productGroup"
-          p-label="Grupo"
-          [p-options]="groupOptions"
-          [ngModel]="productModel.groupId"
-          (ngModelChange)="productModel.groupId = $event"
-        ></po-select>
-        <po-input name="productCode" p-label="Código do produto" [(ngModel)]="productModel.code"></po-input>
-        <po-input name="productName" p-label="Nome do produto" [(ngModel)]="productModel.name"></po-input>
-        <po-button p-icon="an an-plus" p-label="Produto" (p-click)="addProduct()"></po-button>
-      </div>
-
       <div class="tree-list">
         <ng-container *ngFor="let group of tree">
           <div class="group-title">{{ group.code }} - {{ group.name }}</div>
@@ -91,4 +73,31 @@
       </div>
     </po-container>
   </div>
+
+  <po-modal #groupModal p-title="Criar grupo">
+    <po-input name="groupCode" p-label="Código do grupo" [(ngModel)]="groupModel.code"></po-input>
+    <po-input name="groupName" p-label="Nome do grupo" [(ngModel)]="groupModel.name"></po-input>
+
+    <po-modal-footer>
+      <po-button p-label="Cancelar" (p-click)="groupModal.close()"></po-button>
+      <po-button p-kind="primary" p-label="Criar" (p-click)="addGroup()"></po-button>
+    </po-modal-footer>
+  </po-modal>
+
+  <po-modal #productModal p-title="Criar produto">
+    <po-select
+      name="productGroup"
+      p-label="Grupo"
+      [p-options]="groupOptions"
+      [ngModel]="productModel.groupId"
+      (ngModelChange)="productModel.groupId = $event"
+    ></po-select>
+    <po-input name="productCode" p-label="Código do produto" [(ngModel)]="productModel.code"></po-input>
+    <po-input name="productName" p-label="Nome do produto" [(ngModel)]="productModel.name"></po-input>
+
+    <po-modal-footer>
+      <po-button p-label="Cancelar" (p-click)="productModal.close()"></po-button>
+      <po-button p-kind="primary" p-label="Criar" (p-click)="addProduct()"></po-button>
+    </po-modal-footer>
+  </po-modal>
 </po-page-default>
