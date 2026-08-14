@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { PoModalComponent, PoSelectOption } from '@po-ui/ng-components';
+import { PoModalComponent, PoPageAction, PoPageSlideComponent, PoSelectOption } from '@po-ui/ng-components';
 import {
   CatalogComponentType,
   PriceComponent,
@@ -11,6 +11,12 @@ import { SHARED_MODULES } from 'src/app/shared/shared';
 
 type StatusFilter = 'all' | 'active' | 'inactive';
 
+interface ComponentFilterDraft {
+  searchTerm: string;
+  groupFilter: string;
+  statusFilter: StatusFilter;
+}
+
 @Component({
   selector: 'app-price-components',
   templateUrl: './price-components.component.html',
@@ -20,10 +26,12 @@ type StatusFilter = 'all' | 'active' | 'inactive';
 })
 export class PriceComponentsComponent {
   @ViewChild('componentModal') componentModal!: PoModalComponent;
+  @ViewChild('filtersSlide') filtersSlide!: PoPageSlideComponent;
 
   searchTerm = '';
   groupFilter = '';
   statusFilter: StatusFilter = 'all';
+  filterDraft: ComponentFilterDraft = this.createFilterDraft();
   rows: Array<PriceComponent> = [];
   expanded = new Set<string>();
   editModel: PriceComponent = this.catalog.createEmptyComponent('price');
@@ -32,8 +40,8 @@ export class PriceComponentsComponent {
 
   readonly typeOptions: Array<PoSelectOption> = [
     { label: 'Taxa', value: 'rate' },
-    { label: 'Numero', value: 'number' },
-    { label: 'Selecao', value: 'select' },
+    { label: 'Número', value: 'number' },
+    { label: 'Seleção', value: 'select' },
   ];
   readonly statusOptions: Array<PoSelectOption> = [
     { label: 'Todos', value: 'all' },
@@ -41,6 +49,10 @@ export class PriceComponentsComponent {
     { label: 'Inativos', value: 'inactive' },
   ];
   groupOptions: Array<PoSelectOption> = [];
+  readonly pageActions: Array<PoPageAction> = [
+    { label: 'Filtros', icon: 'an an-funnel', action: () => this.openFilters() },
+    { label: 'Novo componente', icon: 'an an-plus', action: () => this.newComponent() },
+  ];
 
   constructor(private readonly catalog: ProductCatalogService) {
     this.refresh();
@@ -50,6 +62,28 @@ export class PriceComponentsComponent {
     this.editModel = this.catalog.createEmptyComponent('price');
     this.optionDraft = '';
     this.componentModal.open();
+  }
+
+  openFilters(): void {
+    this.filterDraft = this.createFilterDraft();
+    this.filtersSlide.open();
+  }
+
+  applyFilters(): void {
+    this.searchTerm = this.filterDraft.searchTerm;
+    this.groupFilter = this.filterDraft.groupFilter;
+    this.statusFilter = this.filterDraft.statusFilter;
+    this.refresh();
+    this.filtersSlide.close();
+  }
+
+  clearFilters(): void {
+    this.searchTerm = '';
+    this.groupFilter = '';
+    this.statusFilter = 'all';
+    this.filterDraft = this.createFilterDraft();
+    this.refresh();
+    this.filtersSlide.close();
   }
 
   edit(component: PriceComponent): void {
@@ -62,7 +96,7 @@ export class PriceComponentsComponent {
     this.editModel.options = this.parseOptions(this.optionDraft);
     this.editModel.type = String(this.editModel.type) as CatalogComponentType;
     this.catalog.savePriceComponent(this.editModel);
-    this.statusMessage = 'Componente de preco salvo localmente.';
+    this.statusMessage = 'Componente de preço salvo localmente.';
     this.componentModal.close();
     this.refresh();
   }
@@ -90,17 +124,13 @@ export class PriceComponentsComponent {
     this.refresh();
   }
 
-  onFilterChange(): void {
-    this.refresh();
-  }
-
   selectedSummary(component: PriceComponent): string {
     const selected = component.options.filter((option) => option.selected);
     if (!selected.length) {
       return '--';
     }
 
-    return selected.length > 1 ? `${selected.length} opcoes` : this.formatPercent(selected[0].calculatedValue);
+    return selected.length > 1 ? `${selected.length} opções` : this.formatPercent(selected[0].calculatedValue);
   }
 
   formatPercent(value: number): string {
@@ -116,6 +146,14 @@ export class PriceComponentsComponent {
     this.rows = this.catalog.searchPriceComponents(this.searchTerm, this.groupFilter, this.statusFilter);
   }
 
+  private createFilterDraft(): ComponentFilterDraft {
+    return {
+      searchTerm: this.searchTerm,
+      groupFilter: this.groupFilter,
+      statusFilter: this.statusFilter,
+    };
+  }
+
   private parseOptions(value: string): Array<ProductComponentOption> {
     return value
       .split('\n')
@@ -124,14 +162,14 @@ export class PriceComponentsComponent {
       .map((line, index) => {
         const [left, rawValue, rawCost, rawFlags] = line.split('|').map((part) => part.trim());
         const [code, description] = left.split('=').map((part) => part.trim());
-        const selected = /selected|selecionado|default|padrao/i.test(rawFlags ?? '');
+        const selected = /selected|selecionado|default|padrão|padrao/i.test(rawFlags ?? '');
         const numeric = Number(rawValue);
         const cost = Number(rawCost);
 
         return {
           sequence: (index + 1) * 10,
           code: code || `OPT${(index + 1) * 10}`,
-          description: description || code || `Opcao ${(index + 1)}`,
+          description: description || code || `Opção ${index + 1}`,
           calculatedValue: Number.isFinite(numeric) ? numeric : 0,
           costValue: Number.isFinite(cost) ? cost : Number.isFinite(numeric) ? numeric : 0,
           default: selected,

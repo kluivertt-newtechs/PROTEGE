@@ -1,20 +1,20 @@
-<po-page-default p-title="Simulacao Preco de Venda">
+<po-page-default p-title="Simulação de Preço de Venda">
   <div class="sale-grid">
     <po-container p-title="Produto">
       <po-select
         name="product"
-        p-label="Produto ou servico"
+        p-label="Produto ou serviço"
         [p-options]="productOptions"
         [ngModel]="selectedProductId"
         (ngModelChange)="onProductChange($event)"
       ></po-select>
       <p class="empty-state" *ngIf="!selectedProductId">Selecione um produto para iniciar.</p>
       <p class="empty-state" *ngIf="selectedProductId && !components.length">
-        Produto sem composicao. Vincule componentes na Arvore de Produto.
+        Produto sem composição. Vincule componentes na Árvore de Produto.
       </p>
     </po-container>
 
-    <po-container p-title="Componentes da simulacao">
+    <po-container p-title="Componentes da simulação">
       <div class="dynamic-grid" *ngIf="components.length">
         <ng-container *ngFor="let component of components">
           <po-input
@@ -54,7 +54,7 @@
       </div>
     </po-container>
 
-    <po-container p-title="Componentes de preco">
+    <po-container p-title="Componentes de preço">
       <div class="price-list">
         <article class="price-row" *ngFor="let component of priceComponents">
           <span>
@@ -78,22 +78,22 @@
     <po-container p-title="Resultado">
       <div class="result-grid">
         <div class="metric">
-          <small>Preco unitario</small>
+          <small>Preço unitário</small>
           <strong>{{ formatCurrency(finalPrice) }}</strong>
         </div>
         <div class="metric">
-          <small>Preco mensal</small>
+          <small>Preço mensal</small>
           <strong>{{ formatCurrency(monthlyPrice) }}</strong>
         </div>
         <div class="metric">
-          <small>Aliquota total</small>
+          <small>Alíquota total</small>
           <strong>{{ formatPercent(resultValues['taxRate'] || 0) }}</strong>
         </div>
       </div>
       <p class="warning" *ngIf="warning">{{ warning }}</p>
     </po-container>
 
-    <po-container class="span-2" p-title="Memoria de calculo">
+    <po-container class="span-2" p-title="Memória de cálculo">
       <div class="memory-list" *ngIf="memory.length; else noMemory">
         <div class="memory-row" *ngFor="let step of memory" [class.error]="step.status === 'error'">
           <span>
@@ -105,7 +105,7 @@
         </div>
       </div>
       <ng-template #noMemory>
-        <p class="empty-state">Sem memoria de calculo.</p>
+        <p class="empty-state">Sem memória de cálculo.</p>
       </ng-template>
     </po-container>
   </div>

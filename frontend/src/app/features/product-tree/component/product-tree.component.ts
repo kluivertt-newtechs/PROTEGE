@@ -59,7 +59,7 @@ export class ProductTreeComponent {
 
   addGroup(): void {
     if (!this.groupModel.code.trim() || !this.groupModel.name.trim()) {
-      this.statusMessage = 'Informe codigo e nome do grupo.';
+      this.statusMessage = 'Informe código e nome do grupo.';
       return;
     }
 
@@ -81,7 +81,7 @@ export class ProductTreeComponent {
 
   addProduct(): void {
     if (!this.productModel.groupId || !this.productModel.code.trim() || !this.productModel.name.trim()) {
-      this.statusMessage = 'Informe grupo, codigo e nome do produto.';
+      this.statusMessage = 'Informe grupo, código e nome do produto.';
       return;
     }
 
@@ -118,12 +118,12 @@ export class ProductTreeComponent {
 
   clearComposition(): void {
     this.compositionIds = [];
-    this.statusMessage = 'Composicao limpa. Salve para persistir.';
+    this.statusMessage = 'Composição limpa. Salve para persistir.';
   }
 
   revertComposition(): void {
     this.compositionIds = [...this.savedCompositionIds];
-    this.statusMessage = 'Composicao revertida para o ultimo salvamento.';
+    this.statusMessage = 'Composição revertida para o último salvamento.';
   }
 
   saveComposition(): void {
@@ -134,7 +134,7 @@ export class ProductTreeComponent {
 
     const saved = this.catalog.saveComposition(this.selectedProductId, this.compositionIds);
     this.savedCompositionIds = [...saved.productComponentIds];
-    this.statusMessage = 'Composicao salva localmente.';
+    this.statusMessage = 'Composição salva localmente.';
   }
 
   beginComponentDrag(event: DragEvent, componentId: string, source: 'library' | 'composition'): void {

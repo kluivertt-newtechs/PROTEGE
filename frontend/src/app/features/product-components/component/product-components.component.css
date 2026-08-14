@@ -4,21 +4,12 @@
   padding: 18px 0 24px;
 }
 
-.catalog-toolbar {
-  background: #fff;
-  border: 1px solid #d9dee5;
-  border-radius: 8px;
-  padding: 16px;
-}
-
-.filter-grid,
 .form-grid {
   display: grid;
   gap: 14px 18px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.actions-row,
 .checkbox-row,
 .card-actions {
   align-items: center;
@@ -28,9 +19,10 @@
   margin-top: 14px;
 }
 
-.actions-row span {
+.status-message {
   color: #1f6a2d;
   font-size: 13px;
+  margin: 0;
 }
 
 .component-grid {
@@ -149,7 +141,6 @@
 }
 
 @media (max-width: 760px) {
-  .filter-grid,
   .form-grid,
   .meta-grid,
   .card-head {

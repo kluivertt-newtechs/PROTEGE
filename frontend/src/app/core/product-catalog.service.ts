@@ -158,7 +158,7 @@ const SEED_PRODUCT_COMPONENTS: Array<ProductComponent> = [
   rt('rt02', 'TR002', 'Modelo de Cofre Inteligente', 'COFRE_AT', 'CUSTO_COFRE + SEGURO_COFRE', 'Tabelas de Resultado', [
     [10, 'PROTEGE1', 'Protege One - Cofre compacto', 1, true],
     [20, 'PROTEGE2', 'Protege Two - Cofre duplo', 2, false],
-    [30, 'COFRE_STD', 'Cofre padrao - Sem inteligencia embarcada', 3, false],
+    [30, 'COFRE_STD', 'Cofre padrão - Sem inteligência embarcada', 3, false],
   ]),
   rt('rt03', 'TR003', 'Frequencia de Coleta', 'FREQ', 'EMBARQUES_MES * CUSTO_EMBARQUE', 'Tabelas de Resultado', [
     [10, 'DIARIA', 'Diaria - coleta todo dia util', 22, false],
@@ -174,7 +174,7 @@ const SEED_PRODUCT_COMPONENTS: Array<ProductComponent> = [
     [40, 'BASE_MG', 'Base Belo Horizonte/MG', 4, false],
     [50, 'BASE_RS', 'Base Porto Alegre/RS', 5, false],
   ]),
-  rt('rt05', 'TR005', 'Taxa de Antecipacao D0 Bancarizacao', 'MARGEM_D0', 'PRECO_ROL * MARGEM_D0', 'Tabelas de Resultado', [
+  rt('rt05', 'TR005', 'Taxa de Antecipação D0 Bancarização', 'MARGEM_D0', 'PRECO_ROL * MARGEM_D0', 'Tabelas de Resultado', [
     [10, 'D0_015', '0,15% a.m. - Taxa Selic', 0.0015, true],
     [20, 'D0_010', '0,10% a.m. - Taxa negociada', 0.001, false],
     [30, 'D0_ZERO', 'Sem antecipacao', 0, false],
@@ -198,7 +198,7 @@ const SEED_PRODUCT_COMPONENTS: Array<ProductComponent> = [
   ]),
   rt('rt09', 'TR009', 'Seguro Cofre - Modalidade', 'SEG', 'LIMITE_SEG * TAXA_SEG', 'Tabelas de Resultado', [
     [10, 'SEG_COL', 'Seguro por coleta negociada', 200000, false],
-    [20, 'SEG_PAD', 'Seguro padrao', 300000, true],
+    [20, 'SEG_PAD', 'Seguro padrão', 300000, true],
     [30, 'SEG_AMP', 'Seguro ampliado', 500000, false],
   ]),
   rt('rt10', 'TR010', 'Modelo Cofre Projetado PayCash', 'COFRE_PR', 'CUSTO_COFRE + SEGURO_COFRE', 'PayCash', [
@@ -235,50 +235,50 @@ const SEED_PRODUCT_COMPONENTS: Array<ProductComponent> = [
   lib('s04', 'ISS_COBRADO', 'ISS cobrado a parte do cliente?', 'boolean', '', 'Ponto de Atendimento'),
   lib('s05', 'ATEND_ATUAL', 'Atendemos o ponto atualmente?', 'boolean', '', 'Ponto de Atendimento'),
   lib('s06', 'COND_OPER', 'Condicao operacional CPE / SOP', 'select', '', 'Operacional', 'CPE_SOP'),
-  lib('s07', 'TIPO_SERVICO', 'Tipo de servico desejado', 'select', '', 'Operacional', 'COFRE_AT'),
+  lib('s07', 'TIPO_SERVICO', 'Tipo de serviço desejado', 'select', '', 'Operacional', 'COFRE_AT'),
   lib('s08', 'FREQ_COLETA', 'Frequencia de coleta desejada', 'select', '', 'Operacional', 'FREQ'),
   lib('s09', 'VOL_TRANS_AT', 'Volume transportado atual (R$)', 'number', 'R$', 'Operacional'),
   lib('s10', 'VOL_TRANS_PR', 'Volume transportado projetado (R$)', 'number', 'R$', 'Operacional', 'MONTANTE'),
   lib('s11', 'QTD_EMB_ATUAL', 'Quantidade de embarques atual / mes', 'number', 'un.', 'Operacional'),
   lib('s12', 'QTD_EMB_PROJ', 'Quantidade de embarques projetados / mes', 'number', 'un.', 'Operacional', 'quantity'),
   lib('s13', 'CUSTO_EMB_AT', 'Custo embarque atual (R$/emb)', 'number', 'R$', 'Operacional', 'costBase'),
-  lib('s14', 'PRECO_EMB_AT', 'Preco embarque atual (R$/emb)', 'number', 'R$', 'Operacional'),
+  lib('s14', 'PRECO_EMB_AT', 'Preço embarque atual (R$/emb)', 'number', 'R$', 'Operacional'),
   lib('s15', 'MARGEM_DESEJ', 'Margem de lucro desejada', 'select', '', 'Operacional', 'targetMarginRate'),
   lib('s16', 'POSSUI_COFRE', 'Cliente possui cofre atualmente?', 'boolean', '', 'Cofre Inteligente'),
   lib('s17', 'MODELO_COF_AT', 'Modelo de cofre atual', 'text', '', 'Cofre Inteligente'),
-  lib('s18', 'PRECO_COF_AT', 'Preco cofre atual (R$/mes)', 'number', 'R$', 'Cofre Inteligente'),
+  lib('s18', 'PRECO_COF_AT', 'Preço cofre atual (R$/mes)', 'number', 'R$', 'Cofre Inteligente'),
   lib('s19', 'SEG_COF_AT', 'Seguro cofre atual (R$/mes)', 'number', 'R$', 'Cofre Inteligente'),
   lib('s20', 'MODELO_COF_PR', 'Modelo cofre projetado PayCash', 'select', '', 'Cofre Inteligente', 'COFRE_PR'),
   lib('s21', 'SEG_COF_PR', 'Seguro cofre projetado (R$/mes)', 'number', 'R$', 'Cofre Inteligente'),
   lib('s22', 'TX_ADVALOREM', 'Taxa advalorem sobre o montante', 'select', '', 'Advalorem e Custodia', 'ADVALOREM'),
   lib('s23', 'MONTANTE_CST', 'Montante custodiado (R$)', 'number', 'R$', 'Advalorem e Custodia'),
   lib('s24', 'TX_CUSTODIA', 'Taxa de custodia sobre montante', 'select', '', 'Advalorem e Custodia', 'CUSTODIA'),
-  lib('s25', 'PRECO_MILH', 'Preco por milheiro processado (R$/mil)', 'number', 'R$/mil', 'Processamento'),
+  lib('s25', 'PRECO_MILH', 'Preço por milheiro processado (R$/mil)', 'number', 'R$/mil', 'Processamento'),
   lib('s26', 'QTD_MILHEIROS', 'Quantidade de milheiros processados / mes', 'number', 'mil', 'Processamento'),
   lib('s27', 'CUSTO_PROC', 'Custo de processamento atual (R$/mil)', 'number', 'R$/mil', 'Processamento'),
   lib('s28', 'TIPO_NUM', 'Tipo de custo de processamento (NUM)', 'select', '', 'Processamento', 'PROC'),
-  lib('s29', 'TAXA_D0', 'Taxa de antecipacao D0 - bancarizacao', 'select', '', 'D0 e Bancarizacao', 'MARGEM_D0'),
-  lib('s30', 'PRAZO_FLOAT', 'Prazo de floating (dias)', 'select', '', 'D0 e Bancarizacao', 'FLOATING'),
+  lib('s29', 'TAXA_D0', 'Taxa de antecipação D0 - bancarização', 'select', '', 'D0 e Bancarização', 'MARGEM_D0'),
+  lib('s30', 'PRAZO_FLOAT', 'Prazo de floating (dias)', 'select', '', 'D0 e Bancarização', 'FLOATING'),
 ];
 
 const SEED_PRICE_COMPONENTS: Array<PriceComponent> = [
   pt('pt01', 'TP001', 'ISS - Imposto Sobre Servicos', 'mainTaxRate', 'PRECO_BRUTO * ISS', [
-    [10, 'ISS_5', 'ISS 5% (padrao municipios)', 5, true],
-    [20, 'ISS_2', 'ISS 2% (municipios reduzidos)', 2, false],
+    [10, 'ISS_5', 'ISS 5% (padrão municípios)', 5, true],
+    [20, 'ISS_2', 'ISS 2% (municípios reduzidos)', 2, false],
     [30, 'ISS_3', 'ISS 3%', 3, false],
   ]),
-  pt('pt02', 'TP002', 'PIS/COFINS - Contribuicoes Federais', 'pisCofinsRate', 'PRECO_BRUTO * PIS_COF', [
+  pt('pt02', 'TP002', 'PIS/COFINS - Contribuições Federais', 'pisCofinsRate', 'PRECO_BRUTO * PIS_COF', [
     [10, 'PISCOF_141', 'PIS/COFINS 14,1% (lucro presumido)', 14.1, true],
     [20, 'PISCOF_925', 'PIS/COFINS 9,25% (lucro real)', 9.25, false],
   ]),
   pt('pt03', 'TP003', 'Despesas Operacionais', 'operationalExpensesRate', 'PRECO_BRUTO * DESP_OP', [
-    [10, 'DESP_14', '14% sobre preco bruto (padrao)', 14, true],
-    [20, 'DESP_12', '12% sobre preco bruto', 12, false],
-    [30, 'DESP_16', '16% sobre preco bruto (premium)', 16, false],
+    [10, 'DESP_14', '14% sobre preço bruto (padrão)', 14, true],
+    [20, 'DESP_12', '12% sobre preço bruto', 12, false],
+    [30, 'DESP_16', '16% sobre preço bruto (premium)', 16, false],
   ]),
   pt('pt04', 'TP004', 'Despesas Indiretas', 'indirectExpensesRate', 'PRECO_BRUTO * DESP_IND', [
-    [10, 'IND_141', '14,1% sobre preco bruto (padrao)', 14.1, true],
-    [20, 'IND_10', '10% sobre preco bruto', 10, false],
+    [10, 'IND_141', '14,1% sobre preço bruto (padrão)', 14.1, true],
+    [20, 'IND_10', '10% sobre preço bruto', 10, false],
   ]),
   pt('pt05', 'TP005', 'Margem de Lucro (EBITDA)', 'targetMarginRate', '(PRECO_BRUTO - CUSTOS) / PRECO_BRUTO', [
     [10, 'MARG_15', '15% margem desejada', 15, false],

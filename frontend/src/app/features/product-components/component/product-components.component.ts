@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { PoModalComponent, PoSelectOption } from '@po-ui/ng-components';
+import { PoModalComponent, PoPageAction, PoPageSlideComponent, PoSelectOption } from '@po-ui/ng-components';
 import {
   CatalogComponentType,
   ProductCatalogService,
@@ -11,6 +11,12 @@ import { SHARED_MODULES } from 'src/app/shared/shared';
 
 type StatusFilter = 'all' | 'active' | 'inactive';
 
+interface ComponentFilterDraft {
+  searchTerm: string;
+  groupFilter: string;
+  statusFilter: StatusFilter;
+}
+
 @Component({
   selector: 'app-product-components',
   templateUrl: './product-components.component.html',
@@ -20,10 +26,12 @@ type StatusFilter = 'all' | 'active' | 'inactive';
 })
 export class ProductComponentsComponent {
   @ViewChild('componentModal') componentModal!: PoModalComponent;
+  @ViewChild('filtersSlide') filtersSlide!: PoPageSlideComponent;
 
   searchTerm = '';
   groupFilter = '';
   statusFilter: StatusFilter = 'all';
+  filterDraft: ComponentFilterDraft = this.createFilterDraft();
   rows: Array<ProductComponent> = [];
   expanded = new Set<string>();
   editModel: ProductComponent = this.catalog.createEmptyComponent('product');
@@ -31,9 +39,9 @@ export class ProductComponentsComponent {
   statusMessage = '';
 
   readonly typeOptions: Array<PoSelectOption> = [
-    { label: 'Numero', value: 'number' },
+    { label: 'Número', value: 'number' },
     { label: 'Texto', value: 'text' },
-    { label: 'Selecao', value: 'select' },
+    { label: 'Seleção', value: 'select' },
     { label: 'Booleano', value: 'boolean' },
     { label: 'Taxa', value: 'rate' },
   ];
@@ -43,6 +51,10 @@ export class ProductComponentsComponent {
     { label: 'Inativos', value: 'inactive' },
   ];
   groupOptions: Array<PoSelectOption> = [];
+  readonly pageActions: Array<PoPageAction> = [
+    { label: 'Filtros', icon: 'an an-funnel', action: () => this.openFilters() },
+    { label: 'Novo componente', icon: 'an an-plus', action: () => this.newComponent() },
+  ];
 
   constructor(private readonly catalog: ProductCatalogService) {
     this.refresh();
@@ -52,6 +64,28 @@ export class ProductComponentsComponent {
     this.editModel = this.catalog.createEmptyComponent('product');
     this.optionDraft = '';
     this.componentModal.open();
+  }
+
+  openFilters(): void {
+    this.filterDraft = this.createFilterDraft();
+    this.filtersSlide.open();
+  }
+
+  applyFilters(): void {
+    this.searchTerm = this.filterDraft.searchTerm;
+    this.groupFilter = this.filterDraft.groupFilter;
+    this.statusFilter = this.filterDraft.statusFilter;
+    this.refresh();
+    this.filtersSlide.close();
+  }
+
+  clearFilters(): void {
+    this.searchTerm = '';
+    this.groupFilter = '';
+    this.statusFilter = 'all';
+    this.filterDraft = this.createFilterDraft();
+    this.refresh();
+    this.filtersSlide.close();
   }
 
   edit(component: ProductComponent): void {
@@ -95,10 +129,6 @@ export class ProductComponentsComponent {
     this.refresh();
   }
 
-  onFilterChange(): void {
-    this.refresh();
-  }
-
   selectedSummary(component: ProductComponent): string {
     const selected = component.options.filter((option) => option.selected);
     if (!selected.length) {
@@ -106,7 +136,7 @@ export class ProductComponentsComponent {
     }
 
     if (selected.length > 1) {
-      return `${selected.length} opcoes`;
+      return `${selected.length} opções`;
     }
 
     return this.formatValue(selected[0].calculatedValue);
@@ -128,6 +158,14 @@ export class ProductComponentsComponent {
     this.rows = this.catalog.searchComponents(this.searchTerm, this.groupFilter, this.statusFilter);
   }
 
+  private createFilterDraft(): ComponentFilterDraft {
+    return {
+      searchTerm: this.searchTerm,
+      groupFilter: this.groupFilter,
+      statusFilter: this.statusFilter,
+    };
+  }
+
   private parseOptions(value: string): Array<ProductComponentOption> {
     return value
       .split('\n')
@@ -136,14 +174,14 @@ export class ProductComponentsComponent {
       .map((line, index) => {
         const [left, rawValue, rawCost, rawFlags] = line.split('|').map((part) => part.trim());
         const [code, description] = left.split('=').map((part) => part.trim());
-        const selected = /selected|selecionado|default|padrao/i.test(rawFlags ?? '');
+        const selected = /selected|selecionado|default|padrão|padrao/i.test(rawFlags ?? '');
         const numeric = Number(rawValue);
         const cost = Number(rawCost);
 
         return {
           sequence: (index + 1) * 10,
           code: code || `OPT${(index + 1) * 10}`,
-          description: description || code || `Opcao ${(index + 1)}`,
+          description: description || code || `Opção ${index + 1}`,
           calculatedValue: Number.isFinite(numeric) ? numeric : 0,
           costValue: Number.isFinite(cost) ? cost : Number.isFinite(numeric) ? numeric : 0,
           default: selected,

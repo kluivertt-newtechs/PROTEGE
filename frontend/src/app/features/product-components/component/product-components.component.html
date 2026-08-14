@@ -1,33 +1,6 @@
-<po-page-default p-title="Componentes de Produto">
+<po-page-default p-title="Componentes de Produto" [p-actions]="pageActions">
   <div class="catalog-page">
-    <section class="catalog-toolbar">
-      <div class="filter-grid">
-        <po-input
-          name="searchTerm"
-          p-label="Buscar"
-          [(ngModel)]="searchTerm"
-          (ngModelChange)="onFilterChange()"
-        ></po-input>
-        <po-select
-          name="groupFilter"
-          p-label="Grupo"
-          [p-options]="groupOptions"
-          [ngModel]="groupFilter"
-          (ngModelChange)="groupFilter = $event; onFilterChange()"
-        ></po-select>
-        <po-select
-          name="statusFilter"
-          p-label="Status"
-          [p-options]="statusOptions"
-          [ngModel]="statusFilter"
-          (ngModelChange)="statusFilter = $event; onFilterChange()"
-        ></po-select>
-      </div>
-      <div class="actions-row">
-        <po-button p-icon="an an-plus" p-label="Novo componente" p-kind="primary" (p-click)="newComponent()"></po-button>
-        <span *ngIf="statusMessage">{{ statusMessage }}</span>
-      </div>
-    </section>
+    <p class="status-message" *ngIf="statusMessage">{{ statusMessage }}</p>
 
     <section class="component-grid">
       <article class="component-card" *ngFor="let component of rows" [class.inactive]="!component.active">
@@ -44,9 +17,9 @@
 
         <div class="card-body" *ngIf="isExpanded(component.id)">
           <div class="meta-grid">
-            <span><small>Variavel APV</small><b>{{ component.varAPV }}</b></span>
+            <span><small>Variável APV</small><b>{{ component.varAPV }}</b></span>
             <span><small>Tipo</small><b>{{ component.type }}</b></span>
-            <span><small>Formula</small><b>{{ component.formula || '--' }}</b></span>
+            <span><small>Fórmula</small><b>{{ component.formula || '--' }}</b></span>
           </div>
 
           <div class="option-list" *ngIf="component.options.length">
@@ -64,7 +37,7 @@
               <b>{{ formatValue(option.calculatedValue) }}</b>
             </button>
           </div>
-          <p class="empty-state" *ngIf="!component.options.length">Componente sem opcoes predefinidas.</p>
+          <p class="empty-state" *ngIf="!component.options.length">Componente sem opções predefinidas.</p>
 
           <div class="card-actions">
             <po-button p-icon="an an-pencil-simple" p-label="Editar" (p-click)="edit(component)"></po-button>
@@ -80,10 +53,35 @@
     </section>
   </div>
 
+  <po-page-slide #filtersSlide p-title="Filtros" p-size="sm" [p-click-out]="true">
+    <div class="form-grid">
+      <po-input name="searchTerm" p-label="Buscar" [(ngModel)]="filterDraft.searchTerm"></po-input>
+      <po-select
+        name="groupFilter"
+        p-label="Grupo"
+        [p-options]="groupOptions"
+        [ngModel]="filterDraft.groupFilter"
+        (ngModelChange)="filterDraft.groupFilter = $event"
+      ></po-select>
+      <po-select
+        name="statusFilter"
+        p-label="Status"
+        [p-options]="statusOptions"
+        [ngModel]="filterDraft.statusFilter"
+        (ngModelChange)="filterDraft.statusFilter = $event"
+      ></po-select>
+    </div>
+
+    <po-page-slide-footer>
+      <po-button p-label="Limpar" (p-click)="clearFilters()"></po-button>
+      <po-button p-kind="primary" p-label="Pesquisar" (p-click)="applyFilters()"></po-button>
+    </po-page-slide-footer>
+  </po-page-slide>
+
   <po-modal #componentModal p-title="Componente de produto">
     <div class="form-grid">
-      <po-input name="code" p-label="Codigo" [(ngModel)]="editModel.code"></po-input>
-      <po-input name="description" p-label="Descricao" [(ngModel)]="editModel.description"></po-input>
+      <po-input name="code" p-label="Código" [(ngModel)]="editModel.code"></po-input>
+      <po-input name="description" p-label="Descrição" [(ngModel)]="editModel.description"></po-input>
       <po-select
         name="type"
         p-label="Tipo"
@@ -93,19 +91,19 @@
       ></po-select>
       <po-input name="unit" p-label="Unidade" [(ngModel)]="editModel.unit"></po-input>
       <po-input name="group" p-label="Grupo" [(ngModel)]="editModel.group"></po-input>
-      <po-input name="varAPV" p-label="Variavel APV" [(ngModel)]="editModel.varAPV"></po-input>
-      <po-input name="formula" p-label="Formula" [(ngModel)]="editModel.formula"></po-input>
+      <po-input name="varAPV" p-label="Variável APV" [(ngModel)]="editModel.varAPV"></po-input>
+      <po-input name="formula" p-label="Fórmula" [(ngModel)]="editModel.formula"></po-input>
     </div>
 
     <div class="checkbox-row">
       <label><input type="checkbox" [(ngModel)]="editModel.active" /> Ativo</label>
-      <label><input type="checkbox" [(ngModel)]="editModel.multiple" /> Multipla selecao</label>
+      <label><input type="checkbox" [(ngModel)]="editModel.multiple" /> Múltipla seleção</label>
     </div>
 
     <po-textarea
       name="options"
-      p-label="Opcoes"
-      p-help="Uma opcao por linha: CODIGO=Descricao | valor calculado | valor custo | default"
+      p-label="Opções"
+      p-help="Uma opção por linha: CÓDIGO=Descrição | valor calculado | valor custo | padrão"
       [(ngModel)]="optionDraft"
     ></po-textarea>
 

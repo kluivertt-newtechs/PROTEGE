@@ -1,9 +1,9 @@
-<po-page-default p-title="Arvore de Produto">
+<po-page-default p-title="Árvore de Produto">
   <div class="tree-grid">
     <po-container p-title="Produtos">
       <div class="create-panel">
-        <po-input name="groupCode" p-label="Codigo grupo" [(ngModel)]="groupModel.code"></po-input>
-        <po-input name="groupName" p-label="Nome grupo" [(ngModel)]="groupModel.name"></po-input>
+        <po-input name="groupCode" p-label="Código do grupo" [(ngModel)]="groupModel.code"></po-input>
+        <po-input name="groupName" p-label="Nome do grupo" [(ngModel)]="groupModel.name"></po-input>
         <po-button p-icon="an an-plus" p-label="Grupo" (p-click)="addGroup()"></po-button>
       </div>
       <div class="create-panel">
@@ -14,8 +14,8 @@
           [ngModel]="productModel.groupId"
           (ngModelChange)="productModel.groupId = $event"
         ></po-select>
-        <po-input name="productCode" p-label="Codigo produto" [(ngModel)]="productModel.code"></po-input>
-        <po-input name="productName" p-label="Nome produto" [(ngModel)]="productModel.name"></po-input>
+        <po-input name="productCode" p-label="Código do produto" [(ngModel)]="productModel.code"></po-input>
+        <po-input name="productName" p-label="Nome do produto" [(ngModel)]="productModel.name"></po-input>
         <po-button p-icon="an an-plus" p-label="Produto" (p-click)="addProduct()"></po-button>
       </div>
 
@@ -36,7 +36,7 @@
       </div>
     </po-container>
 
-    <po-container [p-title]="'Composicao - ' + (selectedProduct?.name || '')">
+    <po-container [p-title]="'Composição - ' + (selectedProduct?.name || '')">
       <div
         class="composition-zone"
         [class.empty]="!selectedComponents.length"
@@ -61,7 +61,7 @@
           </div>
         </ng-container>
         <ng-template #noComposition>
-          <p>Arraste componentes para montar a composicao.</p>
+          <p>Arraste componentes para montar a composição.</p>
         </ng-template>
       </div>
 
@@ -87,7 +87,7 @@
           <strong>{{ component.description }}</strong>
           <small>{{ component.group }} · {{ component.varAPV }}</small>
         </button>
-        <p class="empty-state" *ngIf="!availableComponents.length">Todos os componentes ativos ja estao vinculados.</p>
+        <p class="empty-state" *ngIf="!availableComponents.length">Todos os componentes ativos já estão vinculados.</p>
       </div>
     </po-container>
   </div>

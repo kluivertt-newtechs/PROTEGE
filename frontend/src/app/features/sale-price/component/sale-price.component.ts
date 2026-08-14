@@ -68,7 +68,7 @@ export class SalePriceComponent {
     }
 
     if (!this.components.length) {
-      this.warning = 'Produto sem composicao. Vincule componentes na Arvore de Produto.';
+      this.warning = 'Produto sem composição. Vincule componentes na Árvore de Produto.';
       this.resultValues = {};
       this.memory = [];
       return;
