@@ -137,8 +137,16 @@ export class SalePriceComponent {
       return;
     }
 
+    const formulas = this.formulaService.getFormulas(this.selectedProductId);
+    if (!formulas.some((formula) => formula.enabled)) {
+      this.resultValues = {};
+      this.memory = [];
+      this.warning = '';
+      return;
+    }
+
     const context = this.buildFormulaContext();
-    const execution = executePricingFormulas(context, this.formulaService.getFormulas());
+    const execution = executePricingFormulas(context, formulas);
 
     this.resultValues = execution.values;
     this.memory = execution.memory;

@@ -1,11 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
-  DEFAULT_PRICING_FORMULAS,
   PRICING_FORMULA_VARIABLES,
   PricingFormulaService,
 } from 'src/app/core/pricing-formula.service';
 import { PricingBusinessBranch, PricingFormula } from 'src/app/core/mock';
+import {
+  PriceComponent,
+  ProductCatalogService,
+  ProductComponent,
+  ProductNode,
+} from 'src/app/core/product-catalog.service';
 import { SHARED_MODULES } from 'src/app/shared/shared';
 
 type FormulaTokenKind = 'variable' | 'formula' | 'function' | 'operator' | 'number' | 'text';
@@ -30,16 +35,24 @@ interface FormulaDragData {
   imports: [...SHARED_MODULES, CommonModule],
 })
 export class FormulaBuilderComponent implements OnInit {
+  tree: Array<ProductNode> = [];
+  selectedProductId = '';
   formulas: Array<PricingFormula> = [];
   selectedFormula?: PricingFormula;
+  productComponents: Array<ProductComponent> = [];
+  priceComponents: Array<PriceComponent> = [];
+  productFormulasOpen = true;
+  simulationVariablesOpen = true;
+  productComponentsOpen = true;
+  priceComponentsOpen = true;
+  quickFunctionsOpen = true;
   private selectedFormulaOriginalId = '';
   statusMessage = '';
   statusType: 'success' | 'error' | 'info' = 'info';
   expressionTokens: Array<FormulaExpressionToken> = [];
   expressionCursorIndex = 0;
 
-  readonly variables = PRICING_FORMULA_VARIABLES;
-  readonly defaultFormulaIds = DEFAULT_PRICING_FORMULAS.map((formula) => formula.id);
+  readonly simulationVariables = PRICING_FORMULA_VARIABLES;
   readonly defaultBusinessBranches: Array<PricingBusinessBranch> = ['transport', 'processing'];
   readonly operatorTokens = ['+', '-', '*', '/', '(', ')', ',', '?', ':'];
   readonly quickFunctionTokens = [
@@ -47,7 +60,14 @@ export class FormulaBuilderComponent implements OnInit {
     { id: 'Math.min()', label: 'Menor valor' },
   ];
 
-  constructor(private readonly formulaService: PricingFormulaService) {}
+  constructor(
+    private readonly formulaService: PricingFormulaService,
+    private readonly catalog: ProductCatalogService,
+  ) {}
+
+  get selectedProduct(): ProductNode | undefined {
+    return this.catalog.getProduct(this.selectedProductId);
+  }
 
   get formulaVariables(): Array<PricingFormula> {
     const selectedIds = new Set([
@@ -61,7 +81,21 @@ export class FormulaBuilderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadFormulas();
+    this.tree = this.catalog.getTree();
+    this.selectedProductId = this.catalog.getSelectedProductId() || this.catalog.getProducts()[0]?.id || '';
+    this.loadProductScope();
+  }
+
+  selectProduct(productId: string): void {
+    if (this.selectedProductId === productId) {
+      return;
+    }
+
+    this.selectedProductId = productId;
+    this.catalog.setSelectedProductId(productId);
+    this.loadProductScope();
+    this.statusType = 'info';
+    this.statusMessage = 'Produto selecionado. O editor agora usa apenas as fórmulas deste produto.';
   }
 
   selectFormula(formula: PricingFormula): void {
@@ -71,7 +105,31 @@ export class FormulaBuilderComponent implements OnInit {
     this.statusMessage = '';
   }
 
+  toggleProductFormulas(): void {
+    this.productFormulasOpen = !this.productFormulasOpen;
+  }
+
+  toggleSimulationVariables(): void {
+    this.simulationVariablesOpen = !this.simulationVariablesOpen;
+  }
+
+  toggleProductComponents(): void {
+    this.productComponentsOpen = !this.productComponentsOpen;
+  }
+
+  togglePriceComponents(): void {
+    this.priceComponentsOpen = !this.priceComponentsOpen;
+  }
+
+  toggleQuickFunctions(): void {
+    this.quickFunctionsOpen = !this.quickFunctionsOpen;
+  }
+
   addFormula(): void {
+    if (!this.selectedProductId) {
+      return;
+    }
+
     this.selectedFormula = {
       id: `formula${this.formulas.length + 1}`,
       label: 'Nova fórmula',
@@ -100,7 +158,7 @@ export class FormulaBuilderComponent implements OnInit {
   }
 
   validate(): void {
-    const validation = this.formulaService.validate(this.buildEditedCatalog());
+    const validation = this.formulaService.validate(this.selectedProductId, this.buildEditedCatalog());
     this.statusType = validation.valid ? 'success' : 'error';
     this.statusMessage = validation.valid
       ? 'Fórmulas válidas para execução.'
@@ -109,7 +167,7 @@ export class FormulaBuilderComponent implements OnInit {
 
   save(): void {
     const catalog = this.buildEditedCatalog();
-    const validation = this.formulaService.saveFormulas(catalog);
+    const validation = this.formulaService.saveFormulas(this.selectedProductId, catalog);
 
     if (!validation.valid) {
       this.statusType = 'error';
@@ -117,22 +175,13 @@ export class FormulaBuilderComponent implements OnInit {
       return;
     }
 
-    this.formulas = this.formulaService.getFormulas();
+    this.formulas = this.formulaService.getFormulas(this.selectedProductId);
     const selected = this.formulas.find((formula) => formula.id === this.selectedFormula?.id);
     this.selectedFormula = selected ? { ...selected } : { ...this.formulas[0] };
     this.selectedFormulaOriginalId = this.selectedFormula?.id ?? '';
     this.refreshExpressionTokens();
     this.statusType = 'success';
     this.statusMessage = 'Fórmulas salvas localmente.';
-  }
-
-  resetDefaults(): void {
-    this.formulas = this.formulaService.resetToDefault();
-    this.selectedFormula = { ...this.formulas[0] };
-    this.selectedFormulaOriginalId = this.selectedFormula.id;
-    this.refreshExpressionTokens();
-    this.statusType = 'info';
-    this.statusMessage = 'Catálogo padrão restaurado.';
   }
 
   insertToken(token: string): void {
@@ -279,8 +328,57 @@ export class FormulaBuilderComponent implements OnInit {
     return 'Trecho da expressão';
   }
 
+  displayText(value: string): string {
+    const text = String(value ?? '');
+
+    if (!/[\u00c3\u00c2\u0080-\u009f\ufffd]/.test(text)) {
+      return text;
+    }
+
+    try {
+      const bytes = new Uint8Array([...text].map((char) => char.charCodeAt(0) & 255));
+      return new TextDecoder('utf-8').decode(bytes).replace(/\uFFFD/g, '');
+    } catch {
+      return text;
+    }
+  }
+
+  componentMeta(component: ProductComponent): string {
+    return [component.code, this.displayText(component.group)].filter(Boolean).join(' · ');
+  }
+
+  trackByNode(_: number, node: ProductNode): string {
+    return node.id;
+  }
+
+  trackByFormula(_: number, formula: PricingFormula): string {
+    return formula.id;
+  }
+
+  trackByComponent(_: number, component: ProductComponent): string {
+    return component.id;
+  }
+
+  trackByVariable(_: number, variable: { id: string }): string {
+    return variable.id;
+  }
+
+  trackByToken(_: number, token: FormulaExpressionToken): string {
+    return token.id;
+  }
+
+  private loadProductScope(): void {
+    this.loadCompositionVariables();
+    this.loadFormulas();
+  }
+
+  private loadCompositionVariables(): void {
+    this.productComponents = this.catalog.getCompositionComponents(this.selectedProductId);
+    this.priceComponents = this.catalog.getCompositionPriceComponents(this.selectedProductId);
+  }
+
   private loadFormulas(): void {
-    this.formulas = this.formulaService.getFormulas();
+    this.formulas = this.formulaService.getFormulas(this.selectedProductId);
     this.selectedFormula = this.formulas[0] ? { ...this.formulas[0] } : undefined;
     this.selectedFormulaOriginalId = this.selectedFormula?.id ?? '';
     this.refreshExpressionTokens();
@@ -405,7 +503,13 @@ export class FormulaBuilderComponent implements OnInit {
   }
 
   private resolveTokenKind(value: string): FormulaTokenKind {
-    if (this.variables.some((variable) => variable.id === value)) {
+    const scopedVariables = [
+      ...this.simulationVariables,
+      ...this.productComponents.map((component) => ({ id: component.varAPV })),
+      ...this.priceComponents.map((component) => ({ id: component.varAPV })),
+    ];
+
+    if (scopedVariables.some((variable) => variable.id === value)) {
       return 'variable';
     }
 

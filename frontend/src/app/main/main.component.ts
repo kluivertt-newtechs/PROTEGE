@@ -54,16 +54,16 @@ export class MainComponent {
       link: 'price-components',
     },
     {
-      label: 'Construtor de Fórmulas',
-      shortLabel: 'Fórmulas',
-      icon: 'an an-function',
-      link: 'formula-builder',
-    },
-    {
       label: 'Árvore de Produto',
       shortLabel: 'Árvore',
       icon: 'an an-tree-structure',
       link: 'product-tree',
+    },
+    {
+      label: 'Construtor de Fórmulas',
+      shortLabel: 'Fórmulas',
+      icon: 'an an-function',
+      link: 'formula-builder',
     },
     {
       label: 'Simulação',

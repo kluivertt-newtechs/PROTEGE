@@ -1,0 +1,5 @@
+
+> project@0.0.0 dev
+> ng serve --configuration=development --host 127.0.0.1 --port 4200
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mAngular[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m

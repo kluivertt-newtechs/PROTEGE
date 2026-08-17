@@ -5,7 +5,7 @@ import {
   PricingFormula,
   PricingFormulaCategory,
 } from './mock';
-import { ProductCatalogService } from './product-catalog.service';
+import { PriceComponent, ProductCatalogService, ProductComponent } from './product-catalog.service';
 
 export interface FormulaValidationResult {
   valid: boolean;
@@ -24,6 +24,7 @@ interface FormulaDependencyResult {
 }
 
 const STORAGE_KEY = 'protege.pricing.formulas';
+const PRODUCT_STORAGE_KEY = 'protege.pricing.formulas.byProduct.v1';
 const BUSINESS_BRANCHES: Array<PricingBusinessBranch> = ['transport', 'processing'];
 
 const ALLOWED_MATH_FUNCTIONS = [
@@ -155,33 +156,37 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
 export class PricingFormulaService {
   constructor(private readonly productCatalog: ProductCatalogService) {}
 
-  getFormulas(): Array<PricingFormula> {
-    return cloneFormulas(readStoredFormulas() ?? DEFAULT_PRICING_FORMULAS);
+  getFormulas(productId: string): Array<PricingFormula> {
+    return cloneFormulas(readStoredFormulaCatalog()[productId] ?? []);
   }
 
-  saveFormulas(formulas: Array<PricingFormula>): FormulaValidationResult {
+  saveFormulas(productId: string, formulas: Array<PricingFormula>): FormulaValidationResult {
     const normalized = normalizeFormulas(formulas);
-    const validation = validateFormulasForSave(normalized, this.getAllowedVariableIds());
+    const validation = validateFormulasForSave(normalized, this.getAllowedVariableIds(productId));
 
     if (!validation.valid) {
       return validation;
     }
 
-    writeStoredFormulas(normalized);
+    writeStoredProductFormulas(productId, normalized);
     return validation;
   }
 
-  resetToDefault(): Array<PricingFormula> {
-    removeStoredFormulas();
-    return cloneFormulas(DEFAULT_PRICING_FORMULAS);
+  resetProductFormulas(productId: string): Array<PricingFormula> {
+    removeStoredProductFormulas(productId);
+    return [];
   }
 
-  validate(formulas: Array<PricingFormula>): FormulaValidationResult {
-    return validateFormulasForSave(normalizeFormulas(formulas), this.getAllowedVariableIds());
+  validate(productId: string, formulas: Array<PricingFormula>): FormulaValidationResult {
+    return validateFormulasForSave(normalizeFormulas(formulas), this.getAllowedVariableIds(productId));
   }
 
-  getAvailableVariables(): Array<{ id: string; label: string }> {
-    const variables = [...PRICING_FORMULA_VARIABLES, ...this.productCatalog.getFormulaVariables()];
+  getAvailableVariables(productId: string): Array<{ id: string; label: string }> {
+    const variables = [
+      ...PRICING_FORMULA_VARIABLES,
+      ...this.getProductComponentVariables(productId),
+      ...this.getPriceComponentVariables(productId),
+    ];
     const usedIds = new Set<string>();
 
     return variables.filter((variable) => {
@@ -194,14 +199,39 @@ export class PricingFormulaService {
     });
   }
 
-  private getAllowedVariableIds(): Set<string> {
-    return new Set(this.getAvailableVariables().map((variable) => variable.id));
+  getProductComponentVariables(productId: string): Array<{ id: string; label: string; component: ProductComponent }> {
+    return this.productCatalog.getCompositionComponents(productId)
+      .filter((component) => Boolean(component.varAPV))
+      .map((component) => ({
+        id: component.varAPV,
+        label: `${component.description}${component.unit ? ` (${component.unit})` : ''}`,
+        component,
+      }));
+  }
+
+  getPriceComponentVariables(productId: string): Array<{ id: string; label: string; component: PriceComponent }> {
+    const linkedPriceComponents = this.productCatalog.getCompositionPriceComponents(productId);
+    const priceComponents = linkedPriceComponents.length
+      ? linkedPriceComponents
+      : this.productCatalog.listPriceComponents(false);
+
+    return priceComponents
+      .filter((component) => Boolean(component.varAPV))
+      .map((component) => ({
+        id: component.varAPV,
+        label: `${component.description}${component.unit ? ` (${component.unit})` : ''}`,
+        component,
+      }));
+  }
+
+  private getAllowedVariableIds(productId: string): Set<string> {
+    return new Set(this.getAvailableVariables(productId).map((variable) => variable.id));
   }
 }
 
 export function executePricingFormulas(
   baseContext: Record<string, number>,
-  formulas: Array<PricingFormula> = readStoredFormulas() ?? DEFAULT_PRICING_FORMULAS,
+  formulas: Array<PricingFormula> = [],
   businessBranch?: PricingBusinessBranch,
 ): FormulaExecutionResult {
   const normalized = filterFormulasByBusinessBranch(normalizeFormulas(formulas), businessBranch);
@@ -378,6 +408,7 @@ function validateFormulasForSave(
   }
 
   const sampleContext = {
+    ...Object.fromEntries([...allowedVariableIds].map((id) => [id, 0])),
     costBase: 1000,
     quantity: 10,
     operationalExpensesRate: 0.14,
@@ -553,39 +584,52 @@ function filterFormulasByBusinessBranch(
   return formulas.filter((formula) => formula.businessBranches.includes(businessBranch));
 }
 
-function readStoredFormulas(): Array<PricingFormula> | undefined {
+function readStoredFormulaCatalog(): Record<string, Array<PricingFormula>> {
   if (!canUseStorage()) {
-    return undefined;
+    return {};
   }
 
-  const value = localStorage.getItem(STORAGE_KEY);
+  const value = localStorage.getItem(PRODUCT_STORAGE_KEY);
   if (!value) {
-    return undefined;
+    return {};
   }
 
   try {
-    const parsed = JSON.parse(value) as Array<PricingFormula>;
-    return Array.isArray(parsed) ? parsed : undefined;
+    const parsed = JSON.parse(value) as Record<string, Array<PricingFormula>>;
+    if (!parsed || Array.isArray(parsed) || typeof parsed !== 'object') {
+      return {};
+    }
+
+    return Object.fromEntries(
+      Object.entries(parsed)
+        .filter(([, formulas]) => Array.isArray(formulas))
+        .map(([productId, formulas]) => [productId, normalizeFormulas(formulas)]),
+    );
   } catch {
-    removeStoredFormulas();
-    return undefined;
+    localStorage.removeItem(PRODUCT_STORAGE_KEY);
+    return {};
   }
 }
 
-function writeStoredFormulas(formulas: Array<PricingFormula>): void {
+function writeStoredProductFormulas(productId: string, formulas: Array<PricingFormula>): void {
   if (!canUseStorage()) {
     return;
   }
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(formulas));
-}
-
-function removeStoredFormulas(): void {
-  if (!canUseStorage()) {
-    return;
-  }
-
+  const catalog = readStoredFormulaCatalog();
+  catalog[productId] = formulas;
+  localStorage.setItem(PRODUCT_STORAGE_KEY, JSON.stringify(catalog));
   localStorage.removeItem(STORAGE_KEY);
+}
+
+function removeStoredProductFormulas(productId: string): void {
+  if (!canUseStorage()) {
+    return;
+  }
+
+  const catalog = readStoredFormulaCatalog();
+  delete catalog[productId];
+  localStorage.setItem(PRODUCT_STORAGE_KEY, JSON.stringify(catalog));
 }
 
 function canUseStorage(): boolean {

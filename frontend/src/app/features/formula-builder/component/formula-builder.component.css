@@ -42,6 +42,128 @@
   margin-bottom: 14px;
 }
 
+.formula-actions {
+  display: flex;
+  margin-bottom: 14px;
+}
+
+.create-formula-button {
+  align-items: center;
+  background: linear-gradient(180deg, #0f527f 0%, #0b3d63 100%);
+  border: 1px solid #082f4f;
+  border-radius: 6px;
+  box-shadow: 0 6px 14px rgba(11, 61, 99, 0.18);
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 700;
+  gap: 8px;
+  min-height: 36px;
+  padding: 8px 12px;
+}
+
+.create-formula-button:hover {
+  background: linear-gradient(180deg, #14608f 0%, #0d4771 100%);
+  box-shadow: 0 8px 18px rgba(11, 61, 99, 0.22);
+}
+
+.create-formula-button:focus-visible {
+  outline: 2px solid rgba(11, 61, 99, 0.32);
+  outline-offset: 2px;
+}
+
+.create-formula-icon {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  display: inline-flex;
+  font-size: 17px;
+  height: 22px;
+  justify-content: center;
+  line-height: 1;
+  width: 22px;
+}
+
+.product-tree {
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  display: grid;
+  overflow: hidden;
+}
+
+.group-title {
+  background: #f4f6f8;
+  border-bottom: 1px solid #e5e7eb;
+  color: #2e343c;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 9px 12px;
+  text-transform: uppercase;
+}
+
+.product-row {
+  background: #fff;
+  border: 0;
+  border-bottom: 1px solid #e5e7eb;
+  color: #2e343c;
+  cursor: pointer;
+  display: grid;
+  gap: 2px;
+  min-height: 54px;
+  padding: 10px 12px 10px 20px;
+  text-align: left;
+}
+
+.product-row:last-child {
+  border-bottom: 0;
+}
+
+.product-row:hover {
+  background: #f8fbfd;
+}
+
+.product-row.active {
+  background: #edf6ff;
+  box-shadow: inset 3px 0 0 #0b3d63;
+}
+
+.product-row strong,
+.product-row small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.product-row small {
+  color: #69737d;
+  font-size: 12px;
+}
+
+.formula-list-heading {
+  align-items: center;
+  color: #2e343c;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin: 0 0 12px;
+}
+
+.formula-list-heading span:first-child {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.formula-list-heading small {
+  color: #69737d;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .formula-table {
   border: 1px solid #e5e7eb;
   border-radius: 4px;
@@ -350,6 +472,77 @@
   margin: 0;
 }
 
+.library-section {
+  background: #f8fafb;
+  border: 1px solid #e1e6ea;
+  border-radius: 6px;
+  display: grid;
+  gap: 0;
+  overflow: hidden;
+}
+
+.library-section + .library-section {
+  margin-top: 12px;
+}
+
+.library-toggle {
+  align-items: center;
+  background: linear-gradient(180deg, #ffffff 0%, #f6f8fa 100%);
+  border: 0;
+  color: #2e343c;
+  cursor: pointer;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(0, 1fr) auto 18px;
+  min-width: 0;
+  padding: 12px;
+  text-align: left;
+  width: 100%;
+}
+
+.library-toggle:hover {
+  background: #edf6ff;
+}
+
+.library-toggle-title {
+  font-size: 14px;
+  font-weight: 700;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.library-toggle-meta {
+  background: #eef2f5;
+  border-radius: 999px;
+  color: #69737d;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+.library-toggle-icon {
+  border-bottom: 2px solid #69737d;
+  border-right: 2px solid #69737d;
+  display: inline-block;
+  height: 8px;
+  transform: rotate(45deg);
+  transition: transform 0.16s ease;
+  width: 8px;
+}
+
+.library-toggle.closed .library-toggle-icon {
+  transform: rotate(-45deg);
+}
+
+.library-zone {
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+}
+
 .variable-grid {
   display: grid;
   gap: 10px;
@@ -386,6 +579,14 @@
 
 .variable-chip.formula-variable {
   background: #f8fbfd;
+}
+
+.variable-chip.component-variable {
+  background: #edf6ff;
+}
+
+.variable-chip.price-variable {
+  background: #effaf1;
 }
 
 .variable-chip.function-chip {
