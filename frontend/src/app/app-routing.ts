@@ -14,7 +14,13 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: 'product-components' },
       { path: 'pricing', redirectTo: 'product-components' },
       { path: 'simulation', redirectTo: 'product-components' },
-      { path: 'formula-builder', redirectTo: 'product-components' },
+      {
+        path: 'formula-builder',
+        loadChildren: () =>
+          import('./features/formula-builder/formula-builder.routes').then(
+            (r) => r.formulaBuilderRoutes,
+          ),
+      },
       { path: 'consolidated', redirectTo: 'product-components' },
       {
         path: 'product-components',
