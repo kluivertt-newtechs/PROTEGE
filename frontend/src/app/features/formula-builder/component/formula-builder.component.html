@@ -27,8 +27,7 @@
             >
               <span class="formula-main">
                 <strong>{{ formula.label }}</strong>
-                <small>{{ formula.id }} · {{ getCategoryLabel(formula.category) }}</small>
-                <small>{{ getBusinessBranchLabel(formula.businessBranches) }}</small>
+                <small>{{ formula.id }}</small>
               </span>
               <span class="status">{{ formula.enabled ? 'Ativa' : 'Inativa' }}</span>
             </button>
@@ -50,19 +49,6 @@
                 p-label="Nome"
                 [(ngModel)]="selectedFormula.label"
               ></po-input>
-              <po-select
-                name="formulaCategory"
-                p-label="Categoria"
-                [p-options]="categoryOptions"
-                [ngModel]="selectedFormula.category"
-                (ngModelChange)="updateSelectedCategory($event)"
-              ></po-select>
-              <po-multiselect
-                name="formulaBusinessBranches"
-                p-label="Ramo de Negócio"
-                [p-options]="businessBranchOptions"
-                [(ngModel)]="selectedFormula.businessBranches"
-              ></po-multiselect>
             </div>
 
             <po-input

@@ -1,12 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { PoMultiselectOption, PoSelectOption } from '@po-ui/ng-components';
 import {
   DEFAULT_PRICING_FORMULAS,
   PRICING_FORMULA_VARIABLES,
   PricingFormulaService,
 } from 'src/app/core/pricing-formula.service';
-import { PricingBusinessBranch, PricingFormula, PricingFormulaCategory } from 'src/app/core/mock';
+import { PricingBusinessBranch, PricingFormula } from 'src/app/core/mock';
 import { SHARED_MODULES } from 'src/app/shared/shared';
 
 type FormulaTokenKind = 'variable' | 'formula' | 'function' | 'operator' | 'number' | 'text';
@@ -46,16 +45,6 @@ export class FormulaBuilderComponent implements OnInit {
   readonly quickFunctionTokens = [
     { id: 'Math.max()', label: 'Maior valor' },
     { id: 'Math.min()', label: 'Menor valor' },
-  ];
-  readonly categoryOptions: Array<PoSelectOption> = [
-    { label: 'Custo', value: 'custo' },
-    { label: 'Comercial', value: 'comercial' },
-    { label: 'Imposto', value: 'imposto' },
-    { label: 'Resultado', value: 'resultado' },
-  ];
-  readonly businessBranchOptions: Array<PoMultiselectOption> = [
-    { label: 'Transporte de Valores', value: 'transport' },
-    { label: 'Processamento', value: 'processing' },
   ];
 
   constructor(private readonly formulaService: PricingFormulaService) {}
@@ -272,26 +261,6 @@ export class FormulaBuilderComponent implements OnInit {
     if (dragData.source === 'palette' && dragData.value) {
       this.insertTokensAt(this.createTokens(dragData.value), targetIndex);
     }
-  }
-
-  updateSelectedCategory(category: string | number): void {
-    if (!this.selectedFormula) {
-      return;
-    }
-
-    this.selectedFormula.category = String(category) as PricingFormulaCategory;
-  }
-
-  getCategoryLabel(category: PricingFormulaCategory): string {
-    return this.categoryOptions.find((option) => option.value === category)?.label ?? category;
-  }
-
-  getBusinessBranchLabel(branches: Array<PricingBusinessBranch> | undefined): string {
-    const selectedBranches = branches?.length ? branches : this.defaultBusinessBranches;
-
-    return selectedBranches
-      .map((branch) => this.businessBranchOptions.find((option) => option.value === branch)?.label ?? branch)
-      .join(', ');
   }
 
   getExpressionTokenLabel(token: FormulaExpressionToken): string {
