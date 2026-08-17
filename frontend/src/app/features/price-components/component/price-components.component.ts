@@ -37,7 +37,6 @@ export class PriceComponentsComponent {
   editModel: PriceComponent = this.catalog.createEmptyComponent('price');
   optionDraft = '';
   optionRows: Array<ProductComponentOption> = [];
-  formulaInteractionMessage = '';
   statusMessage = '';
 
   readonly typeOptions: Array<PoSelectOption> = [
@@ -50,8 +49,6 @@ export class PriceComponentsComponent {
     { label: 'Ativos', value: 'active' },
     { label: 'Inativos', value: 'inactive' },
   ];
-  readonly operatorTokens = ['+', '-', '*', '/', '(', ')'];
-  readonly exampleFormulas = ['PRECO_BRUTO * varAPV', '(PRECO_BRUTO - CUSTOS) / PRECO_BRUTO', 'varAPV / 100'];
   groupOptions: Array<PoSelectOption> = [];
   readonly pageActions: Array<PoPageAction> = [
     { label: 'Filtros', icon: 'an an-funnel', action: () => this.openFilters() },
@@ -66,7 +63,6 @@ export class PriceComponentsComponent {
     this.editModel = this.catalog.createEmptyComponent('price');
     this.optionDraft = '';
     this.optionRows = [];
-    this.formulaInteractionMessage = '';
     this.componentModal.open();
   }
 
@@ -96,16 +92,10 @@ export class PriceComponentsComponent {
     this.editModel = { ...component, options: component.options.map((option) => ({ ...option })) };
     this.optionDraft = this.optionsToDraft(this.editModel.options);
     this.optionRows = this.cloneOptions(this.editModel.options);
-    this.formulaInteractionMessage = '';
     this.componentModal.open();
   }
 
   save(): void {
-    if (this.hasFormulaBlockingError()) {
-      this.statusMessage = 'Revise a fórmula: há parênteses desbalanceados ou operadores duplicados.';
-      return;
-    }
-
     this.editModel.options = this.normalizeOptionRows();
     this.editModel.type = String(this.editModel.type) as CatalogComponentType;
     this.catalog.savePriceComponent(this.editModel);
@@ -146,51 +136,6 @@ export class PriceComponentsComponent {
     return selected.length > 1 ? `${selected.length} opções` : this.formatPercent(selected[0].calculatedValue);
   }
 
-  get formulaVariables(): Array<{ id: string; label: string }> {
-    const variables = this.catalog.getFormulaVariables();
-    const currentVariable = String(this.editModel.varAPV ?? '').trim();
-
-    if (currentVariable && !variables.some((variable) => variable.id === currentVariable)) {
-      return [{ id: currentVariable, label: 'Variável deste componente' }, ...variables];
-    }
-
-    return variables;
-  }
-
-  get formulaPreview(): string {
-    const formula = String(this.editModel.formula ?? '').trim();
-
-    if (!formula) {
-      return 'Sem fórmula definida.';
-    }
-
-    const usedVariable = this.formulaVariables.find((variable) => this.expressionUsesToken(formula, variable.id));
-    if (usedVariable) {
-      return `Usa variável ${usedVariable.id}`;
-    }
-
-    return 'Expressão informativa cadastrada.';
-  }
-
-  get formulaIssues(): Array<string> {
-    const formula = String(this.editModel.formula ?? '').trim();
-
-    if (!formula) {
-      return ['Fórmula vazia.'];
-    }
-
-    const issues: Array<string> = [];
-    if (!this.hasBalancedParentheses(formula)) {
-      issues.push('Parênteses desbalanceados.');
-    }
-
-    if (this.hasDuplicatedOperators(formula)) {
-      issues.push('Operadores duplicados.');
-    }
-
-    return issues;
-  }
-
   get optionsSummary(): string {
     const defaults = this.optionRows.filter((option) => option.default || option.selected).length;
     const total = this.optionRows.length;
@@ -201,24 +146,6 @@ export class PriceComponentsComponent {
 
   get showSelectWithoutOptionsWarning(): boolean {
     return this.editModel.type === 'select' && this.optionRows.length === 0;
-  }
-
-  insertFormulaToken(token: string, event?: Event, input?: HTMLInputElement): void {
-    event?.preventDefault();
-    event?.stopPropagation();
-
-    const current = String(input?.value ?? this.editModel.formula ?? '').trim();
-    const separator = current && !current.endsWith('(') && token !== ')' ? ' ' : '';
-    this.setFormulaValue(`${current}${separator}${token}`.trim(), input);
-    this.formulaInteractionMessage = `Inserido: ${token}`;
-  }
-
-  useFormulaExample(example: string, event?: Event, input?: HTMLInputElement): void {
-    event?.preventDefault();
-    event?.stopPropagation();
-
-    this.setFormulaValue(example.replace(/varAPV/g, this.editModel.varAPV || 'varAPV'), input);
-    this.formulaInteractionMessage = 'Exemplo aplicado.';
   }
 
   addOption(): void {
@@ -312,16 +239,6 @@ export class PriceComponentsComponent {
       .join('\n');
   }
 
-  private setFormulaValue(value: string, input?: HTMLInputElement): void {
-    this.editModel.formula = value;
-
-    if (input) {
-      input.value = value;
-      input.dispatchEvent(new Event('input', { bubbles: true }));
-      window.setTimeout(() => input.focus());
-    }
-  }
-
   private cloneOptions(options: Array<ProductComponentOption>): Array<ProductComponentOption> {
     return options.map((option) => ({ ...option }));
   }
@@ -358,37 +275,4 @@ export class PriceComponentsComponent {
     return Math.max(10, Math.ceil((maxSequence + 1) / 10) * 10);
   }
 
-  private hasFormulaBlockingError(): boolean {
-    const formula = String(this.editModel.formula ?? '').trim();
-    return Boolean(formula) && (!this.hasBalancedParentheses(formula) || this.hasDuplicatedOperators(formula));
-  }
-
-  private hasBalancedParentheses(value: string): boolean {
-    let balance = 0;
-    for (const char of value) {
-      if (char === '(') {
-        balance += 1;
-      }
-      if (char === ')') {
-        balance -= 1;
-      }
-      if (balance < 0) {
-        return false;
-      }
-    }
-
-    return balance === 0;
-  }
-
-  private hasDuplicatedOperators(value: string): boolean {
-    return /[+*/]{2,}|--|-\+|\+-/.test(value.replace(/\s+/g, ''));
-  }
-
-  private expressionUsesToken(expression: string, token: string): boolean {
-    return new RegExp(`(^|[^A-Za-z0-9_])${this.escapeRegExp(token)}([^A-Za-z0-9_]|$)`).test(expression);
-  }
-
-  private escapeRegExp(value: string): string {
-    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  }
 }

@@ -177,36 +177,6 @@
   margin: 3px 0 0;
 }
 
-.chip-group,
-.example-list,
-.formula-issues {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.formula-field {
-  color: #2e343c;
-  display: grid;
-  font-size: 12px;
-  font-weight: 700;
-  gap: 6px;
-}
-
-.formula-field input {
-  border: 1px solid #cbd3dc;
-  border-radius: 6px;
-  color: #1d2733;
-  font-size: 14px;
-  font-weight: 400;
-  min-height: 36px;
-  min-width: 0;
-  padding: 7px 10px;
-  width: 100%;
-}
-
-.chip,
-.example-list button,
 .default-toggle,
 .icon-button {
   align-items: center;
@@ -218,37 +188,10 @@
   min-height: 32px;
 }
 
-.chip,
-.example-list button {
-  background: #f7fafb;
-  color: #1d2733;
-  padding: 6px 10px;
-}
-
-.chip.operator {
-  background: #eef6f8;
-  border-color: #9fd4df;
-  color: #006f86;
-  font-weight: 700;
-  justify-content: center;
-  min-width: 34px;
-}
-
-.example-list button {
-  background: #fff;
-  color: #4d5a68;
-}
-
-.formula-issues span,
-.warning-message,
-.formula-feedback {
+.warning-message {
   color: #9b4d00;
   font-size: 12px;
   margin: 0;
-}
-
-.formula-feedback {
-  color: #1f6a2d;
 }
 
 .option-editor {
