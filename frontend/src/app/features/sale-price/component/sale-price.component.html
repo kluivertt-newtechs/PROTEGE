@@ -1,17 +1,7 @@
-<po-page-default p-title="Simulação de Preço de Venda">
+<po-page-default p-title="Simulação de Preço de Venda" [p-actions]="pageActions">
   <section class="simulation-shell">
     <header class="simulation-header">
-      <div class="product-picker">
-        <po-select
-          name="product"
-          p-label="Produto ou serviço"
-          [p-options]="productOptions"
-          [ngModel]="selectedProductId"
-          (ngModelChange)="onProductChange($event)"
-        ></po-select>
-      </div>
-
-      <div class="product-summary" *ngIf="selectedProductId">
+      <div class="product-summary" *ngIf="selectedProductId; else noSelectedProduct">
         <span class="summary-kicker">Produto selecionado</span>
         <strong>{{ selectedProductLabel }}</strong>
         <div class="summary-counters">
@@ -20,6 +10,16 @@
           <span>{{ priceComponentCount }} parâmetros de preço</span>
         </div>
       </div>
+
+      <ng-template #noSelectedProduct>
+        <div class="product-summary">
+          <span class="summary-kicker">Produto selecionado</span>
+          <strong>Nenhum produto selecionado</strong>
+          <div class="summary-counters">
+            <span>Use Selecionar Produto para iniciar</span>
+          </div>
+        </div>
+      </ng-template>
     </header>
 
     <div class="decision-grid">
@@ -177,4 +177,21 @@
       </details>
     </section>
   </section>
+
+  <div class="product-lookup-host">
+    <po-lookup
+      #productLookup
+      name="productLookup"
+      p-label="Produto ou serviço"
+      p-placeholder="Selecionar produto ou serviço"
+      p-field-value="id"
+      p-field-label="label"
+      p-title="Selecionar Produto"
+      [p-columns]="productLookupColumns"
+      [p-filter-service]="productLookupService"
+      [ngModel]="selectedProductId"
+      (p-selected)="onProductLookupSelected($event)"
+      (p-change)="onProductLookupChange($event)"
+    ></po-lookup>
+  </div>
 </po-page-default>

@@ -1,12 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { PoSelectOption } from '@po-ui/ng-components';
+import { Component, ViewChild } from '@angular/core';
+import {
+  PoLookupColumn,
+  PoLookupComponent,
+  PoLookupFilter,
+  PoLookupFilteredItemsParams,
+  PoLookupResponseApi,
+  PoPageAction,
+  PoSelectOption,
+} from '@po-ui/ng-components';
+import { Observable, of } from 'rxjs';
 import { FormulaExecutionStep } from 'src/app/core/mock';
 import {
   PriceComponent,
   ProductCatalogService,
   ProductComponent,
   ProductComponentOption,
+  ProductNode,
 } from 'src/app/core/product-catalog.service';
 import { PricingFormulaService, executePricingFormulas } from 'src/app/core/pricing-formula.service';
 import { SHARED_MODULES } from 'src/app/shared/shared';
@@ -23,6 +33,85 @@ interface ResultMetric {
   muted?: boolean;
 }
 
+interface ProductLookupItem {
+  id: string;
+  code: string;
+  name: string;
+  label: string;
+  type: string;
+}
+
+class ProductLookupService implements PoLookupFilter {
+  constructor(private readonly getProducts: () => Array<ProductNode>) {}
+
+  getFilteredItems(params: PoLookupFilteredItemsParams): Observable<PoLookupResponseApi> {
+    const filter = normalizeText(params.filter ?? '').toLowerCase();
+    const page = params.page || 1;
+    const pageSize = params.pageSize || 10;
+    const filtered = this.items().filter((item) =>
+      !filter
+        || item.id.toLowerCase().includes(filter)
+        || item.code.toLowerCase().includes(filter)
+        || item.name.toLowerCase().includes(filter)
+        || item.label.toLowerCase().includes(filter),
+    );
+    const start = (page - 1) * pageSize;
+    const pageItems = filtered.slice(start, start + pageSize);
+
+    return of({ items: pageItems, hasNext: start + pageSize < filtered.length });
+  }
+
+  getObjectByValue(value: string | Array<any>): Observable<ProductLookupItem | Array<ProductLookupItem> | undefined> {
+    const items = this.items();
+
+    if (Array.isArray(value)) {
+      return of(items.filter((item) => value.includes(item.id)));
+    }
+
+    return of(items.find((item) => item.id === value));
+  }
+
+  private items(): Array<ProductLookupItem> {
+    return this.getProducts().map((product) => {
+      const code = normalizeText(product.code);
+      const name = normalizeText(product.name);
+
+      return {
+        id: product.id,
+        code,
+        name,
+        label: `${code} - ${name}`,
+        type: product.type === 'service' ? 'Serviço' : 'Produto',
+      };
+    });
+  }
+}
+
+function normalizeText(value: string): string {
+  const text = String(value ?? '');
+
+  if (!/[\u00c3\u00c2\u0080-\u009f\ufffd]/.test(text)) {
+    return text;
+  }
+
+  try {
+    const bytes = new Uint8Array([...text].map((char) => char.charCodeAt(0) & 255));
+    return new TextDecoder('utf-8').decode(bytes).replace(/\uFFFD/g, '');
+  } catch {
+    return text
+      .replace(/\u00c3\u00a7/g, 'ç')
+      .replace(/\u00c3\u00a3/g, 'ã')
+      .replace(/\u00c3\u00a1/g, 'á')
+      .replace(/\u00c3\u00a9/g, 'é')
+      .replace(/\u00c3\u00ad/g, 'í')
+      .replace(/\u00c3\u00b3/g, 'ó')
+      .replace(/\u00c3\u00ba/g, 'ú')
+      .replace(/\u00c3\u00aa/g, 'ê')
+      .replace(/\u00c3\u0087/g, 'Ç')
+      .replace(/\u00c3\u0081/g, 'Á');
+  }
+}
+
 @Component({
   selector: 'app-sale-price',
   templateUrl: './sale-price.component.html',
@@ -31,7 +120,9 @@ interface ResultMetric {
   imports: [...SHARED_MODULES, CommonModule],
 })
 export class SalePriceComponent {
-  productOptions: Array<PoSelectOption> = [];
+  @ViewChild('productLookup') productLookup!: PoLookupComponent;
+
+  products: Array<ProductNode> = [];
   selectedProductId = '';
   components: Array<ProductComponent> = [];
   priceComponents: Array<PriceComponent> = [];
@@ -40,15 +131,22 @@ export class SalePriceComponent {
   memory: Array<FormulaExecutionStep> = [];
   warning = '';
 
+  readonly pageActions: Array<PoPageAction> = [
+    { label: 'Selecionar Produto', icon: 'an an-magnifying-glass', action: () => this.openProductSelector() },
+  ];
+  readonly productLookupColumns: Array<PoLookupColumn> = [
+    { property: 'code', label: 'Código', width: '24%' },
+    { property: 'name', label: 'Produto ou serviço' },
+    { property: 'type', label: 'Tipo', width: '18%' },
+  ];
+  readonly productLookupService = new ProductLookupService(() => this.catalog.getProducts());
+
   constructor(
     private readonly catalog: ProductCatalogService,
     private readonly formulaService: PricingFormulaService,
   ) {
-    this.productOptions = this.catalog.getProducts().map((product) => ({
-      label: this.displayText(`${product.code} - ${product.name}`),
-      value: product.id,
-    }));
-    this.selectedProductId = this.catalog.getSelectedProductId() || String(this.productOptions[0]?.value ?? '');
+    this.products = this.catalog.getProducts();
+    this.selectedProductId = this.catalog.getSelectedProductId() || this.products[0]?.id || '';
     this.loadComposition();
   }
 
@@ -60,8 +158,13 @@ export class SalePriceComponent {
     return this.resultValues['monthlyPrice'] ?? this.finalPrice * (this.getContextValue('quantity') || 1);
   }
 
+  get selectedProduct(): ProductNode | undefined {
+    return this.products.find((product) => product.id === this.selectedProductId);
+  }
+
   get selectedProductLabel(): string {
-    return String(this.productOptions.find((option) => option.value === this.selectedProductId)?.label ?? '');
+    const product = this.selectedProduct;
+    return product ? this.displayText(`${product.code} - ${product.name}`) : '';
   }
 
   get groupedComponents(): Array<ComponentGroup> {
@@ -116,9 +219,35 @@ export class SalePriceComponent {
     return this.memory.some((step) => step.status !== 'ok');
   }
 
-  onProductChange(productId: string): void {
+  openProductSelector(): void {
+    this.products = this.catalog.getProducts();
+    this.productLookup.openLookup();
+  }
+
+  onProductLookupSelected(product: ProductLookupItem | undefined): void {
+    if (!product?.id) {
+      return;
+    }
+
+    this.selectProduct(product.id);
+  }
+
+  onProductLookupChange(productId: string | undefined): void {
+    if (!productId) {
+      return;
+    }
+
+    this.selectProduct(productId);
+  }
+
+  selectProduct(productId: string): void {
+    if (this.selectedProductId === productId) {
+      return;
+    }
+
     this.selectedProductId = productId;
     this.catalog.setSelectedProductId(productId);
+    this.products = this.catalog.getProducts();
     this.loadComposition();
   }
 
@@ -177,28 +306,7 @@ export class SalePriceComponent {
   }
 
   displayText(value: string): string {
-    const text = String(value ?? '');
-
-    if (!/[\u00c3\u00c2\u0080-\u009f\ufffd]/.test(text)) {
-      return text;
-    }
-
-    try {
-      const bytes = new Uint8Array([...text].map((char) => char.charCodeAt(0) & 255));
-      return new TextDecoder('utf-8').decode(bytes).replace(/\uFFFD/g, '');
-    } catch {
-      return text
-        .replace(/\u00c3\u00a7/g, 'ç')
-        .replace(/\u00c3\u00a3/g, 'ã')
-        .replace(/\u00c3\u00a1/g, 'á')
-        .replace(/\u00c3\u00a9/g, 'é')
-        .replace(/\u00c3\u00ad/g, 'í')
-        .replace(/\u00c3\u00b3/g, 'ó')
-        .replace(/\u00c3\u00ba/g, 'ú')
-        .replace(/\u00c3\u00aa/g, 'ê')
-        .replace(/\u00c3\u0087/g, 'Ç')
-        .replace(/\u00c3\u0081/g, 'Á');
-    }
+    return normalizeText(value);
   }
 
   componentMeta(component: ProductComponent): string {

@@ -288,3 +288,121 @@ Page reload sent to client(s).
 Application bundle generation complete. [0.730 seconds] - 2026-08-17T19:00:24.908Z
 
 Page reload sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m                     [2m | [22m[1mNames[22m                       [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                                 [2m | [22m[2mmain[22m                        [2m | [22m [36m55.02 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                        [2m | [22m[1mNames[22m                       [2m | [22m [1mRaw size[22m
+[32mformula-builder.component-LTUAOEPB.js[39m   [2m | [22m[2mformula-builder-component[22m   [2m | [22m[36m101.22 kB[39m[2m | [22m
+[32msale-price.component-O66AOLUQ.js[39m        [2m | [22m[2msale-price-component[22m        [2m | [22m [36m65.08 kB[39m[2m | [22m
+[32mproduct-tree.component-6IYWQAXE.js[39m      [2m | [22m[2mproduct-tree-component[22m      [2m | [22m [36m60.92 kB[39m[2m | [22m
+[32mproduct-components.component-D6FGZU73.js[39m[2m | [22m[2mproduct-components-component[22m[2m | [22m [36m57.22 kB[39m[2m | [22m
+[32mprice-components.component-3R7YV4J3.js[39m  [2m | [22m[2mprice-components-component[22m  [2m | [22m [36m57.03 kB[39m[2m | [22m
+[32mchunk-RECQHH2T.js[39m                       [2m | [22m[2m-[22m                           [2m | [22m [36m29.35 kB[39m[2m | [22m
+[32mchunk-OHK7RARA.js[39m                       [2m | [22m[2m-[22m                           [2m | [22m [36m19.60 kB[39m[2m | [22m
+[32mproduct-components.routes-E4XSW4IH.js[39m   [2m | [22m[2mproduct-components-routes[22m   [2m | [22m[36m377 bytes[39m[2m | [22m
+[32mprice-components.routes-R7QCMW5Z.js[39m     [2m | [22m[2mprice-components-routes[22m     [2m | [22m[36m363 bytes[39m[2m | [22m
+[32mformula-builder.routes-WM7AKRZH.js[39m      [2m | [22m[2mformula-builder-routes[22m      [2m | [22m[36m356 bytes[39m[2m | [22m
+[32mproduct-tree.routes-KCPWJXF5.js[39m         [2m | [22m[2mproduct-tree-routes[22m         [2m | [22m[36m335 bytes[39m[2m | [22m
+[32msale-price.routes-PFPO2ZGP.js[39m           [2m | [22m[2msale-price-routes[22m           [2m | [22m[36m321 bytes[39m[2m | [22m
+
+Application bundle generation complete. [1.162 seconds] - 2026-08-17T19:01:18.756Z
+
+Page reload sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m             [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                         [2m | [22m[2mmain[22m                [2m | [22m [36m55.02 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32msale-price.component-WWINMAKJ.js[39m[2m | [22m[2msale-price-component[22m[2m | [22m [36m65.59 kB[39m[2m | [22m
+[32msale-price.routes-NAAS3BRK.js[39m   [2m | [22m[2msale-price-routes[22m   [2m | [22m[36m321 bytes[39m[2m | [22m
+
+Application bundle generation complete. [1.848 seconds] - 2026-08-17T19:03:51.771Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m             [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                         [2m | [22m[2mmain[22m                [2m | [22m [36m55.02 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32msale-price.component-PHYXIDZK.js[39m[2m | [22m[2msale-price-component[22m[2m | [22m [36m65.57 kB[39m[2m | [22m
+[32msale-price.routes-Y26JZKQH.js[39m   [2m | [22m[2msale-price-routes[22m   [2m | [22m[36m321 bytes[39m[2m | [22m
+
+Application bundle generation complete. [1.622 seconds] - 2026-08-17T19:04:12.909Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m             [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                         [2m | [22m[2mmain[22m                [2m | [22m [36m55.02 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32msale-price.component-BEGQ3AIW.js[39m[2m | [22m[2msale-price-component[22m[2m | [22m [36m65.55 kB[39m[2m | [22m
+[32msale-price.routes-CB65LHTG.js[39m   [2m | [22m[2msale-price-routes[22m   [2m | [22m[36m321 bytes[39m[2m | [22m
+
+Application bundle generation complete. [1.927 seconds] - 2026-08-17T19:04:20.640Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m             [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                         [2m | [22m[2mmain[22m                [2m | [22m [36m55.02 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32msale-price.component-7LJ5CNFK.js[39m[2m | [22m[2msale-price-component[22m[2m | [22m [36m65.56 kB[39m[2m | [22m
+[32msale-price.routes-KDHQF7HS.js[39m   [2m | [22m[2msale-price-routes[22m   [2m | [22m[36m321 bytes[39m[2m | [22m
+
+Application bundle generation complete. [1.423 seconds] - 2026-08-17T19:04:31.725Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m             [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                         [2m | [22m[2mmain[22m                [2m | [22m [36m55.02 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32msale-price.component-BEGQ3AIW.js[39m[2m | [22m[2msale-price-component[22m[2m | [22m [36m65.55 kB[39m[2m | [22m
+[32msale-price.routes-CB65LHTG.js[39m   [2m | [22m[2msale-price-routes[22m   [2m | [22m[36m321 bytes[39m[2m | [22m
+
+Application bundle generation complete. [1.196 seconds] - 2026-08-17T19:04:36.922Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m             [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                         [2m | [22m[2mmain[22m                [2m | [22m [36m55.02 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32msale-price.component-VAEBSH34.js[39m[2m | [22m[2msale-price-component[22m[2m | [22m [36m65.54 kB[39m[2m | [22m
+[32msale-price.routes-CKYACZKN.js[39m   [2m | [22m[2msale-price-routes[22m   [2m | [22m[36m321 bytes[39m[2m | [22m
+
+Application bundle generation complete. [1.336 seconds] - 2026-08-17T19:04:53.741Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m             [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                         [2m | [22m[2mmain[22m                [2m | [22m [36m55.02 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32msale-price.component-AI523TCY.js[39m[2m | [22m[2msale-price-component[22m[2m | [22m [36m65.54 kB[39m[2m | [22m
+[32msale-price.routes-GROUV2SJ.js[39m   [2m | [22m[2msale-price-routes[22m   [2m | [22m[36m321 bytes[39m[2m | [22m
+
+Application bundle generation complete. [1.493 seconds] - 2026-08-17T19:04:58.783Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m             [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                         [2m | [22m[2mmain[22m                [2m | [22m [36m55.02 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32msale-price.component-O66AOLUQ.js[39m[2m | [22m[2msale-price-component[22m[2m | [22m [36m65.08 kB[39m[2m | [22m
+[32msale-price.routes-PFPO2ZGP.js[39m   [2m | [22m[2msale-price-routes[22m   [2m | [22m[36m321 bytes[39m[2m | [22m
+
+Application bundle generation complete. [2.004 seconds] - 2026-08-17T19:05:09.639Z
+
+Component update sent to client(s).
