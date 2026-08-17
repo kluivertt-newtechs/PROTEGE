@@ -530,7 +530,7 @@ export class ProductCatalogService {
       }
 
       const options = component.options.map((option) => {
-        const shouldSelect = option.code === optionCode ? selected : component.multiple ? option.selected : false;
+        const shouldSelect = option.code === optionCode ? (component.multiple ? selected : true) : component.multiple ? option.selected : false;
         return this.normalizeOption({ ...option, selected: shouldSelect });
       });
 
@@ -677,14 +677,15 @@ export class ProductCatalogService {
     const code = String(option.code ?? option.value ?? `OPT${(index + 1) * 10}`).trim();
     const description = String(option.description ?? option.label ?? code).trim();
     const calculatedValue = this.safeNumber(option.calculatedValue ?? option.numericValue);
+    const hasSelectedState = Object.prototype.hasOwnProperty.call(option, 'selected');
     return {
       sequence: this.safeNumber(option.sequence) || (index + 1) * 10,
       code,
       description,
       calculatedValue,
       costValue: this.safeNumber(option.costValue ?? calculatedValue),
-      default: option.default === true || option.selected === true && option.default !== false,
-      selected: option.selected === true || option.default === true,
+      default: option.default === true,
+      selected: option.selected === true || (!hasSelectedState && option.default === true),
       label: description,
       value: code,
       numericValue: calculatedValue,

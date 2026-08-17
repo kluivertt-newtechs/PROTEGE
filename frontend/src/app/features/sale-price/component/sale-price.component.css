@@ -393,8 +393,6 @@
   border-top: 1px solid #e1e6eb;
   display: grid;
   gap: 8px;
-  max-height: 520px;
-  overflow: auto;
   padding: 12px;
 }
 
