@@ -5,12 +5,17 @@
     [p-profile]="toolbarProfile"
   ></po-toolbar>
 
-  <po-menu
-    [p-collapsed]="true"
-    [p-menus]="menu"
-    [p-filter]="false"
-    p-logo="assets/logo.png"
-  ></po-menu>
+  <po-menu [p-collapsed]="true" [p-menus]="menu" [p-filter]="true">
+    <div
+      *p-menu-header-template
+      class="po-p-2 po-font-title sample-menu-header-text-color"
+    >
+      <p>Welcome,</p>
+      <p>
+        <b> Protege </b>
+      </p>
+    </div>
+  </po-menu>
 
   <router-outlet></router-outlet>
 </div>
