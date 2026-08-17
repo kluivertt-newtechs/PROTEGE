@@ -49,7 +49,6 @@ export class SalePriceComponent {
       value: product.id,
     }));
     this.selectedProductId = this.catalog.getSelectedProductId() || String(this.productOptions[0]?.value ?? '');
-    this.priceComponents = this.catalog.listPriceComponents(false);
     this.loadComposition();
   }
 
@@ -164,7 +163,7 @@ export class SalePriceComponent {
   selectCatalogOption(component: ProductComponent, option: ProductComponentOption, kind: 'product' | 'price'): void {
     this.catalog.updateOptionSelection(kind, component.id, option.code, !option.selected);
     this.components = this.catalog.getCompositionComponents(this.selectedProductId);
-    this.priceComponents = this.catalog.listPriceComponents(false);
+    this.loadPriceComponents();
     this.applySelectedDefaults();
     this.recalculate();
   }
@@ -242,6 +241,7 @@ export class SalePriceComponent {
 
   private loadComposition(): void {
     this.components = this.catalog.getCompositionComponents(this.selectedProductId);
+    this.loadPriceComponents();
     this.values = {};
 
     for (const component of this.components) {
@@ -257,6 +257,13 @@ export class SalePriceComponent {
 
     this.applySelectedDefaults();
     this.recalculate();
+  }
+
+  private loadPriceComponents(): void {
+    const linkedPriceComponents = this.catalog.getCompositionPriceComponents(this.selectedProductId);
+    this.priceComponents = linkedPriceComponents.length
+      ? linkedPriceComponents
+      : this.catalog.listPriceComponents(false);
   }
 
   private applySelectedDefaults(): void {

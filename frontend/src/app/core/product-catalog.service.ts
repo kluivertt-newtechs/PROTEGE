@@ -48,6 +48,7 @@ export interface ProductNode {
 export interface ProductComposition {
   productId: string;
   productComponentIds: Array<string>;
+  priceComponentIds: Array<string>;
 }
 
 export interface ProductCatalogState {
@@ -315,10 +316,10 @@ const SEED_TREE: Array<ProductNode> = [
 ];
 
 const SEED_COMPOSITIONS: Array<ProductComposition> = [
-  { productId: 'P12', productComponentIds: ['s01', 's02', 's03', 's06', 's08', 's10', 's12', 's13', 's20', 's21', 's22', 's24', 's29', 's30'] },
-  { productId: 'P07', productComponentIds: ['s02', 's03', 's25', 's26', 's27', 's28'] },
-  { productId: 'P10', productComponentIds: ['s02', 's03', 's22', 's23', 's24'] },
-  { productId: 'P04', productComponentIds: ['s02', 's03', 's06', 's08', 's10', 's12', 's13'] },
+  { productId: 'P12', productComponentIds: ['s01', 's02', 's03', 's06', 's08', 's10', 's12', 's13', 's20', 's21', 's22', 's24', 's29', 's30'], priceComponentIds: [] },
+  { productId: 'P07', productComponentIds: ['s02', 's03', 's25', 's26', 's27', 's28'], priceComponentIds: [] },
+  { productId: 'P10', productComponentIds: ['s02', 's03', 's22', 's23', 's24'], priceComponentIds: [] },
+  { productId: 'P04', productComponentIds: ['s02', 's03', 's06', 's08', 's10', 's12', 's13'], priceComponentIds: [] },
 ];
 
 @Injectable({ providedIn: 'root' })
@@ -394,7 +395,11 @@ export class ProductCatalogService {
 
   getComposition(productId: string): ProductComposition {
     const composition = this.state.compositions.find((item) => item.productId === productId);
-    return { productId, productComponentIds: [...(composition?.productComponentIds ?? [])] };
+    return {
+      productId,
+      productComponentIds: [...(composition?.productComponentIds ?? [])],
+      priceComponentIds: [...(composition?.priceComponentIds ?? [])],
+    };
   }
 
   getCompositionComponents(productId: string): Array<ProductComponent> {
@@ -405,9 +410,22 @@ export class ProductCatalogService {
       .map((component) => this.cloneComponent(component));
   }
 
-  saveComposition(productId: string, componentIds: Array<string>): ProductComposition {
-    const uniqueIds = componentIds.filter((componentId, index) => componentIds.indexOf(componentId) === index);
-    const normalized = { productId, productComponentIds: uniqueIds };
+  getCompositionPriceComponents(productId: string): Array<PriceComponent> {
+    const componentById = new Map(this.state.priceComponents.map((component) => [component.id, component]));
+    return this.getComposition(productId).priceComponentIds
+      .map((componentId) => componentById.get(componentId))
+      .filter((component): component is PriceComponent => Boolean(component))
+      .map((component) => this.cloneComponent(component));
+  }
+
+  saveComposition(
+    productId: string,
+    productComponentIds: Array<string>,
+    priceComponentIds: Array<string> = this.getComposition(productId).priceComponentIds,
+  ): ProductComposition {
+    const uniqueProductIds = this.uniqueIds(productComponentIds);
+    const uniquePriceIds = this.uniqueIds(priceComponentIds);
+    const normalized = { productId, productComponentIds: uniqueProductIds, priceComponentIds: uniquePriceIds };
     const exists = this.state.compositions.some((item) => item.productId === productId);
     const compositions = exists
       ? this.state.compositions.map((item) => item.productId === productId ? normalized : item)
@@ -415,11 +433,15 @@ export class ProductCatalogService {
 
     this.state = { ...this.state, compositions };
     this.persist();
-    return { productId, productComponentIds: [...uniqueIds] };
+    return {
+      productId,
+      productComponentIds: [...uniqueProductIds],
+      priceComponentIds: [...uniquePriceIds],
+    };
   }
 
   clearComposition(productId: string): ProductComposition {
-    return this.saveComposition(productId, []);
+    return this.saveComposition(productId, [], []);
   }
 
   getFormulaVariables(): Array<{ id: string; label: string }> {
@@ -571,9 +593,18 @@ export class ProductCatalogService {
         productComponentIds: Array.isArray(composition.productComponentIds)
           ? composition.productComponentIds.map((id) => String(id))
           : [],
+        priceComponentIds: Array.isArray(composition.priceComponentIds)
+          ? composition.priceComponentIds.map((id) => String(id))
+          : [],
       })),
       selectedProductId,
     };
+  }
+
+  private uniqueIds(ids: Array<string>): Array<string> {
+    return ids
+      .map((id) => String(id))
+      .filter((componentId, index, source) => componentId && source.indexOf(componentId) === index);
   }
 
   private normalizeComponent(component: ProductComponent): ProductComponent {

@@ -2,11 +2,15 @@ import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { PoModalComponent, PoPageAction, PoSelectOption } from '@po-ui/ng-components';
 import {
+  ComponentKind,
+  PriceComponent,
   ProductCatalogService,
   ProductComponent,
   ProductNode,
 } from 'src/app/core/product-catalog.service';
 import { SHARED_MODULES } from 'src/app/shared/shared';
+
+type CompositionSource = 'library' | 'composition';
 
 @Component({
   selector: 'app-product-tree',
@@ -22,9 +26,12 @@ export class ProductTreeComponent {
   tree: Array<ProductNode> = [];
   products: Array<ProductNode> = [];
   components: Array<ProductComponent> = [];
+  priceComponents: Array<PriceComponent> = [];
   selectedProductId = '';
   compositionIds: Array<string> = [];
+  priceCompositionIds: Array<string> = [];
   savedCompositionIds: Array<string> = [];
+  savedPriceCompositionIds: Array<string> = [];
   statusMessage = '';
 
   groupModel = { code: '', name: '', icon: 'ti-folder' };
@@ -52,10 +59,11 @@ export class ProductTreeComponent {
   }
 
   get selectedComponents(): Array<ProductComponent> {
-    const byId = new Map(this.components.map((component) => [component.id, component]));
-    return this.compositionIds
-      .map((componentId) => byId.get(componentId))
-      .filter((component): component is ProductComponent => Boolean(component));
+    return this.resolveComponents(this.components, this.compositionIds);
+  }
+
+  get selectedPriceComponents(): Array<PriceComponent> {
+    return this.resolveComponents(this.priceComponents, this.priceCompositionIds);
   }
 
   get availableComponents(): Array<ProductComponent> {
@@ -63,12 +71,15 @@ export class ProductTreeComponent {
     return this.components.filter((component) => !used.has(component.id));
   }
 
+  get availablePriceComponents(): Array<PriceComponent> {
+    const used = new Set(this.priceCompositionIds);
+    return this.priceComponents.filter((component) => !used.has(component.id));
+  }
+
   selectProduct(productId: string): void {
     this.selectedProductId = productId;
     this.catalog.setSelectedProductId(productId);
-    const ids = this.catalog.getComposition(productId).productComponentIds;
-    this.compositionIds = [...ids];
-    this.savedCompositionIds = [...ids];
+    this.loadProductComposition(productId);
     this.statusMessage = '';
   }
 
@@ -132,23 +143,26 @@ export class ProductTreeComponent {
     this.productModal.open();
   }
 
-  addComponent(componentId: string): void {
-    if (!this.compositionIds.includes(componentId)) {
-      this.compositionIds = [...this.compositionIds, componentId];
+  addComponent(componentId: string, kind: ComponentKind = 'product'): void {
+    const ids = this.idsFor(kind);
+    if (!ids.includes(componentId)) {
+      this.setIdsFor(kind, [...ids, componentId]);
     }
   }
 
-  removeComponent(componentId: string): void {
-    this.compositionIds = this.compositionIds.filter((id) => id !== componentId);
+  removeComponent(componentId: string, kind: ComponentKind = 'product'): void {
+    this.setIdsFor(kind, this.idsFor(kind).filter((id) => id !== componentId));
   }
 
   clearComposition(): void {
     this.compositionIds = [];
+    this.priceCompositionIds = [];
     this.statusMessage = 'Composição limpa. Salve para persistir.';
   }
 
   revertComposition(): void {
     this.compositionIds = [...this.savedCompositionIds];
+    this.priceCompositionIds = [...this.savedPriceCompositionIds];
     this.statusMessage = 'Composição revertida para o último salvamento.';
   }
 
@@ -158,13 +172,19 @@ export class ProductTreeComponent {
       return;
     }
 
-    const saved = this.catalog.saveComposition(this.selectedProductId, this.compositionIds);
+    const saved = this.catalog.saveComposition(this.selectedProductId, this.compositionIds, this.priceCompositionIds);
     this.savedCompositionIds = [...saved.productComponentIds];
+    this.savedPriceCompositionIds = [...saved.priceComponentIds];
     this.statusMessage = 'Composição salva localmente.';
   }
 
-  beginComponentDrag(event: DragEvent, componentId: string, source: 'library' | 'composition'): void {
-    event.dataTransfer?.setData('application/x-protege-component', JSON.stringify({ componentId, source }));
+  beginComponentDrag(
+    event: DragEvent,
+    componentId: string,
+    source: CompositionSource,
+    kind: ComponentKind = 'product',
+  ): void {
+    event.dataTransfer?.setData('application/x-protege-component', JSON.stringify({ componentId, source, kind }));
     event.dataTransfer?.setData('text/plain', componentId);
   }
 
@@ -172,32 +192,33 @@ export class ProductTreeComponent {
     event.preventDefault();
   }
 
-  dropOnComposition(event: DragEvent, targetIndex = this.compositionIds.length): void {
+  dropOnComposition(event: DragEvent, targetIndex = this.compositionIds.length, kind: ComponentKind = 'product'): void {
     event.preventDefault();
     const data = this.readDrag(event);
 
-    if (!data) {
+    if (!data || data.kind !== kind) {
       return;
     }
 
     if (data.source === 'composition') {
-      this.moveComponent(data.componentId, targetIndex);
+      this.moveComponent(data.componentId, targetIndex, kind);
       return;
     }
 
-    if (!this.compositionIds.includes(data.componentId)) {
-      const ids = [...this.compositionIds];
+    const currentIds = this.idsFor(kind);
+    if (!currentIds.includes(data.componentId)) {
+      const ids = [...currentIds];
       ids.splice(targetIndex, 0, data.componentId);
-      this.compositionIds = ids;
+      this.setIdsFor(kind, ids);
     }
   }
 
-  dropOnLibrary(event: DragEvent): void {
+  dropOnLibrary(event: DragEvent, kind: ComponentKind = 'product'): void {
     event.preventDefault();
     const data = this.readDrag(event);
 
-    if (data?.source === 'composition') {
-      this.removeComponent(data.componentId);
+    if (data?.source === 'composition' && data.kind === kind) {
+      this.removeComponent(data.componentId, kind);
     }
   }
 
@@ -205,34 +226,67 @@ export class ProductTreeComponent {
     this.tree = this.catalog.getTree();
     this.products = this.catalog.getProducts();
     this.components = this.catalog.listComponents(false);
+    this.priceComponents = this.catalog.listPriceComponents(false);
     this.groupOptions = this.tree.map((group) => ({ label: `${group.code} - ${group.name}`, value: group.id }));
     this.productModel.groupId = this.productModel.groupId || this.tree[0]?.id || '';
     this.selectedProductId = this.catalog.getSelectedProductId() || this.products[0]?.id || '';
-    const ids = this.catalog.getComposition(this.selectedProductId).productComponentIds;
-    this.compositionIds = [...ids];
-    this.savedCompositionIds = [...ids];
+    this.loadProductComposition(this.selectedProductId);
   }
 
-  private moveComponent(componentId: string, targetIndex: number): void {
-    const sourceIndex = this.compositionIds.indexOf(componentId);
+  private loadProductComposition(productId: string): void {
+    const composition = this.catalog.getComposition(productId);
+    this.compositionIds = [...composition.productComponentIds];
+    this.priceCompositionIds = [...composition.priceComponentIds];
+    this.savedCompositionIds = [...composition.productComponentIds];
+    this.savedPriceCompositionIds = [...composition.priceComponentIds];
+  }
+
+  private moveComponent(componentId: string, targetIndex: number, kind: ComponentKind): void {
+    const currentIds = this.idsFor(kind);
+    const sourceIndex = currentIds.indexOf(componentId);
     if (sourceIndex < 0) {
       return;
     }
 
-    const ids = [...this.compositionIds];
+    const ids = [...currentIds];
     const [item] = ids.splice(sourceIndex, 1);
     ids.splice(sourceIndex < targetIndex ? targetIndex - 1 : targetIndex, 0, item);
+    this.setIdsFor(kind, ids);
+  }
+
+  private idsFor(kind: ComponentKind): Array<string> {
+    return kind === 'price' ? this.priceCompositionIds : this.compositionIds;
+  }
+
+  private setIdsFor(kind: ComponentKind, ids: Array<string>): void {
+    if (kind === 'price') {
+      this.priceCompositionIds = ids;
+      return;
+    }
+
     this.compositionIds = ids;
   }
 
-  private readDrag(event: DragEvent): { componentId: string; source: 'library' | 'composition' } | undefined {
+  private resolveComponents<T extends ProductComponent>(source: Array<T>, ids: Array<string>): Array<T> {
+    const byId = new Map(source.map((component) => [component.id, component]));
+    return ids
+      .map((componentId) => byId.get(componentId))
+      .filter((component): component is T => Boolean(component));
+  }
+
+  private readDrag(event: DragEvent): { componentId: string; source: CompositionSource; kind: ComponentKind } | undefined {
     const payload = event.dataTransfer?.getData('application/x-protege-component');
     if (!payload) {
       return undefined;
     }
 
     try {
-      return JSON.parse(payload);
+      const data = JSON.parse(payload);
+      return {
+        componentId: String(data.componentId ?? ''),
+        source: data.source === 'composition' ? 'composition' : 'library',
+        kind: data.kind === 'price' ? 'price' : 'product',
+      };
     } catch {
       return undefined;
     }

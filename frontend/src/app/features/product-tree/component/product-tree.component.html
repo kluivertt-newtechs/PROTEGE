@@ -19,58 +19,131 @@
     </po-container>
 
     <po-container [p-title]="'Composição - ' + (selectedProduct?.name || '')">
-      <div
-        class="composition-zone"
-        [class.empty]="!selectedComponents.length"
-        (dragover)="allowDrop($event)"
-        (drop)="dropOnComposition($event)"
-      >
-        <ng-container *ngIf="selectedComponents.length; else noComposition">
+      <div class="composition-stack">
+        <section class="composition-panel">
+          <header class="panel-heading">
+            <strong>Componentes de Produto</strong>
+            <span>{{ selectedComponents.length }} componentes</span>
+          </header>
+
           <div
-            class="component-row"
-            *ngFor="let component of selectedComponents; let index = index"
-            draggable="true"
-            (dragstart)="beginComponentDrag($event, component.id, 'composition')"
+            class="composition-zone"
+            [class.empty]="!selectedComponents.length"
             (dragover)="allowDrop($event)"
-            (drop)="dropOnComposition($event, index)"
+            (drop)="dropOnComposition($event)"
           >
-            <span class="order">{{ index + 1 }}</span>
-            <span>
-              <strong>{{ component.description }}</strong>
-              <small>{{ component.code }} · {{ component.varAPV }}</small>
-            </span>
-            <button type="button" (click)="removeComponent(component.id)" aria-label="Remover">x</button>
+            <ng-container *ngIf="selectedComponents.length; else noProductComposition">
+              <div
+                class="component-row"
+                *ngFor="let component of selectedComponents; let index = index"
+                draggable="true"
+                (dragstart)="beginComponentDrag($event, component.id, 'composition')"
+                (dragover)="allowDrop($event)"
+                (drop)="dropOnComposition($event, index)"
+              >
+                <span class="order">{{ index + 1 }}</span>
+                <span>
+                  <strong>{{ component.description }}</strong>
+                  <small>{{ component.code }} · {{ component.varAPV }}</small>
+                </span>
+                <button type="button" (click)="removeComponent(component.id)" aria-label="Remover">x</button>
+              </div>
+            </ng-container>
+            <ng-template #noProductComposition>
+              <p>Arraste componentes de produto para montar a composição.</p>
+            </ng-template>
           </div>
-        </ng-container>
-        <ng-template #noComposition>
-          <p>Arraste componentes para montar a composição.</p>
-        </ng-template>
+        </section>
+
+        <section class="composition-panel">
+          <header class="panel-heading">
+            <strong>Componentes de Preço</strong>
+            <span>{{ selectedPriceComponents.length }} componentes</span>
+          </header>
+
+          <div
+            class="composition-zone price-zone"
+            [class.empty]="!selectedPriceComponents.length"
+            (dragover)="allowDrop($event)"
+            (drop)="dropOnComposition($event, priceCompositionIds.length, 'price')"
+          >
+            <ng-container *ngIf="selectedPriceComponents.length; else noPriceComposition">
+              <div
+                class="component-row"
+                *ngFor="let component of selectedPriceComponents; let index = index"
+                draggable="true"
+                (dragstart)="beginComponentDrag($event, component.id, 'composition', 'price')"
+                (dragover)="allowDrop($event)"
+                (drop)="dropOnComposition($event, index, 'price')"
+              >
+                <span class="order">{{ index + 1 }}</span>
+                <span>
+                  <strong>{{ component.description }}</strong>
+                  <small>{{ component.code }} · {{ component.varAPV }}</small>
+                </span>
+                <button type="button" (click)="removeComponent(component.id, 'price')" aria-label="Remover">x</button>
+              </div>
+            </ng-container>
+            <ng-template #noPriceComposition>
+              <p>Arraste componentes de preço para vincular parâmetros da simulação.</p>
+            </ng-template>
+          </div>
+        </section>
       </div>
 
       <div class="actions-row">
         <po-button p-kind="primary" p-icon="an an-floppy-disk" p-label="Salvar" (p-click)="saveComposition()"></po-button>
         <po-button p-icon="an an-arrow-counter-clockwise" p-label="Reverter" (p-click)="revertComposition()"></po-button>
         <po-button p-icon="an an-trash" p-label="Limpar" (p-click)="clearComposition()"></po-button>
-        <span>{{ selectedComponents.length }} componentes</span>
+        <span>{{ selectedComponents.length + selectedPriceComponents.length }} componentes vinculados</span>
       </div>
       <p class="status-message" *ngIf="statusMessage">{{ statusMessage }}</p>
     </po-container>
 
     <po-container p-title="Biblioteca">
-      <div class="library-zone" (dragover)="allowDrop($event)" (drop)="dropOnLibrary($event)">
-        <button
-          type="button"
-          class="library-chip"
-          *ngFor="let component of availableComponents"
-          draggable="true"
-          (dragstart)="beginComponentDrag($event, component.id, 'library')"
-          (click)="addComponent(component.id)"
-        >
-          <strong>{{ component.description }}</strong>
-          <small>{{ component.group }} · {{ component.varAPV }}</small>
-        </button>
-        <p class="empty-state" *ngIf="!availableComponents.length">Todos os componentes ativos já estão vinculados.</p>
-      </div>
+      <section class="library-section">
+        <header class="panel-heading">
+          <strong>Componentes de Produto</strong>
+          <span>{{ availableComponents.length }} disponíveis</span>
+        </header>
+
+        <div class="library-zone" (dragover)="allowDrop($event)" (drop)="dropOnLibrary($event)">
+          <button
+            type="button"
+            class="library-chip"
+            *ngFor="let component of availableComponents"
+            draggable="true"
+            (dragstart)="beginComponentDrag($event, component.id, 'library')"
+            (click)="addComponent(component.id)"
+          >
+            <strong>{{ component.description }}</strong>
+            <small>{{ component.group }} · {{ component.varAPV }}</small>
+          </button>
+          <p class="empty-state" *ngIf="!availableComponents.length">Todos os componentes ativos já estão vinculados.</p>
+        </div>
+      </section>
+
+      <section class="library-section">
+        <header class="panel-heading">
+          <strong>Componentes de Preço</strong>
+          <span>{{ availablePriceComponents.length }} disponíveis</span>
+        </header>
+
+        <div class="library-zone" (dragover)="allowDrop($event)" (drop)="dropOnLibrary($event, 'price')">
+          <button
+            type="button"
+            class="library-chip price-chip"
+            *ngFor="let component of availablePriceComponents"
+            draggable="true"
+            (dragstart)="beginComponentDrag($event, component.id, 'library', 'price')"
+            (click)="addComponent(component.id, 'price')"
+          >
+            <strong>{{ component.description }}</strong>
+            <small>{{ component.group }} · {{ component.varAPV }}</small>
+          </button>
+          <p class="empty-state" *ngIf="!availablePriceComponents.length">Todos os componentes de preço ativos já estão vinculados.</p>
+        </div>
+      </section>
     </po-container>
   </div>
 

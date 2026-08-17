@@ -8,9 +8,39 @@
 
 .tree-list,
 .composition-zone,
-.library-zone {
+.library-zone,
+.composition-stack,
+.library-section {
   display: grid;
   gap: 10px;
+}
+
+.composition-stack {
+  gap: 16px;
+}
+
+.library-section + .library-section {
+  border-top: 1px solid #e4e7eb;
+  margin-top: 16px;
+  padding-top: 16px;
+}
+
+.panel-heading {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.panel-heading strong {
+  color: #2e343c;
+  font-size: 14px;
+}
+
+.panel-heading span {
+  color: #69737d;
+  font-size: 12px;
+  white-space: nowrap;
 }
 
 .group-title {
@@ -42,6 +72,10 @@
 .product-row.active {
   background: #edf6ff;
   border-color: #0b3d63;
+}
+
+.price-chip {
+  border-color: #b9d8cb;
 }
 
 .component-row {
@@ -91,8 +125,12 @@ small,
 .composition-zone {
   border: 2px dashed #d3d6da;
   border-radius: 4px;
-  min-height: 220px;
+  min-height: 170px;
   padding: 12px;
+}
+
+.price-zone {
+  border-color: #b9d8cb;
 }
 
 .composition-zone.empty {
