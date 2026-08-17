@@ -3,17 +3,42 @@
     <po-container p-title="Produtos">
       <div class="tree-list">
         <ng-container *ngFor="let group of tree">
-          <div class="group-title">{{ group.code }} - {{ group.name }}</div>
-          <button
-            type="button"
+          <div class="group-title">
+            <span>{{ group.code }} - {{ group.name }}</span>
+            <button
+              type="button"
+              class="tree-edit-button"
+              title="Edição"
+              aria-label="Editar grupo"
+              (click)="openEditGroupModal(group, $event)"
+            >
+              <span class="an an-pencil-simple" aria-hidden="true"></span>
+            </button>
+          </div>
+          <div
             class="product-row"
             *ngFor="let product of group.children"
+            role="button"
+            tabindex="0"
             [class.active]="product.id === selectedProductId"
             (click)="selectProduct(product.id)"
+            (keydown.enter)="selectProduct(product.id)"
+            (keydown.space)="selectProduct(product.id)"
           >
-            <strong>{{ product.name }}</strong>
-            <small>{{ product.code }}</small>
-          </button>
+            <span class="product-row-text">
+              <strong>{{ product.name }}</strong>
+              <small>{{ product.code }}</small>
+            </span>
+            <button
+              type="button"
+              class="tree-edit-button"
+              title="Edição"
+              aria-label="Editar produto ou serviço"
+              (click)="openEditProductModal(product, group.id, $event)"
+            >
+              <span class="an an-pencil-simple" aria-hidden="true"></span>
+            </button>
+          </div>
         </ng-container>
       </div>
     </po-container>
@@ -181,17 +206,18 @@
     </po-container>
   </div>
 
-  <po-modal #groupModal p-title="Criar grupo">
+  <po-modal #groupModal [p-title]="groupModalTitle">
     <po-input name="groupCode" p-label="Código do grupo" [(ngModel)]="groupModel.code"></po-input>
     <po-input name="groupName" p-label="Nome do grupo" [(ngModel)]="groupModel.name"></po-input>
 
     <po-modal-footer>
+      <po-button *ngIf="groupMode === 'edit'" p-icon="an an-trash" p-label="Excluir" (p-click)="deleteGroup()"></po-button>
       <po-button p-label="Cancelar" (p-click)="groupModal.close()"></po-button>
-      <po-button p-kind="primary" p-label="Criar" (p-click)="addGroup()"></po-button>
+      <po-button p-kind="primary" [p-label]="groupSubmitLabel" (p-click)="addGroup()"></po-button>
     </po-modal-footer>
   </po-modal>
 
-  <po-modal #productModal p-title="Criar produto">
+  <po-modal #productModal [p-title]="productModalTitle">
     <po-select
       name="productGroup"
       p-label="Grupo"
@@ -203,8 +229,9 @@
     <po-input name="productName" p-label="Nome do produto" [(ngModel)]="productModel.name"></po-input>
 
     <po-modal-footer>
+      <po-button *ngIf="productMode === 'edit'" p-icon="an an-trash" p-label="Excluir" (p-click)="deleteProduct()"></po-button>
       <po-button p-label="Cancelar" (p-click)="productModal.close()"></po-button>
-      <po-button p-kind="primary" p-label="Criar" (p-click)="addProduct()"></po-button>
+      <po-button p-kind="primary" [p-label]="productSubmitLabel" (p-click)="addProduct()"></po-button>
     </po-modal-footer>
   </po-modal>
 </po-page-default>

@@ -11,6 +11,7 @@ import {
 import { SHARED_MODULES } from 'src/app/shared/shared';
 
 type CompositionSource = 'library' | 'composition';
+type TreeEditMode = 'create' | 'edit';
 
 @Component({
   selector: 'app-product-tree',
@@ -35,6 +36,10 @@ export class ProductTreeComponent {
   statusMessage = '';
   productLibraryOpen = true;
   priceLibraryOpen = true;
+  groupMode: TreeEditMode = 'create';
+  productMode: TreeEditMode = 'create';
+  editingGroupId = '';
+  editingProductId = '';
 
   groupModel = { code: '', name: '', icon: 'ti-folder' };
   productModel = { groupId: '', code: '', name: '', icon: 'ti-package' };
@@ -78,6 +83,22 @@ export class ProductTreeComponent {
     return this.priceComponents.filter((component) => !used.has(component.id));
   }
 
+  get groupModalTitle(): string {
+    return this.groupMode === 'edit' ? 'Editar grupo' : 'Criar grupo';
+  }
+
+  get productModalTitle(): string {
+    return this.productMode === 'edit' ? 'Editar produto ou serviço' : 'Criar produto ou serviço';
+  }
+
+  get groupSubmitLabel(): string {
+    return this.groupMode === 'edit' ? 'Salvar' : 'Criar';
+  }
+
+  get productSubmitLabel(): string {
+    return this.productMode === 'edit' ? 'Salvar' : 'Criar';
+  }
+
   selectProduct(productId: string): void {
     this.selectedProductId = productId;
     this.catalog.setSelectedProductId(productId);
@@ -91,17 +112,32 @@ export class ProductTreeComponent {
       return;
     }
 
-    const group: ProductNode = {
+    const code = this.groupModel.code.trim().toUpperCase();
+    if (this.groupCodeExists(code, this.groupMode === 'edit' ? this.editingGroupId : '')) {
+      this.statusMessage = 'Código de grupo já existe.';
+      return;
+    }
+
+    if (this.groupMode === 'edit') {
+      this.catalog.updateGroup(this.editingGroupId, {
+        code,
+        name: this.groupModel.name.trim(),
+        icon: this.groupModel.icon.trim() || 'ti-folder',
+      });
+      this.statusMessage = 'Grupo salvo.';
+      this.groupModal?.close();
+      this.refresh();
+      return;
+    }
+
+    this.catalog.createGroup({
       id: `G-${Date.now()}`,
-      code: this.groupModel.code.trim().toUpperCase(),
+      code,
       name: this.groupModel.name.trim(),
       icon: this.groupModel.icon.trim() || 'ti-folder',
       type: 'group',
       children: [],
-    };
-
-    this.tree = [...this.tree, group];
-    this.catalog.saveTree(this.tree);
+    });
     this.groupModel = { code: '', name: '', icon: 'ti-folder' };
     this.refresh();
     this.statusMessage = 'Grupo criado.';
@@ -114,21 +150,33 @@ export class ProductTreeComponent {
       return;
     }
 
-    const product: ProductNode = {
+    if (this.productMode === 'edit') {
+      this.catalog.updateProduct(this.editingProductId, this.productModel.groupId, {
+        code: this.productModel.code.trim().toUpperCase(),
+        name: this.productModel.name.trim(),
+        icon: this.productModel.icon.trim() || 'ti-package',
+      });
+      this.refresh();
+      this.selectProduct(this.editingProductId);
+      this.statusMessage = 'Produto salvo.';
+      this.productModal?.close();
+      return;
+    }
+
+    const product = this.catalog.createProduct(this.productModel.groupId, {
       id: `P-${Date.now()}`,
       code: this.productModel.code.trim().toUpperCase(),
       name: this.productModel.name.trim(),
       icon: this.productModel.icon.trim() || 'ti-package',
       type: 'product',
       children: [],
-    };
+    });
 
-    this.tree = this.tree.map((group) =>
-      group.id === this.productModel.groupId
-        ? { ...group, children: [...(group.children ?? []), product] }
-        : group,
-    );
-    this.catalog.saveTree(this.tree);
+    if (!product) {
+      this.statusMessage = 'Grupo não encontrado.';
+      return;
+    }
+
     this.productModel = { groupId: this.tree[0]?.id ?? '', code: '', name: '', icon: 'ti-package' };
     this.refresh();
     this.selectProduct(product.id);
@@ -137,12 +185,60 @@ export class ProductTreeComponent {
   }
 
   openGroupModal(): void {
+    this.groupMode = 'create';
+    this.editingGroupId = '';
+    this.groupModel = { code: '', name: '', icon: 'ti-folder' };
     this.groupModal.open();
   }
 
   openProductModal(): void {
-    this.productModel.groupId = this.productModel.groupId || this.tree[0]?.id || '';
+    this.productMode = 'create';
+    this.editingProductId = '';
+    this.productModel = { groupId: this.productModel.groupId || this.tree[0]?.id || '', code: '', name: '', icon: 'ti-package' };
     this.productModal.open();
+  }
+
+  openEditGroupModal(group: ProductNode, event?: Event): void {
+    event?.stopPropagation();
+    this.groupMode = 'edit';
+    this.editingGroupId = group.id;
+    this.groupModel = { code: group.code, name: group.name, icon: group.icon || 'ti-folder' };
+    this.groupModal.open();
+  }
+
+  openEditProductModal(product: ProductNode, groupId: string, event?: Event): void {
+    event?.stopPropagation();
+    this.productMode = 'edit';
+    this.editingProductId = product.id;
+    this.productModel = {
+      groupId,
+      code: product.code,
+      name: product.name,
+      icon: product.icon || 'ti-package',
+    };
+    this.productModal.open();
+  }
+
+  deleteGroup(): void {
+    if (!this.editingGroupId) {
+      return;
+    }
+
+    this.catalog.removeGroup(this.editingGroupId);
+    this.statusMessage = 'Grupo excluído.';
+    this.groupModal?.close();
+    this.refresh();
+  }
+
+  deleteProduct(): void {
+    if (!this.editingProductId) {
+      return;
+    }
+
+    this.catalog.removeProduct(this.editingProductId);
+    this.statusMessage = 'Produto excluído.';
+    this.productModal?.close();
+    this.refresh();
   }
 
   toggleProductLibrary(): void {
@@ -282,6 +378,10 @@ export class ProductTreeComponent {
     return ids
       .map((componentId) => byId.get(componentId))
       .filter((component): component is T => Boolean(component));
+  }
+
+  private groupCodeExists(code: string, ignoredGroupId = ''): boolean {
+    return this.tree.some((group) => group.id !== ignoredGroupId && group.code.toUpperCase() === code);
   }
 
   private readDrag(event: DragEvent): { componentId: string; source: CompositionSource; kind: ComponentKind } | undefined {

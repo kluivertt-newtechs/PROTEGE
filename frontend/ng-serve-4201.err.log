@@ -1,0 +1,175 @@
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/sale-price.routes.ts:6:32:
+[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "./component/sale-price.component"[0m
+
+    src/app/features/sale-price/sale-price.routes.ts:4:36:
+[37m      4 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/sale-price.routes.ts:6:32:
+[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "./component/sale-price.component"[0m
+
+    src/app/features/sale-price/sale-price.routes.ts:4:36:
+[37m      4 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/sale-price.routes.ts:6:32:
+[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "./component/sale-price.component"[0m
+
+    src/app/features/sale-price/sale-price.routes.ts:4:36:
+[37m      4 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/sale-price.routes.ts:6:32:
+[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "./component/sale-price.component"[0m
+
+    src/app/features/sale-price/sale-price.routes.ts:4:36:
+[37m      4 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/sale-price.routes.ts:6:32:
+[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/sale-price.routes.ts:6:32:
+[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/sale-price.routes.ts:6:32:
+[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/sale-price.routes.ts:6:32:
+[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/sale-price.routes.ts:6:32:
+[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/sale-price.routes.ts:6:32:
+[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/sale-price.routes.ts:6:32:
+[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/sale-price.routes.ts:6:32:
+[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m

@@ -415,6 +415,130 @@ export class ProductCatalogService {
     this.persist();
   }
 
+  createGroup(group: ProductNode): ProductNode {
+    const normalized = this.normalizeNode({ ...group, type: 'group', children: group.children ?? [] });
+    this.state = { ...this.state, tree: [...this.state.tree, normalized] };
+    this.persist();
+    return this.cloneNode(normalized);
+  }
+
+  updateGroup(groupId: string, changes: Pick<ProductNode, 'code' | 'name' | 'icon'>): ProductNode | undefined {
+    let updated: ProductNode | undefined;
+    const tree = this.state.tree.map((group) => {
+      if (group.id !== groupId) {
+        return group;
+      }
+
+      updated = this.normalizeNode({ ...group, ...changes, type: 'group', children: group.children ?? [] });
+      return updated;
+    });
+
+    if (!updated) {
+      return undefined;
+    }
+
+    this.state = { ...this.state, tree };
+    this.persist();
+    return this.cloneNode(updated);
+  }
+
+  removeGroup(groupId: string): void {
+    const group = this.state.tree.find((node) => node.id === groupId);
+    if (!group) {
+      return;
+    }
+
+    const removedProductIds = this.flattenTree(group.children ?? [])
+      .filter((node) => node.type !== 'group')
+      .map((node) => node.id);
+    const removedProductSet = new Set(removedProductIds);
+    const tree = this.state.tree.filter((node) => node.id !== groupId);
+    const selectedProductId = removedProductSet.has(this.state.selectedProductId)
+      ? this.firstProductId(tree)
+      : this.state.selectedProductId;
+
+    this.state = {
+      ...this.state,
+      tree,
+      compositions: this.state.compositions.filter((composition) => !removedProductSet.has(composition.productId)),
+      selectedProductId,
+    };
+    this.persist();
+  }
+
+  createProduct(groupId: string, product: ProductNode): ProductNode | undefined {
+    let created: ProductNode | undefined;
+    const tree = this.state.tree.map((group) => {
+      if (group.id !== groupId) {
+        return group;
+      }
+
+      created = this.normalizeNode({ ...product, type: product.type === 'service' ? 'service' : 'product', children: [] });
+      return { ...group, children: [...(group.children ?? []), created] };
+    });
+
+    if (!created) {
+      return undefined;
+    }
+
+    this.state = { ...this.state, tree };
+    this.persist();
+    return this.cloneNode(created);
+  }
+
+  updateProduct(
+    productId: string,
+    groupId: string,
+    changes: Pick<ProductNode, 'code' | 'name' | 'icon'>,
+  ): ProductNode | undefined {
+    if (!this.state.tree.some((group) => group.id === groupId)) {
+      return undefined;
+    }
+
+    let updated: ProductNode | undefined;
+    const treeWithoutProduct = this.state.tree.map((group) => {
+      const children = group.children ?? [];
+      const product = children.find((child) => child.id === productId);
+      if (product) {
+        updated = this.normalizeNode({ ...product, ...changes, children: product.children ?? [] });
+      }
+
+      return { ...group, children: children.filter((child) => child.id !== productId) };
+    });
+
+    if (!updated) {
+      return undefined;
+    }
+
+    const tree = treeWithoutProduct.map((group) =>
+      group.id === groupId
+        ? { ...group, children: [...(group.children ?? []), updated as ProductNode] }
+        : group,
+    );
+
+    this.state = { ...this.state, tree };
+    this.persist();
+    return this.cloneNode(updated);
+  }
+
+  removeProduct(productId: string): void {
+    const tree = this.state.tree.map((group) => ({
+      ...group,
+      children: (group.children ?? []).filter((product) => product.id !== productId),
+    }));
+    const selectedProductId = this.state.selectedProductId === productId
+      ? this.firstProductId(tree)
+      : this.state.selectedProductId;
+
+    this.state = {
+      ...this.state,
+      tree,
+      compositions: this.state.compositions.filter((composition) => composition.productId !== productId),
+      selectedProductId,
+    };
+    this.persist();
+  }
+
   resetTree(): Array<ProductNode> {
     this.state = { ...this.state, tree: SEED_TREE.map((node) => this.cloneNode(node)) };
     this.persist();
@@ -718,6 +842,10 @@ export class ProductCatalogService {
 
   private flattenTree(nodes: Array<ProductNode>): Array<ProductNode> {
     return nodes.flatMap((node) => [node, ...this.flattenTree(node.children ?? [])]);
+  }
+
+  private firstProductId(tree: Array<ProductNode>): string {
+    return this.flattenTree(tree).find((node) => node.type !== 'group')?.id || '';
   }
 
   private cloneComponent<T extends ProductComponent>(component: T): T {
