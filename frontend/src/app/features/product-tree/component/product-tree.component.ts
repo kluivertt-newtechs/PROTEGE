@@ -33,6 +33,8 @@ export class ProductTreeComponent {
   savedCompositionIds: Array<string> = [];
   savedPriceCompositionIds: Array<string> = [];
   statusMessage = '';
+  productLibraryOpen = true;
+  priceLibraryOpen = true;
 
   groupModel = { code: '', name: '', icon: 'ti-folder' };
   productModel = { groupId: '', code: '', name: '', icon: 'ti-package' };
@@ -141,6 +143,14 @@ export class ProductTreeComponent {
   openProductModal(): void {
     this.productModel.groupId = this.productModel.groupId || this.tree[0]?.id || '';
     this.productModal.open();
+  }
+
+  toggleProductLibrary(): void {
+    this.productLibraryOpen = !this.productLibraryOpen;
+  }
+
+  togglePriceLibrary(): void {
+    this.priceLibraryOpen = !this.priceLibraryOpen;
   }
 
   addComponent(componentId: string, kind: ComponentKind = 'product'): void {

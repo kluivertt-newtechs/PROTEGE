@@ -102,19 +102,36 @@
 
     <po-container p-title="Biblioteca">
       <section class="library-section">
+        <button
+          type="button"
+          class="library-toggle"
+          [class.closed]="!productLibraryOpen"
+          [attr.aria-expanded]="productLibraryOpen"
+          (click)="toggleProductLibrary()"
+        >
+          <span class="library-toggle-title">Componentes de Produto</span>
+          <span class="library-toggle-meta">{{ availableComponents.length }} disponíveis</span>
+          <span class="library-toggle-icon" aria-hidden="true"></span>
+        </button>
+
         <header class="panel-heading">
           <strong>Componentes de Produto</strong>
           <span>{{ availableComponents.length }} disponíveis</span>
         </header>
 
-        <div class="library-zone" (dragover)="allowDrop($event)" (drop)="dropOnLibrary($event)">
+        <div
+          class="library-zone"
+          *ngIf="productLibraryOpen"
+          (dragover)="allowDrop($event)"
+          (drop)="dropOnLibrary($event, 'product')"
+        >
           <button
             type="button"
             class="library-chip"
             *ngFor="let component of availableComponents"
             draggable="true"
-            (dragstart)="beginComponentDrag($event, component.id, 'library')"
-            (click)="addComponent(component.id)"
+            (dragstart)="beginComponentDrag($event, component.id, 'library', 'product')"
+            (click)="addComponent(component.id, 'product')"
           >
             <strong>{{ component.description }}</strong>
             <small>{{ component.group }} · {{ component.varAPV }}</small>
@@ -124,12 +141,29 @@
       </section>
 
       <section class="library-section">
+        <button
+          type="button"
+          class="library-toggle"
+          [class.closed]="!priceLibraryOpen"
+          [attr.aria-expanded]="priceLibraryOpen"
+          (click)="togglePriceLibrary()"
+        >
+          <span class="library-toggle-title">Componentes de Preço</span>
+          <span class="library-toggle-meta">{{ availablePriceComponents.length }} disponíveis</span>
+          <span class="library-toggle-icon" aria-hidden="true"></span>
+        </button>
+
         <header class="panel-heading">
           <strong>Componentes de Preço</strong>
           <span>{{ availablePriceComponents.length }} disponíveis</span>
         </header>
 
-        <div class="library-zone" (dragover)="allowDrop($event)" (drop)="dropOnLibrary($event, 'price')">
+        <div
+          class="library-zone"
+          *ngIf="priceLibraryOpen"
+          (dragover)="allowDrop($event)"
+          (drop)="dropOnLibrary($event, 'price')"
+        >
           <button
             type="button"
             class="library-chip price-chip"
