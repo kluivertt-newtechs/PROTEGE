@@ -268,10 +268,7 @@ export class SalePriceComponent {
   }
 
   private loadPriceComponents(): void {
-    const linkedPriceComponents = this.catalog.getCompositionPriceComponents(this.selectedProductId);
-    this.priceComponents = linkedPriceComponents.length
-      ? linkedPriceComponents
-      : this.catalog.listPriceComponents(false);
+    this.priceComponents = this.catalog.getCompositionPriceComponents(this.selectedProductId);
   }
 
   private applySelectedDefaults(): void {
@@ -341,7 +338,7 @@ export class SalePriceComponent {
       return [];
     }
 
-    const optionSource = [...this.catalog.listComponents(false), ...this.catalog.listPriceComponents(false)]
+    const optionSource = [...this.catalog.listComponents(false), ...this.priceComponents]
       .find((candidate) =>
         candidate.id !== component.id &&
         candidate.varAPV === component.varAPV &&

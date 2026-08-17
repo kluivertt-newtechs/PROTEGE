@@ -60,9 +60,10 @@ export interface ProductCatalogState {
   selectedProductId: string;
 }
 
-const STATE_KEY = 'protege.productCatalog.v3';
-const VERSION = 3;
+const STATE_KEY = 'protege.productCatalog.v4';
+const VERSION = 4;
 const LEGACY_KEYS = [
+  'protege.productCatalog.v3',
   'protege.productCatalog.components',
   'protege.productCatalog.tree',
   'protege.productCatalog.compositions',
@@ -315,11 +316,58 @@ const SEED_TREE: Array<ProductNode> = [
   ] },
 ];
 
+const DEFAULT_PRICE_COMPONENT_IDS = ['pt01', 'pt02', 'pt03', 'pt04', 'pt05'];
+
+const composition = (productId: string, productComponentIds: Array<string>): ProductComposition => ({
+  productId,
+  productComponentIds,
+  priceComponentIds: DEFAULT_PRICE_COMPONENT_IDS,
+});
+
+const COFRE_INTELIGENTE_COMPONENT_IDS = [
+  's01',
+  's02',
+  's03',
+  's06',
+  's07',
+  's08',
+  's10',
+  's12',
+  's13',
+  's15',
+  's16',
+  's17',
+  's18',
+  's19',
+];
+const TRANSPORTE_COMPONENT_IDS = ['s01', 's02', 's03', 's06', 's08', 's10', 's11', 's12', 's13', 's14', 's15'];
+const PROCESSAMENTO_COMPONENT_IDS = ['s01', 's02', 's03', 's15', 's25', 's26', 's27', 's28'];
+const CUSTODIA_COMPONENT_IDS = ['s01', 's02', 's03', 's10', 's15', 's22', 's23', 's24'];
+const PAYCASH_COMPONENT_IDS = [
+  's01',
+  's02',
+  's03',
+  's06',
+  's08',
+  's10',
+  's12',
+  's13',
+  's15',
+  's20',
+  's21',
+  's22',
+  's23',
+  's24',
+  's29',
+  's30',
+];
+
 const SEED_COMPOSITIONS: Array<ProductComposition> = [
-  { productId: 'P12', productComponentIds: ['s01', 's02', 's03', 's06', 's08', 's10', 's12', 's13', 's20', 's21', 's22', 's24', 's29', 's30'], priceComponentIds: [] },
-  { productId: 'P07', productComponentIds: ['s02', 's03', 's25', 's26', 's27', 's28'], priceComponentIds: [] },
-  { productId: 'P10', productComponentIds: ['s02', 's03', 's22', 's23', 's24'], priceComponentIds: [] },
-  { productId: 'P04', productComponentIds: ['s02', 's03', 's06', 's08', 's10', 's12', 's13'], priceComponentIds: [] },
+  ...['P01', 'P02', 'P03'].map((productId) => composition(productId, COFRE_INTELIGENTE_COMPONENT_IDS)),
+  ...['P04', 'P05', 'P06'].map((productId) => composition(productId, TRANSPORTE_COMPONENT_IDS)),
+  ...['P07', 'P08', 'P09'].map((productId) => composition(productId, PROCESSAMENTO_COMPONENT_IDS)),
+  ...['P10', 'P11'].map((productId) => composition(productId, CUSTODIA_COMPONENT_IDS)),
+  ...['P12', 'P13'].map((productId) => composition(productId, PAYCASH_COMPONENT_IDS)),
 ];
 
 @Injectable({ providedIn: 'root' })

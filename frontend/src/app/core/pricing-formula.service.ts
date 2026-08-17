@@ -152,12 +152,51 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
   },
 ];
 
+const DEFAULT_FORMULA_OVERRIDES_BY_FAMILY: Record<string, Partial<PricingFormula>> = {
+  cofre: {
+    expression: 'costBase + PRECO_COF_AT + SEG_COF_AT',
+    description: 'Custo base somado ao preço e seguro do cofre inteligente.',
+  },
+  transporte: {
+    expression: 'costBase',
+    description: 'Custo direto do embarque ou rota selecionada.',
+  },
+  processamento: {
+    expression: 'CUSTO_PROC * Math.max(1, QTD_MILHEIROS)',
+    description: 'Custo de processamento calculado por milheiro.',
+  },
+  custodia: {
+    expression: 'MONTANTE_CST * (ADVALOREM + CUSTODIA)',
+    description: 'Custo proporcional ao montante custodiado.',
+  },
+  paycash: {
+    expression: 'costBase + COFRE_PR + SEG_COF_PR + (MONTANTE_CST * (ADVALOREM + CUSTODIA))',
+    description: 'Custo combinado de transporte, cofre, seguro, custódia e ad valorem.',
+  },
+};
+
+const PRODUCT_FORMULA_FAMILY: Record<string, keyof typeof DEFAULT_FORMULA_OVERRIDES_BY_FAMILY> = {
+  P01: 'cofre',
+  P02: 'cofre',
+  P03: 'cofre',
+  P04: 'transporte',
+  P05: 'transporte',
+  P06: 'transporte',
+  P07: 'processamento',
+  P08: 'processamento',
+  P09: 'processamento',
+  P10: 'custodia',
+  P11: 'custodia',
+  P12: 'paycash',
+  P13: 'paycash',
+};
+
 @Injectable({ providedIn: 'root' })
 export class PricingFormulaService {
   constructor(private readonly productCatalog: ProductCatalogService) {}
 
   getFormulas(productId: string): Array<PricingFormula> {
-    return cloneFormulas(readStoredFormulaCatalog()[productId] ?? []);
+    return cloneFormulas(readStoredFormulaCatalog()[productId] ?? getDefaultPricingFormulas(productId));
   }
 
   saveFormulas(productId: string, formulas: Array<PricingFormula>): FormulaValidationResult {
@@ -174,7 +213,7 @@ export class PricingFormulaService {
 
   resetProductFormulas(productId: string): Array<PricingFormula> {
     removeStoredProductFormulas(productId);
-    return [];
+    return getDefaultPricingFormulas(productId);
   }
 
   validate(productId: string, formulas: Array<PricingFormula>): FormulaValidationResult {
@@ -210,12 +249,7 @@ export class PricingFormulaService {
   }
 
   getPriceComponentVariables(productId: string): Array<{ id: string; label: string; component: PriceComponent }> {
-    const linkedPriceComponents = this.productCatalog.getCompositionPriceComponents(productId);
-    const priceComponents = linkedPriceComponents.length
-      ? linkedPriceComponents
-      : this.productCatalog.listPriceComponents(false);
-
-    return priceComponents
+    return this.productCatalog.getCompositionPriceComponents(productId)
       .filter((component) => Boolean(component.varAPV))
       .map((component) => ({
         id: component.varAPV,
@@ -227,6 +261,17 @@ export class PricingFormulaService {
   private getAllowedVariableIds(productId: string): Set<string> {
     return new Set(this.getAvailableVariables(productId).map((variable) => variable.id));
   }
+}
+
+function getDefaultPricingFormulas(productId: string): Array<PricingFormula> {
+  const family = PRODUCT_FORMULA_FAMILY[productId];
+  const costTotalOverride = family ? DEFAULT_FORMULA_OVERRIDES_BY_FAMILY[family] : undefined;
+
+  return cloneFormulas(DEFAULT_PRICING_FORMULAS.map((formula) =>
+    formula.id === 'costTotal' && costTotalOverride
+      ? { ...formula, ...costTotalOverride }
+      : formula,
+  ));
 }
 
 export function executePricingFormulas(
