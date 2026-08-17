@@ -150,11 +150,23 @@ export class FormulaBuilderComponent implements OnInit {
     }
 
     const selectedId = this.selectedFormulaOriginalId || this.selectedFormula.id;
-    this.formulas = this.formulas.filter((formula) => formula.id !== selectedId);
+
+    if (this.selectedFormulaOriginalId) {
+      const result = this.formulaService.removeFormula(this.selectedProductId, selectedId);
+      this.formulas = result.formulas;
+      this.statusType = result.validation.valid ? 'success' : 'error';
+      this.statusMessage = result.validation.valid
+        ? 'Fórmula removida.'
+        : `Fórmula removida. ${result.validation.messages.join(' ')}`;
+    } else {
+      this.formulas = this.formulas.filter((formula) => formula.id !== selectedId);
+      this.statusType = 'success';
+      this.statusMessage = 'Fórmula removida.';
+    }
+
     this.selectedFormula = this.formulas[0] ? { ...this.formulas[0] } : undefined;
     this.selectedFormulaOriginalId = this.selectedFormula?.id ?? '';
     this.refreshExpressionTokens();
-    this.validate();
   }
 
   validate(): void {

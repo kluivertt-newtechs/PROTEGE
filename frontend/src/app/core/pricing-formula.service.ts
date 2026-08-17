@@ -18,6 +18,11 @@ export interface FormulaExecutionResult {
   warning?: string;
 }
 
+export interface FormulaRemovalResult {
+  formulas: Array<PricingFormula>;
+  validation: FormulaValidationResult;
+}
+
 interface FormulaDependencyResult {
   formulas: Array<PricingFormula>;
   messages: Array<string>;
@@ -209,6 +214,16 @@ export class PricingFormulaService {
 
     writeStoredProductFormulas(productId, normalized);
     return validation;
+  }
+
+  removeFormula(productId: string, formulaId: string): FormulaRemovalResult {
+    const formulas = normalizeFormulas(this.getFormulas(productId).filter((formula) => formula.id !== formulaId));
+    writeStoredProductFormulas(productId, formulas);
+
+    return {
+      formulas: cloneFormulas(formulas),
+      validation: validateFormulasForSave(formulas, this.getAllowedVariableIds(productId)),
+    };
   }
 
   resetProductFormulas(productId: string): Array<PricingFormula> {
