@@ -6,6 +6,8 @@ import {
   PriceComponent,
   ProductCatalogService,
   ProductComponent,
+  ProductComponentOption,
+  ProductComponentOptionStatus,
   ProductNode,
 } from 'src/app/core/product-catalog.service';
 import { SHARED_MODULES } from 'src/app/shared/shared';
@@ -23,6 +25,7 @@ type TreeEditMode = 'create' | 'edit';
 export class ProductTreeComponent {
   @ViewChild('groupModal') groupModal!: PoModalComponent;
   @ViewChild('productModal') productModal!: PoModalComponent;
+  @ViewChild('componentOptionModal') componentOptionModal!: PoModalComponent;
 
   tree: Array<ProductNode> = [];
   products: Array<ProductNode> = [];
@@ -40,6 +43,9 @@ export class ProductTreeComponent {
   productMode: TreeEditMode = 'create';
   editingGroupId = '';
   editingProductId = '';
+  optionComponent: ProductComponent | undefined;
+  optionCode = '';
+  optionCostValue = 0;
 
   groupModel = { code: '', name: '', icon: 'ti-folder' };
   productModel = { groupId: '', code: '', name: '', icon: 'ti-package' };
@@ -66,7 +72,11 @@ export class ProductTreeComponent {
   }
 
   get selectedComponents(): Array<ProductComponent> {
-    return this.resolveComponents(this.components, this.compositionIds);
+    const effectiveById = new Map(this.catalog.getCompositionComponents(this.selectedProductId).map((component) => [component.id, component]));
+    const globalById = new Map(this.components.map((component) => [component.id, component]));
+    return this.compositionIds
+      .map((componentId) => effectiveById.get(componentId) ?? globalById.get(componentId))
+      .filter((component): component is ProductComponent => Boolean(component));
   }
 
   get selectedPriceComponents(): Array<PriceComponent> {
@@ -282,6 +292,95 @@ export class ProductTreeComponent {
     this.savedCompositionIds = [...saved.productComponentIds];
     this.savedPriceCompositionIds = [...saved.priceComponentIds];
     this.statusMessage = 'Composição salva localmente.';
+  }
+
+  openComponentOptionModal(component: ProductComponent, event?: Event): void {
+    event?.stopPropagation();
+    if (!component.options.length) {
+      return;
+    }
+
+    const config = this.catalog.getProductComponentOptionConfig(this.selectedProductId, component.id);
+    const selectedOption = component.options.find((option) => option.code === config?.optionCode)
+      ?? component.options.find((option) => option.default)
+      ?? component.options.find((option) => option.selected)
+      ?? component.options[0];
+
+    this.optionComponent = {
+      ...component,
+      options: component.options.map((option) => ({ ...option })),
+    };
+    this.optionCode = selectedOption.code;
+    this.optionCostValue = config?.costValue ?? selectedOption.costValue;
+    this.componentOptionModal.open();
+  }
+
+  saveComponentOptionConfig(): void {
+    if (!this.selectedProductId || !this.optionComponent || !this.optionCode) {
+      return;
+    }
+
+    const saved = this.catalog.saveProductComponentOptionConfig(
+      this.selectedProductId,
+      this.optionComponent.id,
+      this.optionCode,
+      this.optionCostValue,
+    );
+
+    if (!saved) {
+      this.statusMessage = 'Nao foi possivel salvar a opcao do componente.';
+      return;
+    }
+
+    this.componentOptionModal.close();
+    this.optionComponent = undefined;
+    this.statusMessage = 'Opcao do componente salva.';
+  }
+
+  selectComponentOption(optionCode: string): void {
+    if (!this.optionComponent) {
+      return;
+    }
+
+    this.optionCode = optionCode;
+    this.optionCostValue = this.optionComponent.options.find((option) => option.code === optionCode)?.costValue ?? 0;
+  }
+
+  componentOptionStatus(component: ProductComponent): ProductComponentOptionStatus {
+    return this.catalog.getProductComponentOptionStatus(this.selectedProductId, component.id);
+  }
+
+  componentOptionStatusLabel(component: ProductComponent): string {
+    return this.componentOptionStatus(component) === 'custom' ? 'Personalizado' : 'Padrão';
+  }
+
+  selectedOptionDescription(component: ProductComponent): string {
+    return component.options.find((option) => option.selected)?.description ?? 'Sem opcao selecionada';
+  }
+
+  selectedOptionCostValue(component: ProductComponent): number {
+    return component.options.find((option) => option.selected)?.costValue ?? 0;
+  }
+
+  formatCurrency(value: number): string {
+    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  formatCostInput(value: number): string {
+    return this.formatCurrency(value).replace(/\s/g, ' ');
+  }
+
+  onOptionCostInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const digits = input.value.replace(/\D/g, '');
+    const costValue = digits ? Number(digits) / 100 : 0;
+
+    this.optionCostValue = costValue;
+    input.value = this.formatCostInput(costValue);
+  }
+
+  trackByOption(_: number, option: ProductComponentOption): string {
+    return option.code;
   }
 
   beginComponentDrag(

@@ -57,21 +57,63 @@
             (dragover)="allowDrop($event)"
             (drop)="dropOnComposition($event)"
           >
-            <ng-container *ngIf="selectedComponents.length; else noProductComposition">
+            <ng-container
+              *ngIf="selectedComponents.length; else noProductComposition"
+            >
               <div
                 class="component-row"
                 *ngFor="let component of selectedComponents; let index = index"
                 draggable="true"
-                (dragstart)="beginComponentDrag($event, component.id, 'composition')"
+                (dragstart)="
+                  beginComponentDrag($event, component.id, 'composition')
+                "
                 (dragover)="allowDrop($event)"
                 (drop)="dropOnComposition($event, index)"
               >
                 <span class="order">{{ index + 1 }}</span>
                 <span>
                   <strong>{{ component.description }}</strong>
+                  <small
+                    *ngIf="component.options.length"
+                    class="component-option-summary"
+                  >
+                    {{ selectedOptionDescription(component) }} -
+                    {{ formatCurrency(selectedOptionCostValue(component)) }}
+                    <b
+                      class="component-option-badge"
+                      [class.custom]="
+                        componentOptionStatus(component) === 'custom'
+                      "
+                      [class.default]="
+                        componentOptionStatus(component) === 'default'
+                      "
+                    >
+                      {{ componentOptionStatusLabel(component) }}
+                    </b>
+                  </small>
                   <small>{{ component.code }} · {{ component.varAPV }}</small>
                 </span>
-                <button type="button" (click)="removeComponent(component.id)" aria-label="Remover">x</button>
+                <span class="component-row-actions">
+                  <button
+                    *ngIf="component.options.length"
+                    type="button"
+                    class="icon-action-button"
+                    title="Editar opcao"
+                    aria-label="Editar opcao do componente"
+                    (click)="openComponentOptionModal(component, $event)"
+                  >
+                    <span class="an an-pencil-simple" aria-hidden="true"></span>
+                  </button>
+                  <button
+                    type="button"
+                    class="icon-action-button"
+                    title="Remover"
+                    (click)="removeComponent(component.id)"
+                    aria-label="Remover"
+                  >
+                    <span class="an an-trash" aria-hidden="true"></span>
+                  </button>
+                </span>
               </div>
             </ng-container>
             <ng-template #noProductComposition>
@@ -90,14 +132,28 @@
             class="composition-zone price-zone"
             [class.empty]="!selectedPriceComponents.length"
             (dragover)="allowDrop($event)"
-            (drop)="dropOnComposition($event, priceCompositionIds.length, 'price')"
+            (drop)="
+              dropOnComposition($event, priceCompositionIds.length, 'price')
+            "
           >
-            <ng-container *ngIf="selectedPriceComponents.length; else noPriceComposition">
+            <ng-container
+              *ngIf="selectedPriceComponents.length; else noPriceComposition"
+            >
               <div
                 class="component-row"
-                *ngFor="let component of selectedPriceComponents; let index = index"
+                *ngFor="
+                  let component of selectedPriceComponents;
+                  let index = index
+                "
                 draggable="true"
-                (dragstart)="beginComponentDrag($event, component.id, 'composition', 'price')"
+                (dragstart)="
+                  beginComponentDrag(
+                    $event,
+                    component.id,
+                    'composition',
+                    'price'
+                  )
+                "
                 (dragover)="allowDrop($event)"
                 (drop)="dropOnComposition($event, index, 'price')"
               >
@@ -106,21 +162,48 @@
                   <strong>{{ component.description }}</strong>
                   <small>{{ component.code }} · {{ component.varAPV }}</small>
                 </span>
-                <button type="button" (click)="removeComponent(component.id, 'price')" aria-label="Remover">x</button>
+                <button
+                  type="button"
+                  (click)="removeComponent(component.id, 'price')"
+                  aria-label="Remover"
+                >
+                  x
+                </button>
               </div>
             </ng-container>
             <ng-template #noPriceComposition>
-              <p>Arraste componentes de preço para vincular parâmetros da simulação.</p>
+              <p>
+                Arraste componentes de preço para vincular parâmetros da
+                simulação.
+              </p>
             </ng-template>
           </div>
         </section>
       </div>
 
       <div class="actions-row">
-        <po-button p-kind="primary" p-icon="an an-floppy-disk" p-label="Salvar" (p-click)="saveComposition()"></po-button>
-        <po-button p-icon="an an-arrow-counter-clockwise" p-label="Reverter" (p-click)="revertComposition()"></po-button>
-        <po-button p-icon="an an-trash" p-label="Limpar" (p-click)="clearComposition()"></po-button>
-        <span>{{ selectedComponents.length + selectedPriceComponents.length }} componentes vinculados</span>
+        <po-button
+          p-kind="primary"
+          p-icon="an an-floppy-disk"
+          p-label="Salvar"
+          (p-click)="saveComposition()"
+        ></po-button>
+        <po-button
+          p-icon="an an-arrow-counter-clockwise"
+          p-label="Reverter"
+          (p-click)="revertComposition()"
+        ></po-button>
+        <po-button
+          p-icon="an an-trash"
+          p-label="Limpar"
+          (p-click)="clearComposition()"
+        ></po-button>
+        <span
+          >{{
+            selectedComponents.length + selectedPriceComponents.length
+          }}
+          componentes vinculados</span
+        >
       </div>
       <p class="status-message" *ngIf="statusMessage">{{ statusMessage }}</p>
     </po-container>
@@ -135,7 +218,9 @@
           (click)="toggleProductLibrary()"
         >
           <span class="library-toggle-title">Componentes de Produto</span>
-          <span class="library-toggle-meta">{{ availableComponents.length }} disponíveis</span>
+          <span class="library-toggle-meta"
+            >{{ availableComponents.length }} disponíveis</span
+          >
           <span class="library-toggle-icon" aria-hidden="true"></span>
         </button>
 
@@ -155,13 +240,17 @@
             class="library-chip"
             *ngFor="let component of availableComponents"
             draggable="true"
-            (dragstart)="beginComponentDrag($event, component.id, 'library', 'product')"
+            (dragstart)="
+              beginComponentDrag($event, component.id, 'library', 'product')
+            "
             (click)="addComponent(component.id, 'product')"
           >
             <strong>{{ component.description }}</strong>
             <small>{{ component.group }} · {{ component.varAPV }}</small>
           </button>
-          <p class="empty-state" *ngIf="!availableComponents.length">Todos os componentes ativos já estão vinculados.</p>
+          <p class="empty-state" *ngIf="!availableComponents.length">
+            Todos os componentes ativos já estão vinculados.
+          </p>
         </div>
       </section>
 
@@ -174,7 +263,9 @@
           (click)="togglePriceLibrary()"
         >
           <span class="library-toggle-title">Componentes de Preço</span>
-          <span class="library-toggle-meta">{{ availablePriceComponents.length }} disponíveis</span>
+          <span class="library-toggle-meta"
+            >{{ availablePriceComponents.length }} disponíveis</span
+          >
           <span class="library-toggle-icon" aria-hidden="true"></span>
         </button>
 
@@ -194,26 +285,47 @@
             class="library-chip price-chip"
             *ngFor="let component of availablePriceComponents"
             draggable="true"
-            (dragstart)="beginComponentDrag($event, component.id, 'library', 'price')"
+            (dragstart)="
+              beginComponentDrag($event, component.id, 'library', 'price')
+            "
             (click)="addComponent(component.id, 'price')"
           >
             <strong>{{ component.description }}</strong>
             <small>{{ component.group }} · {{ component.varAPV }}</small>
           </button>
-          <p class="empty-state" *ngIf="!availablePriceComponents.length">Todos os componentes de preço ativos já estão vinculados.</p>
+          <p class="empty-state" *ngIf="!availablePriceComponents.length">
+            Todos os componentes de preço ativos já estão vinculados.
+          </p>
         </div>
       </section>
     </po-container>
   </div>
 
   <po-modal #groupModal [p-title]="groupModalTitle">
-    <po-input name="groupCode" p-label="Código do grupo" [(ngModel)]="groupModel.code"></po-input>
-    <po-input name="groupName" p-label="Nome do grupo" [(ngModel)]="groupModel.name"></po-input>
+    <po-input
+      name="groupCode"
+      p-label="Código do grupo"
+      [(ngModel)]="groupModel.code"
+    ></po-input>
+    <po-input
+      name="groupName"
+      p-label="Nome do grupo"
+      [(ngModel)]="groupModel.name"
+    ></po-input>
 
     <po-modal-footer>
-      <po-button *ngIf="groupMode === 'edit'" p-icon="an an-trash" p-label="Excluir" (p-click)="deleteGroup()"></po-button>
+      <po-button
+        *ngIf="groupMode === 'edit'"
+        p-icon="an an-trash"
+        p-label="Excluir"
+        (p-click)="deleteGroup()"
+      ></po-button>
       <po-button p-label="Cancelar" (p-click)="groupModal.close()"></po-button>
-      <po-button p-kind="primary" [p-label]="groupSubmitLabel" (p-click)="addGroup()"></po-button>
+      <po-button
+        p-kind="primary"
+        [p-label]="groupSubmitLabel"
+        (p-click)="addGroup()"
+      ></po-button>
     </po-modal-footer>
   </po-modal>
 
@@ -225,13 +337,82 @@
       [ngModel]="productModel.groupId"
       (ngModelChange)="productModel.groupId = $event"
     ></po-select>
-    <po-input name="productCode" p-label="Código do produto" [(ngModel)]="productModel.code"></po-input>
-    <po-input name="productName" p-label="Nome do produto" [(ngModel)]="productModel.name"></po-input>
+    <po-input
+      name="productCode"
+      p-label="Código do produto"
+      [(ngModel)]="productModel.code"
+    ></po-input>
+    <po-input
+      name="productName"
+      p-label="Nome do produto"
+      [(ngModel)]="productModel.name"
+    ></po-input>
 
     <po-modal-footer>
-      <po-button *ngIf="productMode === 'edit'" p-icon="an an-trash" p-label="Excluir" (p-click)="deleteProduct()"></po-button>
-      <po-button p-label="Cancelar" (p-click)="productModal.close()"></po-button>
-      <po-button p-kind="primary" [p-label]="productSubmitLabel" (p-click)="addProduct()"></po-button>
+      <po-button
+        *ngIf="productMode === 'edit'"
+        p-icon="an an-trash"
+        p-label="Excluir"
+        (p-click)="deleteProduct()"
+      ></po-button>
+      <po-button
+        p-label="Cancelar"
+        (p-click)="productModal.close()"
+      ></po-button>
+      <po-button
+        p-kind="primary"
+        [p-label]="productSubmitLabel"
+        (p-click)="addProduct()"
+      ></po-button>
+    </po-modal-footer>
+  </po-modal>
+
+  <po-modal
+    #componentOptionModal
+    [p-title]="'Opções - ' + (optionComponent?.description || '')"
+  >
+    <div class="component-option-modal" *ngIf="optionComponent">
+      <div class="option-list">
+        <button
+          type="button"
+          class="option-choice"
+          *ngFor="let option of optionComponent.options; trackBy: trackByOption"
+          [class.selected]="option.code === optionCode"
+          (click)="selectComponentOption(option.code)"
+        >
+          <span class="option-radio" aria-hidden="true"></span>
+          <span>
+            <strong>{{ option.description }}</strong>
+            <small
+              >{{ option.code }} - Valor global
+              {{ formatCurrency(option.costValue) }}</small
+            >
+          </span>
+        </button>
+      </div>
+
+      <label class="cost-field">
+        <span>Valor de Custo</span>
+        <input
+          type="text"
+          inputmode="decimal"
+          [value]="formatCostInput(optionCostValue)"
+          (input)="onOptionCostInput($event)"
+          aria-label="Valor de Custo"
+        />
+      </label>
+    </div>
+
+    <po-modal-footer>
+      <po-button
+        p-label="Cancelar"
+        (p-click)="componentOptionModal.close()"
+      ></po-button>
+      <po-button
+        p-kind="primary"
+        p-label="Salvar"
+        (p-click)="saveComponentOptionConfig()"
+      ></po-button>
     </po-modal-footer>
   </po-modal>
 </po-page-default>

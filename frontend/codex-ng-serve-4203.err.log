@@ -206,3 +206,16 @@
          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'isComponentOptionConfigured' does not exist on type 'ProductTreeComponent'. Did you mean 'saveComponentOptionConfig'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/component/product-tree.component.html:74:30:
+[37m      74 │ ...        <b *ngIf="[32misComponentOptionConfigured[37m(component)">perso...
+         ╵                      [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component ProductTreeComponent.
+
+    src/app/features/product-tree/component/product-tree.component.ts:20:15:
+[37m      20 │   templateUrl: [32m'./product-tree.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
