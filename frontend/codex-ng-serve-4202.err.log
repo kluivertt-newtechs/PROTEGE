@@ -1,457 +1,3 @@
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/sale-price/sale-price.routes.ts:6:32:
-[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
-        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "./component/sale-price.component"[0m
-
-    src/app/features/sale-price/sale-price.routes.ts:4:36:
-[37m      4 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
-        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/sale-price/sale-price.routes.ts:6:32:
-[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
-        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "./component/sale-price.component"[0m
-
-    src/app/features/sale-price/sale-price.routes.ts:4:36:
-[37m      4 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
-        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/sale-price/sale-price.routes.ts:6:32:
-[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
-        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "./component/sale-price.component"[0m
-
-    src/app/features/sale-price/sale-price.routes.ts:4:36:
-[37m      4 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
-        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/sale-price/sale-price.routes.ts:6:32:
-[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
-        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "./component/sale-price.component"[0m
-
-    src/app/features/sale-price/sale-price.routes.ts:4:36:
-[37m      4 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
-        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/sale-price/sale-price.routes.ts:6:32:
-[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
-        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/sale-price/sale-price.routes.ts:6:32:
-[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
-        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/sale-price/sale-price.routes.ts:6:32:
-[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
-        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/sale-price/sale-price.routes.ts:6:32:
-[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
-        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/sale-price/sale-price.routes.ts:6:32:
-[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
-        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/sale-price/sale-price.routes.ts:6:32:
-[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
-        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/sale-price/sale-price.routes.ts:6:32:
-[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
-        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/sale-price.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/sale-price/sale-price.routes.ts:6:32:
-[37m      6 │ ...: () => import([32m'./component/sale-price.component'[37m).then((c) => c...
-        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG8001: 'po-menu-panel' is not a known element:
-1. If 'po-menu-panel' is an Angular component, then verify that it is included in the '@Component.imports' of this component.
-2. If 'po-menu-panel' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/main/main.component.html:8:2:
-[37m      8 │   [32m<po-menu-panel[37m
-        ╵   [32m~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component MainComponent.
-
-    src/app/main/main.component.ts:13:15:
-[37m      13 │   templateUrl: [32m'./main.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG8002: Can't bind to 'p-collapsed' since it isn't a known property of 'po-menu-panel'.
-1. If 'po-menu-panel' is an Angular component and it has 'p-collapsed' input, then verify that it is included in the '@Component.imports' of this component.
-2. If 'po-menu-panel' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
-3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/main/main.component.html:9:4:
-[37m      9 │     [32m[p-collapsed]="true"[37m
-        ╵     [32m~~~~~~~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component MainComponent.
-
-    src/app/main/main.component.ts:13:15:
-[37m      13 │   templateUrl: [32m'./main.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG8002: Can't bind to 'p-menus' since it isn't a known property of 'po-menu-panel'.
-1. If 'po-menu-panel' is an Angular component and it has 'p-menus' input, then verify that it is included in the '@Component.imports' of this component.
-2. If 'po-menu-panel' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
-3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/main/main.component.html:10:4:
-[37m      10 │     [32m[p-menus]="menu"[37m
-         ╵     [32m~~~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component MainComponent.
-
-    src/app/main/main.component.ts:13:15:
-[37m      13 │   templateUrl: [32m'./main.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG8002: Can't bind to 'p-filter' since it isn't a known property of 'po-menu-panel'.
-1. If 'po-menu-panel' is an Angular component and it has 'p-filter' input, then verify that it is included in the '@Component.imports' of this component.
-2. If 'po-menu-panel' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
-3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/main/main.component.html:11:4:
-[37m      11 │     [32m[p-filter]="false"[37m
-         ╵     [32m~~~~~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component MainComponent.
-
-    src/app/main/main.component.ts:13:15:
-[37m      13 │   templateUrl: [32m'./main.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG8001: 'po-menu-panel' is not a known element:
-1. If 'po-menu-panel' is an Angular component, then verify that it is included in the '@Component.imports' of this component.
-2. If 'po-menu-panel' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/main/main.component.html:8:2:
-[37m      8 │   [32m<po-menu-panel [p-menus]="menu" p-logo="assets/logo.png">[37m</po-men...
-        ╵   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component MainComponent.
-
-    src/app/main/main.component.ts:13:15:
-[37m      13 │   templateUrl: [32m'./main.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG8002: Can't bind to 'p-menus' since it isn't a known property of 'po-menu-panel'.
-1. If 'po-menu-panel' is an Angular component and it has 'p-menus' input, then verify that it is included in the '@Component.imports' of this component.
-2. If 'po-menu-panel' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
-3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/main/main.component.html:8:17:
-[37m      8 │   <po-menu-panel [32m[p-menus]="menu"[37m p-logo="assets/logo.png"></po-men...
-        ╵                  [32m~~~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component MainComponent.
-
-    src/app/main/main.component.ts:13:15:
-[37m      13 │   templateUrl: [32m'./main.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2322: Type 'PoMenuItem[]' is not assignable to type 'PoMenuPanelItem[]'.
-  Type 'PoMenuItem' is not assignable to type 'PoMenuPanelItem'.
-    Types of property 'icon' are incompatible.
-      Type 'string | TemplateRef<void> | undefined' is not assignable to type 'string'.
-        Type 'undefined' is not assignable to type 'string'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/main/main.component.html:8:18:
-[37m      8 │   <po-menu-panel [[32mp-menus[37m]="menu" p-logo="assets/logo.png"></po-men...
-        ╵                   [32m~~~~~~~[0m
-
-  Error occurs in the template of component MainComponent.
-
-    src/app/main/main.component.ts:14:15:
-[37m      14 │   templateUrl: [32m'./main.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2353: Object literal may only specify known properties, and 'shortLabel' does not exist in type 'PoMenuPanelItem'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/main/main.component.ts:48:6:
-[37m      48 │       [32mshortLabel[37m: 'Produto',
-         ╵       [32m~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2353: Object literal may only specify known properties, and 'shortLabel' does not exist in type 'PoMenuPanelItem'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/main/main.component.ts:54:6:
-[37m      54 │       [32mshortLabel[37m: 'Preço',
-         ╵       [32m~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2353: Object literal may only specify known properties, and 'shortLabel' does not exist in type 'PoMenuPanelItem'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/main/main.component.ts:60:6:
-[37m      60 │       [32mshortLabel[37m: 'Árvore',
-         ╵       [32m~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2353: Object literal may only specify known properties, and 'shortLabel' does not exist in type 'PoMenuPanelItem'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/main/main.component.ts:66:6:
-[37m      66 │       [32mshortLabel[37m: 'Fórmulas',
-         ╵       [32m~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2353: Object literal may only specify known properties, and 'shortLabel' does not exist in type 'PoMenuPanelItem'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/main/main.component.ts:72:6:
-[37m      72 │       [32mshortLabel[37m: 'Simulação',
-         ╵       [32m~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
 [1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'expanded' does not exist on type 'ProductComponentsComponent'. Did you mean 'isExpanded'?[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/product-components/component/product-components.component.ts:134:13:
@@ -502,13 +48,6 @@
     src/app/features/product-components/component/product-components.component.ts:141:2:
 [37m      141 │   [32misExpanded[37m(componentId: string): boolean {
           ╵   [32m~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
 [1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleExpanded' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
@@ -652,13 +191,6 @@
     src/app/features/product-components/component/product-components.component.ts:25:15:
 [37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
 [1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'expanded' does not exist on type 'PriceComponentsComponent'. Did you mean 'isExpanded'?[0m [1m[35m[plugin angular-compiler][0m
@@ -855,12 +387,291 @@
 [37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
 
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+    src/app/features/price-components/component/price-components.component.html:7:57:
+[37m      7 │ ...="button" class="card-head" (click)="[32mtoggleExpanded[37m(component.id)">
+        ╵                                         [32m~~~~~~~~~~~~~~[0m
 
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectedSummary' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:13:18:
+[37m      13 │             <b>{{ [32mselectedSummary[37m(component) }}</b>
+         ╵                   [32m~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:18:38:
+[37m      18 │         <div class="card-body" *ngIf="[32misExpanded[37m(component.id)">
+         ╵                                       [32m~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectOption' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:30:23:
+[37m      30 │               (click)="[32mselectOption[37m(component, option)"
+         ╵                        [32m~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggle' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:46:25:
+[37m      46 │               (p-click)="[32mtoggle[37m(component)"
+         ╵                          [32m~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectedSummary' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:67:48:
+[37m      67 │ ...>Selecionado</small><b>{{ [32mselectedSummary[37m(component) }}</b></span>
+         ╵                              [32m~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:71:44:
+[37m      71 │ ...    <div class="summary-options" *ngIf="[32misExpanded[37m(component.id)">
+         ╵                                            [32m~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectOption' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:78:23:
+[37m      78 │               (click)="[32mselectOption[37m(component, option)"
+         ╵                        [32m~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:91:61:
+[37m      91 │ ...utton" class="link-action" (click)="[32mtoggleExpanded[37m(component.id)">
+         ╵                                        [32m~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:92:15:
+[37m      92 │             {{ [32misExpanded[37m(component.id) ? 'Ocultar opções' : 'Ve...
+         ╵                [32m~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggle' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:98:23:
+[37m      98 │             (p-click)="[32mtoggle[37m(component)"
+         ╵                        [32m~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleExpanded' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:7:57:
+[37m      7 │ ...="button" class="card-head" (click)="[32mtoggleExpanded[37m(component.id)">
+        ╵                                         [32m~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectedSummary' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:13:18:
+[37m      13 │             <b>{{ [32mselectedSummary[37m(component) }}</b>
+         ╵                   [32m~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:18:38:
+[37m      18 │         <div class="card-body" *ngIf="[32misExpanded[37m(component.id)">
+         ╵                                       [32m~~~~~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectOption' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:30:23:
+[37m      30 │               (click)="[32mselectOption[37m(component, option)"
+         ╵                        [32m~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggle' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:46:25:
+[37m      46 │               (p-click)="[32mtoggle[37m(component)"
+         ╵                          [32m~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectedSummary' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:67:48:
+[37m      67 │ ...>Selecionado</small><b>{{ [32mselectedSummary[37m(component) }}</b></span>
+         ╵                              [32m~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:71:44:
+[37m      71 │ ...    <div class="summary-options" *ngIf="[32misExpanded[37m(component.id)">
+         ╵                                            [32m~~~~~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectOption' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:78:23:
+[37m      78 │               (click)="[32mselectOption[37m(component, option)"
+         ╵                        [32m~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleExpanded' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:91:61:
+[37m      91 │ ...utton" class="link-action" (click)="[32mtoggleExpanded[37m(component.id)">
+         ╵                                        [32m~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:92:15:
+[37m      92 │             {{ [32misExpanded[37m(component.id) ? 'Ocultar opções' : 'Ve...
+         ╵                [32m~~~~~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggle' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:98:23:
+[37m      98 │             (p-click)="[32mtoggle[37m(component)"
+         ╵                        [32m~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
 [1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
@@ -1148,13 +959,6 @@
 [37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
 [39m[22m
 [1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
 
@@ -1441,12 +1245,148 @@
 [37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
 
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+    src/app/features/price-components/component/price-components.component.html:7:57:
+[37m      7 │ ...="button" class="card-head" (click)="[32mtoggleExpanded[37m(component.id)">
+        ╵                                         [32m~~~~~~~~~~~~~~[0m
 
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectedSummary' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:13:18:
+[37m      13 │             <b>{{ [32mselectedSummary[37m(component) }}</b>
+         ╵                   [32m~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:18:38:
+[37m      18 │         <div class="card-body" *ngIf="[32misExpanded[37m(component.id)">
+         ╵                                       [32m~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectOption' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:30:23:
+[37m      30 │               (click)="[32mselectOption[37m(component, option)"
+         ╵                        [32m~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggle' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:46:25:
+[37m      46 │               (p-click)="[32mtoggle[37m(component)"
+         ╵                          [32m~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectedSummary' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:67:48:
+[37m      67 │ ...>Selecionado</small><b>{{ [32mselectedSummary[37m(component) }}</b></span>
+         ╵                              [32m~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:71:44:
+[37m      71 │ ...    <div class="summary-options" *ngIf="[32misExpanded[37m(component.id)">
+         ╵                                            [32m~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectOption' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:78:23:
+[37m      78 │               (click)="[32mselectOption[37m(component, option)"
+         ╵                        [32m~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:91:61:
+[37m      91 │ ...utton" class="link-action" (click)="[32mtoggleExpanded[37m(component.id)">
+         ╵                                        [32m~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:92:15:
+[37m      92 │             {{ [32misExpanded[37m(component.id) ? 'Ocultar opções' : 'Ve...
+         ╵                [32m~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggle' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:98:23:
+[37m      98 │             (p-click)="[32mtoggle[37m(component)"
+         ╵                        [32m~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
 [1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
@@ -1591,640 +1531,64 @@
 [37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleExpanded' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-components/component/product-components.component.html:7:57:
-[37m      7 │ ...="button" class="card-head" (click)="[32mtoggleExpanded[37m(component.id)">
-        ╵                                         [32m~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component ProductComponentsComponent.
-
-    src/app/features/product-components/component/product-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectedSummary' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-components/component/product-components.component.html:13:18:
-[37m      13 │             <b>{{ [32mselectedSummary[37m(component) }}</b>
-         ╵                   [32m~~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component ProductComponentsComponent.
-
-    src/app/features/product-components/component/product-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-components/component/product-components.component.html:18:38:
-[37m      18 │         <div class="card-body" *ngIf="[32misExpanded[37m(component.id)">
-         ╵                                       [32m~~~~~~~~~~[0m
-
-  Error occurs in the template of component ProductComponentsComponent.
-
-    src/app/features/product-components/component/product-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectOption' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-components/component/product-components.component.html:30:23:
-[37m      30 │               (click)="[32mselectOption[37m(component, option)"
-         ╵                        [32m~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component ProductComponentsComponent.
-
-    src/app/features/product-components/component/product-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggle' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-components/component/product-components.component.html:46:25:
-[37m      46 │               (p-click)="[32mtoggle[37m(component)"
-         ╵                          [32m~~~~~~[0m
-
-  Error occurs in the template of component ProductComponentsComponent.
-
-    src/app/features/product-components/component/product-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectedSummary' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-components/component/product-components.component.html:67:48:
-[37m      67 │ ...>Selecionado</small><b>{{ [32mselectedSummary[37m(component) }}</b></span>
-         ╵                              [32m~~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component ProductComponentsComponent.
-
-    src/app/features/product-components/component/product-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-components/component/product-components.component.html:71:44:
-[37m      71 │ ...    <div class="summary-options" *ngIf="[32misExpanded[37m(component.id)">
-         ╵                                            [32m~~~~~~~~~~[0m
-
-  Error occurs in the template of component ProductComponentsComponent.
-
-    src/app/features/product-components/component/product-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectOption' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-components/component/product-components.component.html:78:23:
-[37m      78 │               (click)="[32mselectOption[37m(component, option)"
-         ╵                        [32m~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component ProductComponentsComponent.
-
-    src/app/features/product-components/component/product-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleExpanded' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-components/component/product-components.component.html:91:61:
-[37m      91 │ ...utton" class="link-action" (click)="[32mtoggleExpanded[37m(component.id)">
-         ╵                                        [32m~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component ProductComponentsComponent.
-
-    src/app/features/product-components/component/product-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-components/component/product-components.component.html:92:15:
-[37m      92 │             {{ [32misExpanded[37m(component.id) ? 'Ocultar opções' : 'Ve...
-         ╵                [32m~~~~~~~~~~[0m
-
-  Error occurs in the template of component ProductComponentsComponent.
-
-    src/app/features/product-components/component/product-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggle' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-components/component/product-components.component.html:98:23:
-[37m      98 │             (p-click)="[32mtoggle[37m(component)"
-         ╵                        [32m~~~~~~[0m
-
-  Error occurs in the template of component ProductComponentsComponent.
-
-    src/app/features/product-components/component/product-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
 [39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:7:57:
-[37m      7 │ ...="button" class="card-head" (click)="[32mtoggleExpanded[37m(component.id)">
-        ╵                                         [32m~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectedSummary' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:13:18:
-[37m      13 │             <b>{{ [32mselectedSummary[37m(component) }}</b>
-         ╵                   [32m~~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:18:38:
-[37m      18 │         <div class="card-body" *ngIf="[32misExpanded[37m(component.id)">
-         ╵                                       [32m~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectOption' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:30:23:
-[37m      30 │               (click)="[32mselectOption[37m(component, option)"
-         ╵                        [32m~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggle' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:46:25:
-[37m      46 │               (p-click)="[32mtoggle[37m(component)"
-         ╵                          [32m~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectedSummary' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:67:48:
-[37m      67 │ ...>Selecionado</small><b>{{ [32mselectedSummary[37m(component) }}</b></span>
-         ╵                              [32m~~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:71:44:
-[37m      71 │ ...    <div class="summary-options" *ngIf="[32misExpanded[37m(component.id)">
-         ╵                                            [32m~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectOption' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:78:23:
-[37m      78 │               (click)="[32mselectOption[37m(component, option)"
-         ╵                        [32m~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:91:61:
-[37m      91 │ ...utton" class="link-action" (click)="[32mtoggleExpanded[37m(component.id)">
-         ╵                                        [32m~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:92:15:
-[37m      92 │             {{ [32misExpanded[37m(component.id) ? 'Ocultar opções' : 'Ve...
-         ╵                [32m~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggle' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:98:23:
-[37m      98 │             (p-click)="[32mtoggle[37m(component)"
-         ╵                        [32m~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:7:57:
-[37m      7 │ ...="button" class="card-head" (click)="[32mtoggleExpanded[37m(component.id)">
-        ╵                                         [32m~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectedSummary' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:13:18:
-[37m      13 │             <b>{{ [32mselectedSummary[37m(component) }}</b>
-         ╵                   [32m~~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:18:38:
-[37m      18 │         <div class="card-body" *ngIf="[32misExpanded[37m(component.id)">
-         ╵                                       [32m~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectOption' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:30:23:
-[37m      30 │               (click)="[32mselectOption[37m(component, option)"
-         ╵                        [32m~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggle' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:46:25:
-[37m      46 │               (p-click)="[32mtoggle[37m(component)"
-         ╵                          [32m~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectedSummary' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:67:48:
-[37m      67 │ ...>Selecionado</small><b>{{ [32mselectedSummary[37m(component) }}</b></span>
-         ╵                              [32m~~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:71:44:
-[37m      71 │ ...    <div class="summary-options" *ngIf="[32misExpanded[37m(component.id)">
-         ╵                                            [32m~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'selectOption' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:78:23:
-[37m      78 │               (click)="[32mselectOption[37m(component, option)"
-         ╵                        [32m~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:91:61:
-[37m      91 │ ...utton" class="link-action" (click)="[32mtoggleExpanded[37m(component.id)">
-         ╵                                        [32m~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'isExpanded' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:92:15:
-[37m      92 │             {{ [32misExpanded[37m(component.id) ? 'Ocultar opções' : 'Ve...
-         ╵                [32m~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggle' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:98:23:
-[37m      98 │             (p-click)="[32mtoggle[37m(component)"
-         ╵                        [32m~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
 [37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
         ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
 [37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
         ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
 [37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
         ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
 [37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
         ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
 [37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
         ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
 [37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
         ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
 [37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
         ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
 [37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
         ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
 [37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
@@ -2242,13 +1606,6 @@
     src/app/features/product-components/component/product-components.component.ts:25:15:
 [37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
 [1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'delete' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
@@ -2277,13 +1634,6 @@
          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
 [31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
@@ -2303,78 +1653,29 @@
 [37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
 [39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
 [37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
         ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
 [37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
         ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
 [37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
         ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
 [37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
@@ -2406,113 +1707,12 @@
 [37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
 [39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'formatCostInput' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:124:23:
-[37m      124 │               [value]="[32mformatCostInput[37m(option.costValue)"
-          ╵                        [32m~~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'onCostValueInput' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.html:125:23:
-[37m      125 │               (input)="[32monCostValueInput[37m($event, option)"
-          ╵                        [32m~~~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component PriceComponentsComponent.
-
-    src/app/features/price-components/component/price-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'formatCostInput' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-components/component/product-components.component.html:124:23:
-[37m      124 │               [value]="[32mformatCostInput[37m(option.costValue)"
-          ╵                        [32m~~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component ProductComponentsComponent.
-
-    src/app/features/product-components/component/product-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'onCostValueInput' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-components/component/product-components.component.html:125:23:
-[37m      125 │               (input)="[32monCostValueInput[37m($event, option)"
-          ╵                        [32m~~~~~~~~~~~~~~~~[0m
-
-  Error occurs in the template of component ProductComponentsComponent.
-
-    src/app/features/product-components/component/product-components.component.ts:25:15:
-[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
-         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
 [37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
         ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/price-components/component/price-components.component.css:1:8:
-[37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
-        ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
 [1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'viewMode' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
@@ -2539,13 +1739,6 @@
     src/app/features/product-components/component/product-components.component.ts:22:15:
 [37m      22 │   templateUrl: [32m'./product-components.component.html'[37m,
          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
 [1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'viewMode' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
@@ -2600,13 +1793,6 @@
          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
 [31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
@@ -2614,25 +1800,11 @@
         ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
 [37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
         ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
 [1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'formatCurrency' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
@@ -2687,13 +1859,6 @@
          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
 [31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
@@ -2701,31 +1866,10 @@
         ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "../../product-components/component/product-components.component.css"[0m [1m[35m[plugin angular-compiler][0m
 
     src/app/features/price-components/component/price-components.component.css:1:8:
 [37m      1 │ @import [32m'../../product-components/component/product-components.comp[37m...
         ╵         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
-
-[39m[22m
-[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
-
-    src/app/features/product-tree/product-tree.routes.ts:6:32:
-[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
-        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m

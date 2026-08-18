@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
-import { PoModalComponent, PoPageAction, PoPageSlideComponent, PoSelectOption } from '@po-ui/ng-components';
+import { Component, ViewChild, inject } from '@angular/core';
+import { PoModalComponent, PoNotificationService, PoPageAction, PoPageSlideComponent, PoSelectOption } from '@po-ui/ng-components';
 import {
   CatalogComponentType,
   ProductCatalogService,
@@ -28,16 +28,18 @@ export class ProductComponentsComponent {
   @ViewChild('componentModal') componentModal!: PoModalComponent;
   @ViewChild('filtersSlide') filtersSlide!: PoPageSlideComponent;
 
+  private poNotification = inject(PoNotificationService);
+
   searchTerm = '';
   groupFilter = '';
   statusFilter: StatusFilter = 'all';
   filterDraft: ComponentFilterDraft = this.createFilterDraft();
   rows: Array<ProductComponent> = [];
-  expanded = new Set<string>();
   editModel: ProductComponent = this.catalog.createEmptyComponent('product');
   optionDraft = '';
   optionRows: Array<ProductComponentOption> = [];
   statusMessage = '';
+  isEditingComponent = false;
 
   readonly typeOptions: Array<PoSelectOption> = [
     { label: 'Número', value: 'number' },
@@ -52,10 +54,12 @@ export class ProductComponentsComponent {
     { label: 'Inativos', value: 'inactive' },
   ];
   groupOptions: Array<PoSelectOption> = [];
-  readonly pageActions: Array<PoPageAction> = [
-    { label: 'Filtros', icon: 'an an-funnel', action: () => this.openFilters() },
-    { label: 'Novo componente', icon: 'an an-plus', action: () => this.newComponent() },
-  ];
+  get pageActions(): Array<PoPageAction> {
+    return [
+      { label: 'Filtros', icon: 'an an-funnel', action: () => this.openFilters() },
+      { label: 'Novo componente', icon: 'an an-plus', action: () => this.newComponent() },
+    ];
+  }
 
   constructor(private readonly catalog: ProductCatalogService) {
     this.refresh();
@@ -65,6 +69,7 @@ export class ProductComponentsComponent {
     this.editModel = this.catalog.createEmptyComponent('product');
     this.optionDraft = '';
     this.optionRows = [];
+    this.isEditingComponent = false;
     this.componentModal.open();
   }
 
@@ -97,6 +102,7 @@ export class ProductComponentsComponent {
     };
     this.optionDraft = this.optionsToDraft(this.editModel.options);
     this.optionRows = this.cloneOptions(this.editModel.options);
+    this.isEditingComponent = true;
     this.componentModal.open();
   }
 
@@ -109,40 +115,29 @@ export class ProductComponentsComponent {
     this.refresh();
   }
 
-  toggle(component: ProductComponent): void {
-    this.catalog.setComponentActive(component.id, !component.active);
-    this.statusMessage = component.active ? 'Componente inativado.' : 'Componente ativado.';
+  deleteComponent(): void {
+    if (!this.isEditingComponent || !this.editModel.id) {
+      return;
+    }
+
+    if (this.catalog.isComponentLinked(this.editModel.id, 'product')) {
+      this.poNotification.warning('Não é possível excluir. Este componente está vinculado a um produto na árvore da família.');
+      return;
+    }
+
+    this.catalog.removeComponent(this.editModel.id);
+    this.statusMessage = 'Componente excluido localmente.';
+    this.componentModal.close();
     this.refresh();
   }
 
-  toggleExpanded(componentId: string): void {
-    if (this.expanded.has(componentId)) {
-      this.expanded.delete(componentId);
-    } else {
-      this.expanded.add(componentId);
-    }
-  }
-
-  isExpanded(componentId: string): boolean {
-    return this.expanded.has(componentId);
-  }
-
-  selectOption(component: ProductComponent, option: ProductComponentOption): void {
-    this.catalog.updateOptionSelection('product', component.id, option.code, !option.selected);
-    this.refresh();
-  }
-
-  selectedSummary(component: ProductComponent): string {
-    const selected = component.options.filter((option) => option.selected);
-    if (!selected.length) {
-      return '--';
-    }
-
-    if (selected.length > 1) {
-      return `${selected.length} opções`;
-    }
-
-    return this.formatValue(selected[0].calculatedValue);
+  activeCostValue(component: ProductComponent): number {
+    return component.options
+      .filter((option) => option.selected)
+      .reduce((sum, option) => {
+        const costValue = Number(option.costValue);
+        return sum + (Number.isFinite(costValue) ? costValue : 0);
+      }, 0);
   }
 
   get optionsSummary(): string {
@@ -198,11 +193,24 @@ export class ProductComponentsComponent {
   }
 
   formatValue(value: number): string {
-    if (Math.abs(value) > 0 && Math.abs(value) < 1) {
-      return value.toLocaleString('pt-BR', { style: 'percent', maximumFractionDigits: 3 });
-    }
-
     return value.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+  }
+
+  formatCurrency(value: number): string {
+    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  formatCostInput(value: number): string {
+    return this.formatCurrency(value).replace(/\s/g, ' ');
+  }
+
+  onCostValueInput(event: Event, option: ProductComponentOption): void {
+    const input = event.target as HTMLInputElement;
+    const digits = input.value.replace(/\D/g, '');
+    const costValue = digits ? Number(digits) / 100 : 0;
+
+    option.costValue = costValue;
+    input.value = this.formatCostInput(costValue);
   }
 
   private refresh(): void {

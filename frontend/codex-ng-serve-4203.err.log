@@ -1,0 +1,208 @@
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'delete' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:140:94:
+[37m      140 │ ..."an an-trash" p-label="Excluir" (p-click)="[32mdelete[37m()"></po-button>
+          ╵                                               [32m~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'delete' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:140:94:
+[37m      140 │ ..."an an-trash" p-label="Excluir" (p-click)="[32mdelete[37m()"></po-button>
+          ╵                                               [32m~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'delete' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:140:94:
+[37m      140 │ ..."an an-trash" p-label="Excluir" (p-click)="[32mdelete[37m()"></po-button>
+          ╵                                               [32m~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'delete' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:140:94:
+[37m      140 │ ..."an an-trash" p-label="Excluir" (p-click)="[32mdelete[37m()"></po-button>
+          ╵                                               [32m~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'formatCostInput' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:124:23:
+[37m      124 │               [value]="[32mformatCostInput[37m(option.costValue)"
+          ╵                        [32m~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'onCostValueInput' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:125:23:
+[37m      125 │               (input)="[32monCostValueInput[37m($event, option)"
+          ╵                        [32m~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'viewMode' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:5:43:
+[37m      5 │     <section class="component-list" *ngIf="[32mviewMode[37m === 'list'">
+        ╵                                            [32m~~~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:22:15:
+[37m      22 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'viewMode' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:19:48:
+[37m      19 │ ...<section class="component-card-grid" *ngIf="[32mviewMode[37m === 'cards'">
+         ╵                                                [32m~~~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:22:15:
+[37m      22 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'viewMode' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:5:43:
+[37m      5 │     <section class="component-list" *ngIf="[32mviewMode[37m === 'list'">
+        ╵                                            [32m~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:22:15:
+[37m      22 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'viewMode' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:19:48:
+[37m      19 │ ...<section class="component-card-grid" *ngIf="[32mviewMode[37m === 'cards'">
+         ╵                                                [32m~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:22:15:
+[37m      22 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'viewMode' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:5:43:
+[37m      5 │     <section class="component-list" *ngIf="[32mviewMode[37m === 'list'">
+        ╵                                            [32m~~~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:22:15:
+[37m      22 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'viewMode' does not exist on type 'ProductComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-components/component/product-components.component.html:19:48:
+[37m      19 │ ...<section class="component-card-grid" *ngIf="[32mviewMode[37m === 'cards'">
+         ╵                                                [32m~~~~~~~~[0m
+
+  Error occurs in the template of component ProductComponentsComponent.
+
+    src/app/features/product-components/component/product-components.component.ts:22:15:
+[37m      22 │   templateUrl: [32m'./product-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'formatCurrency' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:17:51:
+[37m      17 │ ...or de Custo</small><b>{{ [32mformatCurrency[37m(activeCostValue(compone...
+         ╵                             [32m~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:22:15:
+[37m      22 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'activeCostValue' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:17:66:
+[37m      17 │ ...all><b>{{ formatCurrency([32mactiveCostValue[37m(component)) }}</b></span>
+         ╵                             [32m~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:22:15:
+[37m      22 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'formatCostInput' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:109:23:
+[37m      109 │               [value]="[32mformatCostInput[37m(option.costValue)"
+          ╵                        [32m~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:22:15:
+[37m      22 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'onCostValueInput' does not exist on type 'PriceComponentsComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/price-components/component/price-components.component.html:110:23:
+[37m      110 │               (input)="[32monCostValueInput[37m($event, option)"
+          ╵                        [32m~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component PriceComponentsComponent.
+
+    src/app/features/price-components/component/price-components.component.ts:22:15:
+[37m      22 │   templateUrl: [32m'./price-components.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m

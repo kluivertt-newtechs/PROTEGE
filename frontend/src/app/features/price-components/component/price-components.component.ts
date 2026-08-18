@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
-import { PoModalComponent, PoPageAction, PoPageSlideComponent, PoSelectOption } from '@po-ui/ng-components';
+import { Component, ViewChild, inject } from '@angular/core';
+import { PoModalComponent, PoNotificationService, PoPageAction, PoPageSlideComponent, PoSelectOption } from '@po-ui/ng-components';
 import {
   CatalogComponentType,
   PriceComponent,
@@ -28,16 +28,18 @@ export class PriceComponentsComponent {
   @ViewChild('componentModal') componentModal!: PoModalComponent;
   @ViewChild('filtersSlide') filtersSlide!: PoPageSlideComponent;
 
+  private poNotification = inject(PoNotificationService);
+
   searchTerm = '';
   groupFilter = '';
   statusFilter: StatusFilter = 'all';
   filterDraft: ComponentFilterDraft = this.createFilterDraft();
   rows: Array<PriceComponent> = [];
-  expanded = new Set<string>();
   editModel: PriceComponent = this.catalog.createEmptyComponent('price');
   optionDraft = '';
   optionRows: Array<ProductComponentOption> = [];
   statusMessage = '';
+  isEditingComponent = false;
 
   readonly typeOptions: Array<PoSelectOption> = [
     { label: 'Taxa', value: 'rate' },
@@ -50,10 +52,12 @@ export class PriceComponentsComponent {
     { label: 'Inativos', value: 'inactive' },
   ];
   groupOptions: Array<PoSelectOption> = [];
-  readonly pageActions: Array<PoPageAction> = [
-    { label: 'Filtros', icon: 'an an-funnel', action: () => this.openFilters() },
-    { label: 'Novo componente', icon: 'an an-plus', action: () => this.newComponent() },
-  ];
+  get pageActions(): Array<PoPageAction> {
+    return [
+      { label: 'Filtros', icon: 'an an-funnel', action: () => this.openFilters() },
+      { label: 'Novo componente', icon: 'an an-plus', action: () => this.newComponent() },
+    ];
+  }
 
   constructor(private readonly catalog: ProductCatalogService) {
     this.refresh();
@@ -63,6 +67,7 @@ export class PriceComponentsComponent {
     this.editModel = this.catalog.createEmptyComponent('price');
     this.optionDraft = '';
     this.optionRows = [];
+    this.isEditingComponent = false;
     this.componentModal.open();
   }
 
@@ -92,6 +97,7 @@ export class PriceComponentsComponent {
     this.editModel = { ...component, options: component.options.map((option) => ({ ...option })) };
     this.optionDraft = this.optionsToDraft(this.editModel.options);
     this.optionRows = this.cloneOptions(this.editModel.options);
+    this.isEditingComponent = true;
     this.componentModal.open();
   }
 
@@ -104,36 +110,29 @@ export class PriceComponentsComponent {
     this.refresh();
   }
 
-  toggle(component: PriceComponent): void {
-    this.catalog.setPriceComponentActive(component.id, !component.active);
-    this.statusMessage = component.active ? 'Componente inativado.' : 'Componente ativado.';
+  deleteComponent(): void {
+    if (!this.isEditingComponent || !this.editModel.id) {
+      return;
+    }
+
+    if (this.catalog.isComponentLinked(this.editModel.id, 'price')) {
+      this.poNotification.warning('Não é possível excluir. Este componente está vinculado a um produto na árvore da família.');
+      return;
+    }
+
+    this.catalog.removePriceComponent(this.editModel.id);
+    this.statusMessage = 'Componente de preco excluido localmente.';
+    this.componentModal.close();
     this.refresh();
   }
 
-  toggleExpanded(componentId: string): void {
-    if (this.expanded.has(componentId)) {
-      this.expanded.delete(componentId);
-    } else {
-      this.expanded.add(componentId);
-    }
-  }
-
-  isExpanded(componentId: string): boolean {
-    return this.expanded.has(componentId);
-  }
-
-  selectOption(component: PriceComponent, option: ProductComponentOption): void {
-    this.catalog.updateOptionSelection('price', component.id, option.code, !option.selected);
-    this.refresh();
-  }
-
-  selectedSummary(component: PriceComponent): string {
-    const selected = component.options.filter((option) => option.selected);
-    if (!selected.length) {
-      return '--';
-    }
-
-    return selected.length > 1 ? `${selected.length} opções` : this.formatPercent(selected[0].calculatedValue);
+  activePercentValue(component: PriceComponent): number {
+    return component.options
+      .filter((option) => option.selected)
+      .reduce((sum, option) => {
+        const calculatedValue = Number(option.calculatedValue);
+        return sum + (Number.isFinite(calculatedValue) ? calculatedValue : 0);
+      }, 0);
   }
 
   get optionsSummary(): string {
@@ -191,6 +190,10 @@ export class PriceComponentsComponent {
   formatPercent(value: number): string {
     const decimal = Math.abs(value) > 1 ? value / 100 : value;
     return decimal.toLocaleString('pt-BR', { style: 'percent', minimumFractionDigits: 2, maximumFractionDigits: 3 });
+  }
+
+  formatValue(value: number): string {
+    return value.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
   }
 
   private refresh(): void {

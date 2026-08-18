@@ -1,51 +1,20 @@
 <po-page-default p-title="Componentes de Preço" [p-actions]="pageActions">
   <div class="catalog-page">
     <p class="status-message" *ngIf="statusMessage">{{ statusMessage }}</p>
+    <section class="component-card-grid">
+      <article class="summary-card" *ngFor="let component of rows" [class.inactive]="!component.active">
+        <header class="summary-head">
+          <strong>{{ component.description }}</strong>
+          <span class="status-tag" [class.inactive]="!component.active">{{ component.active ? 'Ativo' : 'Inativo' }}</span>
+          <button type="button" class="edit-button" (click)="edit(component)" aria-label="Editar componente">
+            <span class="an an-pencil-simple" aria-hidden="true"></span>
+          </button>
+        </header>
 
-    <section class="component-grid">
-      <article class="component-card" *ngFor="let component of rows" [class.inactive]="!component.active">
-        <button type="button" class="card-head" (click)="toggleExpanded(component.id)">
-          <span>
-            <small>{{ component.code }} · {{ component.group }}</small>
-            <strong>{{ component.description }}</strong>
-          </span>
-          <span class="head-meta">
-            <b>{{ selectedSummary(component) }}</b>
-            <em>{{ component.status }}</em>
-          </span>
-        </button>
-
-        <div class="card-body" *ngIf="isExpanded(component.id)">
-          <div class="meta-grid">
-            <span><small>Variável APV</small><b>{{ component.varAPV }}</b></span>
-            <span><small>Tipo</small><b>{{ component.type }}</b></span>
-          </div>
-
-          <div class="option-list" *ngIf="component.options.length">
-            <button
-              type="button"
-              class="option-row"
-              *ngFor="let option of component.options"
-              [class.selected]="option.selected"
-              (click)="selectOption(component, option)"
-            >
-              <span>
-                <strong>{{ option.code }}</strong>
-                <small>{{ option.description }}</small>
-              </span>
-              <b>{{ formatPercent(option.calculatedValue) }}</b>
-            </button>
-          </div>
-          <p class="empty-state" *ngIf="!component.options.length">Componente sem opções predefinidas.</p>
-
-          <div class="card-actions">
-            <po-button p-icon="an an-pencil-simple" p-label="Editar" (p-click)="edit(component)"></po-button>
-            <po-button
-              p-icon="an an-power"
-              [p-label]="component.active ? 'Inativar' : 'Ativar'"
-              (p-click)="toggle(component)"
-            ></po-button>
-          </div>
+        <div class="summary-meta">
+          <span><small>Código</small><b>{{ component.code }}</b></span>
+          <span><small>Opções</small><b>{{ component.options.length }}</b></span>
+          <span><small>Percentual</small><b>{{ formatPercent(activePercentValue(component)) }}</b></span>
         </div>
       </article>
       <p class="empty-state" *ngIf="!rows.length">Nenhum componente encontrado.</p>
@@ -115,12 +84,11 @@
 
         <p class="warning-message" *ngIf="showSelectWithoutOptionsWarning">Componentes do tipo seleção precisam de pelo menos uma opção.</p>
 
-        <div class="option-editor" *ngIf="optionRows.length">
+        <div class="option-editor price-option-editor" *ngIf="optionRows.length">
           <div class="option-editor-head">
             <span>Código</span>
             <span>Descrição</span>
             <span>Percentual/taxa</span>
-            <span>Valor custo</span>
             <span>Padrão</span>
             <span></span>
           </div>
@@ -134,7 +102,6 @@
               [name]="'optionCalculated' + index"
               aria-label="Percentual ou taxa"
             />
-            <input type="number" [(ngModel)]="option.costValue" [name]="'optionCost' + index" aria-label="Valor custo" />
             <button
               type="button"
               class="default-toggle"
@@ -154,8 +121,11 @@
     </div>
 
     <po-modal-footer>
+      <po-button *ngIf="isEditingComponent" p-icon="an an-trash" p-label="Excluir" (p-click)="deleteComponent()"></po-button>
       <po-button p-label="Cancelar" (p-click)="componentModal.close()"></po-button>
       <po-button p-kind="primary" p-label="Salvar" (p-click)="save()"></po-button>
     </po-modal-footer>
   </po-modal>
 </po-page-default>
+
+

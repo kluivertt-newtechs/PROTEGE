@@ -1,1 +1,18 @@
 @import '../../product-components/component/product-components.component.css';
+
+.price-option-editor .option-editor-head,
+.price-option-editor .option-editor-row {
+  grid-template-columns: minmax(92px, .75fr) minmax(160px, 1.3fr) minmax(112px, .8fr) 78px 40px;
+}
+
+@media (max-width: 900px) {
+  .price-option-editor .option-editor-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .price-option-editor .option-editor-row {
+    grid-template-columns: 1fr;
+  }
+}

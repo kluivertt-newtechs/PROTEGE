@@ -60,9 +60,10 @@ export interface ProductCatalogState {
   selectedProductId: string;
 }
 
-const STATE_KEY = 'protege.productCatalog.v4';
-const VERSION = 4;
+const STATE_KEY = 'protege.productCatalog.v5';
+const VERSION = 5;
 const LEGACY_KEYS = [
+  'protege.productCatalog.v4',
   'protege.productCatalog.v3',
   'protege.productCatalog.components',
   'protege.productCatalog.tree',
@@ -220,47 +221,6 @@ const SEED_PRODUCT_COMPONENTS: Array<ProductComponent> = [
     [20, 'CTV_01', '0,10 por mil s/ montante', 0.001, false],
     [30, 'CTV_NEG', 'Negociado / a definir', 0, false],
   ]),
-  rt('rt13', 'TR013', 'Tipo de Custo Processamento (NUM)', 'PROC', 'QTD_MILH * CUSTO_PROC', 'Processamento', [
-    [10, 'NUM_PERC', 'Percentual sobre valor processado', 0.0015, true],
-    [20, 'NUM_FIXO', 'Fixo por numerario - por malote', 6.059, false],
-    [30, 'NUM_COMBO', 'Combinado - fixo + percentual', 0, false],
-  ]),
-  rt('rt14', 'TR014', 'Prazo de Floating (dias)', 'FLOATING', 'MONTANTE * SELIC * FLOATING', 'PayCash', [
-    [10, 'D3', 'D+3 - Credito em 3 dias uteis', 3, true],
-    [20, 'D2', 'D+2 - Credito em 2 dias uteis', 2, false],
-    [30, 'D1', 'D+1 - Credito em 1 dia util', 1, false],
-    [40, 'D0', 'D+0 - Bancario mesmo dia', 0, false],
-  ]),
-  lib('s01', 'PONTO_ATEND', 'Nome do ponto de atendimento', 'text', '', 'Ponto de Atendimento'),
-  lib('s02', 'CIDADE_UF', 'Cidade / UF do ponto', 'text', '', 'Ponto de Atendimento'),
-  lib('s03', 'BASE_OPERAC', 'Base operacional de origem', 'select', '', 'Ponto de Atendimento', 'BASE_OP'),
-  lib('s04', 'ISS_COBRADO', 'ISS cobrado a parte do cliente?', 'boolean', '', 'Ponto de Atendimento'),
-  lib('s05', 'ATEND_ATUAL', 'Atendemos o ponto atualmente?', 'boolean', '', 'Ponto de Atendimento'),
-  lib('s06', 'COND_OPER', 'Condicao operacional CPE / SOP', 'select', '', 'Operacional', 'CPE_SOP'),
-  lib('s07', 'TIPO_SERVICO', 'Tipo de serviço desejado', 'select', '', 'Operacional', 'COFRE_AT'),
-  lib('s08', 'FREQ_COLETA', 'Frequencia de coleta desejada', 'select', '', 'Operacional', 'FREQ'),
-  lib('s09', 'VOL_TRANS_AT', 'Volume transportado atual (R$)', 'number', 'R$', 'Operacional'),
-  lib('s10', 'VOL_TRANS_PR', 'Volume transportado projetado (R$)', 'number', 'R$', 'Operacional', 'MONTANTE'),
-  lib('s11', 'QTD_EMB_ATUAL', 'Quantidade de embarques atual / mes', 'number', 'un.', 'Operacional'),
-  lib('s12', 'QTD_EMB_PROJ', 'Quantidade de embarques projetados / mes', 'number', 'un.', 'Operacional', 'quantity'),
-  lib('s13', 'CUSTO_EMB_AT', 'Custo embarque atual (R$/emb)', 'number', 'R$', 'Operacional', 'costBase'),
-  lib('s14', 'PRECO_EMB_AT', 'Preço embarque atual (R$/emb)', 'number', 'R$', 'Operacional'),
-  lib('s15', 'MARGEM_DESEJ', 'Margem de lucro desejada', 'select', '', 'Operacional', 'targetMarginRate'),
-  lib('s16', 'POSSUI_COFRE', 'Cliente possui cofre atualmente?', 'boolean', '', 'Cofre Inteligente'),
-  lib('s17', 'MODELO_COF_AT', 'Modelo de cofre atual', 'text', '', 'Cofre Inteligente'),
-  lib('s18', 'PRECO_COF_AT', 'Preço cofre atual (R$/mes)', 'number', 'R$', 'Cofre Inteligente'),
-  lib('s19', 'SEG_COF_AT', 'Seguro cofre atual (R$/mes)', 'number', 'R$', 'Cofre Inteligente'),
-  lib('s20', 'MODELO_COF_PR', 'Modelo cofre projetado PayCash', 'select', '', 'Cofre Inteligente', 'COFRE_PR'),
-  lib('s21', 'SEG_COF_PR', 'Seguro cofre projetado (R$/mes)', 'number', 'R$', 'Cofre Inteligente'),
-  lib('s22', 'TX_ADVALOREM', 'Taxa advalorem sobre o montante', 'select', '', 'Advalorem e Custodia', 'ADVALOREM'),
-  lib('s23', 'MONTANTE_CST', 'Montante custodiado (R$)', 'number', 'R$', 'Advalorem e Custodia'),
-  lib('s24', 'TX_CUSTODIA', 'Taxa de custodia sobre montante', 'select', '', 'Advalorem e Custodia', 'CUSTODIA'),
-  lib('s25', 'PRECO_MILH', 'Preço por milheiro processado (R$/mil)', 'number', 'R$/mil', 'Processamento'),
-  lib('s26', 'QTD_MILHEIROS', 'Quantidade de milheiros processados / mes', 'number', 'mil', 'Processamento'),
-  lib('s27', 'CUSTO_PROC', 'Custo de processamento atual (R$/mil)', 'number', 'R$/mil', 'Processamento'),
-  lib('s28', 'TIPO_NUM', 'Tipo de custo de processamento (NUM)', 'select', '', 'Processamento', 'PROC'),
-  lib('s29', 'TAXA_D0', 'Taxa de antecipação D0 - bancarização', 'select', '', 'D0 e Bancarização', 'MARGEM_D0'),
-  lib('s30', 'PRAZO_FLOAT', 'Prazo de floating (dias)', 'select', '', 'D0 e Bancarização', 'FLOATING'),
 ];
 
 const SEED_PRICE_COMPONENTS: Array<PriceComponent> = [
@@ -325,41 +285,26 @@ const composition = (productId: string, productComponentIds: Array<string>): Pro
 });
 
 const COFRE_INTELIGENTE_COMPONENT_IDS = [
-  's01',
-  's02',
-  's03',
-  's06',
-  's07',
-  's08',
-  's10',
-  's12',
-  's13',
-  's15',
-  's16',
-  's17',
-  's18',
-  's19',
+  'rt01',
+  'rt02',
+  'rt03',
+  'rt04',
+  'rt06',
+  'rt09',
 ];
-const TRANSPORTE_COMPONENT_IDS = ['s01', 's02', 's03', 's06', 's08', 's10', 's11', 's12', 's13', 's14', 's15'];
-const PROCESSAMENTO_COMPONENT_IDS = ['s01', 's02', 's03', 's15', 's25', 's26', 's27', 's28'];
-const CUSTODIA_COMPONENT_IDS = ['s01', 's02', 's03', 's10', 's15', 's22', 's23', 's24'];
+const TRANSPORTE_COMPONENT_IDS = ['rt01', 'rt03', 'rt04', 'rt06', 'rt07', 'rt08'];
+const PROCESSAMENTO_COMPONENT_IDS = ['rt04', 'rt07', 'rt08'];
+const CUSTODIA_COMPONENT_IDS = ['rt04', 'rt09', 'rt11', 'rt12'];
 const PAYCASH_COMPONENT_IDS = [
-  's01',
-  's02',
-  's03',
-  's06',
-  's08',
-  's10',
-  's12',
-  's13',
-  's15',
-  's20',
-  's21',
-  's22',
-  's23',
-  's24',
-  's29',
-  's30',
+  'rt01',
+  'rt02',
+  'rt03',
+  'rt04',
+  'rt05',
+  'rt08',
+  'rt10',
+  'rt11',
+  'rt12',
 ];
 
 const SEED_COMPOSITIONS: Array<ProductComposition> = [
@@ -396,6 +341,22 @@ export class ProductCatalogService {
 
   savePriceComponent(component: PriceComponent): PriceComponent {
     return this.saveByKind('price', component) as PriceComponent;
+  }
+
+  removeComponent(componentId: string): void {
+    this.removeByKind('product', componentId);
+  }
+
+  removePriceComponent(componentId: string): void {
+    this.removeByKind('price', componentId);
+  }
+
+  isComponentLinked(componentId: string, kind: ComponentKind): boolean {
+    return this.state.compositions.some((composition) =>
+      kind === 'price'
+        ? composition.priceComponentIds.includes(componentId)
+        : composition.productComponentIds.includes(componentId),
+    );
   }
 
   setComponentActive(componentId: string, active: boolean): void {
@@ -712,6 +673,22 @@ export class ProductCatalogService {
     const components = this.collection(kind).map((component) =>
       component.id === componentId ? this.normalizeComponent({ ...component, active, status: active ? 'Ativo' : 'Inativo' }) : component,
     );
+    this.replaceCollection(kind, components);
+  }
+
+  private removeByKind(kind: ComponentKind, componentId: string): void {
+    const components = this.collection(kind).filter((component) => component.id !== componentId);
+    const compositions = this.state.compositions.map((composition) => kind === 'price'
+      ? {
+          ...composition,
+          priceComponentIds: composition.priceComponentIds.filter((id) => id !== componentId),
+        }
+      : {
+          ...composition,
+          productComponentIds: composition.productComponentIds.filter((id) => id !== componentId),
+        });
+
+    this.state = { ...this.state, compositions };
     this.replaceCollection(kind, components);
   }
 
