@@ -1,21 +1,24 @@
 .simulation-shell {
   color: #1f2a37;
   display: grid;
-  gap: 18px;
-  padding: 18px 0 28px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  padding: 16px 0 30px;
 }
 
 .simulation-header {
   align-items: center;
-  background: #fff;
-  border: 1px solid #d7dde3;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbfd 100%);
+  border: 1px solid #d9e2e8;
   border-radius: 8px;
-  padding: 16px;
+  box-shadow: 0 6px 18px rgba(15, 47, 74, 0.06);
+  grid-column: 1 / -1;
+  padding: 18px 20px;
 }
 
 .product-summary {
   display: grid;
-  gap: 6px;
+  gap: 8px;
   min-width: 0;
 }
 
@@ -31,8 +34,10 @@
 }
 
 .summary-kicker {
+  color: #0b6f63;
   font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -46,31 +51,42 @@
 .summary-counters {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 7px;
 }
 
 .summary-counters span {
-  background: #eef4f8;
-  border: 1px solid #d7e3ea;
+  background: #eef6f7;
+  border: 1px solid #d5e5e7;
   border-radius: 999px;
-  color: #29465c;
+  color: #24515b;
   font-size: 12px;
   line-height: 1;
-  padding: 7px 10px;
+  padding: 6px 10px;
 }
 
 .decision-grid {
-  align-items: start;
-  display: grid;
-  gap: 18px;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+  display: contents;
 }
 
 .input-column,
 .secondary-grid {
   display: grid;
-  gap: 18px;
+  gap: 20px;
   min-width: 0;
+}
+
+.input-column {
+  grid-column: 1;
+  order: 2;
+}
+
+.secondary-grid {
+  display: contents;
+}
+
+.price-components-panel {
+  grid-column: 2;
+  order: 3;
 }
 
 .component-section,
@@ -79,15 +95,15 @@
 .empty-panel,
 .result-panel {
   background: #fff;
-  border: 1px solid #d7dde3;
+  border: 1px solid #dce3e9;
   border-radius: 8px;
-  box-shadow: 0 1px 2px rgba(31, 42, 55, 0.04);
+  box-shadow: 0 8px 22px rgba(31, 42, 55, 0.05);
 }
 
 .component-section,
 .price-components-panel,
 .empty-panel {
-  padding: 16px;
+  padding: 16px 18px 18px;
 }
 
 .empty-panel {
@@ -110,19 +126,27 @@
   display: flex;
   gap: 12px;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eef2f5;
 }
 
 .section-heading h2 {
   color: #0f2f4a;
-  font-size: 17px;
+  font-size: 16px;
+  font-weight: 700;
   line-height: 1.25;
   margin: 0;
 }
 
 .section-heading span {
+  background: #f3f7f9;
+  border: 1px solid #e1e9ee;
+  border-radius: 999px;
   flex: 0 0 auto;
   font-size: 12px;
+  line-height: 1;
+  padding: 5px 9px;
 }
 
 .component-grid {
@@ -208,21 +232,22 @@
 }
 
 .result-column {
-  position: sticky;
-  top: 16px;
+  grid-column: 1 / -1;
+  order: 1;
+  position: static;
 }
 
 .result-panel {
-  border-color: #b8cbd7;
+  border-color: #c5d8e2;
   overflow: hidden;
 }
 
 .result-heading {
-  background: #0f2f4a;
+  background: linear-gradient(135deg, #0f2f4a 0%, #0b5c88 100%);
   color: #fff;
   display: grid;
   gap: 6px;
-  padding: 18px;
+  padding: 18px 20px;
 }
 
 .result-heading span {
@@ -231,32 +256,31 @@
 }
 
 .result-heading strong {
-  font-size: 32px;
+  font-size: 30px;
   line-height: 1.1;
   overflow-wrap: anywhere;
 }
 
 .result-metrics {
   display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  padding: 14px;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding: 12px;
 }
 
 .metric {
-  background: #f7fafc;
-  border: 1px solid #dce4ea;
+  background: #f8fafb;
+  border: 1px solid #e1e8ed;
   border-radius: 8px;
   display: grid;
-  gap: 4px;
-  min-height: 78px;
-  padding: 12px;
+  gap: 3px;
+  min-height: 68px;
+  padding: 10px;
 }
 
 .metric.featured {
   background: #eef7f6;
   border-color: #b9d9d4;
-  grid-column: 1 / -1;
 }
 
 .metric.muted {
@@ -265,14 +289,14 @@
 
 .metric strong {
   color: #0f2f4a;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.2;
   overflow-wrap: anywhere;
 }
 
 .metric.featured strong {
   color: #07594f;
-  font-size: 24px;
+  font-size: 22px;
 }
 
 .warning {
@@ -289,15 +313,22 @@
 
 .price-list {
   display: grid;
-  gap: 12px;
+  gap: 10px;
 }
 
 .price-row {
-  border: 1px solid #e1e6eb;
+  background: #fbfcfd;
+  border: 1px solid #e2e8ed;
   border-radius: 8px;
   display: grid;
   gap: 12px;
   padding: 12px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.price-row:hover {
+  border-color: #cbd9e2;
+  box-shadow: 0 4px 12px rgba(31, 42, 55, 0.05);
 }
 
 .price-row-title {
@@ -313,7 +344,7 @@
 
 .product-components-list,
 .pricing-components-list {
-  gap: 8px;
+  gap: 7px;
 }
 
 .product-components-list .price-row,
@@ -321,7 +352,7 @@
   align-items: center;
   gap: 8px;
   grid-template-columns: minmax(0, 1fr) auto;
-  padding: 8px 10px;
+  padding: 7px 9px;
 }
 
 .product-components-list .price-row-title,
@@ -345,12 +376,12 @@
   align-items: stretch;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 7px;
 }
 
 .segmented-options button {
   background: #fff;
-  border: 1px solid #cfd8df;
+  border: 1px solid #d2dce3;
   border-radius: 8px;
   color: #263442;
   cursor: pointer;
@@ -366,6 +397,7 @@
   font-size: 12px;
   font-weight: 700;
   line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 .segmented-options button small {
@@ -376,6 +408,7 @@
 .segmented-options button.selected {
   background: #0b5c88;
   border-color: #0b5c88;
+  box-shadow: 0 3px 10px rgba(11, 92, 136, 0.18);
   color: #fff;
 }
 
@@ -389,16 +422,16 @@
 
 .product-components-list .segmented-options,
 .pricing-components-list .segmented-options {
-  gap: 6px;
+  gap: 5px;
   justify-content: flex-end;
 }
 
 .product-components-list .segmented-options button,
 .pricing-components-list .segmented-options button {
-  border-color: #d8e0e6;
-  min-height: 34px;
+  border-color: #dbe3e9;
+  min-height: 32px;
   min-width: 108px;
-  padding: 5px 8px;
+  padding: 4px 8px;
 }
 
 .product-components-list .segmented-options button span,
@@ -417,16 +450,19 @@
 
 .memory-panel {
   align-self: start;
+  grid-column: 1 / -1;
+  order: 4;
   overflow: hidden;
 }
 
 .memory-panel summary {
   align-items: center;
+  background: #fbfcfd;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   list-style: none;
-  padding: 14px 16px;
+  padding: 14px 18px;
 }
 
 .memory-panel summary::-webkit-details-marker {
@@ -454,18 +490,19 @@
 .memory-list {
   border-top: 1px solid #e1e6eb;
   display: grid;
-  gap: 8px;
-  padding: 12px;
+  gap: 6px;
+  padding: 10px 12px 12px;
 }
 
 .memory-row {
-  align-items: start;
-  border: 1px solid #e1e6eb;
-  border-radius: 8px;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e3e9ee;
+  border-radius: 6px;
   display: grid;
-  gap: 10px;
-  grid-template-columns: minmax(0, 1fr) auto auto;
-  padding: 10px;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) minmax(82px, auto) minmax(110px, auto);
+  padding: 8px 10px;
 }
 
 .memory-row div {
@@ -493,9 +530,16 @@
   background: #edf7f2;
   border-radius: 999px;
   color: #136c45;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  padding: 4px 8px;
+  padding: 4px 7px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.memory-row > b {
+  color: #0f2f4a;
+  text-align: right;
   white-space: nowrap;
 }
 
@@ -524,20 +568,30 @@
 }
 
 @media (max-width: 1080px) {
+  .simulation-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .input-column,
+  .price-components-panel,
+  .result-column,
+  .memory-panel {
+    grid-column: 1;
+  }
+
   .component-grid,
   .secondary-grid {
     grid-template-columns: 1fr;
+  }
+
+  .result-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 860px) {
   .decision-grid {
     grid-template-columns: 1fr;
-  }
-
-  .result-column {
-    order: -1;
-    position: static;
   }
 
   .result-metrics {
