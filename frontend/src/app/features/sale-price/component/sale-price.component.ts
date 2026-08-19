@@ -189,7 +189,7 @@ export class SalePriceComponent {
       { label: 'Preço líquido', value: this.formatCurrency(this.resultValues['netPrice'] || 0) },
       { label: 'Impostos', value: this.formatCurrency(this.resultValues['taxes'] || 0) },
       {
-        label: 'Margem / EBITDA',
+        label: 'Margem alvo / EBITDA',
         value: this.formatPercent(this.resultValues['ebitdaRate'] || 0),
         muted: !this.hasResultValue('ebitdaRate'),
       },
@@ -259,7 +259,7 @@ export class SalePriceComponent {
     const execution = executePricingFormulas(context, formulas);
 
     this.resultValues = execution.values;
-    this.memory = execution.memory;
+    this.memory = [...this.buildComponentCostMemory(context['componentCostTotal'] ?? 0), ...execution.memory];
     this.warning = execution.warning ? this.displayText(execution.warning) : '';
   }
 
@@ -412,7 +412,8 @@ export class SalePriceComponent {
       targetMarginRate: 0.2,
       pisCofinsRate: 0.141,
       mainTaxRate: 0.05,
-      costBase: 1000,
+      componentCostTotal: 0,
+      costBase: 0,
       quantity: 1,
       SELIC: 0.1475,
     };
@@ -425,7 +426,41 @@ export class SalePriceComponent {
       context[component.varAPV] = this.resolveComponentNumber(component);
     }
 
+    context['componentCostTotal'] = this.components.reduce(
+      (total, component) => total + this.resolveComponentNumber(component),
+      0,
+    );
+    context['costBase'] = context['componentCostTotal'];
+
     return context;
+  }
+
+  private buildComponentCostMemory(componentCostTotal: number): Array<FormulaExecutionStep> {
+    const componentSteps = this.components.map((component) => {
+      const unitValue = this.resolveComponentUnitNumber(component);
+      const quantity = this.componentQuantity(component);
+
+      return {
+        id: `componentCost:${component.id}`,
+        label: this.displayText(component.description),
+        category: 'custo' as const,
+        expression: `${component.varAPV || component.code}: ${this.formatCurrency(unitValue)} x ${quantity}`,
+        value: unitValue * quantity,
+        status: 'ok' as const,
+      };
+    });
+
+    return [
+      ...componentSteps,
+      {
+        id: 'componentCostTotal',
+        label: 'Soma dos componentes de produto vinculados',
+        category: 'custo',
+        expression: 'componentCostTotal',
+        value: componentCostTotal,
+        status: 'ok',
+      },
+    ];
   }
 
   private resolveComponentNumber(component: ProductComponent): number {

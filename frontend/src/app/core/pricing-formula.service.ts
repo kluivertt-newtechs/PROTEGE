@@ -52,6 +52,7 @@ const RESERVED_IDENTIFIERS = new Set([
 ]);
 
 export const PRICING_FORMULA_VARIABLES: Array<{ id: string; label: string }> = [
+  { id: 'componentCostTotal', label: 'Soma dos componentes de produto vinculados' },
   { id: 'costBase', label: 'Custo base calculado por CPE/SOP/processamento' },
   { id: 'quantity', label: 'Quantidade ou volume mensal' },
   { id: 'operationalExpensesRate', label: 'Percentual de despesas operacionais' },
@@ -67,8 +68,8 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
   {
     id: 'costTotal',
     label: 'Custo total',
-    description: 'Custo direto apurado pela origem operacional selecionada.',
-    expression: 'costBase',
+    description: 'Custo direto apurado pela composicao de componentes do produto.',
+    expression: 'componentCostTotal',
     enabled: true,
     category: 'custo',
     businessBranches: ['transport', 'processing'],
@@ -102,8 +103,8 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     businessBranches: ['transport', 'processing'],
   },
   {
-    id: 'margin',
-    label: 'Margem',
+    id: 'marginValue',
+    label: 'Margem alvo',
     description: 'Margem alvo aplicada ao preço líquido.',
     expression: 'netPrice * targetMarginRate',
     enabled: true,
@@ -156,45 +157,6 @@ export const DEFAULT_PRICING_FORMULAS: Array<PricingFormula> = [
     businessBranches: ['transport', 'processing'],
   },
 ];
-
-const DEFAULT_FORMULA_OVERRIDES_BY_FAMILY: Record<string, Partial<PricingFormula>> = {
-  cofre: {
-    expression: 'costBase + PRECO_COF_AT + SEG_COF_AT',
-    description: 'Custo base somado ao preço e seguro do cofre inteligente.',
-  },
-  transporte: {
-    expression: 'costBase',
-    description: 'Custo direto do embarque ou rota selecionada.',
-  },
-  processamento: {
-    expression: 'CUSTO_PROC * Math.max(1, QTD_MILHEIROS)',
-    description: 'Custo de processamento calculado por milheiro.',
-  },
-  custodia: {
-    expression: 'MONTANTE_CST * (ADVALOREM + CUSTODIA)',
-    description: 'Custo proporcional ao montante custodiado.',
-  },
-  paycash: {
-    expression: 'costBase + COFRE_PR + SEG_COF_PR + (MONTANTE_CST * (ADVALOREM + CUSTODIA))',
-    description: 'Custo combinado de transporte, cofre, seguro, custódia e ad valorem.',
-  },
-};
-
-const PRODUCT_FORMULA_FAMILY: Record<string, keyof typeof DEFAULT_FORMULA_OVERRIDES_BY_FAMILY> = {
-  P01: 'cofre',
-  P02: 'cofre',
-  P03: 'cofre',
-  P04: 'transporte',
-  P05: 'transporte',
-  P06: 'transporte',
-  P07: 'processamento',
-  P08: 'processamento',
-  P09: 'processamento',
-  P10: 'custodia',
-  P11: 'custodia',
-  P12: 'paycash',
-  P13: 'paycash',
-};
 
 @Injectable({ providedIn: 'root' })
 export class PricingFormulaService {
@@ -278,15 +240,8 @@ export class PricingFormulaService {
   }
 }
 
-function getDefaultPricingFormulas(productId: string): Array<PricingFormula> {
-  const family = PRODUCT_FORMULA_FAMILY[productId];
-  const costTotalOverride = family ? DEFAULT_FORMULA_OVERRIDES_BY_FAMILY[family] : undefined;
-
-  return cloneFormulas(DEFAULT_PRICING_FORMULAS.map((formula) =>
-    formula.id === 'costTotal' && costTotalOverride
-      ? { ...formula, ...costTotalOverride }
-      : formula,
-  ));
+function getDefaultPricingFormulas(_productId: string): Array<PricingFormula> {
+  return cloneFormulas(DEFAULT_PRICING_FORMULAS);
 }
 
 export function executePricingFormulas(
@@ -469,6 +424,7 @@ function validateFormulasForSave(
 
   const sampleContext = {
     ...Object.fromEntries([...allowedVariableIds].map((id) => [id, 0])),
+    componentCostTotal: 1000,
     costBase: 1000,
     quantity: 10,
     operationalExpensesRate: 0.14,
