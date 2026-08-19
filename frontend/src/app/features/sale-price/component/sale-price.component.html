@@ -45,7 +45,7 @@
               <span>{{ componentCount }} componentes</span>
             </div>
 
-            <div class="price-list">
+            <div class="price-list product-components-list">
               <article class="price-row" *ngFor="let component of components; trackBy: trackByComponent">
                 <div class="price-row-title">
                   <strong>{{ displayText(component.description) }}</strong>
@@ -105,7 +105,7 @@
           <span>{{ priceComponentCount }} parâmetros</span>
         </div>
 
-        <div class="price-list">
+        <div class="price-list pricing-components-list">
           <article class="price-row" *ngFor="let component of priceComponents; trackBy: trackByComponent">
             <div class="price-row-title">
               <strong>{{ displayText(component.description) }}</strong>

@@ -284,7 +284,7 @@
 }
 
 .secondary-grid {
-  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+  grid-template-columns: 1fr;
 }
 
 .price-list {
@@ -309,6 +309,36 @@
 .price-row-title strong {
   color: #263442;
   overflow-wrap: anywhere;
+}
+
+.product-components-list,
+.pricing-components-list {
+  gap: 8px;
+}
+
+.product-components-list .price-row,
+.pricing-components-list .price-row {
+  align-items: center;
+  gap: 8px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 8px 10px;
+}
+
+.product-components-list .price-row-title,
+.pricing-components-list .price-row-title {
+  gap: 1px;
+}
+
+.product-components-list .price-row-title strong,
+.pricing-components-list .price-row-title strong {
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.product-components-list .price-row-title small,
+.pricing-components-list .price-row-title small {
+  font-size: 11px;
+  line-height: 1.2;
 }
 
 .segmented-options {
@@ -355,6 +385,30 @@
 
 .segmented-options.readonly button {
   cursor: default;
+}
+
+.product-components-list .segmented-options,
+.pricing-components-list .segmented-options {
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.product-components-list .segmented-options button,
+.pricing-components-list .segmented-options button {
+  border-color: #d8e0e6;
+  min-height: 34px;
+  min-width: 108px;
+  padding: 5px 8px;
+}
+
+.product-components-list .segmented-options button span,
+.pricing-components-list .segmented-options button span {
+  font-size: 11px;
+}
+
+.product-components-list .segmented-options button small,
+.pricing-components-list .segmented-options button small {
+  font-size: 10px;
 }
 
 .empty-state.inline {
@@ -510,6 +564,11 @@
 
   .segmented-options button {
     width: 100%;
+  }
+
+  .product-components-list .price-row,
+  .pricing-components-list .price-row {
+    grid-template-columns: 1fr;
   }
 
   .memory-row {
