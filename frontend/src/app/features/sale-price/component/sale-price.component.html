@@ -1,7 +1,13 @@
-<po-page-default p-title="Simulação de Preço de Venda" [p-actions]="pageActions">
+<po-page-default
+  p-title="Simulação de Preço de Venda"
+  [p-actions]="pageActions"
+>
   <section class="simulation-shell">
     <header class="simulation-header">
-      <div class="product-summary" *ngIf="selectedProductId; else noSelectedProduct">
+      <div
+        class="product-summary"
+        *ngIf="selectedProductId; else noSelectedProduct"
+      >
         <span class="summary-kicker">Produto selecionado</span>
         <strong>{{ selectedProductLabel }}</strong>
         <div class="summary-counters">
@@ -26,10 +32,15 @@
       <main class="input-column">
         <section class="empty-panel" *ngIf="!selectedProductId">
           <strong>Selecione um produto para iniciar.</strong>
-          <span>A simulação será recalculada automaticamente após a seleção.</span>
+          <span
+            >A simulação será recalculada automaticamente após a seleção.</span
+          >
         </section>
 
-        <section class="empty-panel" *ngIf="selectedProductId && !components.length">
+        <section
+          class="empty-panel"
+          *ngIf="selectedProductId && !components.length"
+        >
           <strong>Produto sem composição.</strong>
           <span>
             Vincule componentes na
@@ -41,22 +52,34 @@
         <ng-container *ngIf="hasComposition">
           <section class="component-section">
             <div class="section-heading">
-              <h2>Componentes de Produtos</h2>
+              <h2>Componentes de Produtos Vinculados</h2>
               <span>{{ componentCount }} componentes</span>
             </div>
 
             <div class="price-list product-components-list">
-              <article class="price-row" *ngFor="let component of components; trackBy: trackByComponent">
+              <article
+                class="price-row"
+                *ngFor="let component of components; trackBy: trackByComponent"
+              >
                 <div class="price-row-title">
                   <strong>{{ displayText(component.description) }}</strong>
                   <small>{{ productComponentMeta(component) }}</small>
                 </div>
 
-                <div class="segmented-options readonly" *ngIf="getProductComponentOptions(component).length; else noProductOptions">
+                <div
+                  class="segmented-options readonly"
+                  *ngIf="
+                    getProductComponentOptions(component).length;
+                    else noProductOptions
+                  "
+                >
                   <button
                     type="button"
                     tabindex="-1"
-                    *ngFor="let option of getProductComponentOptions(component); trackBy: trackByOption"
+                    *ngFor="
+                      let option of getProductComponentOptions(component);
+                      trackBy: trackByOption
+                    "
                     [class.selected]="option.selected"
                     [attr.aria-pressed]="option.selected"
                   >
@@ -66,7 +89,9 @@
                 </div>
 
                 <ng-template #noProductOptions>
-                  <p class="empty-state inline">Sem opcoes configuradas para este componente.</p>
+                  <p class="empty-state inline">
+                    Sem opcoes configuradas para este componente.
+                  </p>
                 </ng-template>
               </article>
             </div>
@@ -101,12 +126,15 @@
     <section class="secondary-grid">
       <section class="price-components-panel">
         <div class="section-heading">
-          <h2>Componentes de preço</h2>
+          <h2>Componentes de preço Vinculados</h2>
           <span>{{ priceComponentCount }} parâmetros</span>
         </div>
 
         <div class="price-list pricing-components-list">
-          <article class="price-row" *ngFor="let component of priceComponents; trackBy: trackByComponent">
+          <article
+            class="price-row"
+            *ngFor="let component of priceComponents; trackBy: trackByComponent"
+          >
             <div class="price-row-title">
               <strong>{{ displayText(component.description) }}</strong>
               <small>{{ component.varAPV }}</small>
@@ -146,7 +174,9 @@
             <div>
               <strong>{{ displayText(step.label) }}</strong>
               <small>{{ step.expression }}</small>
-              <small *ngIf="step.message">{{ displayText(step.message) }}</small>
+              <small *ngIf="step.message">{{
+                displayText(step.message)
+              }}</small>
             </div>
             <span class="memory-status">{{ memoryStatusLabel(step) }}</span>
             <b>{{ formatCurrency(step.value) }}</b>
