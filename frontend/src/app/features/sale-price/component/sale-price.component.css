@@ -353,6 +353,14 @@
   color: rgba(255, 255, 255, 0.78);
 }
 
+.segmented-options.readonly button {
+  cursor: default;
+}
+
+.empty-state.inline {
+  padding: 0;
+}
+
 .memory-panel {
   align-self: start;
   overflow: hidden;

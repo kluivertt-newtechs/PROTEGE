@@ -39,53 +39,35 @@
         </section>
 
         <ng-container *ngIf="hasComposition">
-          <section
-            class="component-section"
-            *ngFor="let group of groupedComponents; trackBy: trackByGroup"
-          >
+          <section class="component-section">
             <div class="section-heading">
-              <h2>{{ group.name }}</h2>
-              <span>{{ group.components.length }} itens</span>
+              <h2>Componentes de Produtos</h2>
+              <span>{{ componentCount }} componentes</span>
             </div>
 
-            <div class="component-grid">
-              <article
-                class="field-card"
-                *ngFor="let component of group.components; trackBy: trackByComponent"
-              >
-                <div class="field-heading">
-                  <label [attr.for]="component.id">{{ displayText(component.description) }}</label>
-                  <small *ngIf="componentMeta(component)">{{ componentMeta(component) }}</small>
+            <div class="price-list">
+              <article class="price-row" *ngFor="let component of components; trackBy: trackByComponent">
+                <div class="price-row-title">
+                  <strong>{{ displayText(component.description) }}</strong>
+                  <small>{{ productComponentMeta(component) }}</small>
                 </div>
 
-                <po-input
-                  *ngIf="component.type === 'number' || component.type === 'rate'"
-                  [name]="component.id"
-                  p-type="number"
-                  [(ngModel)]="values[component.id]"
-                  (ngModelChange)="recalculate()"
-                ></po-input>
+                <div class="segmented-options readonly" *ngIf="getProductComponentOptions(component).length; else noProductOptions">
+                  <button
+                    type="button"
+                    tabindex="-1"
+                    *ngFor="let option of getProductComponentOptions(component); trackBy: trackByOption"
+                    [class.selected]="option.selected"
+                    [attr.aria-pressed]="option.selected"
+                  >
+                    <span>{{ displayText(option.description) }}</span>
+                    <small>{{ productOptionValueLabel(option) }}</small>
+                  </button>
+                </div>
 
-                <po-input
-                  *ngIf="component.type === 'text'"
-                  [name]="component.id"
-                  [(ngModel)]="values[component.id]"
-                  (ngModelChange)="recalculate()"
-                ></po-input>
-
-                <po-select
-                  *ngIf="component.type === 'select'"
-                  [name]="component.id"
-                  [p-options]="getSelectOptions(component)"
-                  [ngModel]="values[component.id]"
-                  (ngModelChange)="values[component.id] = $event; recalculate()"
-                ></po-select>
-
-                <label class="switch-field" *ngIf="component.type === 'boolean'">
-                  <input type="checkbox" [(ngModel)]="values[component.id]" (ngModelChange)="recalculate()" />
-                  <span class="switch-track" aria-hidden="true"></span>
-                  <span>{{ values[component.id] ? 'Sim' : 'Não' }}</span>
-                </label>
+                <ng-template #noProductOptions>
+                  <p class="empty-state inline">Sem opcoes configuradas para este componente.</p>
+                </ng-template>
               </article>
             </div>
           </section>

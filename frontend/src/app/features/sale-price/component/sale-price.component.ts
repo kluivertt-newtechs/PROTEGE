@@ -7,7 +7,6 @@ import {
   PoLookupFilteredItemsParams,
   PoLookupResponseApi,
   PoPageAction,
-  PoSelectOption,
 } from '@po-ui/ng-components';
 import { Observable, of } from 'rxjs';
 import { FormulaExecutionStep } from 'src/app/core/mock';
@@ -20,11 +19,6 @@ import {
 } from 'src/app/core/product-catalog.service';
 import { PricingFormulaService, executePricingFormulas } from 'src/app/core/pricing-formula.service';
 import { SHARED_MODULES } from 'src/app/shared/shared';
-
-interface ComponentGroup {
-  name: string;
-  components: Array<ProductComponent>;
-}
 
 interface ResultMetric {
   label: string;
@@ -167,20 +161,6 @@ export class SalePriceComponent {
     return product ? this.displayText(`${product.code} - ${product.name}`) : '';
   }
 
-  get groupedComponents(): Array<ComponentGroup> {
-    const groups = new Map<string, Array<ProductComponent>>();
-
-    for (const component of this.components) {
-      const group = this.displayText(component.group || 'Geral');
-      groups.set(group, [...(groups.get(group) ?? []), component]);
-    }
-
-    return [...groups.entries()].map(([name, groupComponents]) => ({
-      name,
-      components: groupComponents,
-    }));
-  }
-
   get componentCount(): number {
     return this.components.length;
   }
@@ -290,13 +270,6 @@ export class SalePriceComponent {
     return value.toLocaleString('pt-BR', { style: 'percent', minimumFractionDigits: 2 });
   }
 
-  getSelectOptions(component: ProductComponent): Array<PoSelectOption> {
-    return this.getEffectiveOptions(component).map((option) => ({
-      label: this.displayText(option.description),
-      value: option.code,
-    }));
-  }
-
   selectCatalogOption(component: ProductComponent, option: ProductComponentOption, kind: 'product' | 'price'): void {
     this.catalog.updateOptionSelection(kind, component.id, option.code, !option.selected);
     this.components = this.catalog.getCompositionComponents(this.selectedProductId);
@@ -313,6 +286,10 @@ export class SalePriceComponent {
     return [component.unit, component.varAPV].filter(Boolean).join(' · ');
   }
 
+  productComponentMeta(component: ProductComponent): string {
+    return [component.code, component.varAPV].filter(Boolean).join(' - ');
+  }
+
   optionValueLabel(option: ProductComponentOption): string {
     const value = option.calculatedValue;
 
@@ -321,6 +298,14 @@ export class SalePriceComponent {
     }
 
     return Math.abs(value) < 1 && value !== 0 ? this.formatPercent(value) : String(value).replace('.', ',');
+  }
+
+  productOptionValueLabel(option: ProductComponentOption): string {
+    return this.formatCurrency(option.costValue);
+  }
+
+  getProductComponentOptions(component: ProductComponent): Array<ProductComponentOption> {
+    return this.getEffectiveOptions(component).filter((option) => option.selected);
   }
 
   memoryStatusLabel(step: FormulaExecutionStep): string {
@@ -333,10 +318,6 @@ export class SalePriceComponent {
     }
 
     return 'Ok';
-  }
-
-  trackByGroup(_: number, group: ComponentGroup): string {
-    return group.name;
   }
 
   trackByComponent(_: number, component: ProductComponent): string {
@@ -419,7 +400,7 @@ export class SalePriceComponent {
     }
 
     if (component.type === 'select') {
-      return this.findOption(component, String(value))?.calculatedValue ?? this.catalog.getSelectedComponentValue(component);
+      return this.findOption(component, String(value))?.costValue ?? this.getSelectedProductComponentValue(component);
     }
 
     if (component.type === 'rate') {
@@ -435,6 +416,12 @@ export class SalePriceComponent {
 
   private findOption(component: ProductComponent, value: string): ProductComponentOption | undefined {
     return this.getEffectiveOptions(component).find((option) => option.code === value);
+  }
+
+  private getSelectedProductComponentValue(component: ProductComponent): number {
+    return component.options
+      .filter((option) => option.selected)
+      .reduce((sum, option) => sum + this.safeNumber(option.costValue), 0);
   }
 
   private getEffectiveOptions(component: ProductComponent): Array<ProductComponentOption> {

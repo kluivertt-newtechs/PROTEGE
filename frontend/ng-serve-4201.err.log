@@ -3015,3 +3015,345 @@
         ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2304: Cannot find name 'ComponentGroup'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.ts:164:33:
+[37m      164 │   get groupedComponents(): Array<[32mComponentGroup[37m> {
+          ╵                                  [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2304: Cannot find name 'PoSelectOption'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.ts:287:55:
+[37m      287 │ ...lectOptions(component: ProductComponent): Array<[32mPoSelectOption[37m> {
+          ╵                                                    [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2304: Cannot find name 'ComponentGroup'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.ts:332:33:
+[37m      332 │   trackByGroup(_: number, group: [32mComponentGroup[37m): string {
+          ╵                                  [32m~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'groupedComponents' does not exist on type 'SalePriceComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.html:44:33:
+[37m      44 │ ...    *ngFor="let group of [32mgroupedComponents[37m; trackBy: trackByGroup"
+         ╵                             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component SalePriceComponent.
+
+    src/app/features/sale-price/component/sale-price.component.ts:111:15:
+[37m      111 │   templateUrl: [32m'./sale-price.component.html'[37m,
+          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2304: Cannot find name 'PoSelectOption'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.ts:273:55:
+[37m      273 │ ...lectOptions(component: ProductComponent): Array<[32mPoSelectOption[37m> {
+          ╵                                                    [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2304: Cannot find name 'ComponentGroup'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.ts:318:33:
+[37m      318 │   trackByGroup(_: number, group: [32mComponentGroup[37m): string {
+          ╵                                  [32m~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'groupedComponents' does not exist on type 'SalePriceComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.html:44:33:
+[37m      44 │ ...    *ngFor="let group of [32mgroupedComponents[37m; trackBy: trackByGroup"
+         ╵                             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component SalePriceComponent.
+
+    src/app/features/sale-price/component/sale-price.component.ts:111:15:
+[37m      111 │   templateUrl: [32m'./sale-price.component.html'[37m,
+          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'getSelectOptions' does not exist on type 'SalePriceComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.html:79:31:
+[37m      79 │                   [p-options]="[32mgetSelectOptions[37m(component)"
+         ╵                                [32m~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component SalePriceComponent.
+
+    src/app/features/sale-price/component/sale-price.component.ts:111:15:
+[37m      111 │   templateUrl: [32m'./sale-price.component.html'[37m,
+          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2304: Cannot find name 'ComponentGroup'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.ts:311:33:
+[37m      311 │   trackByGroup(_: number, group: [32mComponentGroup[37m): string {
+          ╵                                  [32m~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'groupedComponents' does not exist on type 'SalePriceComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.html:44:33:
+[37m      44 │ ...    *ngFor="let group of [32mgroupedComponents[37m; trackBy: trackByGroup"
+         ╵                             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component SalePriceComponent.
+
+    src/app/features/sale-price/component/sale-price.component.ts:111:15:
+[37m      111 │   templateUrl: [32m'./sale-price.component.html'[37m,
+          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'getSelectOptions' does not exist on type 'SalePriceComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.html:79:31:
+[37m      79 │                   [p-options]="[32mgetSelectOptions[37m(component)"
+         ╵                                [32m~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component SalePriceComponent.
+
+    src/app/features/sale-price/component/sale-price.component.ts:111:15:
+[37m      111 │   templateUrl: [32m'./sale-price.component.html'[37m,
+          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2304: Cannot find name 'ComponentGroup'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.ts:315:33:
+[37m      315 │   trackByGroup(_: number, group: [32mComponentGroup[37m): string {
+          ╵                                  [32m~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'groupedComponents' does not exist on type 'SalePriceComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.html:44:33:
+[37m      44 │ ...    *ngFor="let group of [32mgroupedComponents[37m; trackBy: trackByGroup"
+         ╵                             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component SalePriceComponent.
+
+    src/app/features/sale-price/component/sale-price.component.ts:111:15:
+[37m      111 │   templateUrl: [32m'./sale-price.component.html'[37m,
+          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'getSelectOptions' does not exist on type 'SalePriceComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.html:79:31:
+[37m      79 │                   [p-options]="[32mgetSelectOptions[37m(component)"
+         ╵                                [32m~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component SalePriceComponent.
+
+    src/app/features/sale-price/component/sale-price.component.ts:111:15:
+[37m      111 │   templateUrl: [32m'./sale-price.component.html'[37m,
+          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2304: Cannot find name 'ComponentGroup'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.ts:323:33:
+[37m      323 │   trackByGroup(_: number, group: [32mComponentGroup[37m): string {
+          ╵                                  [32m~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'groupedComponents' does not exist on type 'SalePriceComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.html:44:33:
+[37m      44 │ ...    *ngFor="let group of [32mgroupedComponents[37m; trackBy: trackByGroup"
+         ╵                             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component SalePriceComponent.
+
+    src/app/features/sale-price/component/sale-price.component.ts:111:15:
+[37m      111 │   templateUrl: [32m'./sale-price.component.html'[37m,
+          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'trackByGroup' does not exist on type 'SalePriceComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.html:44:61:
+[37m      44 │ ...    *ngFor="let group of groupedComponents; trackBy: [32mtrackByGroup[37m"
+         ╵                                                         [32m~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component SalePriceComponent.
+
+    src/app/features/sale-price/component/sale-price.component.ts:111:15:
+[37m      111 │   templateUrl: [32m'./sale-price.component.html'[37m,
+          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'getSelectOptions' does not exist on type 'SalePriceComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.html:79:31:
+[37m      79 │                   [p-options]="[32mgetSelectOptions[37m(component)"
+         ╵                                [32m~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component SalePriceComponent.
+
+    src/app/features/sale-price/component/sale-price.component.ts:111:15:
+[37m      111 │   templateUrl: [32m'./sale-price.component.html'[37m,
+          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'groupedComponents' does not exist on type 'SalePriceComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.html:44:33:
+[37m      44 │ ...    *ngFor="let group of [32mgroupedComponents[37m; trackBy: trackByGroup"
+         ╵                             [32m~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component SalePriceComponent.
+
+    src/app/features/sale-price/component/sale-price.component.ts:111:15:
+[37m      111 │   templateUrl: [32m'./sale-price.component.html'[37m,
+          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'trackByGroup' does not exist on type 'SalePriceComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.html:44:61:
+[37m      44 │ ...    *ngFor="let group of groupedComponents; trackBy: [32mtrackByGroup[37m"
+         ╵                                                         [32m~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component SalePriceComponent.
+
+    src/app/features/sale-price/component/sale-price.component.ts:111:15:
+[37m      111 │   templateUrl: [32m'./sale-price.component.html'[37m,
+          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'getSelectOptions' does not exist on type 'SalePriceComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.html:79:31:
+[37m      79 │                   [p-options]="[32mgetSelectOptions[37m(component)"
+         ╵                                [32m~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component SalePriceComponent.
+
+    src/app/features/sale-price/component/sale-price.component.ts:111:15:
+[37m      111 │   templateUrl: [32m'./sale-price.component.html'[37m,
+          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'getSelectOptions' does not exist on type 'SalePriceComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.html:73:31:
+[37m      73 │                   [p-options]="[32mgetSelectOptions[37m(component)"
+         ╵                                [32m~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component SalePriceComponent.
+
+    src/app/features/sale-price/component/sale-price.component.ts:111:15:
+[37m      111 │   templateUrl: [32m'./sale-price.component.html'[37m,
+          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module './component/product-tree.component' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/product-tree/product-tree.routes.ts:6:32:
+[37m      6 │ ... () => import([32m'./component/product-tree.component'[37m).then((c) => ...
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG5002: Unexpected closing tag "label". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/sale-price/component/sale-price.component.html:72:16:
+[37m      72 │                 [32m</label>[37m
+         ╵                 [32m~~~~~~~~[0m
+
+  Error occurs in the template of component SalePriceComponent.
+
+    src/app/features/sale-price/component/sale-price.component.ts:111:15:
+[37m      111 │   templateUrl: [32m'./sale-price.component.html'[37m,
+          ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
