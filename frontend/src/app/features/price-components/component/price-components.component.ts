@@ -41,11 +41,6 @@ export class PriceComponentsComponent {
   statusMessage = '';
   isEditingComponent = false;
 
-  readonly typeOptions: Array<PoSelectOption> = [
-    { label: 'Taxa', value: 'rate' },
-    { label: 'Número', value: 'number' },
-    { label: 'Seleção', value: 'select' },
-  ];
   readonly statusOptions: Array<PoSelectOption> = [
     { label: 'Todos', value: 'all' },
     { label: 'Ativos', value: 'active' },

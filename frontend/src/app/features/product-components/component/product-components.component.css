@@ -10,6 +10,10 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.full-line-field {
+  grid-column: 1 / -1;
+}
+
 .checkbox-row {
   align-items: center;
   display: flex;

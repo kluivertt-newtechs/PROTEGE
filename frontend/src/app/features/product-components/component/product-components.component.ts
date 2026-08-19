@@ -41,13 +41,6 @@ export class ProductComponentsComponent {
   statusMessage = '';
   isEditingComponent = false;
 
-  readonly typeOptions: Array<PoSelectOption> = [
-    { label: 'Número', value: 'number' },
-    { label: 'Texto', value: 'text' },
-    { label: 'Seleção', value: 'select' },
-    { label: 'Booleano', value: 'boolean' },
-    { label: 'Taxa', value: 'rate' },
-  ];
   readonly statusOptions: Array<PoSelectOption> = [
     { label: 'Todos', value: 'all' },
     { label: 'Ativos', value: 'active' },
