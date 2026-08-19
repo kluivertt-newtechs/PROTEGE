@@ -64,6 +64,12 @@
                 <div class="price-row-title">
                   <strong>{{ displayText(component.description) }}</strong>
                   <small>{{ productComponentMeta(component) }}</small>
+                  <small
+                    class="component-subtotal"
+                    *ngIf="productComponentSubtotalLabel(component)"
+                  >
+                    {{ productComponentSubtotalLabel(component) }}
+                  </small>
                 </div>
 
                 <div
@@ -93,6 +99,22 @@
                     Sem opcoes configuradas para este componente.
                   </p>
                 </ng-template>
+
+                <div class="component-quantity">
+                  <label [attr.for]="'component-quantity-' + component.id">
+                    Qtd.
+                  </label>
+                  <input
+                    type="number"
+                    [id]="'component-quantity-' + component.id"
+                    [name]="'componentQuantity' + component.id"
+                    min="1"
+                    step="1"
+                    inputmode="decimal"
+                    [ngModel]="componentQuantity(component)"
+                    (ngModelChange)="updateComponentQuantity(component, $event)"
+                  />
+                </div>
               </article>
             </div>
           </section>

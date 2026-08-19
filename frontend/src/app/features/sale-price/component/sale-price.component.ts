@@ -121,6 +121,7 @@ export class SalePriceComponent {
   components: Array<ProductComponent> = [];
   priceComponents: Array<PriceComponent> = [];
   values: Record<string, number | string | boolean> = {};
+  componentQuantities: Record<string, number> = {};
   resultValues: Record<string, number> = {};
   memory: Array<FormulaExecutionStep> = [];
   warning = '';
@@ -304,6 +305,38 @@ export class SalePriceComponent {
     return this.formatCurrency(option.costValue);
   }
 
+  componentQuantity(component: ProductComponent): number {
+    return this.componentQuantities[component.id] ?? 1;
+  }
+
+  updateComponentQuantity(component: ProductComponent, value: unknown): void {
+    this.componentQuantities = {
+      ...this.componentQuantities,
+      [component.id]: this.normalizeComponentQuantity(value),
+    };
+    this.recalculate();
+  }
+
+  productComponentSubtotalLabel(component: ProductComponent): string {
+    const quantity = this.componentQuantity(component);
+
+    if (quantity <= 1) {
+      return '';
+    }
+
+    if (component.type === 'rate' || component.type === 'boolean' || component.type === 'text') {
+      return '';
+    }
+
+    const unitValue = this.resolveComponentUnitNumber(component);
+
+    if (!Number.isFinite(unitValue) || unitValue === 0) {
+      return '';
+    }
+
+    return `${this.formatCurrency(unitValue)} x ${quantity} = ${this.formatCurrency(unitValue * quantity)}`;
+  }
+
   getProductComponentOptions(component: ProductComponent): Array<ProductComponentOption> {
     return this.getEffectiveOptions(component).filter((option) => option.selected);
   }
@@ -340,8 +373,11 @@ export class SalePriceComponent {
     this.components = this.catalog.getCompositionComponents(this.selectedProductId);
     this.loadPriceComponents();
     this.values = {};
+    this.componentQuantities = {};
 
     for (const component of this.components) {
+      this.componentQuantities[component.id] = 1;
+
       if (component.type === 'boolean') {
         this.values[component.id] = false;
       } else if (component.type === 'select') {
@@ -393,6 +429,10 @@ export class SalePriceComponent {
   }
 
   private resolveComponentNumber(component: ProductComponent): number {
+    return this.resolveComponentUnitNumber(component) * this.componentQuantity(component);
+  }
+
+  private resolveComponentUnitNumber(component: ProductComponent): number {
     const value = this.values[component.id];
 
     if (component.type === 'boolean') {
@@ -465,6 +505,12 @@ export class SalePriceComponent {
 
   private normalizeRate(value: number): number {
     return Math.abs(value) > 1 ? value / 100 : value;
+  }
+
+  private normalizeComponentQuantity(value: unknown): number {
+    const quantity = Number(value);
+
+    return Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
   }
 
   private getContextValue(key: string): number {
