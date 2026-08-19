@@ -29,15 +29,26 @@
               <strong>{{ product.name }}</strong>
               <small>{{ product.code }}</small>
             </span>
-            <button
-              type="button"
-              class="tree-edit-button"
-              title="Edição"
-              aria-label="Editar produto ou serviço"
-              (click)="openEditProductModal(product, group.id, $event)"
-            >
-              <span class="an an-pencil-simple" aria-hidden="true"></span>
-            </button>
+            <span class="product-row-actions component-row-actions">
+              <button
+                type="button"
+                class="tree-edit-button"
+                title="Duplicar"
+                aria-label="Duplicar produto ou serviço"
+                (click)="duplicateProduct(product, group.id, $event)"
+              >
+                <span class="an an-copy" aria-hidden="true"></span>
+              </button>
+              <button
+                type="button"
+                class="tree-edit-button"
+                title="Edição"
+                aria-label="Editar produto ou serviço"
+                (click)="openEditProductModal(product, group.id, $event)"
+              >
+                <span class="an an-pencil-simple" aria-hidden="true"></span>
+              </button>
+            </span>
           </div>
         </ng-container>
       </div>

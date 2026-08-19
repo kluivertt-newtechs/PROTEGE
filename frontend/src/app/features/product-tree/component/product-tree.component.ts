@@ -229,6 +229,20 @@ export class ProductTreeComponent {
     this.productModal.open();
   }
 
+  duplicateProduct(product: ProductNode, groupId: string, event?: Event): void {
+    event?.stopPropagation();
+    const duplicated = this.catalog.duplicateProduct(product.id, groupId);
+
+    if (!duplicated) {
+      this.statusMessage = 'Não foi possível duplicar o produto.';
+      return;
+    }
+
+    this.refresh();
+    this.selectProduct(duplicated.id);
+    this.statusMessage = 'Produto duplicado.';
+  }
+
   deleteGroup(): void {
     if (!this.editingGroupId) {
       return;

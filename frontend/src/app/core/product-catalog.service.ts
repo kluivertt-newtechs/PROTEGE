@@ -457,6 +457,48 @@ export class ProductCatalogService {
     return this.cloneNode(created);
   }
 
+  duplicateProduct(productId: string, groupId: string): ProductNode | undefined {
+    const group = this.state.tree.find((node) => node.id === groupId);
+    const source = group?.children?.find((child) => child.id === productId);
+
+    if (!group || !source) {
+      return undefined;
+    }
+
+    const products = this.flattenTree(this.state.tree).filter((node) => node.type !== 'group');
+    const productCodes = new Set(products.map((product) => product.code.toUpperCase()));
+    const productNames = new Set(products.map((product) => product.name.toUpperCase()));
+    const duplicated = this.normalizeNode({
+      ...source,
+      id: this.nextProductId(),
+      code: this.nextCopyCode(source.code, productCodes),
+      name: this.nextCopyName(source.name, productNames),
+      type: source.type,
+      children: [],
+    });
+    const sourceComposition = this.getComposition(productId);
+    const duplicatedComposition: ProductComposition = {
+      productId: duplicated.id,
+      productComponentIds: [...sourceComposition.productComponentIds],
+      priceComponentIds: [...sourceComposition.priceComponentIds],
+      productComponentOptions: sourceComposition.productComponentOptions.map((config) => ({ ...config })),
+    };
+    const tree = this.state.tree.map((node) =>
+      node.id === groupId
+        ? { ...node, children: [...(node.children ?? []), duplicated] }
+        : node,
+    );
+
+    this.state = {
+      ...this.state,
+      tree,
+      compositions: [...this.state.compositions, duplicatedComposition],
+      selectedProductId: duplicated.id,
+    };
+    this.persist();
+    return this.cloneNode(duplicated);
+  }
+
   updateProduct(
     productId: string,
     groupId: string,
@@ -940,9 +982,49 @@ export class ProductCatalogService {
       code: String(node.code ?? '').trim(),
       name: String(node.name ?? '').trim(),
       icon: String(node.icon ?? '').trim(),
-      type: node.type === 'group' ? 'group' : 'product',
+      type: node.type === 'group' ? 'group' : node.type === 'service' ? 'service' : 'product',
       children: Array.isArray(node.children) ? node.children.map((child) => this.normalizeNode(child)) : [],
     };
+  }
+
+  private nextProductId(): string {
+    const ids = new Set(this.flattenTree(this.state.tree).map((node) => node.id));
+    let index = 0;
+    let id = `P-${Date.now()}`;
+
+    while (ids.has(id)) {
+      index += 1;
+      id = `P-${Date.now()}-${index}`;
+    }
+
+    return id;
+  }
+
+  private nextCopyCode(code: string, usedCodes: Set<string>): string {
+    return this.nextCopyValue(code.trim().toUpperCase(), 'COPIA', usedCodes);
+  }
+
+  private nextCopyName(name: string, usedNames: Set<string>): string {
+    return this.nextCopyValue(name.trim(), 'Cópia', usedNames, ' (', ')');
+  }
+
+  private nextCopyValue(
+    value: string,
+    suffix: string,
+    usedValues: Set<string>,
+    prefix = '-',
+    closing = '',
+  ): string {
+    const normalized = value || suffix;
+    let index = 1;
+    let candidate = `${normalized}${prefix}${suffix}${closing}`;
+
+    while (usedValues.has(candidate.toUpperCase())) {
+      index += 1;
+      candidate = `${normalized}${prefix}${suffix}-${index}${closing}`;
+    }
+
+    return candidate;
   }
 
   private normalizeType(type: CatalogComponentType): CatalogComponentType {
