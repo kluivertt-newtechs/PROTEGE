@@ -1220,3 +1220,44 @@ Application bundle generation complete. [11.093 seconds] - 2026-08-19T01:01:51.7
 
 Component update sent to client(s).
 [33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m                     [2m | [22m[1mNames[22m                       [2m | [22m [1mRaw size[22m
+[32mstyles.css[39m                              [2m | [22m[2mstyles[22m                      [2m | [22m[36m597.73 kB[39m[2m | [22m
+[32mmain.js[39m                                 [2m | [22m[2mmain[22m                        [2m | [22m [36m55.82 kB[39m[2m | [22m
+[32mchunk-CZJLB7T5.js[39m                       [2m | [22m[2m-[22m                           [2m | [22m  [36m1.08 kB[39m[2m | [22m
+[32mpolyfills.js[39m                            [2m | [22m[2mpolyfills[22m                   [2m | [22m [36m95 bytes[39m[2m | [22m
+
+[1m [22m                                       [2m | [22m[1mInitial total[22m               [2m | [22m[1m654.72 kB[22m
+
+[1mLazy chunk files[22m                        [2m | [22m[1mNames[22m                       [2m | [22m [1mRaw size[22m
+[32mformula-builder.component-YMMBLBMM.js[39m   [2m | [22m[2mformula-builder-component[22m   [2m | [22m[36m101.70 kB[39m[2m | [22m
+[32mproduct-tree.component-2FEZ36HY.js[39m      [2m | [22m[2mproduct-tree-component[22m      [2m | [22m [36m91.08 kB[39m[2m | [22m
+[32msale-price.component-TTSSOOMR.js[39m        [2m | [22m[2msale-price-component[22m        [2m | [22m [36m70.38 kB[39m[2m | [22m
+[32mlogin.component-N24AELCO.js[39m             [2m | [22m[2mlogin-component[22m             [2m | [22m [36m54.52 kB[39m[2m | [22m
+[32mproduct-components.component-6FC6MTKV.js[39m[2m | [22m[2mproduct-components-component[22m[2m | [22m [36m52.22 kB[39m[2m | [22m
+[32mprice-components.component-DNE3E4GB.js[39m  [2m | [22m[2mprice-components-component[22m  [2m | [22m [36m51.51 kB[39m[2m | [22m
+[32mchunk-YTZIK7JF.js[39m                       [2m | [22m[2m-[22m                           [2m | [22m [36m37.71 kB[39m[2m | [22m
+[32mchunk-DSS55HQQ.js[39m                       [2m | [22m[2m-[22m                           [2m | [22m [36m19.96 kB[39m[2m | [22m
+[32mproduct-components.routes-VPTHBHVN.js[39m   [2m | [22m[2mproduct-components-routes[22m   [2m | [22m[36m377 bytes[39m[2m | [22m
+[32mprice-components.routes-WC5UVTJI.js[39m     [2m | [22m[2mprice-components-routes[22m     [2m | [22m[36m363 bytes[39m[2m | [22m
+[32mformula-builder.routes-4ZQIVBUF.js[39m      [2m | [22m[2mformula-builder-routes[22m      [2m | [22m[36m356 bytes[39m[2m | [22m
+[32mproduct-tree.routes-FTSQXUQO.js[39m         [2m | [22m[2mproduct-tree-routes[22m         [2m | [22m[36m335 bytes[39m[2m | [22m
+[32msale-price.routes-AKBA6VKC.js[39m           [2m | [22m[2msale-price-routes[22m           [2m | [22m[36m321 bytes[39m[2m | [22m
+[32mlogin.routes-6T6S7VE4.js[39m                [2m | [22m[2mlogin-routes[22m                [2m | [22m[36m289 bytes[39m[2m | [22m
+
+Application bundle generation complete. [5.313 seconds] - 2026-08-19T01:02:12.721Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m             [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                         [2m | [22m[2mmain[22m                [2m | [22m [36m55.82 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32msale-price.component-UFLXOMHQ.js[39m[2m | [22m[2msale-price-component[22m[2m | [22m [36m70.38 kB[39m[2m | [22m
+[32msale-price.routes-LOXEIUPQ.js[39m   [2m | [22m[2msale-price-routes[22m   [2m | [22m[36m321 bytes[39m[2m | [22m
+
+Application bundle generation complete. [8.071 seconds] - 2026-08-19T01:04:40.229Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...

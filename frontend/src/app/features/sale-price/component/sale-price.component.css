@@ -246,26 +246,26 @@
   background: linear-gradient(135deg, #0f2f4a 0%, #0b5c88 100%);
   color: #fff;
   display: grid;
-  gap: 4px;
-  padding: 13px 16px;
+  gap: 2px;
+  padding: 9px 13px;
 }
 
 .result-heading span {
-  font-size: 12px;
+  font-size: 11px;
   opacity: 0.86;
 }
 
 .result-heading strong {
-  font-size: 24px;
+  font-size: 20px;
   line-height: 1.1;
   overflow-wrap: anywhere;
 }
 
 .result-metrics {
   display: grid;
-  gap: 7px;
+  gap: 6px;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  padding: 9px;
+  padding: 7px;
 }
 
 .metric {
@@ -273,9 +273,9 @@
   border: 1px solid #e1e8ed;
   border-radius: 8px;
   display: grid;
-  gap: 3px;
-  min-height: 56px;
-  padding: 8px;
+  gap: 2px;
+  min-height: 46px;
+  padding: 6px 8px;
 }
 
 .metric.featured {
@@ -289,14 +289,14 @@
 
 .metric strong {
   color: #0f2f4a;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.2;
   overflow-wrap: anywhere;
 }
 
 .metric.featured strong {
   color: #07594f;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .warning {
@@ -304,7 +304,7 @@
   border-top: 1px solid #efd1a8;
   color: #7a3d00;
   margin: 0;
-  padding: 9px 12px;
+  padding: 7px 10px;
 }
 
 .secondary-grid {
