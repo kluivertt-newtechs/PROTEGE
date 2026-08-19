@@ -5,24 +5,78 @@
         <div class="formula-panel-scroll">
           <p class="variable-section-title">Árvore de Produtos</p>
           <div class="product-tree">
-            <ng-container *ngFor="let group of tree; trackBy: trackByNode">
+            <div class="product-group" *ngFor="let group of tree; trackBy: trackByNode">
               <div class="group-title">{{ displayText(group.code + ' - ' + group.name) }}</div>
-              <button
-                type="button"
-                class="product-row"
+              <section
+                class="library-section product-library-section"
                 *ngFor="let product of group.children; trackBy: trackByNode"
                 [class.active]="product.id === selectedProductId"
-                (click)="selectProduct(product.id)"
               >
-                <strong>{{ displayText(product.name) }}</strong>
-                <small>{{ product.code }}</small>
-              </button>
-            </ng-container>
+                <button
+                  type="button"
+                  class="library-toggle product-toggle"
+                  [class.closed]="expandedProductId !== product.id"
+                  [attr.aria-expanded]="expandedProductId === product.id"
+                  (click)="selectProduct(product.id)"
+                >
+                  <span class="library-toggle-title">{{ displayText(product.name) }}</span>
+                  <span class="library-toggle-meta">{{ product.code }}</span>
+                  <span class="library-toggle-icon" aria-hidden="true"></span>
+                </button>
+
+                <div class="library-zone" *ngIf="expandedProductId === product.id">
+                  <div class="formula-list-heading">
+                    <span>
+                      <strong>Fórmulas do produto</strong>
+                      <small>{{ product.code }} - {{ displayText(product.name) }}</small>
+                    </span>
+                    <span>{{ catalogFormulas.length }} itens</span>
+                  </div>
+
+                  <div class="formula-actions">
+                    <button
+                      type="button"
+                      class="create-formula-button"
+                      (click)="addFormula()"
+                    >
+                      <span class="create-formula-icon" aria-hidden="true">+</span>
+                      <span>Criar fórmula</span>
+                    </button>
+                  </div>
+
+                  <div class="formula-table" *ngIf="catalogFormulas.length; else noCatalogProductFormulas">
+                    <button
+                      type="button"
+                      class="formula-row"
+                      *ngFor="let formula of catalogFormulas; trackBy: trackByFormula"
+                      [class.active]="selectedFormulaOriginalId === formula.id || selectedFormula?.id === formula.id"
+                      [class.disabled]="!formula.enabled"
+                      [attr.draggable]="true"
+                      (dragstart)="beginPaletteDrag($event, formula.id)"
+                      (click)="selectFormula(formula)"
+                    >
+                      <span class="formula-main">
+                        <strong>{{ displayText(formula.label) }}</strong>
+                        <small>{{ formula.id }}</small>
+                      </span>
+                      <span class="status">{{ formula.enabled ? 'Ativa' : 'Inativa' }}</span>
+                    </button>
+                  </div>
+
+                  <ng-template #noCatalogProductFormulas>
+                    <p class="variable-empty">Este produto ainda não possui fórmulas.</p>
+                  </ng-template>
+                </div>
+              </section>
+            </div>
           </div>
         </div>
       </po-container>
 
-      <po-container class="formula-editor" p-title="Editor">
+      <po-container
+        class="formula-editor"
+        [p-title]="selectedProduct ? 'Editor - ' + displayText(selectedProduct.name || '') : 'Editor'"
+      >
         <div class="formula-panel-scroll">
           <ng-container *ngIf="selectedFormula; else emptyState">
             <div class="editor-grid">
@@ -119,13 +173,6 @@
                 ></span>
               </div>
 
-              <po-textarea
-                name="formulaExpression"
-                p-label="Prévia da expressão"
-                p-help="Expressão gerada pela montagem visual. Clique na área acima para digitar números e operadores pelo teclado."
-                [p-readonly]="true"
-                [ngModel]="selectedFormula.expression"
-              ></po-textarea>
             </div>
 
             <div class="actions">
@@ -160,94 +207,6 @@
 
       <po-container class="variable-palette" p-title="Paleta">
         <div class="formula-panel-scroll">
-          <section class="library-section">
-            <button
-              type="button"
-              class="library-toggle"
-              [class.closed]="!productFormulasOpen"
-              [attr.aria-expanded]="productFormulasOpen"
-              (click)="toggleProductFormulas()"
-            >
-              <span class="library-toggle-title">Fórmulas do Produto</span>
-              <span class="library-toggle-meta">{{ formulas.length }} itens</span>
-              <span class="library-toggle-icon" aria-hidden="true"></span>
-            </button>
-
-            <div class="library-zone" *ngIf="productFormulasOpen">
-              <div class="formula-list-heading">
-                <span>
-                  <strong>Fórmulas do produto</strong>
-                  <small>{{ selectedProduct?.code || '' }} {{ selectedProduct?.name ? '- ' + displayText(selectedProduct?.name || '') : '' }}</small>
-                </span>
-                <span>{{ formulas.length }} itens</span>
-              </div>
-
-              <div class="formula-actions">
-                <button
-                  type="button"
-                  class="create-formula-button"
-                  (click)="addFormula()"
-                >
-                  <span class="create-formula-icon" aria-hidden="true">+</span>
-                  <span>Criar fórmula</span>
-                </button>
-              </div>
-
-              <div class="formula-table" *ngIf="formulas.length; else noProductFormulas">
-                <button
-                  type="button"
-                  class="formula-row"
-                  *ngFor="let formula of formulas; trackBy: trackByFormula"
-                  [class.active]="selectedFormula?.id === formula.id"
-                  [class.disabled]="!formula.enabled"
-                  [attr.draggable]="true"
-                  (dragstart)="beginPaletteDrag($event, formula.id)"
-                  (click)="selectFormula(formula)"
-                >
-                  <span class="formula-main">
-                    <strong>{{ displayText(formula.label) }}</strong>
-                    <small>{{ formula.id }}</small>
-                  </span>
-                  <span class="status">{{ formula.enabled ? 'Ativa' : 'Inativa' }}</span>
-                </button>
-              </div>
-
-              <ng-template #noProductFormulas>
-                <p class="variable-empty">Este produto ainda não possui fórmulas.</p>
-              </ng-template>
-            </div>
-          </section>
-
-          <section class="library-section">
-            <button
-              type="button"
-              class="library-toggle"
-              [class.closed]="!simulationVariablesOpen"
-              [attr.aria-expanded]="simulationVariablesOpen"
-              (click)="toggleSimulationVariables()"
-            >
-              <span class="library-toggle-title">Variáveis da simulação</span>
-              <span class="library-toggle-meta">{{ simulationVariables.length }} itens</span>
-              <span class="library-toggle-icon" aria-hidden="true"></span>
-            </button>
-
-            <div class="library-zone" *ngIf="simulationVariablesOpen">
-              <div class="variable-grid">
-                <button
-                  type="button"
-                  class="variable-chip"
-                  *ngFor="let variable of simulationVariables; trackBy: trackByVariable"
-                  [attr.draggable]="true"
-                  (dragstart)="beginPaletteDrag($event, variable.id)"
-                  (click)="insertToken(variable.id)"
-                >
-                  <strong>{{ variable.id }}</strong>
-                  <small>{{ displayText(variable.label) }}</small>
-                </button>
-              </div>
-            </div>
-          </section>
-
           <section class="library-section">
             <button
               type="button"

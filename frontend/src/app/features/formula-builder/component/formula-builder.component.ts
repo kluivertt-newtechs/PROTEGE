@@ -37,16 +37,15 @@ interface FormulaDragData {
 export class FormulaBuilderComponent implements OnInit {
   tree: Array<ProductNode> = [];
   selectedProductId = '';
+  expandedProductId = '';
   formulas: Array<PricingFormula> = [];
   selectedFormula?: PricingFormula;
   productComponents: Array<ProductComponent> = [];
   priceComponents: Array<PriceComponent> = [];
-  productFormulasOpen = true;
-  simulationVariablesOpen = true;
   productComponentsOpen = true;
   priceComponentsOpen = true;
   quickFunctionsOpen = true;
-  private selectedFormulaOriginalId = '';
+  selectedFormulaOriginalId = '';
   statusMessage = '';
   statusType: 'success' | 'error' | 'info' = 'info';
   expressionTokens: Array<FormulaExpressionToken> = [];
@@ -58,6 +57,15 @@ export class FormulaBuilderComponent implements OnInit {
   readonly quickFunctionTokens = [
     { id: 'Math.max()', label: 'Maior valor' },
     { id: 'Math.min()', label: 'Menor valor' },
+    { id: 'Math.round()', label: 'Arredondar' },
+    { id: 'Math.ceil()', label: 'Arredondar para cima' },
+    { id: 'Math.floor()', label: 'Arredondar para baixo' },
+    { id: 'Math.abs()', label: 'Valor absoluto' },
+    { id: 'Math.pow()', label: 'Potenciação' },
+    { id: 'Math.sqrt()', label: 'Raiz quadrada' },
+    { id: 'value * rate', label: 'Percentual simples' },
+    { id: 'value / Math.max(0.01, 1 - rate)', label: 'Base antes do percentual' },
+    { id: 'value * (1 + rate)', label: 'Aplicar acréscimo percentual' },
   ];
 
   constructor(
@@ -80,18 +88,25 @@ export class FormulaBuilderComponent implements OnInit {
       .filter((formula) => !selectedIds.has(formula.id));
   }
 
+  get catalogFormulas(): Array<PricingFormula> {
+    return this.buildEditedCatalog();
+  }
+
   ngOnInit(): void {
     this.tree = this.catalog.getTree();
     this.selectedProductId = this.catalog.getSelectedProductId() || this.catalog.getProducts()[0]?.id || '';
+    this.expandedProductId = this.selectedProductId;
     this.loadProductScope();
   }
 
   selectProduct(productId: string): void {
     if (this.selectedProductId === productId) {
+      this.expandedProductId = this.expandedProductId === productId ? '' : productId;
       return;
     }
 
     this.selectedProductId = productId;
+    this.expandedProductId = productId;
     this.catalog.setSelectedProductId(productId);
     this.loadProductScope();
     this.statusType = 'info';
@@ -99,18 +114,11 @@ export class FormulaBuilderComponent implements OnInit {
   }
 
   selectFormula(formula: PricingFormula): void {
+    const isPersistedInScope = this.formulas.some((scopedFormula) => scopedFormula.id === formula.id);
     this.selectedFormula = { ...formula };
-    this.selectedFormulaOriginalId = formula.id;
+    this.selectedFormulaOriginalId = isPersistedInScope ? formula.id : '';
     this.refreshExpressionTokens();
     this.statusMessage = '';
-  }
-
-  toggleProductFormulas(): void {
-    this.productFormulasOpen = !this.productFormulasOpen;
-  }
-
-  toggleSimulationVariables(): void {
-    this.simulationVariablesOpen = !this.simulationVariablesOpen;
   }
 
   toggleProductComponents(): void {
@@ -140,6 +148,7 @@ export class FormulaBuilderComponent implements OnInit {
       businessBranches: [...this.defaultBusinessBranches],
     };
     this.selectedFormulaOriginalId = '';
+    this.expandedProductId = this.selectedProductId;
     this.refreshExpressionTokens();
     this.statusMessage = '';
   }

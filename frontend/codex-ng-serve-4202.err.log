@@ -2203,3 +2203,578 @@
           ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:167:31:
+[37m      167 │               [class.closed]="![32mproductFormulasOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:168:36:
+[37m      168 │               [attr.aria-expanded]="[32mproductFormulasOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:176:45:
+[37m      176 │             <div class="library-zone" *ngIf="[32mproductFormulasOpen[37m">
+          ╵                                              [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:225:31:
+[37m      225 │               [class.closed]="![32msimulationVariablesOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:226:36:
+[37m      226 │               [attr.aria-expanded]="[32msimulationVariablesOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:234:45:
+[37m      234 │ ...       <div class="library-zone" *ngIf="[32msimulationVariablesOpen[37m">
+          ╵                                            [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:108:9:
+[37m      108 │     this.[32mproductFormulasOpen[37m = !this.productFormulasOpen;
+          ╵          [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:108:37:
+[37m      108 │     this.productFormulasOpen = !this.[32mproductFormulasOpen[37m;
+          ╵                                      [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:112:9:
+[37m      112 │     this.[32msimulationVariablesOpen[37m = !this.simulationVariablesOpen;
+          ╵          [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  'simulationVariables' is declared here.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:54:11:
+[37m      54 │   readonly [32msimulationVariables[37m = PRICING_FORMULA_VARIABLES;
+         ╵            [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:112:41:
+[37m      112 │     this.simulationVariablesOpen = !this.[32msimulationVariablesOpen[37m;
+          ╵                                          [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  'simulationVariables' is declared here.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:54:11:
+[37m      54 │   readonly [32msimulationVariables[37m = PRICING_FORMULA_VARIABLES;
+         ╵            [32m~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:167:31:
+[37m      167 │               [class.closed]="![32mproductFormulasOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:168:36:
+[37m      168 │               [attr.aria-expanded]="[32mproductFormulasOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:176:45:
+[37m      176 │             <div class="library-zone" *ngIf="[32mproductFormulasOpen[37m">
+          ╵                                              [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:225:31:
+[37m      225 │               [class.closed]="![32msimulationVariablesOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:226:36:
+[37m      226 │               [attr.aria-expanded]="[32msimulationVariablesOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:234:45:
+[37m      234 │ ...       <div class="library-zone" *ngIf="[32msimulationVariablesOpen[37m">
+          ╵                                            [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:117:9:
+[37m      117 │     this.[32mproductFormulasOpen[37m = !this.productFormulasOpen;
+          ╵          [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:117:37:
+[37m      117 │     this.productFormulasOpen = !this.[32mproductFormulasOpen[37m;
+          ╵                                      [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:121:9:
+[37m      121 │     this.[32msimulationVariablesOpen[37m = !this.simulationVariablesOpen;
+          ╵          [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  'simulationVariables' is declared here.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:54:11:
+[37m      54 │   readonly [32msimulationVariables[37m = PRICING_FORMULA_VARIABLES;
+         ╵            [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:121:41:
+[37m      121 │     this.simulationVariablesOpen = !this.[32msimulationVariablesOpen[37m;
+          ╵                                          [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  'simulationVariables' is declared here.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:54:11:
+[37m      54 │   readonly [32msimulationVariables[37m = PRICING_FORMULA_VARIABLES;
+         ╵            [32m~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:167:31:
+[37m      167 │               [class.closed]="![32mproductFormulasOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:168:36:
+[37m      168 │               [attr.aria-expanded]="[32mproductFormulasOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:176:45:
+[37m      176 │             <div class="library-zone" *ngIf="[32mproductFormulasOpen[37m">
+          ╵                                              [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:225:31:
+[37m      225 │               [class.closed]="![32msimulationVariablesOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:226:36:
+[37m      226 │               [attr.aria-expanded]="[32msimulationVariablesOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:234:45:
+[37m      234 │ ...       <div class="library-zone" *ngIf="[32msimulationVariablesOpen[37m">
+          ╵                                            [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:120:9:
+[37m      120 │     this.[32mproductFormulasOpen[37m = !this.productFormulasOpen;
+          ╵          [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:120:37:
+[37m      120 │     this.productFormulasOpen = !this.[32mproductFormulasOpen[37m;
+          ╵                                      [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:124:9:
+[37m      124 │     this.[32msimulationVariablesOpen[37m = !this.simulationVariablesOpen;
+          ╵          [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  'simulationVariables' is declared here.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:54:11:
+[37m      54 │   readonly [32msimulationVariables[37m = PRICING_FORMULA_VARIABLES;
+         ╵            [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:124:41:
+[37m      124 │     this.simulationVariablesOpen = !this.[32msimulationVariablesOpen[37m;
+          ╵                                          [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  'simulationVariables' is declared here.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:54:11:
+[37m      54 │   readonly [32msimulationVariables[37m = PRICING_FORMULA_VARIABLES;
+         ╵            [32m~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:167:31:
+[37m      167 │               [class.closed]="![32mproductFormulasOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:168:36:
+[37m      168 │               [attr.aria-expanded]="[32mproductFormulasOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleProductFormulas' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:169:23:
+[37m      169 │               (click)="[32mtoggleProductFormulas[37m()"
+          ╵                        [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:176:45:
+[37m      176 │             <div class="library-zone" *ngIf="[32mproductFormulasOpen[37m">
+          ╵                                              [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:225:31:
+[37m      225 │               [class.closed]="![32msimulationVariablesOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:226:36:
+[37m      226 │               [attr.aria-expanded]="[32msimulationVariablesOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'toggleSimulationVariables' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:227:23:
+[37m      227 │               (click)="[32mtoggleSimulationVariables[37m()"
+          ╵                        [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:234:45:
+[37m      234 │ ...       <div class="library-zone" *ngIf="[32msimulationVariablesOpen[37m">
+          ╵                                            [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:218:31:
+[37m      218 │               [class.closed]="![32mproductFormulasOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:219:36:
+[37m      219 │               [attr.aria-expanded]="[32mproductFormulasOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleProductFormulas' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:220:23:
+[37m      220 │               (click)="[32mtoggleProductFormulas[37m()"
+          ╵                        [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:227:45:
+[37m      227 │             <div class="library-zone" *ngIf="[32mproductFormulasOpen[37m">
+          ╵                                              [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:276:31:
+[37m      276 │               [class.closed]="![32msimulationVariablesOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:277:36:
+[37m      277 │               [attr.aria-expanded]="[32msimulationVariablesOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'toggleSimulationVariables' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:278:23:
+[37m      278 │               (click)="[32mtoggleSimulationVariables[37m()"
+          ╵                        [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:285:45:
+[37m      285 │ ...       <div class="library-zone" *ngIf="[32msimulationVariablesOpen[37m">
+          ╵                                            [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2341: Property 'selectedFormulaOriginalId' is private and only accessible within class 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:52:38:
+[37m      52 │ ...   [class.active]="[32mselectedFormulaOriginalId[37m === formula.id || ...
+         ╵                       [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m

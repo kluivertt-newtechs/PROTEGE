@@ -87,58 +87,60 @@
 }
 
 .product-tree {
+  display: grid;
+  gap: 12px;
+}
+
+.product-group {
   border: 1px solid #e5e7eb;
-  border-radius: 4px;
+  border-radius: 6px;
   display: grid;
   overflow: hidden;
 }
 
 .group-title {
-  background: #f4f6f8;
+  background: #ccd6df;
   border-bottom: 1px solid #e5e7eb;
-  color: #2e343c;
+  color: #101820;
   font-size: 12px;
   font-weight: 700;
   padding: 9px 12px;
   text-transform: uppercase;
 }
 
-.product-row {
+.product-library-section {
   background: #fff;
   border: 0;
   border-bottom: 1px solid #e5e7eb;
-  color: #2e343c;
-  cursor: pointer;
-  display: grid;
-  gap: 2px;
-  min-height: 54px;
-  padding: 10px 12px 10px 20px;
-  text-align: left;
+  border-radius: 0;
 }
 
-.product-row:last-child {
-  border-bottom: 0;
-}
-
-.product-row:hover {
-  background: #f8fbfd;
-}
-
-.product-row.active {
+.product-library-section.active .product-toggle {
   background: #edf6ff;
   box-shadow: inset 3px 0 0 #0b3d63;
 }
 
-.product-row strong,
-.product-row small {
+.product-library-section .library-zone {
+  background: #f8fafb;
+}
+
+.product-toggle:hover {
+  background: #f8fbfd;
+}
+
+.product-toggle .library-toggle-title,
+.product-toggle .library-toggle-meta {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.product-row small {
-  color: #69737d;
-  font-size: 12px;
+.product-toggle .library-toggle-meta {
+  border-radius: 4px;
+}
+
+.product-library-section:last-child {
+  border-bottom: 0;
 }
 
 .formula-list-heading {

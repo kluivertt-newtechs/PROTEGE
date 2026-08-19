@@ -1432,3 +1432,756 @@ Application bundle generation complete. [3.192 seconds] - 2026-08-19T16:46:32.03
 
 Page reload sent to client(s).
 [33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m             [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                         [2m | [22m[2mmain[22m                [2m | [22m  [36m9.37 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                [2m | [22m[1mNames[22m               [2m | [22m [1mRaw size[22m
+[32msale-price.component-YBOA7OK3.js[39m[2m | [22m[2msale-price-component[22m[2m | [22m [36m78.58 kB[39m[2m | [22m
+[32msale-price.routes-4K5HSWLH.js[39m   [2m | [22m[2msale-price-routes[22m   [2m | [22m[36m321 bytes[39m[2m | [22m
+
+Application bundle generation complete. [2.074 seconds] - 2026-08-19T16:46:36.941Z
+
+Page reload sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [12.781 seconds] - 2026-08-19T17:02:14.290Z
+
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:167:31:
+[37m      167 │               [class.closed]="![32mproductFormulasOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:168:36:
+[37m      168 │               [attr.aria-expanded]="[32mproductFormulasOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:176:45:
+[37m      176 │             <div class="library-zone" *ngIf="[32mproductFormulasOpen[37m">
+          ╵                                              [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:225:31:
+[37m      225 │               [class.closed]="![32msimulationVariablesOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:226:36:
+[37m      226 │               [attr.aria-expanded]="[32msimulationVariablesOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:234:45:
+[37m      234 │ ...       <div class="library-zone" *ngIf="[32msimulationVariablesOpen[37m">
+          ╵                                            [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:108:9:
+[37m      108 │     this.[32mproductFormulasOpen[37m = !this.productFormulasOpen;
+          ╵          [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:108:37:
+[37m      108 │     this.productFormulasOpen = !this.[32mproductFormulasOpen[37m;
+          ╵                                      [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:112:9:
+[37m      112 │     this.[32msimulationVariablesOpen[37m = !this.simulationVariablesOpen;
+          ╵          [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  'simulationVariables' is declared here.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:54:11:
+[37m      54 │   readonly [32msimulationVariables[37m = PRICING_FORMULA_VARIABLES;
+         ╵            [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:112:41:
+[37m      112 │     this.simulationVariablesOpen = !this.[32msimulationVariablesOpen[37m;
+          ╵                                          [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  'simulationVariables' is declared here.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:54:11:
+[37m      54 │   readonly [32msimulationVariables[37m = PRICING_FORMULA_VARIABLES;
+         ╵            [32m~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [6.514 seconds] - 2026-08-19T17:02:20.910Z
+
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:167:31:
+[37m      167 │               [class.closed]="![32mproductFormulasOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:168:36:
+[37m      168 │               [attr.aria-expanded]="[32mproductFormulasOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:176:45:
+[37m      176 │             <div class="library-zone" *ngIf="[32mproductFormulasOpen[37m">
+          ╵                                              [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:225:31:
+[37m      225 │               [class.closed]="![32msimulationVariablesOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:226:36:
+[37m      226 │               [attr.aria-expanded]="[32msimulationVariablesOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:234:45:
+[37m      234 │ ...       <div class="library-zone" *ngIf="[32msimulationVariablesOpen[37m">
+          ╵                                            [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:117:9:
+[37m      117 │     this.[32mproductFormulasOpen[37m = !this.productFormulasOpen;
+          ╵          [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:117:37:
+[37m      117 │     this.productFormulasOpen = !this.[32mproductFormulasOpen[37m;
+          ╵                                      [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:121:9:
+[37m      121 │     this.[32msimulationVariablesOpen[37m = !this.simulationVariablesOpen;
+          ╵          [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  'simulationVariables' is declared here.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:54:11:
+[37m      54 │   readonly [32msimulationVariables[37m = PRICING_FORMULA_VARIABLES;
+         ╵            [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:121:41:
+[37m      121 │     this.simulationVariablesOpen = !this.[32msimulationVariablesOpen[37m;
+          ╵                                          [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  'simulationVariables' is declared here.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:54:11:
+[37m      54 │   readonly [32msimulationVariables[37m = PRICING_FORMULA_VARIABLES;
+         ╵            [32m~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [6.628 seconds] - 2026-08-19T17:02:27.934Z
+
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:167:31:
+[37m      167 │               [class.closed]="![32mproductFormulasOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:168:36:
+[37m      168 │               [attr.aria-expanded]="[32mproductFormulasOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:176:45:
+[37m      176 │             <div class="library-zone" *ngIf="[32mproductFormulasOpen[37m">
+          ╵                                              [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:225:31:
+[37m      225 │               [class.closed]="![32msimulationVariablesOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:226:36:
+[37m      226 │               [attr.aria-expanded]="[32msimulationVariablesOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:234:45:
+[37m      234 │ ...       <div class="library-zone" *ngIf="[32msimulationVariablesOpen[37m">
+          ╵                                            [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:120:9:
+[37m      120 │     this.[32mproductFormulasOpen[37m = !this.productFormulasOpen;
+          ╵          [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:120:37:
+[37m      120 │     this.productFormulasOpen = !this.[32mproductFormulasOpen[37m;
+          ╵                                      [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:124:9:
+[37m      124 │     this.[32msimulationVariablesOpen[37m = !this.simulationVariablesOpen;
+          ╵          [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  'simulationVariables' is declared here.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:54:11:
+[37m      54 │   readonly [32msimulationVariables[37m = PRICING_FORMULA_VARIABLES;
+         ╵            [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:124:41:
+[37m      124 │     this.simulationVariablesOpen = !this.[32msimulationVariablesOpen[37m;
+          ╵                                          [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  'simulationVariables' is declared here.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:54:11:
+[37m      54 │   readonly [32msimulationVariables[37m = PRICING_FORMULA_VARIABLES;
+         ╵            [32m~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [4.278 seconds] - 2026-08-19T17:02:32.231Z
+
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:167:31:
+[37m      167 │               [class.closed]="![32mproductFormulasOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:168:36:
+[37m      168 │               [attr.aria-expanded]="[32mproductFormulasOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleProductFormulas' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:169:23:
+[37m      169 │               (click)="[32mtoggleProductFormulas[37m()"
+          ╵                        [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:176:45:
+[37m      176 │             <div class="library-zone" *ngIf="[32mproductFormulasOpen[37m">
+          ╵                                              [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:225:31:
+[37m      225 │               [class.closed]="![32msimulationVariablesOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:226:36:
+[37m      226 │               [attr.aria-expanded]="[32msimulationVariablesOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'toggleSimulationVariables' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:227:23:
+[37m      227 │               (click)="[32mtoggleSimulationVariables[37m()"
+          ╵                        [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:234:45:
+[37m      234 │ ...       <div class="library-zone" *ngIf="[32msimulationVariablesOpen[37m">
+          ╵                                            [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [5.174 seconds] - 2026-08-19T17:02:49.197Z
+
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:218:31:
+[37m      218 │               [class.closed]="![32mproductFormulasOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:219:36:
+[37m      219 │               [attr.aria-expanded]="[32mproductFormulasOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'toggleProductFormulas' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:220:23:
+[37m      220 │               (click)="[32mtoggleProductFormulas[37m()"
+          ╵                        [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'productFormulasOpen' does not exist on type 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:227:45:
+[37m      227 │             <div class="library-zone" *ngIf="[32mproductFormulasOpen[37m">
+          ╵                                              [32m~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:276:31:
+[37m      276 │               [class.closed]="![32msimulationVariablesOpen[37m"
+          ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:277:36:
+[37m      277 │               [attr.aria-expanded]="[32msimulationVariablesOpen[37m"
+          ╵                                     [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'toggleSimulationVariables' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:278:23:
+[37m      278 │               (click)="[32mtoggleSimulationVariables[37m()"
+          ╵                        [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'simulationVariablesOpen' does not exist on type 'FormulaBuilderComponent'. Did you mean 'simulationVariables'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:285:45:
+[37m      285 │ ...       <div class="library-zone" *ngIf="[32msimulationVariablesOpen[37m">
+          ╵                                            [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m                     [2m | [22m[1mNames[22m                       [2m | [22m [1mRaw size[22m
+[32mstyles.css[39m                              [2m | [22m[2mstyles[22m                      [2m | [22m[36m597.73 kB[39m[2m | [22m
+[32mmain.js[39m                                 [2m | [22m[2mmain[22m                        [2m | [22m  [36m9.37 kB[39m[2m | [22m
+[32mchunk-CZJLB7T5.js[39m                       [2m | [22m[2m-[22m                           [2m | [22m  [36m1.08 kB[39m[2m | [22m
+[32mpolyfills.js[39m                            [2m | [22m[2mpolyfills[22m                   [2m | [22m [36m95 bytes[39m[2m | [22m
+
+[1m [22m                                       [2m | [22m[1mInitial total[22m               [2m | [22m[1m608.27 kB[22m
+
+[1mLazy chunk files[22m                        [2m | [22m[1mNames[22m                       [2m | [22m [1mRaw size[22m
+[32mformula-builder.component-NPEHBAPE.js[39m   [2m | [22m[2mformula-builder-component[22m   [2m | [22m [36m97.21 kB[39m[2m | [22m
+[32mproduct-tree.component-2FEZ36HY.js[39m      [2m | [22m[2mproduct-tree-component[22m      [2m | [22m [36m91.08 kB[39m[2m | [22m
+[32msale-price.component-YBOA7OK3.js[39m        [2m | [22m[2msale-price-component[22m        [2m | [22m [36m78.58 kB[39m[2m | [22m
+[32mproduct-components.component-6FC6MTKV.js[39m[2m | [22m[2mproduct-components-component[22m[2m | [22m [36m52.22 kB[39m[2m | [22m
+[32mprice-components.component-DNE3E4GB.js[39m  [2m | [22m[2mprice-components-component[22m  [2m | [22m [36m51.51 kB[39m[2m | [22m
+[32mchunk-YTZIK7JF.js[39m                       [2m | [22m[2m-[22m                           [2m | [22m [36m37.71 kB[39m[2m | [22m
+[32mchunk-YLH3OIF4.js[39m                       [2m | [22m[2m-[22m                           [2m | [22m [36m18.73 kB[39m[2m | [22m
+[32mlogin.component-NYY7V7NH.js[39m             [2m | [22m[2mlogin-component[22m             [2m | [22m  [36m8.11 kB[39m[2m | [22m
+[32mproduct-components.routes-VPTHBHVN.js[39m   [2m | [22m[2mproduct-components-routes[22m   [2m | [22m[36m377 bytes[39m[2m | [22m
+[32mprice-components.routes-WC5UVTJI.js[39m     [2m | [22m[2mprice-components-routes[22m     [2m | [22m[36m363 bytes[39m[2m | [22m
+[32mformula-builder.routes-HLXGH7T5.js[39m      [2m | [22m[2mformula-builder-routes[22m      [2m | [22m[36m356 bytes[39m[2m | [22m
+[32mproduct-tree.routes-FTSQXUQO.js[39m         [2m | [22m[2mproduct-tree-routes[22m         [2m | [22m[36m335 bytes[39m[2m | [22m
+[32msale-price.routes-4K5HSWLH.js[39m           [2m | [22m[2msale-price-routes[22m           [2m | [22m[36m321 bytes[39m[2m | [22m
+[32mlogin.routes-5ZOPMKVL.js[39m                [2m | [22m[2mlogin-routes[22m                [2m | [22m[36m289 bytes[39m[2m | [22m
+
+Application bundle generation complete. [3.686 seconds] - 2026-08-19T17:03:12.731Z
+
+Page reload sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m                  [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                              [2m | [22m[2mmain[22m                     [2m | [22m  [36m9.37 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                     [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mformula-builder.component-A2SYYCK4.js[39m[2m | [22m[2mformula-builder-component[22m[2m | [22m [36m97.56 kB[39m[2m | [22m
+[32mformula-builder.routes-NX53M3CY.js[39m   [2m | [22m[2mformula-builder-routes[22m   [2m | [22m[36m356 bytes[39m[2m | [22m
+
+Application bundle generation complete. [3.022 seconds] - 2026-08-19T17:03:34.857Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m                  [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                              [2m | [22m[2mmain[22m                     [2m | [22m  [36m9.37 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                     [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mformula-builder.component-YAOGEFKH.js[39m[2m | [22m[2mformula-builder-component[22m[2m | [22m [36m97.75 kB[39m[2m | [22m
+[32mformula-builder.routes-UAO7ZKG5.js[39m   [2m | [22m[2mformula-builder-routes[22m   [2m | [22m[36m356 bytes[39m[2m | [22m
+
+Application bundle generation complete. [2.707 seconds] - 2026-08-19T17:03:56.894Z
+
+Page reload sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [3.534 seconds] - 2026-08-19T17:04:03.682Z
+
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2341: Property 'selectedFormulaOriginalId' is private and only accessible within class 'FormulaBuilderComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/formula-builder/component/formula-builder.component.html:52:38:
+[37m      52 │ ...   [class.active]="[32mselectedFormulaOriginalId[37m === formula.id || ...
+         ╵                       [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component FormulaBuilderComponent.
+
+    src/app/features/formula-builder/component/formula-builder.component.ts:32:15:
+[37m      32 │   templateUrl: [32m'./formula-builder.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m                     [2m | [22m[1mNames[22m                       [2m | [22m [1mRaw size[22m
+[32mstyles.css[39m                              [2m | [22m[2mstyles[22m                      [2m | [22m[36m597.73 kB[39m[2m | [22m
+[32mmain.js[39m                                 [2m | [22m[2mmain[22m                        [2m | [22m  [36m9.37 kB[39m[2m | [22m
+[32mchunk-CZJLB7T5.js[39m                       [2m | [22m[2m-[22m                           [2m | [22m  [36m1.08 kB[39m[2m | [22m
+[32mpolyfills.js[39m                            [2m | [22m[2mpolyfills[22m                   [2m | [22m [36m95 bytes[39m[2m | [22m
+
+[1m [22m                                       [2m | [22m[1mInitial total[22m               [2m | [22m[1m608.27 kB[22m
+
+[1mLazy chunk files[22m                        [2m | [22m[1mNames[22m                       [2m | [22m [1mRaw size[22m
+[32mformula-builder.component-ZQUNDFYJ.js[39m   [2m | [22m[2mformula-builder-component[22m   [2m | [22m [36m97.89 kB[39m[2m | [22m
+[32mproduct-tree.component-2FEZ36HY.js[39m      [2m | [22m[2mproduct-tree-component[22m      [2m | [22m [36m91.08 kB[39m[2m | [22m
+[32msale-price.component-YBOA7OK3.js[39m        [2m | [22m[2msale-price-component[22m        [2m | [22m [36m78.58 kB[39m[2m | [22m
+[32mproduct-components.component-6FC6MTKV.js[39m[2m | [22m[2mproduct-components-component[22m[2m | [22m [36m52.22 kB[39m[2m | [22m
+[32mprice-components.component-DNE3E4GB.js[39m  [2m | [22m[2mprice-components-component[22m  [2m | [22m [36m51.51 kB[39m[2m | [22m
+[32mchunk-YTZIK7JF.js[39m                       [2m | [22m[2m-[22m                           [2m | [22m [36m37.71 kB[39m[2m | [22m
+[32mchunk-YLH3OIF4.js[39m                       [2m | [22m[2m-[22m                           [2m | [22m [36m18.73 kB[39m[2m | [22m
+[32mlogin.component-NYY7V7NH.js[39m             [2m | [22m[2mlogin-component[22m             [2m | [22m  [36m8.11 kB[39m[2m | [22m
+[32mproduct-components.routes-VPTHBHVN.js[39m   [2m | [22m[2mproduct-components-routes[22m   [2m | [22m[36m377 bytes[39m[2m | [22m
+[32mprice-components.routes-WC5UVTJI.js[39m     [2m | [22m[2mprice-components-routes[22m     [2m | [22m[36m363 bytes[39m[2m | [22m
+[32mformula-builder.routes-HY4J526O.js[39m      [2m | [22m[2mformula-builder-routes[22m      [2m | [22m[36m356 bytes[39m[2m | [22m
+[32mproduct-tree.routes-FTSQXUQO.js[39m         [2m | [22m[2mproduct-tree-routes[22m         [2m | [22m[36m335 bytes[39m[2m | [22m
+[32msale-price.routes-4K5HSWLH.js[39m           [2m | [22m[2msale-price-routes[22m           [2m | [22m[36m321 bytes[39m[2m | [22m
+[32mlogin.routes-5ZOPMKVL.js[39m                [2m | [22m[2mlogin-routes[22m                [2m | [22m[36m289 bytes[39m[2m | [22m
+
+Application bundle generation complete. [2.636 seconds] - 2026-08-19T17:04:08.681Z
+
+Page reload sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m                  [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                              [2m | [22m[2mmain[22m                     [2m | [22m  [36m9.37 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                     [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mformula-builder.component-Y27ZBCSF.js[39m[2m | [22m[2mformula-builder-component[22m[2m | [22m [36m97.34 kB[39m[2m | [22m
+[32mformula-builder.routes-XPMMYFJS.js[39m   [2m | [22m[2mformula-builder-routes[22m   [2m | [22m[36m356 bytes[39m[2m | [22m
+
+Application bundle generation complete. [10.844 seconds] - 2026-08-19T17:08:52.337Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m                  [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                              [2m | [22m[2mmain[22m                     [2m | [22m  [36m9.37 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                     [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mformula-builder.component-LLR3MO37.js[39m[2m | [22m[2mformula-builder-component[22m[2m | [22m [36m97.13 kB[39m[2m | [22m
+[32mformula-builder.routes-E3KZTKE3.js[39m   [2m | [22m[2mformula-builder-routes[22m   [2m | [22m[36m356 bytes[39m[2m | [22m
+
+Application bundle generation complete. [4.125 seconds] - 2026-08-19T17:08:56.503Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m                  [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                              [2m | [22m[2mmain[22m                     [2m | [22m  [36m9.37 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                     [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mformula-builder.component-YA6GIEB7.js[39m[2m | [22m[2mformula-builder-component[22m[2m | [22m [36m96.99 kB[39m[2m | [22m
+[32mformula-builder.routes-GUMURAYS.js[39m   [2m | [22m[2mformula-builder-routes[22m   [2m | [22m[36m356 bytes[39m[2m | [22m
+
+Application bundle generation complete. [6.752 seconds] - 2026-08-19T17:10:42.547Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m                  [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                              [2m | [22m[2mmain[22m                     [2m | [22m  [36m9.37 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                     [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mformula-builder.component-4QQVEYTG.js[39m[2m | [22m[2mformula-builder-component[22m[2m | [22m [36m97.12 kB[39m[2m | [22m
+[32mformula-builder.routes-SQ4WXCCY.js[39m   [2m | [22m[2mformula-builder-routes[22m   [2m | [22m[36m356 bytes[39m[2m | [22m
+
+Application bundle generation complete. [6.055 seconds] - 2026-08-19T17:10:48.758Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m                  [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mmain.js[39m                              [2m | [22m[2mmain[22m                     [2m | [22m  [36m9.37 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m                     [2m | [22m[1mNames[22m                    [2m | [22m [1mRaw size[22m
+[32mformula-builder.component-3SJ34KO6.js[39m[2m | [22m[2mformula-builder-component[22m[2m | [22m [36m97.12 kB[39m[2m | [22m
+[32mformula-builder.routes-DY2VJDUC.js[39m   [2m | [22m[2mformula-builder-routes[22m   [2m | [22m[36m356 bytes[39m[2m | [22m
+
+Application bundle generation complete. [5.678 seconds] - 2026-08-19T17:12:14.900Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
