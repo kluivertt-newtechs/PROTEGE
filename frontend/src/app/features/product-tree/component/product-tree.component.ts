@@ -46,6 +46,7 @@ export class ProductTreeComponent {
   optionComponent: ProductComponent | undefined;
   optionCode = '';
   optionCostValue = 0;
+  optionQuantity = 1;
 
   groupModel = { code: '', name: '', icon: 'ti-folder' };
   productModel = { groupId: '', code: '', name: '', icon: 'ti-package' };
@@ -310,10 +311,6 @@ export class ProductTreeComponent {
 
   openComponentOptionModal(component: ProductComponent, event?: Event): void {
     event?.stopPropagation();
-    if (!component.options.length) {
-      return;
-    }
-
     const config = this.catalog.getProductComponentOptionConfig(this.selectedProductId, component.id);
     const selectedOption = component.options.find((option) => option.code === config?.optionCode)
       ?? component.options.find((option) => option.default)
@@ -324,8 +321,9 @@ export class ProductTreeComponent {
       ...component,
       options: component.options.map((option) => ({ ...option })),
     };
-    this.optionCode = selectedOption.code;
-    this.optionCostValue = config?.costValue ?? selectedOption.costValue;
+    this.optionCode = selectedOption?.code ?? '';
+    this.optionCostValue = config?.costValue ?? selectedOption?.costValue ?? 0;
+    this.optionQuantity = config?.quantity ?? 1;
     this.componentOptionModal.open();
   }
 
@@ -339,6 +337,7 @@ export class ProductTreeComponent {
       this.optionComponent.id,
       this.optionCode,
       this.optionCostValue,
+      this.optionQuantity,
     );
 
     if (!saved) {
@@ -349,6 +348,7 @@ export class ProductTreeComponent {
     this.componentOptionModal.close();
     this.optionComponent = undefined;
     this.statusMessage = 'Opcao do componente salva.';
+    this.loadProductComposition(this.selectedProductId);
   }
 
   selectComponentOption(optionCode: string): void {
@@ -358,6 +358,21 @@ export class ProductTreeComponent {
 
     this.optionCode = optionCode;
     this.optionCostValue = this.optionComponent.options.find((option) => option.code === optionCode)?.costValue ?? 0;
+  }
+
+  componentQuantity(component: ProductComponent): number {
+    return this.catalog.getProductComponentOptionConfig(this.selectedProductId, component.id)?.quantity ?? 1;
+  }
+
+  componentCostLabel(component: ProductComponent): string {
+    const unitValue = this.selectedOptionCostValue(component);
+    const quantity = this.componentQuantity(component);
+
+    if (quantity <= 1) {
+      return this.formatCurrency(unitValue);
+    }
+
+    return `${this.formatCurrency(unitValue)} x ${quantity} = ${this.formatCurrency(unitValue * quantity)}`;
   }
 
   componentOptionStatus(component: ProductComponent): ProductComponentOptionStatus {
@@ -391,6 +406,11 @@ export class ProductTreeComponent {
 
     this.optionCostValue = costValue;
     input.value = this.formatCostInput(costValue);
+  }
+
+  onOptionQuantityInput(value: unknown): void {
+    const quantity = Number(value);
+    this.optionQuantity = Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
   }
 
   trackByOption(_: number, option: ProductComponentOption): string {

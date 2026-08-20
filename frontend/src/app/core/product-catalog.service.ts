@@ -57,6 +57,7 @@ export interface ProductComponentOptionConfig {
   componentId: string;
   optionCode: string;
   costValue: number;
+  quantity: number;
 }
 
 export interface ProductCatalogState {
@@ -68,9 +69,10 @@ export interface ProductCatalogState {
   selectedProductId: string;
 }
 
-const STATE_KEY = 'protege.productCatalog.v6';
-const VERSION = 6;
+const STATE_KEY = 'protege.productCatalog.v7';
+const VERSION = 7;
 const LEGACY_KEYS = [
+  'protege.productCatalog.v6',
   'protege.productCatalog.v5',
   'protege.productCatalog.v4',
   'protege.productCatalog.v3',
@@ -608,19 +610,23 @@ export class ProductCatalogService {
     componentId: string,
     optionCode: string,
     costValue: number,
+    quantity = 1,
   ): ProductComponentOptionConfig | undefined {
     const composition = this.getComposition(productId);
     const component = this.state.productComponents.find((item) => item.id === componentId);
-    const option = component?.options.find((item) => item.code === optionCode);
 
-    if (!component || !option) {
+    if (!component) {
       return undefined;
     }
 
+    const option = component.options.find((item) => item.code === optionCode)
+      ?? this.getDefaultProductComponentOption(component);
+
     const normalized: ProductComponentOptionConfig = {
       componentId,
-      optionCode,
+      optionCode: option?.code ?? '',
       costValue: this.safeNumber(costValue),
+      quantity: this.normalizeQuantity(quantity),
     };
     const configs = composition.productComponentOptions.filter((config) => config.componentId !== componentId);
 
@@ -813,6 +819,15 @@ export class ProductCatalogService {
     }
 
     for (const key of LEGACY_KEYS) {
+      const legacy = this.readStorage<ProductCatalogState>(key);
+      if (legacy && Array.isArray(legacy.productComponents) && Array.isArray(legacy.priceComponents)) {
+        const migrated = this.normalizeState(legacy);
+        this.writeStorage(STATE_KEY, migrated);
+        return migrated;
+      }
+    }
+
+    for (const key of LEGACY_KEYS) {
       localStorage.removeItem(key);
     }
 
@@ -877,9 +892,12 @@ export class ProductCatalogService {
   ): ProductComponent {
     if (
       !config
-      || !component.options.some((option) => option.code === config.optionCode)
       || this.isDefaultProductComponentOptionConfig(component, config)
     ) {
+      return this.cloneComponent(component);
+    }
+
+    if (!component.options.some((option) => option.code === config.optionCode)) {
       return this.cloneComponent(component);
     }
 
@@ -903,8 +921,9 @@ export class ProductCatalogService {
         componentId: String(config.componentId ?? ''),
         optionCode: String(config.optionCode ?? ''),
         costValue: this.safeNumber(config.costValue),
+        quantity: this.normalizeQuantity(config.quantity),
       }))
-      .filter((config) => config.componentId && config.optionCode);
+      .filter((config) => config.componentId);
 
     return normalized.filter((config, index, source) =>
       source.findIndex((item) => item.componentId === config.componentId) === index,
@@ -919,7 +938,8 @@ export class ProductCatalogService {
     return Boolean(
       defaultOption
       && config.optionCode === defaultOption.code
-      && this.sameCurrencyValue(config.costValue, defaultOption.costValue),
+      && this.sameCurrencyValue(config.costValue, defaultOption.costValue)
+      && this.normalizeQuantity(config.quantity) === 1,
     );
   }
 
@@ -1064,6 +1084,11 @@ export class ProductCatalogService {
 
   private safeNumber(value: unknown): number {
     return Number.isFinite(Number(value)) ? Number(value) : 0;
+  }
+
+  private normalizeQuantity(value: unknown): number {
+    const quantity = Number(value);
+    return Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
   }
 
   private persist(): void {

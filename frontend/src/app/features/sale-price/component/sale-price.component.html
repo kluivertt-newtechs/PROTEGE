@@ -15,6 +15,18 @@
           <span>{{ selectedComponentCount }} entradas ativas</span>
           <span>{{ priceComponentCount }} parâmetros de preço</span>
         </div>
+        <label class="product-quantity-field">
+          <span>Quantidade</span>
+          <input
+            type="number"
+            min="1"
+            step="1"
+            inputmode="decimal"
+            [ngModel]="productQuantity"
+            (ngModelChange)="updateProductQuantity($event)"
+            aria-label="Quantidade do produto principal"
+          />
+        </label>
       </div>
 
       <ng-template #noSelectedProduct>
@@ -100,21 +112,6 @@
                   </p>
                 </ng-template>
 
-                <div class="component-quantity">
-                  <label [attr.for]="'component-quantity-' + component.id">
-                    Qtd.
-                  </label>
-                  <input
-                    type="number"
-                    [id]="'component-quantity-' + component.id"
-                    [name]="'componentQuantity' + component.id"
-                    min="1"
-                    step="1"
-                    inputmode="decimal"
-                    [ngModel]="componentQuantity(component)"
-                    (ngModelChange)="updateComponentQuantity(component, $event)"
-                  />
-                </div>
               </article>
             </div>
           </section>
@@ -177,7 +174,7 @@
         </div>
       </section>
 
-      <details class="memory-panel" [class.has-issues]="hasMemoryIssues" open>
+      <details class="memory-panel" [class.has-issues]="hasMemoryIssues" [open]="hasMemoryIssues">
         <summary>
           <span>
             <strong>Memória de cálculo</strong>

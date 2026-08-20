@@ -89,7 +89,7 @@
                     class="component-option-summary"
                   >
                     {{ selectedOptionDescription(component) }} -
-                    {{ formatCurrency(selectedOptionCostValue(component)) }}
+                    {{ componentCostLabel(component) }}
                     <b
                       class="component-option-badge"
                       [class.custom]="
@@ -106,11 +106,10 @@
                 </span>
                 <span class="component-row-actions">
                   <button
-                    *ngIf="component.options.length"
                     type="button"
                     class="icon-action-button"
-                    title="Editar opcao"
-                    aria-label="Editar opcao do componente"
+                    title="Editar opcao e quantidade"
+                    aria-label="Editar opcao e quantidade do componente"
                     (click)="openComponentOptionModal(component, $event)"
                   >
                     <span class="an an-pencil-simple" aria-hidden="true"></span>
@@ -221,6 +220,7 @@
     </po-container>
 
     <po-container p-title="Biblioteca">
+      <div class="library-stack">
       <section class="library-section">
         <button
           type="button"
@@ -310,6 +310,7 @@
           </p>
         </div>
       </section>
+      </div>
     </po-container>
   </div>
 
@@ -384,7 +385,7 @@
     [p-title]="'Opções - ' + (optionComponent?.description || '')"
   >
     <div class="component-option-modal" *ngIf="optionComponent">
-      <div class="option-list">
+      <div class="option-list" *ngIf="optionComponent.options.length">
         <button
           type="button"
           class="option-choice"
@@ -411,6 +412,19 @@
           [value]="formatCostInput(optionCostValue)"
           (input)="onOptionCostInput($event)"
           aria-label="Valor de Custo"
+        />
+      </label>
+
+      <label class="cost-field">
+        <span>Quantidade</span>
+        <input
+          type="number"
+          min="1"
+          step="1"
+          inputmode="decimal"
+          [ngModel]="optionQuantity"
+          (ngModelChange)="onOptionQuantityInput($event)"
+          aria-label="Quantidade"
         />
       </label>
     </div>

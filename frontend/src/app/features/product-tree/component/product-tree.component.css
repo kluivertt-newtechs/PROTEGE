@@ -3,6 +3,8 @@
   display: grid;
   gap: 18px;
   grid-template-columns: minmax(250px, 3fr) minmax(360px, 5fr) minmax(260px, 3fr);
+  max-height: calc(100vh - 170px);
+  min-height: 0;
   padding: 20px 0 24px;
 }
 
@@ -10,9 +12,19 @@
 .composition-zone,
 .library-zone,
 .composition-stack,
-.library-section {
+.library-section,
+.library-stack {
   display: grid;
   gap: 10px;
+}
+
+.tree-list,
+.composition-stack,
+.library-stack {
+  max-height: calc(100vh - 250px);
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
 .composition-stack {
@@ -379,5 +391,14 @@ small,
 @media (max-width: 1120px) {
   .tree-grid {
     grid-template-columns: 1fr;
+    max-height: none;
+  }
+
+  .tree-list,
+  .composition-stack,
+  .library-stack {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
   }
 }

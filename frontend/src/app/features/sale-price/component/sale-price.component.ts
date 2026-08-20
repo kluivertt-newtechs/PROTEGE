@@ -121,7 +121,7 @@ export class SalePriceComponent {
   components: Array<ProductComponent> = [];
   priceComponents: Array<PriceComponent> = [];
   values: Record<string, number | string | boolean> = {};
-  componentQuantities: Record<string, number> = {};
+  productQuantity = 1;
   resultValues: Record<string, number> = {};
   memory: Array<FormulaExecutionStep> = [];
   warning = '';
@@ -305,20 +305,17 @@ export class SalePriceComponent {
     return this.formatCurrency(option.costValue);
   }
 
-  componentQuantity(component: ProductComponent): number {
-    return this.componentQuantities[component.id] ?? 1;
+  persistedComponentQuantity(component: ProductComponent): number {
+    return this.catalog.getProductComponentOptionConfig(this.selectedProductId, component.id)?.quantity ?? 1;
   }
 
-  updateComponentQuantity(component: ProductComponent, value: unknown): void {
-    this.componentQuantities = {
-      ...this.componentQuantities,
-      [component.id]: this.normalizeComponentQuantity(value),
-    };
+  updateProductQuantity(value: unknown): void {
+    this.productQuantity = this.normalizeQuantity(value);
     this.recalculate();
   }
 
   productComponentSubtotalLabel(component: ProductComponent): string {
-    const quantity = this.componentQuantity(component);
+    const quantity = this.persistedComponentQuantity(component);
 
     if (quantity <= 1) {
       return '';
@@ -373,11 +370,9 @@ export class SalePriceComponent {
     this.components = this.catalog.getCompositionComponents(this.selectedProductId);
     this.loadPriceComponents();
     this.values = {};
-    this.componentQuantities = {};
+    this.productQuantity = 1;
 
     for (const component of this.components) {
-      this.componentQuantities[component.id] = 1;
-
       if (component.type === 'boolean') {
         this.values[component.id] = false;
       } else if (component.type === 'select') {
@@ -414,7 +409,7 @@ export class SalePriceComponent {
       mainTaxRate: 0.05,
       componentCostTotal: 0,
       costBase: 0,
-      quantity: 1,
+      quantity: this.productQuantity,
       SELIC: 0.1475,
     };
 
@@ -438,7 +433,7 @@ export class SalePriceComponent {
   private buildComponentCostMemory(componentCostTotal: number): Array<FormulaExecutionStep> {
     const componentSteps = this.components.map((component) => {
       const unitValue = this.resolveComponentUnitNumber(component);
-      const quantity = this.componentQuantity(component);
+      const quantity = this.persistedComponentQuantity(component);
 
       return {
         id: `componentCost:${component.id}`,
@@ -464,7 +459,7 @@ export class SalePriceComponent {
   }
 
   private resolveComponentNumber(component: ProductComponent): number {
-    return this.resolveComponentUnitNumber(component) * this.componentQuantity(component);
+    return this.resolveComponentUnitNumber(component) * this.persistedComponentQuantity(component);
   }
 
   private resolveComponentUnitNumber(component: ProductComponent): number {
@@ -542,7 +537,7 @@ export class SalePriceComponent {
     return Math.abs(value) > 1 ? value / 100 : value;
   }
 
-  private normalizeComponentQuantity(value: unknown): number {
+  private normalizeQuantity(value: unknown): number {
     const quantity = Number(value);
 
     return Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
