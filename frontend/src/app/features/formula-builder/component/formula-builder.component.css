@@ -7,6 +7,9 @@
   display: grid;
   gap: 24px;
   grid-template-columns: minmax(280px, 4fr) minmax(360px, 5fr) minmax(240px, 3fr);
+  max-height: calc(100vh - 170px);
+  min-height: 0;
+  overflow: hidden;
   padding: 20px 0 16px;
 }
 
@@ -19,12 +22,13 @@
 
 .formula-list,
 .variable-palette {
+  max-height: calc(100vh - 206px);
   overflow: hidden;
 }
 
 .formula-list .formula-panel-scroll,
 .variable-palette .formula-panel-scroll {
-  height: 100%;
+  max-height: calc(100vh - 236px);
   min-height: 0;
   overflow: auto;
   padding-right: 4px;
@@ -619,10 +623,19 @@
 @media (max-width: 1180px) {
   .formula-grid {
     grid-template-columns: minmax(280px, 1fr) minmax(360px, 1.2fr);
+    max-height: none;
+    overflow: visible;
   }
 
   .variable-palette {
     grid-column: 1 / -1;
+  }
+
+  .formula-list,
+  .variable-palette,
+  .formula-list .formula-panel-scroll,
+  .variable-palette .formula-panel-scroll {
+    max-height: none;
   }
 
   .variable-grid {

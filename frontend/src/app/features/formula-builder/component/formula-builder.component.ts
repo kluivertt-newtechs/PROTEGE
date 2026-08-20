@@ -42,9 +42,9 @@ export class FormulaBuilderComponent implements OnInit {
   selectedFormula?: PricingFormula;
   productComponents: Array<ProductComponent> = [];
   priceComponents: Array<PriceComponent> = [];
-  productComponentsOpen = true;
-  priceComponentsOpen = true;
-  quickFunctionsOpen = true;
+  productComponentsOpen = false;
+  priceComponentsOpen = false;
+  quickFunctionsOpen = false;
   selectedFormulaOriginalId = '';
   statusMessage = '';
   statusType: 'success' | 'error' | 'info' = 'info';
@@ -173,8 +173,8 @@ export class FormulaBuilderComponent implements OnInit {
       this.statusMessage = 'Fórmula removida.';
     }
 
-    this.selectedFormula = this.formulas[0] ? { ...this.formulas[0] } : undefined;
-    this.selectedFormulaOriginalId = this.selectedFormula?.id ?? '';
+    this.selectedFormula = undefined;
+    this.selectedFormulaOriginalId = '';
     this.refreshExpressionTokens();
   }
 
@@ -198,7 +198,7 @@ export class FormulaBuilderComponent implements OnInit {
 
     this.formulas = this.formulaService.getFormulas(this.selectedProductId);
     const selected = this.formulas.find((formula) => formula.id === this.selectedFormula?.id);
-    this.selectedFormula = selected ? { ...selected } : { ...this.formulas[0] };
+    this.selectedFormula = selected ? { ...selected } : undefined;
     this.selectedFormulaOriginalId = this.selectedFormula?.id ?? '';
     this.refreshExpressionTokens();
     this.statusType = 'success';
@@ -400,8 +400,8 @@ export class FormulaBuilderComponent implements OnInit {
 
   private loadFormulas(): void {
     this.formulas = this.formulaService.getFormulas(this.selectedProductId);
-    this.selectedFormula = this.formulas[0] ? { ...this.formulas[0] } : undefined;
-    this.selectedFormulaOriginalId = this.selectedFormula?.id ?? '';
+    this.selectedFormula = undefined;
+    this.selectedFormulaOriginalId = '';
     this.refreshExpressionTokens();
   }
 
