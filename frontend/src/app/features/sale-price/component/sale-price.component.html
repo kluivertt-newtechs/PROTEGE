@@ -192,7 +192,12 @@
           >
             <div>
               <strong>{{ displayText(step.label) }}</strong>
-              <small>{{ step.expression }}</small>
+              <span class="memory-expression">
+                <small class="memory-expression-symbolic">{{ step.expression }}</small>
+                <small class="memory-expression-values" *ngIf="step.evaluatedExpression">
+                  {{ step.evaluatedExpression }}
+                </small>
+              </span>
               <small *ngIf="step.message">{{
                 displayText(step.message)
               }}</small>

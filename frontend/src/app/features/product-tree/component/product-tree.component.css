@@ -3,9 +3,9 @@
   display: grid;
   gap: 18px;
   grid-template-columns: minmax(250px, 3fr) minmax(360px, 5fr) minmax(260px, 3fr);
-  max-height: calc(100vh - 170px);
+  max-height: calc(100vh - 140px);
   min-height: 0;
-  padding: 20px 0 24px;
+  padding: 20px 0 96px;
 }
 
 .tree-list,
@@ -21,7 +21,7 @@
 .tree-list,
 .composition-stack,
 .library-stack {
-  max-height: calc(100vh - 250px);
+  max-height: calc(100vh - 300px);
   min-height: 0;
   overflow-y: auto;
   padding-right: 4px;

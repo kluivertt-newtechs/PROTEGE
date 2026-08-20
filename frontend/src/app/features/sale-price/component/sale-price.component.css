@@ -589,6 +589,12 @@
   min-width: 0;
 }
 
+.memory-expression {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
 .memory-row strong,
 .memory-row small {
   overflow-wrap: anywhere;
@@ -600,8 +606,13 @@
 }
 
 .memory-row small {
-  font-size: 14px;
+  font-size: 12.5px;
   line-height: 1.2;
+}
+
+.memory-expression-values {
+  color: #0b6f63;
+  font-weight: 700;
 }
 
 .memory-row.error {

@@ -257,9 +257,13 @@ export class SalePriceComponent {
 
     const context = this.buildFormulaContext();
     const execution = executePricingFormulas(context, formulas);
+    const memoryContext = { ...context, ...execution.values };
 
     this.resultValues = execution.values;
-    this.memory = [...this.buildComponentCostMemory(context['componentCostTotal'] ?? 0), ...execution.memory];
+    this.memory = [
+      ...this.buildComponentCostMemory(context['componentCostTotal'] ?? 0),
+      ...execution.memory.map((step) => this.withEvaluatedExpression(step, memoryContext)),
+    ];
     this.warning = execution.warning ? this.displayText(execution.warning) : '';
   }
 
@@ -452,10 +456,60 @@ export class SalePriceComponent {
         label: 'Soma dos componentes de produto vinculados',
         category: 'custo',
         expression: 'componentCostTotal',
+        evaluatedExpression: this.formatCurrency(componentCostTotal),
         value: componentCostTotal,
         status: 'ok',
       },
     ];
+  }
+
+  private withEvaluatedExpression(
+    step: FormulaExecutionStep,
+    context: Record<string, number>,
+  ): FormulaExecutionStep {
+    const evaluatedExpression = this.createEvaluatedExpression(step.expression, context);
+
+    if (!evaluatedExpression || evaluatedExpression === step.expression) {
+      return step;
+    }
+
+    return { ...step, evaluatedExpression };
+  }
+
+  private createEvaluatedExpression(expression: string, context: Record<string, number>): string {
+    return expression.replace(/\b[A-Za-z_][A-Za-z0-9_]*\b/g, (identifier, offset, source) => {
+      const previousChar = source[offset - 1] ?? '';
+      const nextChar = source[offset + identifier.length] ?? '';
+
+      if (previousChar === '.' || nextChar === '.' || !Object.prototype.hasOwnProperty.call(context, identifier)) {
+        return identifier;
+      }
+
+      return this.formatMemoryExpressionValue(identifier, context[identifier]);
+    });
+  }
+
+  private formatMemoryExpressionValue(identifier: string, value: number): string {
+    if (!Number.isFinite(value)) {
+      return String(value);
+    }
+
+    if (this.isPlainNumericMemoryValue(identifier)) {
+      return value.toLocaleString('pt-BR', { maximumFractionDigits: 6 });
+    }
+
+    return this.formatCurrency(value);
+  }
+
+  private isPlainNumericMemoryValue(identifier: string): boolean {
+    const normalized = identifier.toLowerCase();
+
+    return normalized === 'quantity'
+      || normalized.includes('rate')
+      || normalized.includes('tax')
+      || normalized.includes('aliquota')
+      || normalized.includes('percent')
+      || normalized.includes('selic');
   }
 
   private resolveComponentNumber(component: ProductComponent): number {

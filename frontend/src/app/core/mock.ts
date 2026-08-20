@@ -101,6 +101,7 @@ export interface FormulaExecutionStep {
   label: string;
   category: PricingFormulaCategory;
   expression: string;
+  evaluatedExpression?: string;
   value: number;
   status: 'ok' | 'error' | 'disabled';
   message?: string;
