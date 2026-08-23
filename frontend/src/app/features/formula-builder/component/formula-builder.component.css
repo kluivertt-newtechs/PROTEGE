@@ -28,10 +28,15 @@
 
 .formula-list .formula-panel-scroll,
 .variable-palette .formula-panel-scroll {
+  box-sizing: border-box;
   max-height: calc(100vh - 236px);
   min-height: 0;
   overflow: auto;
   padding-right: 4px;
+}
+
+.formula-list .formula-panel-scroll {
+  padding-bottom: 28px;
 }
 
 .formula-editor .formula-panel-scroll {
