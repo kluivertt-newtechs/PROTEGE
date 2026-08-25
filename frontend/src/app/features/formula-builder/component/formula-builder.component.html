@@ -1,309 +1,339 @@
-<po-page-default p-title="Construtor de Fórmulas">
+<po-page-default
+  p-title="Construtor de Fórmulas"
+  [p-actions]="pageActions"
+>
   <div class="formula-page">
-    <section class="formula-grid">
-      <po-container class="formula-list" p-title="Catálogo">
-        <div class="formula-panel-scroll">
-          <p class="variable-section-title">Árvore de Produtos</p>
-          <div class="product-tree">
-            <div class="product-group" *ngFor="let group of tree; trackBy: trackByNode">
-              <div class="group-title">{{ displayText(group.code + ' - ' + group.name) }}</div>
-              <section
-                class="library-section product-library-section"
-                *ngFor="let product of group.children; trackBy: trackByNode"
-                [class.active]="product.id === selectedProductId"
-              >
+    <section class="formula-empty-selection" *ngIf="!selectedScopes.length">
+      <strong>Nenhum produto selecionado.</strong>
+      <span>Use Selecionar Produto para abrir o lookup e escolher produtos ou serviços.</span>
+    </section>
+
+    <section class="product-selector-panel" *ngIf="productSelectorOpen">
+      <button
+        type="button"
+        class="product-selector-option"
+        *ngFor="let product of products; trackBy: trackByProduct"
+        [class.active]="selectedProductIds.includes(product.id)"
+        (click)="selectProductFromCatalog(product.id)"
+      >
+        <strong>{{ displayText(product.name) }}</strong>
+        <small>{{ product.code }} - {{ product.type === 'service' ? 'Servico' : 'Produto' }}</small>
+      </button>
+    </section>
+
+    <ng-container *ngIf="selectedScopes.length">
+      <div class="formula-tabs" role="tablist" aria-label="Produtos selecionados">
+        <button
+          type="button"
+          class="formula-tab"
+          *ngFor="let scope of selectedScopes; trackBy: trackByScope"
+          [class.active]="scope.productId === activeProductId"
+          [attr.aria-selected]="scope.productId === activeProductId"
+          role="tab"
+          (click)="activateProduct(scope.productId)"
+        >
+          {{ productTabLabel(scope) }}
+        </button>
+      </div>
+
+      <ng-container *ngIf="activeScope as scope">
+        <section class="formula-grid">
+          <po-container class="formula-list" p-title="Catálogo de Fórmulas">
+            <div class="formula-panel-scroll">
+              <div class="formula-list-heading">
+                <span>
+                  <strong>Fórmulas do produto</strong>
+                  <small>{{ selectedProductLabel(scope) }}</small>
+                </span>
+                <span>{{ catalogFormulas(scope).length }} itens</span>
+              </div>
+
+              <div class="formula-actions">
                 <button
                   type="button"
-                  class="library-toggle product-toggle"
-                  [class.closed]="expandedProductId !== product.id"
-                  [attr.aria-expanded]="expandedProductId === product.id"
-                  (click)="selectProduct(product.id)"
+                  class="create-formula-button"
+                  (click)="addFormula(scope)"
                 >
-                  <span class="library-toggle-title">{{ displayText(product.name) }}</span>
-                  <span class="library-toggle-meta">{{ product.code }}</span>
+                  <span class="create-formula-icon" aria-hidden="true">+</span>
+                  <span>Criar fórmula</span>
+                </button>
+              </div>
+
+              <div class="formula-table" *ngIf="catalogFormulas(scope).length; else noCatalogProductFormulas">
+                <button
+                  type="button"
+                  class="formula-row"
+                  *ngFor="let formula of catalogFormulas(scope); trackBy: trackByFormula"
+                  [class.active]="scope.selectedFormulaOriginalId === formula.id || scope.selectedFormula?.id === formula.id"
+                  [class.disabled]="!formula.enabled"
+                  [attr.draggable]="true"
+                  (dragstart)="beginPaletteDrag($event, formula.id)"
+                  (click)="selectFormula(scope, formula)"
+                >
+                  <span class="formula-main">
+                    <strong>{{ displayText(formula.label) }}</strong>
+                    <small>{{ formula.id }}</small>
+                  </span>
+                  <span class="status">{{ formula.enabled ? 'Ativa' : 'Inativa' }}</span>
+                </button>
+              </div>
+
+              <ng-template #noCatalogProductFormulas>
+                <p class="variable-empty">Este produto ainda não possui fórmulas.</p>
+              </ng-template>
+            </div>
+          </po-container>
+
+          <po-container
+            class="formula-editor"
+            [p-title]="'Editor - ' + productTabLabel(scope)"
+          >
+            <div class="formula-panel-scroll">
+              <ng-container *ngIf="scope.selectedFormula; else emptyState">
+                <div class="editor-grid">
+                  <po-input
+                    name="formulaId-{{ scope.productId }}"
+                    p-label="Identificador"
+                    [(ngModel)]="scope.selectedFormula.id"
+                  ></po-input>
+                  <po-input
+                    name="formulaLabel-{{ scope.productId }}"
+                    p-label="Nome"
+                    [(ngModel)]="scope.selectedFormula.label"
+                  ></po-input>
+                </div>
+
+                <po-input
+                  name="formulaDescription-{{ scope.productId }}"
+                  p-label="Descrição"
+                  [(ngModel)]="scope.selectedFormula.description"
+                ></po-input>
+
+                <label class="native-checkbox">
+                  <input type="checkbox" [(ngModel)]="scope.selectedFormula.enabled" />
+                  <span>Fórmula ativa</span>
+                </label>
+
+                <div class="expression-builder">
+                  <div class="expression-heading">
+                    <span class="expression-label">Expressão</span>
+                    <span class="expression-help">
+                      Arraste variáveis, componentes, fórmulas e funções para montar a expressão.
+                    </span>
+                  </div>
+
+                  <div class="operator-toolbar" aria-label="Operadores comuns">
+                    <button
+                      type="button"
+                      class="operator-button"
+                      *ngFor="let operator of operatorTokens"
+                      (click)="insertToken(operator, scope)"
+                      [attr.aria-label]="'Inserir ' + operator"
+                    >
+                      {{ operator }}
+                    </button>
+                  </div>
+
+                  <div
+                    class="expression-dropzone"
+                    [class.empty]="!scope.expressionTokens.length"
+                    role="textbox"
+                    tabindex="0"
+                    aria-label="Área visual de montagem da expressão"
+                    (dragover)="allowExpressionDrop($event)"
+                    (drop)="dropOnExpression(scope, $event)"
+                    (keydown)="handleExpressionKeydown(scope, $event)"
+                  >
+                    <ng-container *ngIf="scope.expressionTokens.length; else expressionDropHint">
+                      <span
+                        class="expression-token"
+                        *ngFor="let token of scope.expressionTokens; let index = index; trackBy: trackByToken"
+                        [class.variable]="token.kind === 'variable'"
+                        [class.formula]="token.kind === 'formula'"
+                        [class.function]="token.kind === 'function'"
+                        [class.operator]="token.kind === 'operator'"
+                        [class.number]="token.kind === 'number'"
+                        [attr.draggable]="true"
+                        [style.order]="index * 2 + 1"
+                        (click)="setExpressionCursor(scope, index + 1)"
+                        (dragstart)="beginExpressionTokenDrag($event, index)"
+                        (dragover)="allowExpressionDrop($event)"
+                        (drop)="dropOnExpression(scope, $event, index)"
+                        [attr.title]="getExpressionTokenLabel(token)"
+                      >
+                        <span class="token-value">{{ token.value }}</span>
+                        <button
+                          type="button"
+                          class="token-remove"
+                          (click)="removeExpressionToken(scope, index, $event)"
+                          [attr.aria-label]="'Remover ' + token.value"
+                        >
+                          x
+                        </button>
+                      </span>
+                    </ng-container>
+
+                    <ng-template #expressionDropHint>
+                      <span class="expression-placeholder">Solte variáveis aqui, clique nos chips ou digite números e operadores.</span>
+                    </ng-template>
+
+                    <span
+                      class="expression-caret"
+                      [style.order]="scope.expressionCursorIndex * 2"
+                      aria-hidden="true"
+                    ></span>
+                  </div>
+                </div>
+
+                <div class="actions">
+                  <po-button
+                    p-icon="an an-check"
+                    p-label="Validar"
+                    (p-click)="validate(scope)"
+                  ></po-button>
+                  <po-button
+                    p-icon="an an-floppy-disk"
+                    p-label="Salvar"
+                    p-kind="primary"
+                    (p-click)="save(scope)"
+                  ></po-button>
+                  <po-button
+                    p-icon="an an-trash"
+                    p-label="Remover"
+                    (p-click)="removeSelected(scope)"
+                  ></po-button>
+                </div>
+
+                <p class="status-message" [class.error]="scope.statusType === 'error'" [class.success]="scope.statusType === 'success'" *ngIf="scope.statusMessage">
+                  {{ displayText(scope.statusMessage) }}
+                </p>
+              </ng-container>
+
+              <ng-template #emptyState>
+                <p class="empty-state">Selecione ou crie uma fórmula para o produto.</p>
+              </ng-template>
+            </div>
+          </po-container>
+
+          <po-container class="variable-palette" p-title="Paleta">
+            <div class="formula-panel-scroll">
+              <section class="library-section">
+                <button
+                  type="button"
+                  class="library-toggle"
+                  [class.closed]="!scope.productComponentsOpen"
+                  [attr.aria-expanded]="scope.productComponentsOpen"
+                  (click)="toggleProductComponents(scope)"
+                >
+                  <span class="library-toggle-title">Componentes de Produto</span>
+                  <span class="library-toggle-meta">{{ scope.productComponents.length }} itens</span>
                   <span class="library-toggle-icon" aria-hidden="true"></span>
                 </button>
 
-                <div class="library-zone" *ngIf="expandedProductId === product.id">
-                  <div class="formula-list-heading">
-                    <span>
-                      <strong>Fórmulas do produto</strong>
-                      <small>{{ product.code }} - {{ displayText(product.name) }}</small>
-                    </span>
-                    <span>{{ catalogFormulas.length }} itens</span>
-                  </div>
-
-                  <div class="formula-actions">
+                <div class="library-zone" *ngIf="scope.productComponentsOpen">
+                  <div class="variable-grid" *ngIf="scope.productComponents.length; else noProductComponents">
                     <button
                       type="button"
-                      class="create-formula-button"
-                      (click)="addFormula()"
-                    >
-                      <span class="create-formula-icon" aria-hidden="true">+</span>
-                      <span>Criar fórmula</span>
-                    </button>
-                  </div>
-
-                  <div class="formula-table" *ngIf="catalogFormulas.length; else noCatalogProductFormulas">
-                    <button
-                      type="button"
-                      class="formula-row"
-                      *ngFor="let formula of catalogFormulas; trackBy: trackByFormula"
-                      [class.active]="selectedFormulaOriginalId === formula.id || selectedFormula?.id === formula.id"
-                      [class.disabled]="!formula.enabled"
+                      class="variable-chip component-variable"
+                      *ngFor="let component of scope.productComponents; trackBy: trackByComponent"
                       [attr.draggable]="true"
-                      (dragstart)="beginPaletteDrag($event, formula.id)"
-                      (click)="selectFormula(formula)"
+                      (dragstart)="beginPaletteDrag($event, component.varAPV)"
+                      (click)="insertToken(component.varAPV, scope)"
                     >
-                      <span class="formula-main">
-                        <strong>{{ displayText(formula.label) }}</strong>
-                        <small>{{ formula.id }}</small>
-                      </span>
-                      <span class="status">{{ formula.enabled ? 'Ativa' : 'Inativa' }}</span>
+                      <strong>{{ component.varAPV }}</strong>
+                      <small>{{ displayText(component.description) }} - {{ componentMeta(component) }}</small>
                     </button>
                   </div>
-
-                  <ng-template #noCatalogProductFormulas>
-                    <p class="variable-empty">Este produto ainda não possui fórmulas.</p>
+                  <ng-template #noProductComponents>
+                    <p class="variable-empty">Produto sem componentes de produto vinculados.</p>
                   </ng-template>
                 </div>
               </section>
-            </div>
-          </div>
-        </div>
-      </po-container>
 
-      <po-container
-        class="formula-editor"
-        [p-title]="selectedProduct ? 'Editor - ' + displayText(selectedProduct.name || '') : 'Editor'"
-      >
-        <div class="formula-panel-scroll">
-          <ng-container *ngIf="selectedFormula; else emptyState">
-            <div class="editor-grid">
-              <po-input
-                name="formulaId"
-                p-label="Identificador"
-                [(ngModel)]="selectedFormula.id"
-              ></po-input>
-              <po-input
-                name="formulaLabel"
-                p-label="Nome"
-                [(ngModel)]="selectedFormula.label"
-              ></po-input>
-            </div>
-
-            <po-input
-              name="formulaDescription"
-              p-label="Descrição"
-              [(ngModel)]="selectedFormula.description"
-            ></po-input>
-
-            <label class="native-checkbox">
-              <input type="checkbox" [(ngModel)]="selectedFormula.enabled" />
-              <span>Fórmula ativa</span>
-            </label>
-
-            <div class="expression-builder">
-              <div class="expression-heading">
-                <span class="expression-label">Expressão</span>
-                <span class="expression-help">
-                  Arraste variáveis, componentes, fórmulas e funções para montar a expressão.
-                </span>
-              </div>
-
-              <div class="operator-toolbar" aria-label="Operadores comuns">
+              <section class="library-section">
                 <button
                   type="button"
-                  class="operator-button"
-                  *ngFor="let operator of operatorTokens"
-                  (click)="insertToken(operator)"
-                  [attr.aria-label]="'Inserir ' + operator"
+                  class="library-toggle"
+                  [class.closed]="!scope.priceComponentsOpen"
+                  [attr.aria-expanded]="scope.priceComponentsOpen"
+                  (click)="togglePriceComponents(scope)"
                 >
-                  {{ operator }}
+                  <span class="library-toggle-title">Componentes de Preço</span>
+                  <span class="library-toggle-meta">{{ scope.priceComponents.length }} itens</span>
+                  <span class="library-toggle-icon" aria-hidden="true"></span>
                 </button>
-              </div>
 
-              <div
-                class="expression-dropzone"
-                [class.empty]="!expressionTokens.length"
-                role="textbox"
-                tabindex="0"
-                aria-label="Área visual de montagem da expressão"
-                (dragover)="allowExpressionDrop($event)"
-                (drop)="dropOnExpression($event)"
-                (keydown)="handleExpressionKeydown($event)"
-              >
-                <ng-container *ngIf="expressionTokens.length; else expressionDropHint">
-                  <span
-                    class="expression-token"
-                    *ngFor="let token of expressionTokens; let index = index; trackBy: trackByToken"
-                    [class.variable]="token.kind === 'variable'"
-                    [class.formula]="token.kind === 'formula'"
-                    [class.function]="token.kind === 'function'"
-                    [class.operator]="token.kind === 'operator'"
-                    [class.number]="token.kind === 'number'"
-                    [attr.draggable]="true"
-                    [style.order]="index * 2 + 1"
-                    (click)="setExpressionCursor(index + 1)"
-                    (dragstart)="beginExpressionTokenDrag($event, index)"
-                    (dragover)="allowExpressionDrop($event)"
-                    (drop)="dropOnExpression($event, index)"
-                    [attr.title]="getExpressionTokenLabel(token)"
-                  >
-                    <span class="token-value">{{ token.value }}</span>
+                <div class="library-zone" *ngIf="scope.priceComponentsOpen">
+                  <div class="variable-grid" *ngIf="scope.priceComponents.length; else noPriceComponents">
                     <button
                       type="button"
-                      class="token-remove"
-                      (click)="removeExpressionToken(index, $event)"
-                      [attr.aria-label]="'Remover ' + token.value"
+                      class="variable-chip price-variable"
+                      *ngFor="let component of scope.priceComponents; trackBy: trackByComponent"
+                      [attr.draggable]="true"
+                      (dragstart)="beginPaletteDrag($event, component.varAPV)"
+                      (click)="insertToken(component.varAPV, scope)"
                     >
-                      ×
+                      <strong>{{ component.varAPV }}</strong>
+                      <small>{{ displayText(component.description) }} - {{ componentMeta(component) }}</small>
                     </button>
-                  </span>
-                </ng-container>
+                  </div>
+                  <ng-template #noPriceComponents>
+                    <p class="variable-empty">Nenhum componente de preço disponível.</p>
+                  </ng-template>
+                </div>
+              </section>
 
-                <ng-template #expressionDropHint>
-                  <span class="expression-placeholder">Solte variáveis aqui, clique nos chips ou digite números e operadores.</span>
-                </ng-template>
-
-                <span
-                  class="expression-caret"
-                  [style.order]="expressionCursorIndex * 2"
-                  aria-hidden="true"
-                ></span>
-              </div>
-
-            </div>
-
-            <div class="actions">
-              <po-button
-                p-icon="an an-check"
-                p-label="Validar"
-                (p-click)="validate()"
-              ></po-button>
-              <po-button
-                p-icon="an an-floppy-disk"
-                p-label="Salvar"
-                p-kind="primary"
-                (p-click)="save()"
-              ></po-button>
-              <po-button
-                p-icon="an an-trash"
-                p-label="Remover"
-                (p-click)="removeSelected()"
-              ></po-button>
-            </div>
-
-            <p class="status-message" [class.error]="statusType === 'error'" [class.success]="statusType === 'success'" *ngIf="statusMessage">
-              {{ displayText(statusMessage) }}
-            </p>
-          </ng-container>
-
-          <ng-template #emptyState>
-            <p class="empty-state">Selecione ou crie uma fórmula para o produto.</p>
-          </ng-template>
-        </div>
-      </po-container>
-
-      <po-container class="variable-palette" p-title="Paleta">
-        <div class="formula-panel-scroll">
-          <section class="library-section">
-            <button
-              type="button"
-              class="library-toggle"
-              [class.closed]="!productComponentsOpen"
-              [attr.aria-expanded]="productComponentsOpen"
-              (click)="toggleProductComponents()"
-            >
-              <span class="library-toggle-title">Componentes de Produto</span>
-              <span class="library-toggle-meta">{{ productComponents.length }} itens</span>
-              <span class="library-toggle-icon" aria-hidden="true"></span>
-            </button>
-
-            <div class="library-zone" *ngIf="productComponentsOpen">
-              <div class="variable-grid" *ngIf="productComponents.length; else noProductComponents">
+              <section class="library-section">
                 <button
                   type="button"
-                  class="variable-chip component-variable"
-                  *ngFor="let component of productComponents; trackBy: trackByComponent"
-                  [attr.draggable]="true"
-                  (dragstart)="beginPaletteDrag($event, component.varAPV)"
-                  (click)="insertToken(component.varAPV)"
+                  class="library-toggle"
+                  [class.closed]="!scope.quickFunctionsOpen"
+                  [attr.aria-expanded]="scope.quickFunctionsOpen"
+                  (click)="toggleQuickFunctions(scope)"
                 >
-                  <strong>{{ component.varAPV }}</strong>
-                  <small>{{ displayText(component.description) }} - {{ componentMeta(component) }}</small>
+                  <span class="library-toggle-title">Funções rápidas</span>
+                  <span class="library-toggle-meta">{{ quickFunctionTokens.length }} itens</span>
+                  <span class="library-toggle-icon" aria-hidden="true"></span>
                 </button>
-              </div>
-              <ng-template #noProductComponents>
-                <p class="variable-empty">Produto sem componentes de produto vinculados.</p>
-              </ng-template>
+
+                <div class="library-zone" *ngIf="scope.quickFunctionsOpen">
+                  <div class="variable-grid">
+                    <button
+                      type="button"
+                      class="variable-chip function-chip"
+                      *ngFor="let functionToken of quickFunctionTokens; trackBy: trackByVariable"
+                      [attr.draggable]="true"
+                      (dragstart)="beginPaletteDrag($event, functionToken.id)"
+                      (click)="insertToken(functionToken.id, scope)"
+                    >
+                      <strong>{{ functionToken.id }}</strong>
+                      <small>{{ functionToken.label }}</small>
+                    </button>
+                  </div>
+                </div>
+              </section>
             </div>
-          </section>
+          </po-container>
+        </section>
+      </ng-container>
+    </ng-container>
+  </div>
 
-          <section class="library-section">
-            <button
-              type="button"
-              class="library-toggle"
-              [class.closed]="!priceComponentsOpen"
-              [attr.aria-expanded]="priceComponentsOpen"
-              (click)="togglePriceComponents()"
-            >
-              <span class="library-toggle-title">Componentes de Preço</span>
-              <span class="library-toggle-meta">{{ priceComponents.length }} itens</span>
-              <span class="library-toggle-icon" aria-hidden="true"></span>
-            </button>
-
-            <div class="library-zone" *ngIf="priceComponentsOpen">
-              <div class="variable-grid" *ngIf="priceComponents.length; else noPriceComponents">
-                <button
-                  type="button"
-                  class="variable-chip price-variable"
-                  *ngFor="let component of priceComponents; trackBy: trackByComponent"
-                  [attr.draggable]="true"
-                  (dragstart)="beginPaletteDrag($event, component.varAPV)"
-                  (click)="insertToken(component.varAPV)"
-                >
-                  <strong>{{ component.varAPV }}</strong>
-                  <small>{{ displayText(component.description) }} - {{ componentMeta(component) }}</small>
-                </button>
-              </div>
-              <ng-template #noPriceComponents>
-                <p class="variable-empty">Nenhum componente de preço disponível.</p>
-              </ng-template>
-            </div>
-          </section>
-
-          <section class="library-section">
-            <button
-              type="button"
-              class="library-toggle"
-              [class.closed]="!quickFunctionsOpen"
-              [attr.aria-expanded]="quickFunctionsOpen"
-              (click)="toggleQuickFunctions()"
-            >
-              <span class="library-toggle-title">Funções rápidas</span>
-              <span class="library-toggle-meta">{{ quickFunctionTokens.length }} itens</span>
-              <span class="library-toggle-icon" aria-hidden="true"></span>
-            </button>
-
-            <div class="library-zone" *ngIf="quickFunctionsOpen">
-              <div class="variable-grid">
-                <button
-                  type="button"
-                  class="variable-chip function-chip"
-                  *ngFor="let functionToken of quickFunctionTokens; trackBy: trackByVariable"
-                  [attr.draggable]="true"
-                  (dragstart)="beginPaletteDrag($event, functionToken.id)"
-                  (click)="insertToken(functionToken.id)"
-                >
-                  <strong>{{ functionToken.id }}</strong>
-                  <small>{{ functionToken.label }}</small>
-                </button>
-              </div>
-            </div>
-          </section>
-        </div>
-      </po-container>
-    </section>
+  <div class="product-lookup-host" *ngIf="false">
+    <po-lookup
+      #productLookup
+      name="productLookup"
+      p-label="Produto ou serviço"
+      p-placeholder="Selecionar produtos ou serviços"
+      p-field-value="id"
+      p-field-label="label"
+      p-title="Selecionar Produto"
+      [p-columns]="productLookupColumns"
+      [p-filter-service]="productLookupService"
+      [p-multiple]="true"
+      [ngModel]="selectedProductIds"
+      (p-selected)="onProductLookupSelected($event)"
+      (p-change)="onProductLookupChange($event)"
+    ></po-lookup>
   </div>
 </po-page-default>

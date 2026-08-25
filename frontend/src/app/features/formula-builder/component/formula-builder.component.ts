@@ -1,6 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
+  PoLookupColumn,
+  PoLookupFilter,
+  PoLookupFilteredItemsParams,
+  PoLookupResponseApi,
+  PoPageAction,
+} from '@po-ui/ng-components';
+import { Observable, of } from 'rxjs';
+import {
   PRICING_FORMULA_VARIABLES,
   PricingFormulaService,
 } from 'src/app/core/pricing-formula.service';
@@ -27,6 +35,47 @@ interface FormulaDragData {
   index?: number;
 }
 
+interface FormulaProductScope {
+  productId: string;
+  formulas: Array<PricingFormula>;
+  selectedFormula?: PricingFormula;
+  productComponents: Array<ProductComponent>;
+  priceComponents: Array<PriceComponent>;
+  productComponentsOpen: boolean;
+  priceComponentsOpen: boolean;
+  quickFunctionsOpen: boolean;
+  selectedFormulaOriginalId: string;
+  statusMessage: string;
+  statusType: 'success' | 'error' | 'info';
+  expressionTokens: Array<FormulaExpressionToken>;
+  expressionCursorIndex: number;
+}
+
+class DisabledProductLookupService implements PoLookupFilter {
+  getFilteredItems(_: PoLookupFilteredItemsParams): Observable<PoLookupResponseApi> {
+    return of({ items: [], hasNext: false });
+  }
+
+  getObjectByValue(): Observable<undefined> {
+    return of(undefined);
+  }
+}
+
+function normalizeText(value: string): string {
+  const text = String(value ?? '');
+
+  if (!/[\u00c3\u00c2\u0080-\u009f\ufffd]/.test(text)) {
+    return text;
+  }
+
+  try {
+    const bytes = new Uint8Array([...text].map((char) => char.charCodeAt(0) & 255));
+    return new TextDecoder('utf-8').decode(bytes).replace(/\uFFFD/g, '');
+  } catch {
+    return text;
+  }
+}
+
 @Component({
   selector: 'app-formula-builder',
   templateUrl: './formula-builder.component.html',
@@ -35,21 +84,12 @@ interface FormulaDragData {
   imports: [...SHARED_MODULES, CommonModule],
 })
 export class FormulaBuilderComponent implements OnInit {
-  tree: Array<ProductNode> = [];
-  selectedProductId = '';
-  expandedProductId = '';
-  formulas: Array<PricingFormula> = [];
-  selectedFormula?: PricingFormula;
-  productComponents: Array<ProductComponent> = [];
-  priceComponents: Array<PriceComponent> = [];
-  productComponentsOpen = false;
-  priceComponentsOpen = false;
-  quickFunctionsOpen = false;
-  selectedFormulaOriginalId = '';
-  statusMessage = '';
-  statusType: 'success' | 'error' | 'info' = 'info';
-  expressionTokens: Array<FormulaExpressionToken> = [];
-  expressionCursorIndex = 0;
+  products: Array<ProductNode> = [];
+  selectedProductIds: Array<string> = [];
+  selectedScopes: Array<FormulaProductScope> = [];
+  productSelectorOpen = false;
+  activeProductId = '';
+  private productScopes: Record<string, FormulaProductScope> = {};
 
   readonly simulationVariables = PRICING_FORMULA_VARIABLES;
   readonly defaultBusinessBranches: Array<PricingBusinessBranch> = ['transport', 'processing'];
@@ -67,79 +107,108 @@ export class FormulaBuilderComponent implements OnInit {
     { id: 'value / Math.max(0.01, 1 - rate)', label: 'Base antes do percentual' },
     { id: 'value * (1 + rate)', label: 'Aplicar acréscimo percentual' },
   ];
+  readonly pageActions: Array<PoPageAction> = [
+    { label: 'Selecionar Produto', icon: 'an an-magnifying-glass', action: () => this.openProductSelector() },
+  ];
+  readonly productLookupColumns: Array<PoLookupColumn> = [];
+  readonly productLookupService = new DisabledProductLookupService();
 
   constructor(
     private readonly formulaService: PricingFormulaService,
     private readonly catalog: ProductCatalogService,
   ) {}
 
-  get selectedProduct(): ProductNode | undefined {
-    return this.catalog.getProduct(this.selectedProductId);
+  get activeScope(): FormulaProductScope | undefined {
+    return this.getScope();
   }
 
-  get formulaVariables(): Array<PricingFormula> {
+  ngOnInit(): void {
+    this.products = this.catalog.getProducts();
+    const initialProductId = this.catalog.getSelectedProductId() || this.products[0]?.id || '';
+
+    if (initialProductId) {
+      this.applySelectedProductIds([initialProductId], initialProductId);
+    }
+  }
+
+  openProductSelector(): void {
+    this.products = this.catalog.getProducts();
+    this.productSelectorOpen = !this.productSelectorOpen;
+  }
+
+  selectProductFromCatalog(productId: string): void {
+    this.applySelectedProductIds([...this.selectedProductIds, productId], productId);
+    this.productSelectorOpen = false;
+  }
+
+  onProductLookupSelected(_: unknown): void {}
+
+  onProductLookupChange(_: unknown): void {}
+
+  activateProduct(productId: string): void {
+    if (!productId || this.activeProductId === productId) {
+      return;
+    }
+
+    this.activeProductId = productId;
+    this.catalog.setSelectedProductId(productId);
+  }
+
+  selectedProduct(scope: FormulaProductScope): ProductNode | undefined {
+    return this.products.find((product) => product.id === scope.productId)
+      ?? this.catalog.getProduct(scope.productId);
+  }
+
+  productTabLabel(scope: FormulaProductScope): string {
+    const product = this.selectedProduct(scope);
+
+    return product ? this.displayText(product.name || product.code) : scope.productId;
+  }
+
+  selectedProductLabel(scope: FormulaProductScope): string {
+    const product = this.selectedProduct(scope);
+
+    return product ? this.displayText(`${product.code} - ${product.name}`) : scope.productId;
+  }
+
+  formulaVariables(scope: FormulaProductScope): Array<PricingFormula> {
     const selectedIds = new Set([
-      this.selectedFormula?.id,
-      this.selectedFormulaOriginalId,
+      scope.selectedFormula?.id,
+      scope.selectedFormulaOriginalId,
     ].filter(Boolean));
 
-    return this.buildEditedCatalog()
+    return this.buildEditedCatalog(scope)
       .filter((formula) => formula.enabled)
       .filter((formula) => !selectedIds.has(formula.id));
   }
 
-  get catalogFormulas(): Array<PricingFormula> {
-    return this.buildEditedCatalog();
+  catalogFormulas(scope: FormulaProductScope): Array<PricingFormula> {
+    return this.buildEditedCatalog(scope);
   }
 
-  ngOnInit(): void {
-    this.tree = this.catalog.getTree();
-    this.selectedProductId = this.catalog.getSelectedProductId() || this.catalog.getProducts()[0]?.id || '';
-    this.expandedProductId = this.selectedProductId;
-    this.loadProductScope();
+  selectFormula(scope: FormulaProductScope, formula: PricingFormula): void {
+    const isPersistedInScope = scope.formulas.some((scopedFormula) => scopedFormula.id === formula.id);
+    scope.selectedFormula = { ...formula };
+    scope.selectedFormulaOriginalId = isPersistedInScope ? formula.id : '';
+    this.refreshExpressionTokens(scope);
+    scope.statusMessage = '';
   }
 
-  selectProduct(productId: string): void {
-    if (this.selectedProductId === productId) {
-      this.expandedProductId = this.expandedProductId === productId ? '' : productId;
-      return;
-    }
-
-    this.selectedProductId = productId;
-    this.expandedProductId = productId;
-    this.catalog.setSelectedProductId(productId);
-    this.loadProductScope();
-    this.statusType = 'info';
-    this.statusMessage = 'Produto selecionado. O editor agora usa apenas as fórmulas deste produto.';
+  toggleProductComponents(scope: FormulaProductScope): void {
+    scope.productComponentsOpen = !scope.productComponentsOpen;
   }
 
-  selectFormula(formula: PricingFormula): void {
-    const isPersistedInScope = this.formulas.some((scopedFormula) => scopedFormula.id === formula.id);
-    this.selectedFormula = { ...formula };
-    this.selectedFormulaOriginalId = isPersistedInScope ? formula.id : '';
-    this.refreshExpressionTokens();
-    this.statusMessage = '';
+  togglePriceComponents(scope: FormulaProductScope): void {
+    scope.priceComponentsOpen = !scope.priceComponentsOpen;
   }
 
-  toggleProductComponents(): void {
-    this.productComponentsOpen = !this.productComponentsOpen;
+  toggleQuickFunctions(scope: FormulaProductScope): void {
+    scope.quickFunctionsOpen = !scope.quickFunctionsOpen;
   }
 
-  togglePriceComponents(): void {
-    this.priceComponentsOpen = !this.priceComponentsOpen;
-  }
-
-  toggleQuickFunctions(): void {
-    this.quickFunctionsOpen = !this.quickFunctionsOpen;
-  }
-
-  addFormula(): void {
-    if (!this.selectedProductId) {
-      return;
-    }
-
-    this.selectedFormula = {
-      id: `formula${this.formulas.length + 1}`,
+  addFormula(scope: FormulaProductScope): void {
+    scope.selectedFormula = {
+      id: `formula${scope.formulas.length + 1}`,
       label: 'Nova fórmula',
       description: '',
       expression: '0',
@@ -147,146 +216,146 @@ export class FormulaBuilderComponent implements OnInit {
       category: 'resultado',
       businessBranches: [...this.defaultBusinessBranches],
     };
-    this.selectedFormulaOriginalId = '';
-    this.expandedProductId = this.selectedProductId;
-    this.refreshExpressionTokens();
-    this.statusMessage = '';
+    scope.selectedFormulaOriginalId = '';
+    this.refreshExpressionTokens(scope);
+    scope.statusMessage = '';
   }
 
-  removeSelected(): void {
-    if (!this.selectedFormula) {
+  removeSelected(scope: FormulaProductScope): void {
+    if (!scope.selectedFormula) {
       return;
     }
 
-    const selectedId = this.selectedFormulaOriginalId || this.selectedFormula.id;
+    const selectedId = scope.selectedFormulaOriginalId || scope.selectedFormula.id;
 
-    if (this.selectedFormulaOriginalId) {
-      const result = this.formulaService.removeFormula(this.selectedProductId, selectedId);
-      this.formulas = result.formulas;
-      this.statusType = result.validation.valid ? 'success' : 'error';
-      this.statusMessage = result.validation.valid
+    if (scope.selectedFormulaOriginalId) {
+      const result = this.formulaService.removeFormula(scope.productId, selectedId);
+      scope.formulas = result.formulas;
+      scope.statusType = result.validation.valid ? 'success' : 'error';
+      scope.statusMessage = result.validation.valid
         ? 'Fórmula removida.'
         : `Fórmula removida. ${result.validation.messages.join(' ')}`;
     } else {
-      this.formulas = this.formulas.filter((formula) => formula.id !== selectedId);
-      this.statusType = 'success';
-      this.statusMessage = 'Fórmula removida.';
+      scope.formulas = scope.formulas.filter((formula) => formula.id !== selectedId);
+      scope.statusType = 'success';
+      scope.statusMessage = 'Fórmula removida.';
     }
 
-    this.selectedFormula = undefined;
-    this.selectedFormulaOriginalId = '';
-    this.refreshExpressionTokens();
+    scope.selectedFormula = undefined;
+    scope.selectedFormulaOriginalId = '';
+    this.refreshExpressionTokens(scope);
   }
 
-  validate(): void {
-    const validation = this.formulaService.validate(this.selectedProductId, this.buildEditedCatalog());
-    this.statusType = validation.valid ? 'success' : 'error';
-    this.statusMessage = validation.valid
+  validate(scope: FormulaProductScope): void {
+    const validation = this.formulaService.validate(scope.productId, this.buildEditedCatalog(scope));
+    scope.statusType = validation.valid ? 'success' : 'error';
+    scope.statusMessage = validation.valid
       ? 'Fórmulas válidas para execução.'
       : validation.messages.join(' ');
   }
 
-  save(): void {
-    const catalog = this.buildEditedCatalog();
-    const validation = this.formulaService.saveFormulas(this.selectedProductId, catalog);
+  save(scope: FormulaProductScope): void {
+    const catalog = this.buildEditedCatalog(scope);
+    const validation = this.formulaService.saveFormulas(scope.productId, catalog);
 
     if (!validation.valid) {
-      this.statusType = 'error';
-      this.statusMessage = validation.messages.join(' ');
+      scope.statusType = 'error';
+      scope.statusMessage = validation.messages.join(' ');
       return;
     }
 
-    this.formulas = this.formulaService.getFormulas(this.selectedProductId);
-    const selected = this.formulas.find((formula) => formula.id === this.selectedFormula?.id);
-    this.selectedFormula = selected ? { ...selected } : undefined;
-    this.selectedFormulaOriginalId = this.selectedFormula?.id ?? '';
-    this.refreshExpressionTokens();
-    this.statusType = 'success';
-    this.statusMessage = 'Fórmulas salvas localmente.';
+    scope.formulas = this.formulaService.getFormulas(scope.productId);
+    const selected = scope.formulas.find((formula) => formula.id === scope.selectedFormula?.id);
+    scope.selectedFormula = selected ? { ...selected } : undefined;
+    scope.selectedFormulaOriginalId = scope.selectedFormula?.id ?? '';
+    this.refreshExpressionTokens(scope);
+    scope.statusType = 'success';
+    scope.statusMessage = 'Fórmulas salvas localmente.';
   }
 
-  insertToken(token: string): void {
-    if (!this.selectedFormula) {
+  insertToken(token: string, scope = this.activeScope): void {
+    if (!scope?.selectedFormula) {
       return;
     }
 
-    this.insertTokensAt(this.createTokens(token), this.expressionCursorIndex);
+    this.insertTokensAt(scope, this.createTokens(scope, token), scope.expressionCursorIndex);
   }
 
-  removeExpressionToken(index: number, event?: MouseEvent): void {
+  removeExpressionToken(scope: FormulaProductScope, index: number, event?: MouseEvent): void {
     event?.stopPropagation();
 
-    if (!this.selectedFormula) {
+    if (!scope.selectedFormula) {
       return;
     }
 
-    this.expressionTokens = this.expressionTokens.filter((_, tokenIndex) => tokenIndex !== index);
-    this.expressionCursorIndex = this.clampCursorIndex(
-      index < this.expressionCursorIndex ? this.expressionCursorIndex - 1 : this.expressionCursorIndex,
+    scope.expressionTokens = scope.expressionTokens.filter((_, tokenIndex) => tokenIndex !== index);
+    scope.expressionCursorIndex = this.clampCursorIndex(
+      scope,
+      index < scope.expressionCursorIndex ? scope.expressionCursorIndex - 1 : scope.expressionCursorIndex,
     );
-    this.syncExpressionFromTokens();
+    this.syncExpressionFromTokens(scope);
   }
 
-  setExpressionCursor(index: number): void {
-    this.expressionCursorIndex = this.clampCursorIndex(index);
+  setExpressionCursor(scope: FormulaProductScope, index: number): void {
+    scope.expressionCursorIndex = this.clampCursorIndex(scope, index);
   }
 
-  handleExpressionKeydown(event: KeyboardEvent): void {
-    if (!this.selectedFormula || event.ctrlKey || event.metaKey || event.altKey) {
+  handleExpressionKeydown(scope: FormulaProductScope, event: KeyboardEvent): void {
+    if (!scope.selectedFormula || event.ctrlKey || event.metaKey || event.altKey) {
       return;
     }
 
     if (event.key === 'ArrowLeft') {
       event.preventDefault();
-      this.setExpressionCursor(this.expressionCursorIndex - 1);
+      this.setExpressionCursor(scope, scope.expressionCursorIndex - 1);
       return;
     }
 
     if (event.key === 'ArrowRight') {
       event.preventDefault();
-      this.setExpressionCursor(this.expressionCursorIndex + 1);
+      this.setExpressionCursor(scope, scope.expressionCursorIndex + 1);
       return;
     }
 
     if (event.key === 'Home') {
       event.preventDefault();
-      this.setExpressionCursor(0);
+      this.setExpressionCursor(scope, 0);
       return;
     }
 
     if (event.key === 'End') {
       event.preventDefault();
-      this.setExpressionCursor(this.expressionTokens.length);
+      this.setExpressionCursor(scope, scope.expressionTokens.length);
       return;
     }
 
     if (/^\d$/.test(event.key)) {
       event.preventDefault();
-      this.appendNumberCharacter(event.key);
+      this.appendNumberCharacter(scope, event.key);
       return;
     }
 
     if (event.key === '.' || (event.key === ',' && event.code === 'NumpadDecimal')) {
       event.preventDefault();
-      this.appendDecimalSeparator();
+      this.appendDecimalSeparator(scope);
       return;
     }
 
     if (this.operatorTokens.includes(event.key)) {
       event.preventDefault();
-      this.insertTokensAt([this.createExpressionToken(event.key)], this.expressionCursorIndex);
+      this.insertTokensAt(scope, [this.createExpressionToken(scope, event.key)], scope.expressionCursorIndex);
       return;
     }
 
     if (event.key === 'Backspace') {
       event.preventDefault();
-      this.removeBeforeCursor();
+      this.removeBeforeCursor(scope);
       return;
     }
 
     if (event.key === 'Delete') {
       event.preventDefault();
-      this.removeAfterCursor();
+      this.removeAfterCursor(scope);
       return;
     }
 
@@ -310,11 +379,11 @@ export class FormulaBuilderComponent implements OnInit {
     }
   }
 
-  dropOnExpression(event: DragEvent, targetIndex = this.expressionTokens.length): void {
+  dropOnExpression(scope: FormulaProductScope, event: DragEvent, targetIndex = scope.expressionTokens.length): void {
     event.preventDefault();
     event.stopPropagation();
 
-    if (!this.selectedFormula) {
+    if (!scope.selectedFormula) {
       return;
     }
 
@@ -324,12 +393,12 @@ export class FormulaBuilderComponent implements OnInit {
     }
 
     if (dragData.source === 'editor' && Number.isInteger(dragData.index)) {
-      this.moveExpressionToken(Number(dragData.index), targetIndex);
+      this.moveExpressionToken(scope, Number(dragData.index), targetIndex);
       return;
     }
 
     if (dragData.source === 'palette' && dragData.value) {
-      this.insertTokensAt(this.createTokens(dragData.value), targetIndex);
+      this.insertTokensAt(scope, this.createTokens(scope, dragData.value), targetIndex);
     }
   }
 
@@ -350,26 +419,19 @@ export class FormulaBuilderComponent implements OnInit {
   }
 
   displayText(value: string): string {
-    const text = String(value ?? '');
-
-    if (!/[\u00c3\u00c2\u0080-\u009f\ufffd]/.test(text)) {
-      return text;
-    }
-
-    try {
-      const bytes = new Uint8Array([...text].map((char) => char.charCodeAt(0) & 255));
-      return new TextDecoder('utf-8').decode(bytes).replace(/\uFFFD/g, '');
-    } catch {
-      return text;
-    }
+    return normalizeText(value);
   }
 
   componentMeta(component: ProductComponent): string {
-    return [component.code, this.displayText(component.group)].filter(Boolean).join(' · ');
+    return [component.code, this.displayText(component.group)].filter(Boolean).join(' - ');
   }
 
-  trackByNode(_: number, node: ProductNode): string {
-    return node.id;
+  trackByScope(_: number, scope: FormulaProductScope): string {
+    return scope.productId;
+  }
+
+  trackByProduct(_: number, product: ProductNode): string {
+    return product.id;
   }
 
   trackByFormula(_: number, formula: PricingFormula): string {
@@ -388,103 +450,162 @@ export class FormulaBuilderComponent implements OnInit {
     return token.id;
   }
 
-  private loadProductScope(): void {
-    this.loadCompositionVariables();
-    this.loadFormulas();
-  }
+  private applySelectedProductIds(productIds: Array<string>, preferredActiveId = this.activeProductId): void {
+    const availableIds = new Set(this.catalog.getProducts().map((product) => product.id));
+    const uniqueIds = productIds
+      .map((id) => String(id ?? ''))
+      .filter((id, index, source) => id && availableIds.has(id) && source.indexOf(id) === index);
 
-  private loadCompositionVariables(): void {
-    this.productComponents = this.catalog.getCompositionComponents(this.selectedProductId);
-    this.priceComponents = this.catalog.getCompositionPriceComponents(this.selectedProductId);
-  }
-
-  private loadFormulas(): void {
-    this.formulas = this.formulaService.getFormulas(this.selectedProductId);
-    this.selectedFormula = undefined;
-    this.selectedFormulaOriginalId = '';
-    this.refreshExpressionTokens();
-  }
-
-  private buildEditedCatalog(): Array<PricingFormula> {
-    if (!this.selectedFormula) {
-      return this.formulas;
+    for (const productId of uniqueIds) {
+      this.ensureProductScope(productId);
     }
 
-    const editedFormula: PricingFormula = { ...this.selectedFormula };
-    const selectedId = this.selectedFormulaOriginalId || editedFormula.id;
-    const exists = this.formulas.some((formula) => formula.id === selectedId);
-    const catalog: Array<PricingFormula> = exists
-      ? this.formulas.map((formula) =>
+    const nextActiveId = uniqueIds.includes(preferredActiveId)
+      ? preferredActiveId
+      : uniqueIds.includes(this.activeProductId)
+        ? this.activeProductId
+        : uniqueIds[0] || '';
+
+    if (
+      this.sameProductIds(this.selectedProductIds, uniqueIds)
+      && this.activeProductId === nextActiveId
+      && this.selectedScopes.length === uniqueIds.length
+    ) {
+      return;
+    }
+
+    this.selectedProductIds = uniqueIds;
+    this.selectedScopes = uniqueIds
+      .map((productId) => this.productScopes[productId])
+      .filter((scope): scope is FormulaProductScope => Boolean(scope));
+    this.activeProductId = nextActiveId;
+
+    if (nextActiveId) {
+      this.catalog.setSelectedProductId(nextActiveId);
+    }
+  }
+
+  private sameProductIds(currentIds: Array<string>, nextIds: Array<string>): boolean {
+    return currentIds.length === nextIds.length
+      && currentIds.every((id, index) => id === nextIds[index]);
+  }
+
+  private ensureProductScope(productId: string): FormulaProductScope {
+    const existing = this.productScopes[productId];
+
+    if (existing) {
+      return existing;
+    }
+
+    const scope: FormulaProductScope = {
+      productId,
+      formulas: this.formulaService.getFormulas(productId),
+      selectedFormula: undefined,
+      productComponents: this.catalog.getCompositionComponents(productId),
+      priceComponents: this.catalog.getCompositionPriceComponents(productId),
+      productComponentsOpen: false,
+      priceComponentsOpen: false,
+      quickFunctionsOpen: false,
+      selectedFormulaOriginalId: '',
+      statusMessage: '',
+      statusType: 'info',
+      expressionTokens: [],
+      expressionCursorIndex: 0,
+    };
+
+    this.productScopes[productId] = scope;
+    this.refreshExpressionTokens(scope);
+
+    return scope;
+  }
+
+  private getScope(productId = this.activeProductId): FormulaProductScope | undefined {
+    return productId ? this.productScopes[productId] : undefined;
+  }
+
+  private buildEditedCatalog(scope: FormulaProductScope): Array<PricingFormula> {
+    if (!scope.selectedFormula) {
+      return scope.formulas;
+    }
+
+    const editedFormula: PricingFormula = { ...scope.selectedFormula };
+    const selectedId = scope.selectedFormulaOriginalId || editedFormula.id;
+    const exists = scope.formulas.some((formula) => formula.id === selectedId);
+
+    return exists
+      ? scope.formulas.map((formula) =>
           formula.id === selectedId ? editedFormula : formula,
         )
-      : [...this.formulas, editedFormula];
-
-    return catalog;
+      : [...scope.formulas, editedFormula];
   }
 
-  private refreshExpressionTokens(): void {
-    this.expressionTokens = this.createTokens(this.selectedFormula?.expression ?? '');
-    this.expressionCursorIndex = this.expressionTokens.length;
+  private refreshExpressionTokens(scope: FormulaProductScope): void {
+    scope.expressionTokens = this.createTokens(scope, scope.selectedFormula?.expression ?? '');
+    scope.expressionCursorIndex = scope.expressionTokens.length;
   }
 
-  private createTokens(expression: string): Array<FormulaExpressionToken> {
+  private createTokens(scope: FormulaProductScope, expression: string): Array<FormulaExpressionToken> {
     const rawTokens =
       expression.match(/Math\.[A-Za-z_$][\w$]*|[A-Za-z_$][\w$]*|\d+(?:\.\d+)?(?:e[+-]?\d+)?|[+\-*/(),?:]|\S+/gi) ?? [];
 
-    return rawTokens.map((value, index) => this.createExpressionToken(value, index));
+    return rawTokens.map((value, index) => this.createExpressionToken(scope, value, index));
   }
 
-  private createExpressionToken(value: string, index = this.expressionTokens.length): FormulaExpressionToken {
+  private createExpressionToken(
+    scope: FormulaProductScope,
+    value: string,
+    index = scope.expressionTokens.length,
+  ): FormulaExpressionToken {
     return {
       id: `${Date.now()}-${index}-${value}`,
       value,
-      kind: this.resolveTokenKind(value),
+      kind: this.resolveTokenKind(scope, value),
     };
   }
 
-  private appendNumberCharacter(character: string): void {
-    const tokens = [...this.expressionTokens];
-    const previousToken = tokens[this.expressionCursorIndex - 1];
+  private appendNumberCharacter(scope: FormulaProductScope, character: string): void {
+    const tokens = [...scope.expressionTokens];
+    const previousToken = tokens[scope.expressionCursorIndex - 1];
 
     if (previousToken?.kind === 'number') {
-      tokens[this.expressionCursorIndex - 1] = {
+      tokens[scope.expressionCursorIndex - 1] = {
         ...previousToken,
         value: previousToken.value === '0' ? character : `${previousToken.value}${character}`,
       };
-      this.expressionTokens = tokens;
-      this.syncExpressionFromTokens();
+      scope.expressionTokens = tokens;
+      this.syncExpressionFromTokens(scope);
     } else {
-      this.insertTokensAt([this.createExpressionToken(character, tokens.length)], this.expressionCursorIndex);
+      this.insertTokensAt(scope, [this.createExpressionToken(scope, character, tokens.length)], scope.expressionCursorIndex);
     }
   }
 
-  private appendDecimalSeparator(): void {
-    const tokens = [...this.expressionTokens];
-    const previousToken = tokens[this.expressionCursorIndex - 1];
+  private appendDecimalSeparator(scope: FormulaProductScope): void {
+    const tokens = [...scope.expressionTokens];
+    const previousToken = tokens[scope.expressionCursorIndex - 1];
 
     if (previousToken?.kind === 'number') {
       if (previousToken.value.includes('.')) {
         return;
       }
 
-      tokens[this.expressionCursorIndex - 1] = {
+      tokens[scope.expressionCursorIndex - 1] = {
         ...previousToken,
         value: `${previousToken.value}.`,
       };
-      this.expressionTokens = tokens;
-      this.syncExpressionFromTokens();
+      scope.expressionTokens = tokens;
+      this.syncExpressionFromTokens(scope);
     } else {
-      this.insertTokensAt([this.createExpressionToken('0.', tokens.length)], this.expressionCursorIndex);
+      this.insertTokensAt(scope, [this.createExpressionToken(scope, '0.', tokens.length)], scope.expressionCursorIndex);
     }
   }
 
-  private removeBeforeCursor(): void {
-    if (this.expressionCursorIndex <= 0) {
+  private removeBeforeCursor(scope: FormulaProductScope): void {
+    if (scope.expressionCursorIndex <= 0) {
       return;
     }
 
-    const tokens = [...this.expressionTokens];
-    const previousTokenIndex = this.expressionCursorIndex - 1;
+    const tokens = [...scope.expressionTokens];
+    const previousTokenIndex = scope.expressionCursorIndex - 1;
     const previousToken = tokens[previousTokenIndex];
 
     if (previousToken.kind === 'number' && previousToken.value.length > 1) {
@@ -494,47 +615,47 @@ export class FormulaBuilderComponent implements OnInit {
       };
     } else {
       tokens.splice(previousTokenIndex, 1);
-      this.expressionCursorIndex -= 1;
+      scope.expressionCursorIndex -= 1;
     }
 
-    this.expressionTokens = tokens;
-    this.syncExpressionFromTokens();
+    scope.expressionTokens = tokens;
+    this.syncExpressionFromTokens(scope);
   }
 
-  private removeAfterCursor(): void {
-    if (this.expressionCursorIndex >= this.expressionTokens.length) {
+  private removeAfterCursor(scope: FormulaProductScope): void {
+    if (scope.expressionCursorIndex >= scope.expressionTokens.length) {
       return;
     }
 
-    const tokens = [...this.expressionTokens];
-    const nextToken = tokens[this.expressionCursorIndex];
+    const tokens = [...scope.expressionTokens];
+    const nextToken = tokens[scope.expressionCursorIndex];
 
     if (nextToken.kind === 'number' && nextToken.value.length > 1) {
-      tokens[this.expressionCursorIndex] = {
+      tokens[scope.expressionCursorIndex] = {
         ...nextToken,
         value: nextToken.value.slice(1),
       };
     } else {
-      tokens.splice(this.expressionCursorIndex, 1);
+      tokens.splice(scope.expressionCursorIndex, 1);
     }
 
-    this.expressionTokens = tokens;
-    this.expressionCursorIndex = this.clampCursorIndex(this.expressionCursorIndex);
-    this.syncExpressionFromTokens();
+    scope.expressionTokens = tokens;
+    scope.expressionCursorIndex = this.clampCursorIndex(scope, scope.expressionCursorIndex);
+    this.syncExpressionFromTokens(scope);
   }
 
-  private resolveTokenKind(value: string): FormulaTokenKind {
+  private resolveTokenKind(scope: FormulaProductScope, value: string): FormulaTokenKind {
     const scopedVariables = [
       ...this.simulationVariables,
-      ...this.productComponents.map((component) => ({ id: component.varAPV })),
-      ...this.priceComponents.map((component) => ({ id: component.varAPV })),
+      ...scope.productComponents.map((component) => ({ id: component.varAPV })),
+      ...scope.priceComponents.map((component) => ({ id: component.varAPV })),
     ];
 
     if (scopedVariables.some((variable) => variable.id === value)) {
       return 'variable';
     }
 
-    if (this.formulaVariables.some((formula) => formula.id === value)) {
+    if (this.formulaVariables(scope).some((formula) => formula.id === value)) {
       return 'formula';
     }
 
@@ -577,39 +698,43 @@ export class FormulaBuilderComponent implements OnInit {
     }
   }
 
-  private moveExpressionToken(sourceIndex: number, targetIndex: number): void {
-    if (sourceIndex < 0 || sourceIndex >= this.expressionTokens.length) {
+  private moveExpressionToken(scope: FormulaProductScope, sourceIndex: number, targetIndex: number): void {
+    if (sourceIndex < 0 || sourceIndex >= scope.expressionTokens.length) {
       return;
     }
 
-    const tokens = [...this.expressionTokens];
+    const tokens = [...scope.expressionTokens];
     const [token] = tokens.splice(sourceIndex, 1);
     const adjustedTargetIndex = sourceIndex < targetIndex ? targetIndex - 1 : targetIndex;
     tokens.splice(Math.max(0, adjustedTargetIndex), 0, token);
-    this.expressionTokens = tokens;
-    this.expressionCursorIndex = this.clampCursorIndex(Math.max(0, adjustedTargetIndex) + 1);
-    this.syncExpressionFromTokens();
+    scope.expressionTokens = tokens;
+    scope.expressionCursorIndex = this.clampCursorIndex(scope, Math.max(0, adjustedTargetIndex) + 1);
+    this.syncExpressionFromTokens(scope);
   }
 
-  private insertTokensAt(tokensToInsert: Array<FormulaExpressionToken>, targetIndex: number): void {
-    const tokens = [...this.expressionTokens];
-    const insertionIndex = this.clampCursorIndex(targetIndex);
+  private insertTokensAt(
+    scope: FormulaProductScope,
+    tokensToInsert: Array<FormulaExpressionToken>,
+    targetIndex: number,
+  ): void {
+    const tokens = [...scope.expressionTokens];
+    const insertionIndex = this.clampCursorIndex(scope, targetIndex);
     tokens.splice(insertionIndex, 0, ...tokensToInsert);
-    this.expressionTokens = tokens;
-    this.expressionCursorIndex = insertionIndex + tokensToInsert.length;
-    this.syncExpressionFromTokens();
+    scope.expressionTokens = tokens;
+    scope.expressionCursorIndex = insertionIndex + tokensToInsert.length;
+    this.syncExpressionFromTokens(scope);
   }
 
-  private clampCursorIndex(index: number): number {
-    return Math.min(Math.max(0, index), this.expressionTokens.length);
+  private clampCursorIndex(scope: FormulaProductScope, index: number): number {
+    return Math.min(Math.max(0, index), scope.expressionTokens.length);
   }
 
-  private syncExpressionFromTokens(): void {
-    if (!this.selectedFormula) {
+  private syncExpressionFromTokens(scope: FormulaProductScope): void {
+    if (!scope.selectedFormula) {
       return;
     }
 
-    this.selectedFormula.expression = this.serializeTokens(this.expressionTokens);
+    scope.selectedFormula.expression = this.serializeTokens(scope.expressionTokens);
   }
 
   private serializeTokens(tokens: Array<FormulaExpressionToken>): string {
