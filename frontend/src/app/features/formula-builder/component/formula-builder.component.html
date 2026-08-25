@@ -3,40 +3,39 @@
   [p-actions]="pageActions"
 >
   <div class="formula-page">
+    <div class="product-lookup-host">
+      <po-lookup
+        #productLookup
+        name="productLookup"
+        p-label="Produto ou servico"
+        p-placeholder="Selecionar produtos ou servicos"
+        p-field-value="id"
+        p-field-label="label"
+        p-title="Selecionar Produto"
+        [p-columns]="productLookupColumns"
+        [p-filter-service]="productLookupService"
+        [p-multiple]="true"
+        [(ngModel)]="selectedProductIds"
+        (p-selected)="onProductLookupSelected($event)"
+        (p-change)="onProductLookupChange($event)"
+      ></po-lookup>
+    </div>
+
     <section class="formula-empty-selection" *ngIf="!selectedScopes.length">
       <strong>Nenhum produto selecionado.</strong>
-      <span>Use Selecionar Produto para abrir o lookup e escolher produtos ou serviços.</span>
+      <span>Deve ser selecionado um produto para editar formulas.</span>
     </section>
 
-    <section class="product-selector-panel" *ngIf="productSelectorOpen">
-      <button
-        type="button"
-        class="product-selector-option"
-        *ngFor="let product of products; trackBy: trackByProduct"
-        [class.active]="selectedProductIds.includes(product.id)"
-        (click)="selectProductFromCatalog(product.id)"
+    <po-context-tabs *ngIf="selectedScopes.length">
+      <po-tab
+        *ngFor="let scope of selectedScopes; trackBy: trackByScope"
+        [p-label]="productTabLabel(scope)"
+        [p-active]="scope.productId === activeProductId"
+        [p-hide-close]="false"
+        (p-click)="activateProduct(scope.productId)"
+        (p-close-tab)="closeProductTab(scope.productId)"
       >
-        <strong>{{ displayText(product.name) }}</strong>
-        <small>{{ product.code }} - {{ product.type === 'service' ? 'Servico' : 'Produto' }}</small>
-      </button>
-    </section>
-
-    <ng-container *ngIf="selectedScopes.length">
-      <div class="formula-tabs" role="tablist" aria-label="Produtos selecionados">
-        <button
-          type="button"
-          class="formula-tab"
-          *ngFor="let scope of selectedScopes; trackBy: trackByScope"
-          [class.active]="scope.productId === activeProductId"
-          [attr.aria-selected]="scope.productId === activeProductId"
-          role="tab"
-          (click)="activateProduct(scope.productId)"
-        >
-          {{ productTabLabel(scope) }}
-        </button>
-      </div>
-
-      <ng-container *ngIf="activeScope as scope">
+      <ng-container *ngIf="scope.productId === activeProductId">
         <section class="formula-grid">
           <po-container class="formula-list" p-title="Catálogo de Fórmulas">
             <div class="formula-panel-scroll">
@@ -316,24 +315,7 @@
           </po-container>
         </section>
       </ng-container>
-    </ng-container>
-  </div>
-
-  <div class="product-lookup-host" *ngIf="false">
-    <po-lookup
-      #productLookup
-      name="productLookup"
-      p-label="Produto ou serviço"
-      p-placeholder="Selecionar produtos ou serviços"
-      p-field-value="id"
-      p-field-label="label"
-      p-title="Selecionar Produto"
-      [p-columns]="productLookupColumns"
-      [p-filter-service]="productLookupService"
-      [p-multiple]="true"
-      [ngModel]="selectedProductIds"
-      (p-selected)="onProductLookupSelected($event)"
-      (p-change)="onProductLookupChange($event)"
-    ></po-lookup>
+      </po-tab>
+    </po-context-tabs>
   </div>
 </po-page-default>

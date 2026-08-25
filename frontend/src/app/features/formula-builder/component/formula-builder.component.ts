@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   PoLookupColumn,
+  PoLookupComponent,
   PoLookupFilter,
   PoLookupFilteredItemsParams,
   PoLookupResponseApi,
@@ -51,13 +52,68 @@ interface FormulaProductScope {
   expressionCursorIndex: number;
 }
 
-class DisabledProductLookupService implements PoLookupFilter {
-  getFilteredItems(_: PoLookupFilteredItemsParams): Observable<PoLookupResponseApi> {
-    return of({ items: [], hasNext: false });
+interface ProductLookupItem {
+  id: string;
+  label: string;
+  code: string;
+  name: string;
+  type: string;
+}
+
+class ProductLookupService implements PoLookupFilter {
+  constructor(private readonly getProducts: () => Array<ProductNode>) {}
+
+  getFilteredItems(params: PoLookupFilteredItemsParams): Observable<PoLookupResponseApi> {
+    const filter = normalizeText(params.filter ?? '').toLowerCase();
+    const page = params.page || 1;
+    const pageSize = params.pageSize || 10;
+    const filtered = this.items().filter((item) =>
+      !filter
+        || item.id.toLowerCase().includes(filter)
+        || item.code.toLowerCase().includes(filter)
+        || item.name.toLowerCase().includes(filter)
+        || item.type.toLowerCase().includes(filter)
+        || item.label.toLowerCase().includes(filter),
+    );
+    const start = (page - 1) * pageSize;
+    const pageItems = filtered.slice(start, start + pageSize);
+
+    return of({ items: pageItems, hasNext: start + pageSize < filtered.length });
   }
 
-  getObjectByValue(): Observable<undefined> {
-    return of(undefined);
+  getObjectByValue(value: string | Array<any>): Observable<ProductLookupItem | Array<ProductLookupItem> | undefined> {
+    const items = this.items();
+
+    if (Array.isArray(value)) {
+      const selectedIds = new Set(value.map((item) => this.lookupItemId(item)).filter(Boolean));
+      return of(items.filter((item) => selectedIds.has(item.id)));
+    }
+
+    return of(items.find((item) => item.id === String(value)));
+  }
+
+  private items(): Array<ProductLookupItem> {
+    return this.getProducts().map((product) => {
+      const code = normalizeText(product.code);
+      const name = normalizeText(product.name);
+      const type = product.type === 'service' ? 'Servico' : 'Produto';
+
+      return {
+        id: product.id,
+        code,
+        name,
+        type,
+        label: `${code} - ${name}`,
+      };
+    });
+  }
+
+  private lookupItemId(value: unknown): string {
+    if (value && typeof value === 'object' && 'id' in value) {
+      return String((value as { id?: unknown }).id ?? '');
+    }
+
+    return String(value ?? '');
   }
 }
 
@@ -84,10 +140,11 @@ function normalizeText(value: string): string {
   imports: [...SHARED_MODULES, CommonModule],
 })
 export class FormulaBuilderComponent implements OnInit {
+  @ViewChild('productLookup') productLookup!: PoLookupComponent;
+
   products: Array<ProductNode> = [];
   selectedProductIds: Array<string> = [];
   selectedScopes: Array<FormulaProductScope> = [];
-  productSelectorOpen = false;
   activeProductId = '';
   private productScopes: Record<string, FormulaProductScope> = {};
 
@@ -110,8 +167,12 @@ export class FormulaBuilderComponent implements OnInit {
   readonly pageActions: Array<PoPageAction> = [
     { label: 'Selecionar Produto', icon: 'an an-magnifying-glass', action: () => this.openProductSelector() },
   ];
-  readonly productLookupColumns: Array<PoLookupColumn> = [];
-  readonly productLookupService = new DisabledProductLookupService();
+  readonly productLookupColumns: Array<PoLookupColumn> = [
+    { property: 'code', label: 'Codigo', width: '24%' },
+    { property: 'label', label: 'Produto ou servico' },
+    { property: 'type', label: 'Tipo', width: '18%' },
+  ];
+  readonly productLookupService = new ProductLookupService(() => this.catalog.getProducts());
 
   constructor(
     private readonly formulaService: PricingFormulaService,
@@ -133,17 +194,35 @@ export class FormulaBuilderComponent implements OnInit {
 
   openProductSelector(): void {
     this.products = this.catalog.getProducts();
-    this.productSelectorOpen = !this.productSelectorOpen;
+    this.productLookup.openLookup();
   }
 
-  selectProductFromCatalog(productId: string): void {
-    this.applySelectedProductIds([...this.selectedProductIds, productId], productId);
-    this.productSelectorOpen = false;
+  onProductLookupSelected(value: unknown): void {
+    const productIds = this.normalizeLookupProductIds(value);
+
+    if (!productIds.length) {
+      return;
+    }
+
+    const nextProductIds = Array.isArray(value)
+      ? productIds
+      : [...this.selectedProductIds, ...productIds];
+    this.applySelectedProductIds(nextProductIds, productIds[productIds.length - 1]);
   }
 
-  onProductLookupSelected(_: unknown): void {}
+  onProductLookupChange(value: unknown): void {
+    this.applySelectedProductIds(this.normalizeLookupProductIds(value));
+  }
 
-  onProductLookupChange(_: unknown): void {}
+  closeProductTab(productId: string): void {
+    if (!productId || !this.selectedProductIds.includes(productId)) {
+      return;
+    }
+
+    this.applySelectedProductIds(
+      this.selectedProductIds.filter((selectedProductId) => selectedProductId !== productId),
+    );
+  }
 
   activateProduct(productId: string): void {
     if (!productId || this.activeProductId === productId) {
@@ -488,6 +567,23 @@ export class FormulaBuilderComponent implements OnInit {
   private sameProductIds(currentIds: Array<string>, nextIds: Array<string>): boolean {
     return currentIds.length === nextIds.length
       && currentIds.every((id, index) => id === nextIds[index]);
+  }
+
+  private normalizeLookupProductIds(value: unknown): Array<string> {
+    if (Array.isArray(value)) {
+      return value.map((item) => this.lookupProductId(item)).filter(Boolean);
+    }
+
+    const productId = this.lookupProductId(value);
+    return productId ? [productId] : [];
+  }
+
+  private lookupProductId(value: unknown): string {
+    if (value && typeof value === 'object' && 'id' in value) {
+      return String((value as { id?: unknown }).id ?? '');
+    }
+
+    return String(value ?? '');
   }
 
   private ensureProductScope(productId: string): FormulaProductScope {
