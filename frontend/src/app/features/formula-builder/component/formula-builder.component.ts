@@ -96,7 +96,7 @@ class ProductLookupService implements PoLookupFilter {
     return this.getProducts().map((product) => {
       const code = normalizeText(product.code);
       const name = normalizeText(product.name);
-      const type = product.type === 'service' ? 'Servico' : 'Produto';
+      const type = product.type === 'service' ? 'Serviço' : 'Produto';
 
       return {
         id: product.id,
@@ -168,8 +168,8 @@ export class FormulaBuilderComponent implements OnInit {
     { label: 'Selecionar Produto', icon: 'an an-magnifying-glass', action: () => this.openProductSelector() },
   ];
   readonly productLookupColumns: Array<PoLookupColumn> = [
-    { property: 'code', label: 'Codigo', width: '24%' },
-    { property: 'label', label: 'Produto ou servico' },
+    { property: 'code', label: 'Código', width: '24%' },
+    { property: 'label', label: 'Produto ou serviço' },
     { property: 'type', label: 'Tipo', width: '18%' },
   ];
   readonly productLookupService = new ProductLookupService(() => this.catalog.getProducts());
