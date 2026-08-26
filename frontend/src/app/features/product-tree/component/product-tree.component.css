@@ -353,6 +353,10 @@ small,
   width: 16px;
 }
 
+.option-radio.checkbox {
+  border-radius: 4px;
+}
+
 .option-choice.selected .option-radio {
   border-color: #0b3d63;
 }
@@ -366,6 +370,17 @@ small,
   position: absolute;
   top: 2px;
   width: 8px;
+}
+
+.option-choice.selected .option-radio.checkbox::after {
+  border-bottom: 2px solid #fff;
+  border-radius: 0;
+  border-right: 2px solid #fff;
+  height: 8px;
+  left: 4px;
+  top: 1px;
+  transform: rotate(45deg);
+  width: 4px;
 }
 
 .cost-field {

@@ -390,10 +390,14 @@
           type="button"
           class="option-choice"
           *ngFor="let option of optionComponent.options; trackBy: trackByOption"
-          [class.selected]="option.code === optionCode"
+          [class.selected]="isOptionSelected(option.code)"
           (click)="selectComponentOption(option.code)"
         >
-          <span class="option-radio" aria-hidden="true"></span>
+          <span
+            class="option-radio"
+            [class.checkbox]="optionComponent.multiple"
+            aria-hidden="true"
+          ></span>
           <span>
             <strong>{{ option.description }}</strong>
             <small
@@ -404,13 +408,16 @@
         </button>
       </div>
 
-      <label class="cost-field">
-        <span>Valor de Custo</span>
+      <label
+        class="cost-field"
+        *ngFor="let option of selectedModalOptions(); trackBy: trackByOption"
+      >
+        <span>Valor de Custo - {{ option.description }}</span>
         <input
           type="text"
           inputmode="decimal"
-          [value]="formatCostInput(optionCostValue)"
-          (input)="onOptionCostInput($event)"
+          [value]="formatCostInput(optionCostValues[option.code] || 0)"
+          (input)="onOptionCostInput($event, option.code)"
           aria-label="Valor de Custo"
         />
       </label>

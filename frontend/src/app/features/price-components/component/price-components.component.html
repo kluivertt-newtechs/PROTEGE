@@ -58,10 +58,6 @@
 
         <div class="checkbox-row">
           <label><input type="checkbox" [(ngModel)]="editModel.active" /> Ativo</label>
-          <label>
-            <input type="checkbox" [(ngModel)]="editModel.multiple" (ngModelChange)="enforceDefaultMode()" />
-            Múltipla seleção
-          </label>
         </div>
       </section>
 
@@ -119,5 +115,3 @@
     </po-modal-footer>
   </po-modal>
 </po-page-default>
-
-

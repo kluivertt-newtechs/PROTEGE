@@ -389,7 +389,7 @@ export class ProductCatalogService {
   }
 
   savePriceComponent(component: PriceComponent): PriceComponent {
-    return this.saveByKind('price', component) as PriceComponent;
+    return this.saveByKind('price', { ...component, multiple: false }) as PriceComponent;
   }
 
   removeComponent(componentId: string): void {
@@ -792,15 +792,22 @@ export class ProductCatalogService {
     return this.getComposition(productId).productComponentOptions.find((config) => config.componentId === componentId);
   }
 
+  getProductComponentOptionConfigs(productId: string, componentId: string): Array<ProductComponentOptionConfig> {
+    return this.getComposition(productId).productComponentOptions
+      .filter((config) => config.componentId === componentId)
+      .map((config) => ({ ...config }));
+  }
+
   getProductComponentOptionStatus(productId: string, componentId: string): ProductComponentOptionStatus {
     const component = this.state.productComponents.find((item) => item.id === componentId);
-    const config = this.getProductComponentOptionConfig(productId, componentId);
+    const configs = this.getProductComponentOptionConfigs(productId, componentId)
+      .filter((config) => component?.options.some((option) => option.code === config.optionCode));
 
-    if (!component || !config || !component.options.some((option) => option.code === config.optionCode)) {
+    if (!component || !configs.length) {
       return 'default';
     }
 
-    return this.isDefaultProductComponentOptionConfig(component, config) ? 'default' : 'custom';
+    return this.isDefaultProductComponentOptionConfigs(component, configs) ? 'default' : 'custom';
   }
 
   saveProductComponentOptionConfig(
@@ -810,7 +817,6 @@ export class ProductCatalogService {
     costValue: number,
     quantity = 1,
   ): ProductComponentOptionConfig | undefined {
-    const composition = this.getComposition(productId);
     const component = this.state.productComponents.find((item) => item.id === componentId);
 
     if (!component) {
@@ -826,25 +832,51 @@ export class ProductCatalogService {
       costValue: this.safeNumber(costValue),
       quantity: this.normalizeQuantity(quantity),
     };
-    const configs = composition.productComponentOptions.filter((config) => config.componentId !== componentId);
 
-    if (this.isDefaultProductComponentOptionConfig(component, normalized)) {
-      this.upsertComposition({ ...composition, productComponentOptions: configs });
-      return { ...normalized };
+    this.saveProductComponentOptionConfigs(productId, componentId, [normalized]);
+    return { ...normalized };
+  }
+
+  saveProductComponentOptionConfigs(
+    productId: string,
+    componentId: string,
+    configs: Array<ProductComponentOptionConfig>,
+  ): Array<ProductComponentOptionConfig> {
+    const composition = this.getComposition(productId);
+    const component = this.state.productComponents.find((item) => item.id === componentId);
+
+    if (!component) {
+      return [];
     }
 
-    this.upsertComposition({ ...composition, productComponentOptions: [...configs, normalized] });
-    return { ...normalized };
+    const optionCodes = new Set(component.options.map((option) => option.code));
+    const normalized = this.normalizeProductComponentOptionConfigs(configs)
+      .filter((config) => config.componentId === componentId && optionCodes.has(config.optionCode));
+    const effectiveConfigs = component.multiple ? normalized : normalized.slice(0, 1);
+    const otherConfigs = composition.productComponentOptions.filter((config) => config.componentId !== componentId);
+
+    if (!effectiveConfigs.length || this.isDefaultProductComponentOptionConfigs(component, effectiveConfigs)) {
+      this.upsertComposition({ ...composition, productComponentOptions: otherConfigs });
+      return effectiveConfigs.map((config) => ({ ...config }));
+    }
+
+    this.upsertComposition({ ...composition, productComponentOptions: [...otherConfigs, ...effectiveConfigs] });
+    return effectiveConfigs.map((config) => ({ ...config }));
   }
 
   getCompositionComponents(productId: string): Array<ProductComponent> {
     const componentById = new Map(this.state.productComponents.map((component) => [component.id, component]));
     const composition = this.getComposition(productId);
-    const configByComponentId = new Map(composition.productComponentOptions.map((config) => [config.componentId, config]));
+    const configsByComponentId = new Map<string, Array<ProductComponentOptionConfig>>();
+
+    for (const config of composition.productComponentOptions) {
+      configsByComponentId.set(config.componentId, [...(configsByComponentId.get(config.componentId) ?? []), config]);
+    }
+
     return composition.productComponentIds
       .map((componentId) => componentById.get(componentId))
       .filter((component): component is ProductComponent => Boolean(component))
-      .map((component) => this.applyProductComponentOptionConfig(component, configByComponentId.get(component.id)));
+      .map((component) => this.applyProductComponentOptionConfigs(component, configsByComponentId.get(component.id) ?? []));
   }
 
   getCompositionPriceComponents(productId: string): Array<PriceComponent> {
@@ -920,12 +952,13 @@ export class ProductCatalogService {
         return component;
       }
 
+      const multiple = kind === 'product' && component.multiple;
       const options = component.options.map((option) => {
-        const shouldSelect = option.code === optionCode ? (component.multiple ? selected : true) : component.multiple ? option.selected : false;
+        const shouldSelect = option.code === optionCode ? (multiple ? selected : true) : multiple ? option.selected : false;
         return this.normalizeOption({ ...option, selected: shouldSelect });
       });
 
-      return this.normalizeComponent({ ...component, options });
+      return this.normalizeComponent({ ...component, multiple, options });
     });
 
     this.replaceCollection(kind, components);
@@ -1005,7 +1038,7 @@ export class ProductCatalogService {
 
   private replaceCollection(kind: ComponentKind, components: Array<ProductComponent>): void {
     this.state = kind === 'price'
-      ? { ...this.state, priceComponents: components.map((component) => this.normalizeComponent(component)) }
+      ? { ...this.state, priceComponents: components.map((component) => this.normalizeComponent({ ...component, multiple: false })) }
       : { ...this.state, productComponents: components.map((component) => this.normalizeComponent(component)) };
     this.persist();
   }
@@ -1052,7 +1085,7 @@ export class ProductCatalogService {
     return {
       version: VERSION,
       productComponents: (state.productComponents ?? []).map((component) => this.normalizeComponent(component)),
-      priceComponents: (state.priceComponents ?? []).map((component) => this.normalizeComponent(component)),
+      priceComponents: (state.priceComponents ?? []).map((component) => this.normalizeComponent({ ...component, multiple: false })),
       tree,
       compositions: (state.compositions ?? []).map((composition) => ({
         productId: String(composition.productId),
@@ -1086,27 +1119,30 @@ export class ProductCatalogService {
     this.persist();
   }
 
-  private applyProductComponentOptionConfig(
+  private applyProductComponentOptionConfigs(
     component: ProductComponent,
-    config: ProductComponentOptionConfig | undefined,
+    configs: Array<ProductComponentOptionConfig>,
   ): ProductComponent {
+    const validConfigs = configs.filter((config) =>
+      component.options.some((option) => option.code === config.optionCode),
+    );
+
     if (
-      !config
-      || this.isDefaultProductComponentOptionConfig(component, config)
+      !validConfigs.length
+      || this.isDefaultProductComponentOptionConfigs(component, validConfigs)
     ) {
       return this.cloneComponent(component);
     }
 
-    if (!component.options.some((option) => option.code === config.optionCode)) {
-      return this.cloneComponent(component);
-    }
+    const effectiveConfigs = component.multiple ? validConfigs : validConfigs.slice(0, 1);
+    const configByOptionCode = new Map(effectiveConfigs.map((config) => [config.optionCode, config]));
 
     return this.cloneComponent({
       ...component,
       options: component.options.map((option) => ({
         ...option,
-        selected: option.code === config.optionCode,
-        costValue: option.code === config.optionCode ? config.costValue : option.costValue,
+        selected: configByOptionCode.has(option.code),
+        costValue: configByOptionCode.get(option.code)?.costValue ?? option.costValue,
       })),
     });
   }
@@ -1263,30 +1299,44 @@ export class ProductCatalogService {
         costValue: this.safeNumber(config.costValue),
         quantity: this.normalizeQuantity(config.quantity),
       }))
-      .filter((config) => config.componentId);
+      .filter((config) => config.componentId && config.optionCode);
 
     return normalized.filter((config, index, source) =>
-      source.findIndex((item) => item.componentId === config.componentId) === index,
+      source.findIndex((item) => item.componentId === config.componentId && item.optionCode === config.optionCode) === index,
     );
   }
 
-  private isDefaultProductComponentOptionConfig(
+  private isDefaultProductComponentOptionConfigs(
     component: ProductComponent,
-    config: ProductComponentOptionConfig,
+    configs: Array<ProductComponentOptionConfig>,
   ): boolean {
-    const defaultOption = this.getDefaultProductComponentOption(component);
-    return Boolean(
-      defaultOption
-      && config.optionCode === defaultOption.code
-      && this.sameCurrencyValue(config.costValue, defaultOption.costValue)
-      && this.normalizeQuantity(config.quantity) === 1,
-    );
+    const defaults = component.multiple
+      ? this.getDefaultProductComponentOptions(component)
+      : [this.getDefaultProductComponentOption(component)].filter((option): option is ProductComponentOption => Boolean(option));
+
+    if (configs.length !== defaults.length) {
+      return false;
+    }
+
+    return defaults.every((option) => {
+      const config = configs.find((item) => item.optionCode === option.code);
+      return Boolean(
+        config
+        && this.sameCurrencyValue(config.costValue, option.costValue)
+        && this.normalizeQuantity(config.quantity) === 1,
+      );
+    });
   }
 
   private getDefaultProductComponentOption(component: ProductComponent): ProductComponentOption | undefined {
     return component.options.find((option) => option.default)
       ?? component.options.find((option) => option.selected)
       ?? component.options[0];
+  }
+
+  private getDefaultProductComponentOptions(component: ProductComponent): Array<ProductComponentOption> {
+    const defaults = component.options.filter((option) => option.default || option.selected);
+    return defaults.length ? defaults : component.options.slice(0, 1);
   }
 
   private sameCurrencyValue(first: number, second: number): boolean {

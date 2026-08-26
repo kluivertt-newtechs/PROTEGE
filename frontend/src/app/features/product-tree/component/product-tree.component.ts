@@ -7,6 +7,7 @@ import {
   ProductCatalogService,
   ProductComponent,
   ProductComponentOption,
+  ProductComponentOptionConfig,
   ProductComponentOptionStatus,
   ProductNode,
 } from 'src/app/core/product-catalog.service';
@@ -45,7 +46,9 @@ export class ProductTreeComponent {
   editingProductId = '';
   optionComponent: ProductComponent | undefined;
   optionCode = '';
+  optionCodes: Array<string> = [];
   optionCostValue = 0;
+  optionCostValues: Record<string, number> = {};
   optionQuantity = 1;
 
   groupModel = { code: '', name: '', icon: 'ti-folder' };
@@ -311,42 +314,67 @@ export class ProductTreeComponent {
 
   openComponentOptionModal(component: ProductComponent, event?: Event): void {
     event?.stopPropagation();
-    const config = this.catalog.getProductComponentOptionConfig(this.selectedProductId, component.id);
-    const selectedOption = component.options.find((option) => option.code === config?.optionCode)
-      ?? component.options.find((option) => option.default)
+    const configs = this.catalog.getProductComponentOptionConfigs(this.selectedProductId, component.id);
+    const configByCode = new Map(configs.map((config) => [config.optionCode, config]));
+    const selectedOptions = component.options.filter((option) => configByCode.has(option.code));
+    const defaultOptions = component.multiple
+      ? component.options.filter((option) => option.default || option.selected)
+      : [];
+    const fallbackOption = component.options.find((option) => option.default)
       ?? component.options.find((option) => option.selected)
       ?? component.options[0];
+    const effectiveSelectedOptions = selectedOptions.length
+      ? selectedOptions
+      : component.multiple
+        ? (defaultOptions.length ? defaultOptions : fallbackOption ? [fallbackOption] : [])
+        : fallbackOption ? [fallbackOption] : [];
 
     this.optionComponent = {
       ...component,
       options: component.options.map((option) => ({ ...option })),
     };
-    this.optionCode = selectedOption?.code ?? '';
-    this.optionCostValue = config?.costValue ?? selectedOption?.costValue ?? 0;
-    this.optionQuantity = config?.quantity ?? 1;
+    this.optionCodes = effectiveSelectedOptions.map((option) => option.code);
+    this.optionCode = this.optionCodes[0] ?? '';
+    this.optionCostValues = component.options.reduce<Record<string, number>>((values, option) => {
+      values[option.code] = configByCode.get(option.code)?.costValue ?? option.costValue;
+      return values;
+    }, {});
+    this.optionCostValue = this.optionCostValues[this.optionCode] ?? 0;
+    this.optionQuantity = configs[0]?.quantity ?? 1;
     this.componentOptionModal.open();
   }
 
   saveComponentOptionConfig(): void {
-    if (!this.selectedProductId || !this.optionComponent || !this.optionCode) {
+    if (!this.selectedProductId || !this.optionComponent || !this.optionCodes.length) {
       return;
     }
 
-    const saved = this.catalog.saveProductComponentOptionConfig(
-      this.selectedProductId,
-      this.optionComponent.id,
-      this.optionCode,
-      this.optionCostValue,
-      this.optionQuantity,
-    );
+    const configs = this.optionCodes.map((optionCode): ProductComponentOptionConfig => ({
+      componentId: this.optionComponent?.id ?? '',
+      optionCode,
+      costValue: this.optionCostValues[optionCode] ?? 0,
+      quantity: this.optionQuantity,
+    }));
+    const saved = this.optionComponent.multiple
+      ? this.catalog.saveProductComponentOptionConfigs(this.selectedProductId, this.optionComponent.id, configs)
+      : this.catalog.saveProductComponentOptionConfig(
+          this.selectedProductId,
+          this.optionComponent.id,
+          this.optionCodes[0],
+          this.optionCostValues[this.optionCodes[0]] ?? this.optionCostValue,
+          this.optionQuantity,
+        );
 
-    if (!saved) {
+    if (!saved || (Array.isArray(saved) && !saved.length)) {
       this.statusMessage = 'Nao foi possivel salvar a opcao do componente.';
       return;
     }
 
     this.componentOptionModal.close();
     this.optionComponent = undefined;
+    this.optionCode = '';
+    this.optionCodes = [];
+    this.optionCostValues = {};
     this.statusMessage = 'Opcao do componente salva.';
     this.loadProductComposition(this.selectedProductId);
   }
@@ -356,8 +384,18 @@ export class ProductTreeComponent {
       return;
     }
 
+    if (!this.optionComponent.multiple) {
+      this.optionCodes = [optionCode];
+      this.optionCode = optionCode;
+      this.optionCostValue = this.optionCostValues[optionCode] ?? 0;
+      return;
+    }
+
+    this.optionCodes = this.optionCodes.includes(optionCode)
+      ? this.optionCodes.filter((code) => code !== optionCode)
+      : [...this.optionCodes, optionCode];
     this.optionCode = optionCode;
-    this.optionCostValue = this.optionComponent.options.find((option) => option.code === optionCode)?.costValue ?? 0;
+    this.optionCostValue = this.optionCostValues[optionCode] ?? 0;
   }
 
   componentQuantity(component: ProductComponent): number {
@@ -384,11 +422,19 @@ export class ProductTreeComponent {
   }
 
   selectedOptionDescription(component: ProductComponent): string {
-    return component.options.find((option) => option.selected)?.description ?? 'Sem opcao selecionada';
+    const selected = component.options.filter((option) => option.selected);
+
+    if (!selected.length) {
+      return 'Sem opcao selecionada';
+    }
+
+    return selected.map((option) => option.description).join(', ');
   }
 
   selectedOptionCostValue(component: ProductComponent): number {
-    return component.options.find((option) => option.selected)?.costValue ?? 0;
+    return component.options
+      .filter((option) => option.selected)
+      .reduce((total, option) => total + option.costValue, 0);
   }
 
   formatCurrency(value: number): string {
@@ -399,12 +445,13 @@ export class ProductTreeComponent {
     return this.formatCurrency(value).replace(/\s/g, ' ');
   }
 
-  onOptionCostInput(event: Event): void {
+  onOptionCostInput(event: Event, optionCode = this.optionCode): void {
     const input = event.target as HTMLInputElement;
     const digits = input.value.replace(/\D/g, '');
     const costValue = digits ? Number(digits) / 100 : 0;
 
     this.optionCostValue = costValue;
+    this.optionCostValues[optionCode] = costValue;
     input.value = this.formatCostInput(costValue);
   }
 
@@ -415,6 +462,18 @@ export class ProductTreeComponent {
 
   trackByOption(_: number, option: ProductComponentOption): string {
     return option.code;
+  }
+
+  isOptionSelected(optionCode: string): boolean {
+    return this.optionCodes.includes(optionCode);
+  }
+
+  selectedModalOptions(): Array<ProductComponentOption> {
+    if (!this.optionComponent) {
+      return [];
+    }
+
+    return this.optionComponent.options.filter((option) => this.optionCodes.includes(option.code));
   }
 
   beginComponentDrag(

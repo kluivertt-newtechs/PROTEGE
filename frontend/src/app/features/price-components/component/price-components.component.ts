@@ -89,7 +89,7 @@ export class PriceComponentsComponent {
   }
 
   edit(component: PriceComponent): void {
-    this.editModel = { ...component, options: component.options.map((option) => ({ ...option })) };
+    this.editModel = { ...component, multiple: false, options: component.options.map((option) => ({ ...option })) };
     this.optionDraft = this.optionsToDraft(this.editModel.options);
     this.optionRows = this.cloneOptions(this.editModel.options);
     this.isEditingComponent = true;
@@ -99,6 +99,7 @@ export class PriceComponentsComponent {
   save(): void {
     this.editModel.options = this.normalizeOptionRows();
     this.editModel.type = String(this.editModel.type) as CatalogComponentType;
+    this.editModel.multiple = false;
     this.catalog.savePriceComponent(this.editModel);
     this.statusMessage = 'Componente de preço salvo localmente.';
     this.componentModal.close();
@@ -164,16 +165,13 @@ export class PriceComponentsComponent {
 
   toggleDefault(index: number): void {
     this.optionRows = this.optionRows.map((option, optionIndex) => {
-      const selected = optionIndex === index ? !(option.default || option.selected) : this.editModel.multiple && (option.default || option.selected);
+      const selected = optionIndex === index ? !(option.default || option.selected) : false;
       return { ...option, default: selected, selected };
     });
   }
 
   enforceDefaultMode(): void {
-    if (this.editModel.multiple) {
-      return;
-    }
-
+    this.editModel.multiple = false;
     let selectedFound = false;
     this.optionRows = this.optionRows.map((option) => {
       const selected = !selectedFound && (option.default || option.selected);
@@ -250,9 +248,7 @@ export class PriceComponentsComponent {
       .map((option, index) => {
         const calculatedValue = Number(option.calculatedValue);
         const costValue = Number(option.costValue);
-        const selected = this.editModel.multiple
-          ? option.default === true || option.selected === true
-          : !selectedFound && (option.default === true || option.selected === true);
+        const selected = !selectedFound && (option.default === true || option.selected === true);
 
         selectedFound = selectedFound || selected;
 

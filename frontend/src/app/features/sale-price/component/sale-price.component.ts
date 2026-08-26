@@ -120,7 +120,7 @@ export class SalePriceComponent {
   selectedProductId = '';
   components: Array<ProductComponent> = [];
   priceComponents: Array<PriceComponent> = [];
-  values: Record<string, number | string | boolean> = {};
+  values: Record<string, number | string | boolean | Array<string>> = {};
   productQuantity = 1;
   resultValues: Record<string, number> = {};
   memory: Array<FormulaExecutionStep> = [];
@@ -168,7 +168,8 @@ export class SalePriceComponent {
 
   get selectedComponentCount(): number {
     return this.components.filter((component) =>
-      component.type !== 'select' || Boolean(this.values[component.id]),
+      component.type !== 'select'
+      || (Array.isArray(this.values[component.id]) ? (this.values[component.id] as Array<string>).length > 0 : Boolean(this.values[component.id])),
     ).length;
   }
 
@@ -381,7 +382,10 @@ export class SalePriceComponent {
         this.values[component.id] = false;
       } else if (component.type === 'select') {
         const options = this.getEffectiveOptions(component);
-        this.values[component.id] = options.find((option) => option.selected)?.code ?? options[0]?.code ?? '';
+        const selectedOptions = options.filter((option) => option.selected);
+        this.values[component.id] = component.multiple
+          ? (selectedOptions.length ? selectedOptions : options.slice(0, 1)).map((option) => option.code)
+          : selectedOptions[0]?.code ?? options[0]?.code ?? '';
       } else {
         this.values[component.id] = this.defaultValueFor(component);
       }
@@ -399,7 +403,10 @@ export class SalePriceComponent {
     for (const component of this.components) {
       if (component.type === 'select' && !this.values[component.id]) {
         const options = this.getEffectiveOptions(component);
-        this.values[component.id] = options.find((option) => option.selected)?.code ?? options[0]?.code ?? '';
+        const selectedOptions = options.filter((option) => option.selected);
+        this.values[component.id] = component.multiple
+          ? (selectedOptions.length ? selectedOptions : options.slice(0, 1)).map((option) => option.code)
+          : selectedOptions[0]?.code ?? options[0]?.code ?? '';
       }
     }
   }
@@ -524,6 +531,13 @@ export class SalePriceComponent {
     }
 
     if (component.type === 'select') {
+      if (component.multiple) {
+        const codes = Array.isArray(value) ? value : component.options.filter((option) => option.selected).map((option) => option.code);
+        return this.getEffectiveOptions(component)
+          .filter((option) => codes.includes(option.code))
+          .reduce((total, option) => total + this.safeNumber(option.costValue), 0);
+      }
+
       return this.findOption(component, String(value))?.costValue ?? this.getSelectedProductComponentValue(component);
     }
 
