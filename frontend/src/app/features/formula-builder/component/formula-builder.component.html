@@ -240,6 +240,12 @@
                       (click)="insertToken(component.varAPV, scope)"
                     >
                       <strong>{{ component.varAPV }}</strong>
+                      <span class="component-value">
+                        Valor na fórmula: {{ componentValueLabel(component, 'product') }}
+                      </span>
+                      <span class="component-option" *ngIf="component.options.length">
+                        {{ selectedComponentOptionLabel(component) }}
+                      </span>
                       <small>{{ displayText(component.description) }} - {{ componentMeta(component) }}</small>
                     </button>
                   </div>
@@ -273,6 +279,12 @@
                       (click)="insertToken(component.varAPV, scope)"
                     >
                       <strong>{{ component.varAPV }}</strong>
+                      <span class="component-value">
+                        Valor na fórmula: {{ componentValueLabel(component, 'price') }}
+                      </span>
+                      <span class="component-option" *ngIf="component.options.length">
+                        {{ selectedComponentOptionLabel(component) }}
+                      </span>
                       <small>{{ displayText(component.description) }} - {{ componentMeta(component) }}</small>
                     </button>
                   </div>

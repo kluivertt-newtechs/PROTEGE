@@ -18,6 +18,7 @@ import {
   PriceComponent,
   ProductCatalogService,
   ProductComponent,
+  ProductComponentOption,
   ProductNode,
 } from 'src/app/core/product-catalog.service';
 import { SHARED_MODULES } from 'src/app/shared/shared';
@@ -150,7 +151,7 @@ export class FormulaBuilderComponent implements OnInit {
 
   readonly simulationVariables = PRICING_FORMULA_VARIABLES;
   readonly defaultBusinessBranches: Array<PricingBusinessBranch> = ['transport', 'processing'];
-  readonly operatorTokens = ['+', '-', '*', '/', '(', ')', ',', '?', ':'];
+  readonly operatorTokens = ['+', '-', '*', '/', '%', '(', ')', ',', '?', ':'];
   readonly quickFunctionTokens = [
     { id: 'Math.max()', label: 'Maior valor' },
     { id: 'Math.min()', label: 'Menor valor' },
@@ -505,6 +506,42 @@ export class FormulaBuilderComponent implements OnInit {
     return [component.code, this.displayText(component.group)].filter(Boolean).join(' - ');
   }
 
+  componentValueLabel(component: ProductComponent, kind: 'product' | 'price'): string {
+    if (kind === 'price') {
+      const value = this.normalizeRate(this.catalog.getSelectedComponentValue(component));
+      return `${this.formatDecimal(value)} (${this.formatPercent(value)})`;
+    }
+
+    const value = this.getSelectedProductComponentValue(component);
+
+    if (component.type === 'rate') {
+      const rate = this.normalizeRate(value);
+      return `${this.formatDecimal(rate)} (${this.formatPercent(rate)})`;
+    }
+
+    if (component.type === 'boolean') {
+      return value ? '1 (ativo)' : '0 (inativo)';
+    }
+
+    if (component.type === 'text') {
+      return '0';
+    }
+
+    return this.formatCurrency(value);
+  }
+
+  selectedComponentOptionLabel(component: ProductComponent): string {
+    const selectedOptions = this.getSelectedComponentOptions(component);
+
+    if (!selectedOptions.length) {
+      return 'Sem opcao selecionada';
+    }
+
+    return selectedOptions
+      .map((option) => this.displayText(option.description || option.code))
+      .join(', ');
+  }
+
   trackByScope(_: number, scope: FormulaProductScope): string {
     return scope.productId;
   }
@@ -642,7 +679,7 @@ export class FormulaBuilderComponent implements OnInit {
 
   private createTokens(scope: FormulaProductScope, expression: string): Array<FormulaExpressionToken> {
     const rawTokens =
-      expression.match(/Math\.[A-Za-z_$][\w$]*|[A-Za-z_$][\w$]*|\d+(?:\.\d+)?(?:e[+-]?\d+)?|[+\-*/(),?:]|\S+/gi) ?? [];
+      expression.match(/Math\.[A-Za-z_$][\w$]*|[A-Za-z_$][\w$]*|\d+(?:\.\d+)?(?:e[+-]?\d+)?|[+\-*/%(),?:]|\S+/gi) ?? [];
 
     return rawTokens.map((value, index) => this.createExpressionToken(scope, value, index));
   }
@@ -759,7 +796,7 @@ export class FormulaBuilderComponent implements OnInit {
       return 'function';
     }
 
-    if (/^[+\-*/(),?:]$/.test(value)) {
+    if (/^[+\-*/%(),?:]$/.test(value)) {
       return 'operator';
     }
 
@@ -768,6 +805,48 @@ export class FormulaBuilderComponent implements OnInit {
     }
 
     return 'text';
+  }
+
+  private getSelectedComponentOptions(component: ProductComponent): Array<ProductComponentOption> {
+    const selectedOptions = component.options.filter((option) => option.selected);
+
+    if (selectedOptions.length) {
+      return selectedOptions;
+    }
+
+    const defaultOption = component.options.find((option) => option.default);
+
+    return defaultOption ? [defaultOption] : component.options.slice(0, 1);
+  }
+
+  private getSelectedProductComponentValue(component: ProductComponent): number {
+    const selectedOptions = this.getSelectedComponentOptions(component);
+
+    if (selectedOptions.length) {
+      return selectedOptions.reduce((sum, option) => sum + this.safeNumber(option.costValue), 0);
+    }
+
+    return this.safeNumber(component.costValue ?? component.calculatedValue);
+  }
+
+  private formatCurrency(value: number): string {
+    return this.safeNumber(value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  private formatDecimal(value: number): string {
+    return this.safeNumber(value).toLocaleString('pt-BR', { maximumFractionDigits: 6 });
+  }
+
+  private formatPercent(value: number): string {
+    return this.safeNumber(value).toLocaleString('pt-BR', { style: 'percent', minimumFractionDigits: 2 });
+  }
+
+  private normalizeRate(value: number): number {
+    return Math.abs(value) > 1 ? value / 100 : value;
+  }
+
+  private safeNumber(value: unknown): number {
+    return Number.isFinite(Number(value)) ? Number(value) : 0;
   }
 
   private setDragData(event: DragEvent, dragData: FormulaDragData): void {

@@ -576,6 +576,21 @@
   overflow-wrap: anywhere;
 }
 
+.component-value {
+  color: #2e343c;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.component-option {
+  color: #4f5b66;
+  font-size: 11px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
 .variable-chip small {
   color: #69737d;
   line-height: 1.3;

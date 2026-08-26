@@ -28,6 +28,13 @@ interface FormulaDependencyResult {
   messages: Array<string>;
 }
 
+type ExpressionTokenType = 'number' | 'identifier' | 'function' | 'operator' | 'paren' | 'comma' | 'question' | 'colon';
+
+interface ExpressionToken {
+  type: ExpressionTokenType;
+  value: string;
+}
+
 const STORAGE_KEY = 'protege.pricing.formulas';
 const PRODUCT_STORAGE_KEY = 'protege.pricing.formulas.byProduct.v1';
 const BUSINESS_BRANCHES: Array<PricingBusinessBranch> = ['transport', 'processing'];
@@ -309,7 +316,7 @@ export function executePricingFormulas(
     try {
       const value = evaluateExpression(formula.expression, context);
       if (!Number.isFinite(value)) {
-        throw new Error('Resultado não numérico.');
+        throw new Error(buildNonFiniteResultMessage(formula.expression, context));
       }
 
       context[formula.id] = value;
@@ -378,7 +385,10 @@ function validateFormulas(
       messages.push(`Categoria inválida em ${formula.id}.`);
     }
 
-    const expressionValidation = validateExpressionReferences(formula.expression, ids, allowedVariableIds);
+    const expressionValidation = [
+      ...validateExpressionSyntax(formula.expression),
+      ...validateExpressionReferences(formula.expression, ids, allowedVariableIds),
+    ];
     messages.push(...expressionValidation.map((message) => `${formula.id}: ${message}`));
 
     if (formula.enabled) {
@@ -454,14 +464,12 @@ function validateExpressionReferences(
 ): Array<string> {
   const messages: Array<string> = [];
 
-  if (/[^-+*/%().,\s?:<>=!&|0-9A-Za-z_]/.test(expression)) {
-    messages.push('use apenas operadores matemáticos, ternário e identificadores.');
-  }
-
   const mathMemberMatches = expression.matchAll(/\bMath\.([A-Za-z_][A-Za-z0-9_]*)/g);
+  const mathMembers = new Set<string>();
   for (const match of mathMemberMatches) {
+    mathMembers.add(match[1]);
     if (!ALLOWED_MATH_FUNCTIONS.includes(match[1])) {
-      messages.push(`função Math.${match[1]} não permitida.`);
+      messages.push(`funcao Math.${match[1]} nao permitida.`);
     }
   }
 
@@ -474,16 +482,234 @@ function validateExpressionReferences(
       continue;
     }
 
+    if (mathMembers.has(identifier)) {
+      continue;
+    }
+
     if (!allowedVariableIds.has(identifier) && !formulaIds.has(identifier)) {
-      messages.push(`referência inexistente: ${identifier}.`);
+      messages.push(`referencia inexistente: ${identifier}.`);
     }
   }
 
   if (/(^|[^A-Za-z0-9_])\.(?!\s*$)/.test(expression.replace(/\bMath\./g, 'Math'))) {
-    messages.push('acesso a propriedades não é permitido fora de Math.');
+    messages.push('acesso a propriedades nao e permitido fora de Math.');
   }
 
   return [...new Set(messages)];
+}
+
+function validateExpressionSyntax(expression: string): Array<string> {
+  const messages: Array<string> = [];
+  const tokens = tokenizeExpression(expression, messages);
+
+  if (!tokens.length) {
+    return [...new Set(messages)];
+  }
+
+  const parens: Array<ExpressionToken> = [];
+  const ternaryStack: Array<ExpressionToken> = [];
+  let expectOperand = true;
+  let lastSignificant: ExpressionToken | undefined;
+
+  tokens.forEach((token, index) => {
+    const next = tokens[index + 1];
+
+    if (token.type === 'function') {
+      if (!next || next.value !== '(') {
+        messages.push(`funcao ${token.value} precisa abrir parenteses.`);
+      }
+      expectOperand = true;
+      lastSignificant = token;
+      return;
+    }
+
+    if (token.type === 'number' || token.type === 'identifier') {
+      if (!expectOperand && lastSignificant?.value !== '?' && lastSignificant?.value !== ':') {
+        messages.push(`operador ausente antes de "${token.value}".`);
+      }
+      expectOperand = false;
+      lastSignificant = token;
+      return;
+    }
+
+    if (token.value === '(') {
+      if (!expectOperand && lastSignificant?.type !== 'function') {
+        messages.push('operador ausente antes de "(".');
+      }
+      parens.push(lastSignificant?.type === 'function' ? lastSignificant : token);
+      expectOperand = true;
+      lastSignificant = token;
+      return;
+    }
+
+    if (token.value === ')') {
+      if (!parens.length) {
+        messages.push('parentese ")" sem abertura.');
+      }
+      if (expectOperand && lastSignificant?.value !== ')') {
+        messages.push('parentese ")" apos operador incompleto.');
+      }
+      parens.pop();
+      expectOperand = false;
+      lastSignificant = token;
+      return;
+    }
+
+    if (token.type === 'comma') {
+      if (!parens.some((paren) => paren.type === 'function')) {
+        messages.push('virgula fora de funcao.');
+      }
+      if (expectOperand || !next || next.value === ')' || next.value === ',') {
+        messages.push('virgula malformada.');
+      }
+      expectOperand = true;
+      lastSignificant = token;
+      return;
+    }
+
+    if (token.type === 'question') {
+      if (expectOperand) {
+        messages.push('ternario "?" sem condicao.');
+      }
+      ternaryStack.push(token);
+      expectOperand = true;
+      lastSignificant = token;
+      return;
+    }
+
+    if (token.type === 'colon') {
+      if (!ternaryStack.length) {
+        messages.push('ternario ":" sem "?".');
+      } else {
+        ternaryStack.pop();
+      }
+      if (expectOperand) {
+        messages.push('ternario ":" sem valor verdadeiro.');
+      }
+      expectOperand = true;
+      lastSignificant = token;
+      return;
+    }
+
+    if (token.type === 'operator') {
+      const unary = token.value === '-' || token.value === '+' || token.value === '!';
+      if (expectOperand) {
+        if (!unary) {
+          messages.push(`operador "${token.value}" sem operando anterior.`);
+        }
+      } else {
+        expectOperand = true;
+      }
+      if (lastSignificant?.type === 'operator' && lastSignificant.value === token.value) {
+        messages.push(`operador duplicado "${token.value}${token.value}".`);
+      }
+      lastSignificant = token;
+    }
+  });
+
+  if (parens.length) {
+    messages.push('parentese "(" sem fechamento.');
+  }
+
+  if (ternaryStack.length) {
+    messages.push('ternario "?" sem ":".');
+  }
+
+  if (expectOperand && lastSignificant?.type === 'operator') {
+    messages.push(`expressao termina com operador "${lastSignificant.value}".`);
+  }
+
+  if (expectOperand && lastSignificant?.type === 'question') {
+    messages.push('ternario "?" sem valor verdadeiro.');
+  }
+
+  if (expectOperand && lastSignificant?.type === 'colon') {
+    messages.push('ternario ":" sem valor falso.');
+  }
+
+  return [...new Set(messages)];
+}
+
+function tokenizeExpression(expression: string, messages: Array<string>): Array<ExpressionToken> {
+  const tokens: Array<ExpressionToken> = [];
+  let index = 0;
+
+  while (index < expression.length) {
+    const char = expression[index];
+
+    if (/\s/.test(char)) {
+      index += 1;
+      continue;
+    }
+
+    const rest = expression.slice(index);
+    const mathFunction = rest.match(/^Math\.([A-Za-z_][A-Za-z0-9_]*)/);
+    if (mathFunction) {
+      tokens.push({ type: 'function', value: `Math.${mathFunction[1]}` });
+      index += mathFunction[0].length;
+      continue;
+    }
+
+    const number = rest.match(/^\d+(?:\.\d+)?(?:e[+-]?\d+)?/i);
+    if (number) {
+      tokens.push({ type: 'number', value: number[0] });
+      index += number[0].length;
+      continue;
+    }
+
+    const identifier = rest.match(/^[A-Za-z_][A-Za-z0-9_]*/);
+    if (identifier) {
+      tokens.push({ type: 'identifier', value: identifier[0] });
+      index += identifier[0].length;
+      continue;
+    }
+
+    const twoCharOperator = rest.match(/^(===|!==|<=|>=|==|!=|&&|\|\|)/);
+    if (twoCharOperator) {
+      tokens.push({ type: 'operator', value: twoCharOperator[0] });
+      index += twoCharOperator[0].length;
+      continue;
+    }
+
+    if ('+-*/%<>!'.includes(char)) {
+      tokens.push({ type: 'operator', value: char });
+      index += 1;
+      continue;
+    }
+
+    if (char === '(' || char === ')') {
+      tokens.push({ type: 'paren', value: char });
+      index += 1;
+      continue;
+    }
+
+    if (char === ',') {
+      tokens.push({ type: 'comma', value: char });
+      index += 1;
+      continue;
+    }
+
+    if (char === '?') {
+      tokens.push({ type: 'question', value: char });
+      index += 1;
+      continue;
+    }
+
+    if (char === ':') {
+      tokens.push({ type: 'colon', value: char });
+      index += 1;
+      continue;
+    }
+
+    if (char === '.') {
+      messages.push('acesso a propriedades nao e permitido fora de Math.');
+    } else {
+      messages.push(`caractere nao permitido: "${char}".`);
+    }
+    index += 1;
+  }
+
+  return tokens;
 }
 
 function resolveFormulaExecutionOrder(formulas: Array<PricingFormula>): FormulaDependencyResult {
@@ -548,6 +774,109 @@ function extractIdentifiers(expression: string): Array<string> {
     !RESERVED_IDENTIFIERS.has(identifier) &&
     !ALLOWED_MATH_FUNCTIONS.includes(identifier)
   ))];
+}
+
+function buildNonFiniteResultMessage(expression: string, context: Record<string, number>): string {
+  const references = extractIdentifiers(expression)
+    .filter((identifier) => Object.prototype.hasOwnProperty.call(context, identifier));
+  const variableValues = references.map((identifier) => `${identifier}=${formatDiagnosticNumber(context[identifier])}`);
+  const suspects = detectNonFiniteSuspects(expression, context);
+  const details = [
+    suspects.length ? `Possiveis causas: ${suspects.join('; ')}.` : '',
+    variableValues.length ? `Variaveis usadas: ${variableValues.join(', ')}.` : '',
+  ].filter(Boolean);
+
+  return ['Resultado nao numerico, Infinity ou NaN.', ...details].join(' ');
+}
+
+function detectNonFiniteSuspects(expression: string, context: Record<string, number>): Array<string> {
+  const messages: Array<string> = [];
+  const tokens = tokenizeExpression(expression, []);
+
+  tokens.forEach((token, index) => {
+    if (token.value === '/' || token.value === '%') {
+      const divisor = readNextSimpleOperand(tokens, index + 1, context);
+      const operation = token.value === '/' ? 'divisao' : 'modulo';
+
+      if (divisor && divisor.value === 0) {
+        messages.push(`${operation} por zero em ${divisor.label}`);
+      }
+    }
+
+    if (token.value === 'Math.sqrt') {
+      const value = readFirstFunctionArgument(tokens, index + 1, context);
+
+      if (value && value.value < 0) {
+        messages.push(`Math.sqrt recebeu valor negativo em ${value.label}`);
+      }
+    }
+  });
+
+  const invalidReferences = extractIdentifiers(expression)
+    .filter((identifier) => !Number.isFinite(context[identifier]));
+
+  messages.push(
+    ...invalidReferences.map((identifier) => `${identifier} esta com valor ${formatDiagnosticNumber(context[identifier])}`),
+  );
+
+  return [...new Set(messages)];
+}
+
+function readNextSimpleOperand(
+  tokens: Array<ExpressionToken>,
+  startIndex: number,
+  context: Record<string, number>,
+): { label: string; value: number } | undefined {
+  let sign = 1;
+  let index = startIndex;
+
+  while (tokens[index]?.value === '+' || tokens[index]?.value === '-') {
+    sign *= tokens[index].value === '-' ? -1 : 1;
+    index += 1;
+  }
+
+  const token = tokens[index];
+  if (!token) {
+    return undefined;
+  }
+
+  if (token.type === 'number') {
+    return { label: token.value, value: sign * Number(token.value) };
+  }
+
+  if (token.type === 'identifier' && Object.prototype.hasOwnProperty.call(context, token.value)) {
+    return { label: token.value, value: sign * Number(context[token.value]) };
+  }
+
+  return undefined;
+}
+
+function readFirstFunctionArgument(
+  tokens: Array<ExpressionToken>,
+  startIndex: number,
+  context: Record<string, number>,
+): { label: string; value: number } | undefined {
+  if (tokens[startIndex]?.value !== '(') {
+    return undefined;
+  }
+
+  return readNextSimpleOperand(tokens, startIndex + 1, context);
+}
+
+function formatDiagnosticNumber(value: number): string {
+  if (Number.isNaN(value)) {
+    return 'NaN';
+  }
+
+  if (value === Infinity) {
+    return 'Infinity';
+  }
+
+  if (value === -Infinity) {
+    return '-Infinity';
+  }
+
+  return Number.isFinite(value) ? String(value) : String(value);
 }
 
 function evaluateExpression(expression: string, context: Record<string, number>): number {
