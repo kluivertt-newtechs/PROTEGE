@@ -24,75 +24,83 @@
 
     <ng-template #adjustmentTemplate>
       <section class="adjustment-layout">
-        <div class="adjustment-form">
-          <po-lookup
-            *ngIf="activeKind === 'product'"
-            name="productComponentLookup"
-            p-label="Componentes de produto"
-            p-placeholder="Selecionar componentes"
-            p-field-value="id"
-            p-field-label="label"
-            p-title="Selecionar componentes"
-            [p-columns]="lookupColumns"
-            [p-filter-service]="productLookupService"
-            [p-multiple]="true"
-            [(ngModel)]="selectedProductIds"
-          ></po-lookup>
+        <section class="operation-panel">
+          <div class="adjustment-form">
+            <po-lookup
+              *ngIf="activeKind === 'product'"
+              name="productComponentLookup"
+              p-label="Componentes de produto"
+              p-placeholder="Selecionar componentes"
+              p-field-value="id"
+              p-field-label="label"
+              p-title="Selecionar componentes"
+              [p-columns]="lookupColumns"
+              [p-filter-service]="productLookupService"
+              [p-multiple]="true"
+              [(ngModel)]="selectedProductIds"
+            ></po-lookup>
 
-          <po-lookup
-            *ngIf="activeKind === 'price'"
-            name="priceComponentLookup"
-            p-label="Componentes de preço"
-            p-placeholder="Selecionar componentes"
-            p-field-value="id"
-            p-field-label="label"
-            p-title="Selecionar componentes"
-            [p-columns]="lookupColumns"
-            [p-filter-service]="priceLookupService"
-            [p-multiple]="true"
-            [(ngModel)]="selectedPriceIds"
-          ></po-lookup>
+            <po-lookup
+              *ngIf="activeKind === 'price'"
+              name="priceComponentLookup"
+              p-label="Componentes de preço"
+              p-placeholder="Selecionar componentes"
+              p-field-value="id"
+              p-field-label="label"
+              p-title="Selecionar componentes"
+              [p-columns]="lookupColumns"
+              [p-filter-service]="priceLookupService"
+              [p-multiple]="true"
+              [(ngModel)]="selectedPriceIds"
+            ></po-lookup>
 
-          <label class="percent-field">
-            <span>Percentual de Reajuste (%)</span>
-            <input
-              type="number"
-              step="0.01"
-              inputmode="decimal"
-              [(ngModel)]="percentage"
-            />
-          </label>
+            <label class="percent-field">
+              <span>Percentual de Reajuste (%)</span>
+              <input
+                type="number"
+                step="0.01"
+                inputmode="decimal"
+                [(ngModel)]="percentage"
+              />
+            </label>
 
-          <po-button
-            p-kind="primary"
-            p-icon="an an-check"
-            p-label="Aplicar Reajuste"
-            [p-disabled]="!canApply"
-            (p-click)="openApplyConfirmation()"
-          ></po-button>
-        </div>
+            <po-button
+              p-kind="primary"
+              p-icon="an an-check"
+              p-label="Aplicar Reajuste"
+              [p-disabled]="!canApply"
+              (p-click)="openApplyConfirmation()"
+            ></po-button>
+          </div>
+        </section>
 
         <p class="validation-message" *ngIf="hasNegativePreview">
           O percentual informado geraria valor negativo em um ou mais itens.
         </p>
 
-        <section class="preview-section">
+        <section class="preview-section component-card-grid">
           <article
-            class="preview-chip"
+            class="summary-card adjustment-card"
             *ngFor="let item of previewItems; trackBy: trackByPreview"
           >
-            <div>
-              <strong>{{ item.code }} - {{ item.description }}</strong>
-              <small>{{ item.options.length || 1 }} valor(es) ativo/default</small>
-              <span>{{ formatPreviewValue(item.currentValue) }} -> {{ formatPreviewValue(item.newValue) }}</span>
+            <header class="summary-head">
+              <strong>{{ item.description }}</strong>
+              <span class="status-tag">{{ item.options.length || 1 }} valor(es)</span>
+              <button
+                type="button"
+                class="edit-button"
+                (click)="removeSelected(item.id)"
+                [attr.aria-label]="'Remover ' + item.description"
+              >
+                <span class="an an-x" aria-hidden="true"></span>
+              </button>
+            </header>
+
+            <div class="summary-meta">
+              <span><small>Código</small><b>{{ item.code }}</b></span>
+              <span><small>Valor atual</small><b>{{ formatPreviewValue(item.currentValue) }}</b></span>
+              <span><small>Novo valor</small><b>{{ formatPreviewValue(item.newValue) }}</b></span>
             </div>
-            <button
-              type="button"
-              (click)="removeSelected(item.id)"
-              [attr.aria-label]="'Remover ' + item.description"
-            >
-              <span class="an an-x" aria-hidden="true"></span>
-            </button>
           </article>
 
           <p class="empty-state" *ngIf="!previewItems.length">
