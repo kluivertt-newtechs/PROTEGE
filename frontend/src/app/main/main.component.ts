@@ -54,6 +54,12 @@ export class MainComponent {
       link: 'price-components',
     },
     {
+      label: 'Parâmetros',
+      shortLabel: 'Parâmetros',
+      icon: 'an an-sliders-horizontal',
+      link: 'parameters',
+    },
+    {
       label: 'Árvore de Produto',
       shortLabel: 'Árvore',
       icon: 'an an-tree-structure',
@@ -70,12 +76,6 @@ export class MainComponent {
       shortLabel: 'Simulação',
       icon: 'an an-calculator',
       link: 'sale-price',
-    },
-    {
-      label: 'Parâmetros',
-      shortLabel: 'Parâmetros',
-      icon: 'an an-sliders-horizontal',
-      link: 'parameters',
     },
   ];
 

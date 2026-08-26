@@ -26,7 +26,23 @@
   align-items: end;
   display: grid;
   gap: 16px;
-  grid-template-columns: minmax(280px, 1fr) minmax(180px, 240px) auto;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr) minmax(170px, 220px) auto;
+}
+
+.select-action-field {
+  color: #3b3b3b;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  gap: 6px;
+}
+
+.lookup-host {
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  width: 0;
 }
 
 .percent-field {
@@ -35,6 +51,11 @@
   flex-direction: column;
   font-size: 14px;
   gap: 6px;
+  grid-column: 3;
+}
+
+.apply-action {
+  grid-column: 4;
 }
 
 .percent-field input {
@@ -60,7 +81,8 @@
 .component-card-grid {
   display: grid;
   gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, 220px);
+  justify-content: start;
 }
 
 .summary-card {
@@ -72,9 +94,11 @@
   gap: 8px;
   min-width: 0;
   padding: 10px 12px;
+  width: 220px;
 }
 
 .adjustment-card {
+  min-height: 112px;
   transition: border-color .16s ease, box-shadow .16s ease, transform .16s ease;
 }
 
@@ -88,7 +112,12 @@
   align-items: center;
   display: grid;
   gap: 8px;
-  grid-template-columns: minmax(0, 1fr) auto 30px;
+  grid-template-columns: minmax(0, 1fr) 30px;
+}
+
+.summary-head .status-tag {
+  grid-column: 1 / -1;
+  justify-self: start;
 }
 
 .summary-card strong,
@@ -100,13 +129,14 @@
 
 .summary-card strong {
   font-size: 14px;
+  min-height: 35px;
 }
 
 .summary-meta {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 14px;
+  gap: 6px 12px;
 }
 
 .summary-meta span {
@@ -118,6 +148,10 @@
 .summary-meta small,
 .empty-state {
   color: #687381;
+  font-size: 12px;
+}
+
+.summary-meta b {
   font-size: 12px;
 }
 
@@ -207,15 +241,24 @@
   .adjustment-form {
     grid-template-columns: 1fr;
   }
+
+  .percent-field,
+  .apply-action {
+    grid-column: auto;
+  }
 }
 
 @media (max-width: 760px) {
   .component-card-grid {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+
+  .summary-card {
+    width: 100%;
   }
 
   .summary-head {
-    grid-template-columns: minmax(0, 1fr) auto 30px;
+    grid-template-columns: minmax(0, 1fr) 30px;
   }
 
   .summary-meta {

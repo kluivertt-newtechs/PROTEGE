@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, ViewChild, inject } from '@angular/core';
 import {
   PoLookupColumn,
+  PoLookupComponent,
   PoLookupFilter,
   PoLookupFilteredItemsParams,
   PoLookupResponseApi,
@@ -126,6 +127,8 @@ function lookupId(value: unknown): string {
 export class ParametersComponent {
   @ViewChild('confirmModal') confirmModal!: PoModalComponent;
   @ViewChild('revertModal') revertModal!: PoModalComponent;
+  @ViewChild('productLookup') productLookup!: PoLookupComponent;
+  @ViewChild('priceLookup') priceLookup!: PoLookupComponent;
 
   activeKind: ComponentKind = 'product';
   selectedProductIds: Array<string> = [];
@@ -221,15 +224,13 @@ export class ParametersComponent {
     this.activeKind = kind;
   }
 
-  onLookupSelected(kind: ComponentKind, value: unknown): void {
-    const ids = this.normalizeLookupIds(value);
-    const currentIds = this.getSelectedIds(kind);
-    const nextIds = Array.isArray(value) ? ids : [...currentIds, ...ids];
-    this.setSelectedIds(kind, nextIds);
-  }
+  openLookup(): void {
+    if (this.activeKind === 'price') {
+      this.priceLookup.openLookup();
+      return;
+    }
 
-  onLookupChange(kind: ComponentKind, value: unknown): void {
-    this.setSelectedIds(kind, this.normalizeLookupIds(value));
+    this.productLookup.openLookup();
   }
 
   removeSelected(id: string): void {
@@ -331,15 +332,6 @@ export class ParametersComponent {
     } else {
       this.selectedProductIds = uniqueIds;
     }
-  }
-
-  private normalizeLookupIds(value: unknown): Array<string> {
-    if (Array.isArray(value)) {
-      return value.map((item) => lookupId(item)).filter(Boolean);
-    }
-
-    const id = lookupId(value);
-    return id ? [id] : [];
   }
 
   private componentsForActiveKind(): Array<ProductComponent> {

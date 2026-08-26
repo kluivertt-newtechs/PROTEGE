@@ -26,33 +26,14 @@
       <section class="adjustment-layout">
         <section class="operation-panel">
           <div class="adjustment-form">
-            <po-lookup
-              *ngIf="activeKind === 'product'"
-              name="productComponentLookup"
-              p-label="Componentes de produto"
-              p-placeholder="Selecionar componentes"
-              p-field-value="id"
-              p-field-label="label"
-              p-title="Selecionar componentes"
-              [p-columns]="lookupColumns"
-              [p-filter-service]="productLookupService"
-              [p-multiple]="true"
-              [(ngModel)]="selectedProductIds"
-            ></po-lookup>
-
-            <po-lookup
-              *ngIf="activeKind === 'price'"
-              name="priceComponentLookup"
-              p-label="Componentes de preço"
-              p-placeholder="Selecionar componentes"
-              p-field-value="id"
-              p-field-label="label"
-              p-title="Selecionar componentes"
-              [p-columns]="lookupColumns"
-              [p-filter-service]="priceLookupService"
-              [p-multiple]="true"
-              [(ngModel)]="selectedPriceIds"
-            ></po-lookup>
+            <div class="select-action-field">
+              <span>{{ activeKind === 'price' ? 'Componentes de preço' : 'Componentes de produto' }}</span>
+              <po-button
+                p-icon="an an-magnifying-glass"
+                [p-label]="activeKind === 'price' ? 'Selecionar Preços' : 'Selecionar Produto'"
+                (p-click)="openLookup()"
+              ></po-button>
+            </div>
 
             <label class="percent-field">
               <span>Percentual de Reajuste (%)</span>
@@ -65,6 +46,7 @@
             </label>
 
             <po-button
+              class="apply-action"
               p-kind="primary"
               p-icon="an an-check"
               p-label="Aplicar Reajuste"
@@ -73,6 +55,36 @@
             ></po-button>
           </div>
         </section>
+
+        <div class="lookup-host">
+          <po-lookup
+            #productLookup
+            name="productComponentLookup"
+            p-label="Componentes de produto"
+            p-placeholder="Selecionar componentes"
+            p-field-value="id"
+            p-field-label="label"
+            p-title="Selecionar componentes"
+            [p-columns]="lookupColumns"
+            [p-filter-service]="productLookupService"
+            [p-multiple]="true"
+            [(ngModel)]="selectedProductIds"
+          ></po-lookup>
+
+          <po-lookup
+            #priceLookup
+            name="priceComponentLookup"
+            p-label="Componentes de preço"
+            p-placeholder="Selecionar componentes"
+            p-field-value="id"
+            p-field-label="label"
+            p-title="Selecionar componentes"
+            [p-columns]="lookupColumns"
+            [p-filter-service]="priceLookupService"
+            [p-multiple]="true"
+            [(ngModel)]="selectedPriceIds"
+          ></po-lookup>
+        </div>
 
         <p class="validation-message" *ngIf="hasNegativePreview">
           O percentual informado geraria valor negativo em um ou mais itens.
