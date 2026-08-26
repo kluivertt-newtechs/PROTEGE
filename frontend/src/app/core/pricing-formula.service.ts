@@ -38,6 +38,21 @@ interface ExpressionToken {
 const STORAGE_KEY = 'protege.pricing.formulas';
 const PRODUCT_STORAGE_KEY = 'protege.pricing.formulas.byProduct.v1';
 const BUSINESS_BRANCHES: Array<PricingBusinessBranch> = ['transport', 'processing'];
+const DEFAULT_FORMULA_PRODUCT_IDS = new Set([
+  'P01',
+  'P02',
+  'P03',
+  'P04',
+  'P05',
+  'P06',
+  'P07',
+  'P08',
+  'P09',
+  'P10',
+  'P11',
+  'P12',
+  'P13',
+]);
 
 const ALLOWED_MATH_FUNCTIONS = [
   'abs',
@@ -170,7 +185,13 @@ export class PricingFormulaService {
   constructor(private readonly productCatalog: ProductCatalogService) {}
 
   getFormulas(productId: string): Array<PricingFormula> {
-    return cloneFormulas(readStoredFormulaCatalog()[productId] ?? getDefaultPricingFormulas(productId));
+    const catalog = readStoredFormulaCatalog();
+
+    return cloneFormulas(
+      Object.prototype.hasOwnProperty.call(catalog, productId)
+        ? catalog[productId]
+        : getDefaultPricingFormulas(productId),
+    );
   }
 
   saveFormulas(productId: string, formulas: Array<PricingFormula>): FormulaValidationResult {
@@ -247,8 +268,10 @@ export class PricingFormulaService {
   }
 }
 
-function getDefaultPricingFormulas(_productId: string): Array<PricingFormula> {
-  return cloneFormulas(DEFAULT_PRICING_FORMULAS);
+function getDefaultPricingFormulas(productId: string): Array<PricingFormula> {
+  return DEFAULT_FORMULA_PRODUCT_IDS.has(productId)
+    ? cloneFormulas(DEFAULT_PRICING_FORMULAS)
+    : [];
 }
 
 export function executePricingFormulas(
