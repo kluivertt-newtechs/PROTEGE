@@ -1,4 +1,4 @@
-<po-page-default p-title="Parâmetros">
+<po-page-default p-title="Reajuste %">
   <div class="parameters-page" [class.loading]="loading">
     <po-tabs>
       <po-tab
@@ -27,10 +27,18 @@
         <section class="operation-panel">
           <div class="adjustment-form">
             <div class="select-action-field">
-              <span>{{ activeKind === 'price' ? 'Componentes de preço' : 'Componentes de produto' }}</span>
+              <span>{{
+                activeKind === "price"
+                  ? "Componentes de preço"
+                  : "Componentes de produto"
+              }}</span>
               <po-button
                 p-icon="an an-magnifying-glass"
-                [p-label]="activeKind === 'price' ? 'Selecionar Preços' : 'Selecionar Produto'"
+                [p-label]="
+                  activeKind === 'price'
+                    ? 'Selecionar Preços'
+                    : 'Selecionar Produto'
+                "
                 (p-click)="openLookup()"
               ></po-button>
             </div>
@@ -97,7 +105,9 @@
           >
             <header class="summary-head">
               <strong>{{ item.description }}</strong>
-              <span class="status-tag">{{ item.options.length || 1 }} valor(es)</span>
+              <span class="status-tag"
+                >{{ item.options.length || 1 }} valor(es)</span
+              >
               <button
                 type="button"
                 class="edit-button"
@@ -109,9 +119,17 @@
             </header>
 
             <div class="summary-meta">
-              <span><small>Código</small><b>{{ item.code }}</b></span>
-              <span><small>Valor atual</small><b>{{ formatPreviewValue(item.currentValue) }}</b></span>
-              <span><small>Novo valor</small><b>{{ formatPreviewValue(item.newValue) }}</b></span>
+              <span
+                ><small>Código</small><b>{{ item.code }}</b></span
+              >
+              <span
+                ><small>Valor atual</small
+                ><b>{{ formatPreviewValue(item.currentValue) }}</b></span
+              >
+              <span
+                ><small>Novo valor</small
+                ><b>{{ formatPreviewValue(item.newValue) }}</b></span
+              >
             </div>
           </article>
 
@@ -140,14 +158,21 @@
   <po-modal #confirmModal [p-title]="'Confirmar ' + tabTitle(activeKind)">
     <div class="modal-content">
       <p>
-        Aplicar reajuste de <strong>{{ formatPercent(normalizedPercentage) }}</strong>
-        em <strong>{{ previewItems.length }}</strong> item(ns)?
+        Aplicar reajuste de
+        <strong>{{ formatPercent(normalizedPercentage) }}</strong> em
+        <strong>{{ previewItems.length }}</strong> item(ns)?
       </p>
-      <p>Esta operação ficará registrada no histórico e poderá ser revertida pelos valores anteriores gravados.</p>
+      <p>
+        Esta operação ficará registrada no histórico e poderá ser revertida
+        pelos valores anteriores gravados.
+      </p>
     </div>
 
     <po-modal-footer>
-      <po-button p-label="Cancelar" (p-click)="confirmModal.close()"></po-button>
+      <po-button
+        p-label="Cancelar"
+        (p-click)="confirmModal.close()"
+      ></po-button>
       <po-button
         p-kind="primary"
         p-label="Aplicar Reajuste"
@@ -160,10 +185,15 @@
   <po-modal #revertModal p-title="Confirmar reversão">
     <div class="modal-content">
       <p *ngIf="revertCandidate">
-        Reverter o reajuste de <strong>{{ formatPercent(revertCandidate.percentage) }}</strong>
-        aplicado em <strong>{{ revertCandidate.items.length }}</strong> item(ns)?
+        Reverter o reajuste de
+        <strong>{{ formatPercent(revertCandidate.percentage) }}</strong>
+        aplicado em
+        <strong>{{ revertCandidate.items.length }}</strong> item(ns)?
       </p>
-      <p>A reversão restaura exatamente os valores anteriores gravados no histórico.</p>
+      <p>
+        A reversão restaura exatamente os valores anteriores gravados no
+        histórico.
+      </p>
     </div>
 
     <po-modal-footer>

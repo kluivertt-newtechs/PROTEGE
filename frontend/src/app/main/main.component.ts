@@ -54,8 +54,8 @@ export class MainComponent {
       link: 'price-components',
     },
     {
-      label: 'Parâmetros',
-      shortLabel: 'Parâmetros',
+      label: 'Reajuste',
+      shortLabel: 'Reajuste',
       icon: 'an an-sliders-horizontal',
       link: 'parameters',
     },
