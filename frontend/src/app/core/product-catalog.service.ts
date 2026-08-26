@@ -6,6 +6,7 @@ export type ProductNodeType = 'group' | 'product' | 'service';
 export type CatalogStatus = 'Ativo' | 'Inativo';
 export type ComponentKind = 'product' | 'price';
 export type ProductComponentOptionStatus = 'default' | 'custom';
+export type AdjustmentStatus = 'Aplicado' | 'Revertido';
 
 export interface ProductComponentOption {
   sequence: number;
@@ -30,6 +31,8 @@ export interface ProductComponent {
   status: CatalogStatus;
   active: boolean;
   multiple: boolean;
+  calculatedValue?: number;
+  costValue?: number;
   options: Array<ProductComponentOption>;
   varAPV: string;
   formula: string;
@@ -60,6 +63,38 @@ export interface ProductComponentOptionConfig {
   quantity: number;
 }
 
+export interface AdjustmentOptionSnapshot {
+  optionCode: string;
+  description: string;
+  previousCalculatedValue: number;
+  previousCostValue: number;
+  newCalculatedValue: number;
+  newCostValue: number;
+}
+
+export interface AdjustmentItemSnapshot {
+  componentId: string;
+  code: string;
+  description: string;
+  previousCalculatedValue: number;
+  previousCostValue: number;
+  newCalculatedValue: number;
+  newCostValue: number;
+  options: Array<AdjustmentOptionSnapshot>;
+}
+
+export interface AdjustmentHistoryEntry {
+  id: string;
+  type: ComponentKind;
+  dateTime: string;
+  user: string;
+  percentage: number;
+  items: Array<AdjustmentItemSnapshot>;
+  status: AdjustmentStatus;
+  revertedBy?: string;
+  revertedAt?: string;
+}
+
 export interface ProductCatalogState {
   version: number;
   productComponents: Array<ProductComponent>;
@@ -67,11 +102,13 @@ export interface ProductCatalogState {
   tree: Array<ProductNode>;
   compositions: Array<ProductComposition>;
   selectedProductId: string;
+  adjustmentHistory: Array<AdjustmentHistoryEntry>;
 }
 
-const STATE_KEY = 'protege.productCatalog.v7';
-const VERSION = 7;
+const STATE_KEY = 'protege.productCatalog.v8';
+const VERSION = 8;
 const LEGACY_KEYS = [
+  'protege.productCatalog.v7',
   'protege.productCatalog.v6',
   'protege.productCatalog.v5',
   'protege.productCatalog.v4',
@@ -580,6 +617,167 @@ export class ProductCatalogService {
     this.persist();
   }
 
+  listAdjustmentHistory(type: ComponentKind): Array<AdjustmentHistoryEntry> {
+    return this.state.adjustmentHistory
+      .filter((entry) => entry.type === type)
+      .map((entry) => this.cloneAdjustmentHistoryEntry(entry))
+      .sort((first, second) => second.dateTime.localeCompare(first.dateTime));
+  }
+
+  applyAdjustment(type: ComponentKind, componentIds: Array<string>, percentage: number, user = 'Super Admin'): AdjustmentHistoryEntry {
+    const normalizedPercentage = this.safeNumber(percentage);
+
+    if (!Number.isFinite(normalizedPercentage) || normalizedPercentage === 0) {
+      throw new Error('Informe um percentual de reajuste valido.');
+    }
+
+    const selectedIds = this.uniqueIds(componentIds);
+
+    if (!selectedIds.length) {
+      throw new Error('Selecione ao menos um item para reajustar.');
+    }
+
+    const selectedIdSet = new Set(selectedIds);
+    const currentCollection = this.collection(type);
+    const affectedComponents = currentCollection.filter((component) => selectedIdSet.has(component.id));
+
+    if (affectedComponents.length !== selectedIds.length) {
+      throw new Error('Um ou mais componentes selecionados nao existem mais.');
+    }
+
+    const itemSnapshots = affectedComponents.map((component) =>
+      this.createAdjustmentItemSnapshot(type, component, normalizedPercentage),
+    );
+
+    if (!itemSnapshots.some((item) => item.options.length || item.previousCostValue !== item.newCostValue)) {
+      throw new Error('Nenhum valor ativo/default foi encontrado para reajuste.');
+    }
+
+    const updatedComponents = currentCollection.map((component) => {
+      const snapshot = itemSnapshots.find((item) => item.componentId === component.id);
+
+      if (!snapshot) {
+        return component;
+      }
+
+      return this.applyAdjustmentSnapshot(type, component, snapshot);
+    });
+    const historyEntry: AdjustmentHistoryEntry = {
+      id: `adj-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      type,
+      dateTime: new Date().toISOString(),
+      user: String(user || 'Super Admin'),
+      percentage: normalizedPercentage,
+      items: itemSnapshots,
+      status: 'Aplicado',
+    };
+
+    this.state = type === 'price'
+      ? {
+          ...this.state,
+          priceComponents: updatedComponents.map((component) => this.normalizeComponent(component)),
+          adjustmentHistory: [...this.state.adjustmentHistory, historyEntry],
+        }
+      : {
+          ...this.state,
+          productComponents: updatedComponents.map((component) => this.normalizeComponent(component)),
+          adjustmentHistory: [...this.state.adjustmentHistory, historyEntry],
+        };
+    this.persist();
+
+    return this.cloneAdjustmentHistoryEntry(historyEntry);
+  }
+
+  revertAdjustment(historyId: string, user = 'Super Admin'): AdjustmentHistoryEntry {
+    const historyEntry = this.state.adjustmentHistory.find((entry) => entry.id === historyId);
+
+    if (!historyEntry) {
+      throw new Error('Historico de reajuste nao encontrado.');
+    }
+
+    if (historyEntry.status === 'Revertido') {
+      throw new Error('Este reajuste ja foi revertido.');
+    }
+
+    const componentById = new Map(this.collection(historyEntry.type).map((component) => [component.id, component]));
+
+    for (const item of historyEntry.items) {
+      const component = componentById.get(item.componentId);
+
+      if (!component) {
+        throw new Error('Nao foi possivel reverter: um componente do historico nao existe mais.');
+      }
+
+      for (const option of item.options) {
+        if (!component.options.some((componentOption) => componentOption.code === option.optionCode)) {
+          throw new Error('Nao foi possivel reverter: uma opcao do historico nao existe mais.');
+        }
+      }
+    }
+
+    const updatedComponents = this.collection(historyEntry.type).map((component) => {
+      const item = historyEntry.items.find((snapshot) => snapshot.componentId === component.id);
+
+      if (!item) {
+        return component;
+      }
+
+      const options = component.options.map((option) => {
+        const optionSnapshot = item.options.find((snapshot) => snapshot.optionCode === option.code);
+
+        if (!optionSnapshot) {
+          return option;
+        }
+
+        const restoredCalculatedValue = historyEntry.type === 'price'
+          ? optionSnapshot.previousCalculatedValue
+          : option.calculatedValue;
+
+        return this.normalizeOption({
+          ...option,
+          calculatedValue: restoredCalculatedValue,
+          costValue: optionSnapshot.previousCostValue,
+          numericValue: restoredCalculatedValue,
+        });
+      });
+      const restoredCalculatedValue = historyEntry.type === 'price'
+        ? item.previousCalculatedValue
+        : component.calculatedValue;
+
+      return this.normalizeComponent({
+        ...component,
+        calculatedValue: restoredCalculatedValue,
+        costValue: item.previousCostValue,
+        options,
+      } as ProductComponent);
+    });
+    const revertedEntry: AdjustmentHistoryEntry = {
+      ...historyEntry,
+      status: 'Revertido',
+      revertedBy: String(user || 'Super Admin'),
+      revertedAt: new Date().toISOString(),
+    };
+
+    this.state = historyEntry.type === 'price'
+      ? {
+          ...this.state,
+          priceComponents: updatedComponents.map((component) => this.normalizeComponent(component)),
+          adjustmentHistory: this.state.adjustmentHistory.map((entry) =>
+            entry.id === historyEntry.id ? revertedEntry : entry,
+          ),
+        }
+      : {
+          ...this.state,
+          productComponents: updatedComponents.map((component) => this.normalizeComponent(component)),
+          adjustmentHistory: this.state.adjustmentHistory.map((entry) =>
+            entry.id === historyEntry.id ? revertedEntry : entry,
+          ),
+        };
+    this.persist();
+
+    return this.cloneAdjustmentHistoryEntry(revertedEntry);
+  }
+
   getComposition(productId: string): ProductComposition {
     const composition = this.state.compositions.find((item) => item.productId === productId);
     return {
@@ -844,6 +1042,7 @@ export class ProductCatalogService {
       tree: SEED_TREE,
       compositions: SEED_COMPOSITIONS,
       selectedProductId: 'P12',
+      adjustmentHistory: [],
     });
   }
 
@@ -866,6 +1065,7 @@ export class ProductCatalogService {
         productComponentOptions: this.normalizeProductComponentOptionConfigs(composition.productComponentOptions ?? []),
       })),
       selectedProductId,
+      adjustmentHistory: this.normalizeAdjustmentHistory(state.adjustmentHistory ?? []),
     };
   }
 
@@ -909,6 +1109,146 @@ export class ProductCatalogService {
         costValue: option.code === config.optionCode ? config.costValue : option.costValue,
       })),
     });
+  }
+
+  private createAdjustmentItemSnapshot(
+    type: ComponentKind,
+    component: ProductComponent,
+    percentage: number,
+  ): AdjustmentItemSnapshot {
+    const factor = 1 + percentage / 100;
+    const targetOptions = component.options.filter((option) => option.selected || option.default);
+    const optionSnapshots = targetOptions.map((option) => {
+      const previousCalculatedValue = this.safeNumber(option.calculatedValue);
+      const previousCostValue = this.safeNumber(option.costValue);
+      const newCostValue = this.roundAdjustmentValue(previousCostValue * factor);
+      const newCalculatedValue = type === 'price'
+        ? this.roundAdjustmentValue(previousCalculatedValue * factor)
+        : previousCalculatedValue;
+
+      if (newCostValue < 0 || newCalculatedValue < 0) {
+        throw new Error('O reajuste geraria valor negativo em um ou mais itens.');
+      }
+
+      return {
+        optionCode: option.code,
+        description: option.description,
+        previousCalculatedValue,
+        previousCostValue,
+        newCalculatedValue,
+        newCostValue,
+      };
+    });
+    const previousCalculatedValue = this.safeNumber(component.calculatedValue);
+    const previousCostValue = this.safeNumber(component.costValue ?? component.calculatedValue);
+    const newCostValue = this.roundAdjustmentValue(previousCostValue * factor);
+    const newCalculatedValue = type === 'price'
+      ? this.roundAdjustmentValue(previousCalculatedValue * factor)
+      : previousCalculatedValue;
+
+    if (!optionSnapshots.length && (newCostValue < 0 || newCalculatedValue < 0)) {
+      throw new Error('O reajuste geraria valor negativo em um ou mais itens.');
+    }
+
+    return {
+      componentId: component.id,
+      code: component.code,
+      description: component.description,
+      previousCalculatedValue,
+      previousCostValue,
+      newCalculatedValue,
+      newCostValue,
+      options: optionSnapshots,
+    };
+  }
+
+  private applyAdjustmentSnapshot(
+    type: ComponentKind,
+    component: ProductComponent,
+    snapshot: AdjustmentItemSnapshot,
+  ): ProductComponent {
+    const options = component.options.map((option) => {
+      const optionSnapshot = snapshot.options.find((item) => item.optionCode === option.code);
+
+      if (!optionSnapshot) {
+        return option;
+      }
+
+      return this.normalizeOption({
+        ...option,
+        calculatedValue: optionSnapshot.newCalculatedValue,
+        costValue: optionSnapshot.newCostValue,
+        numericValue: optionSnapshot.newCalculatedValue,
+      });
+    });
+    const calculatedValue = type === 'price' ? snapshot.newCalculatedValue : component.calculatedValue;
+
+    return this.normalizeComponent({
+      ...component,
+      calculatedValue,
+      costValue: snapshot.newCostValue,
+      options,
+    });
+  }
+
+  private normalizeAdjustmentHistory(history: Array<AdjustmentHistoryEntry>): Array<AdjustmentHistoryEntry> {
+    if (!Array.isArray(history)) {
+      return [];
+    }
+
+    return history
+      .map((entry) => this.normalizeAdjustmentHistoryEntry(entry))
+      .filter((entry): entry is AdjustmentHistoryEntry => Boolean(entry));
+  }
+
+  private normalizeAdjustmentHistoryEntry(entry: AdjustmentHistoryEntry): AdjustmentHistoryEntry | undefined {
+    const type = entry.type === 'price' ? 'price' : entry.type === 'product' ? 'product' : undefined;
+
+    if (!type || !entry.id) {
+      return undefined;
+    }
+
+    return {
+      id: String(entry.id),
+      type,
+      dateTime: String(entry.dateTime || new Date().toISOString()),
+      user: String(entry.user || 'Super Admin'),
+      percentage: this.safeNumber(entry.percentage),
+      status: entry.status === 'Revertido' ? 'Revertido' : 'Aplicado',
+      revertedBy: entry.revertedBy ? String(entry.revertedBy) : undefined,
+      revertedAt: entry.revertedAt ? String(entry.revertedAt) : undefined,
+      items: Array.isArray(entry.items) ? entry.items.map((item) => ({
+        componentId: String(item.componentId ?? ''),
+        code: String(item.code ?? ''),
+        description: String(item.description ?? ''),
+        previousCalculatedValue: this.safeNumber(item.previousCalculatedValue),
+        previousCostValue: this.safeNumber(item.previousCostValue),
+        newCalculatedValue: this.safeNumber(item.newCalculatedValue),
+        newCostValue: this.safeNumber(item.newCostValue),
+        options: Array.isArray(item.options) ? item.options.map((option) => ({
+          optionCode: String(option.optionCode ?? ''),
+          description: String(option.description ?? ''),
+          previousCalculatedValue: this.safeNumber(option.previousCalculatedValue),
+          previousCostValue: this.safeNumber(option.previousCostValue),
+          newCalculatedValue: this.safeNumber(option.newCalculatedValue),
+          newCostValue: this.safeNumber(option.newCostValue),
+        })).filter((option) => option.optionCode) : [],
+      })).filter((item) => item.componentId) : [],
+    };
+  }
+
+  private cloneAdjustmentHistoryEntry(entry: AdjustmentHistoryEntry): AdjustmentHistoryEntry {
+    return {
+      ...entry,
+      items: entry.items.map((item) => ({
+        ...item,
+        options: item.options.map((option) => ({ ...option })),
+      })),
+    };
+  }
+
+  private roundAdjustmentValue(value: number): number {
+    return Math.round(this.safeNumber(value) * 1000000) / 1000000;
   }
 
   private normalizeProductComponentOptionConfigs(configs: Array<ProductComponentOptionConfig>): Array<ProductComponentOptionConfig> {
@@ -971,6 +1311,8 @@ export class ProductCatalogService {
       status,
       active: status === 'Ativo',
       multiple: component.multiple === true,
+      calculatedValue: this.safeNumber(component.calculatedValue),
+      costValue: this.safeNumber(component.costValue ?? component.calculatedValue),
       options: Array.isArray(component.options) ? component.options.map((option, index) => this.normalizeOption(option, index)) : [],
       varAPV: this.normalizeVariable(component.varAPV || component.code),
       formula: String(component.formula ?? '').trim(),

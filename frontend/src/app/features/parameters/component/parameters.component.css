@@ -1,0 +1,143 @@
+.parameters-page {
+  display: block;
+}
+
+.parameters-page.loading {
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.adjustment-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 16px;
+}
+
+.adjustment-form {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(180px, 240px) auto;
+  align-items: end;
+  gap: 16px;
+}
+
+.percent-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #3b3b3b;
+  font-size: 14px;
+}
+
+.percent-field input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #b6bdbf;
+  border-radius: 4px;
+  font: inherit;
+}
+
+.preview-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.preview-chip {
+  display: grid;
+  grid-template-columns: 1fr 36px;
+  gap: 12px;
+  align-items: center;
+  min-height: 88px;
+  padding: 12px;
+  border: 1px solid #d8dde0;
+  border-left: 4px solid #0c9abe;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.preview-chip strong,
+.preview-chip small,
+.preview-chip span {
+  display: block;
+}
+
+.preview-chip strong {
+  color: #1d2426;
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.preview-chip small {
+  margin-top: 4px;
+  color: #667276;
+}
+
+.preview-chip span {
+  margin-top: 8px;
+  color: #0b5c70;
+  font-weight: 700;
+}
+
+.preview-chip button {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: #eef3f4;
+  color: #2c373a;
+  cursor: pointer;
+}
+
+.history-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.section-head h2 {
+  margin: 0;
+  color: #1d2426;
+  font-size: 18px;
+}
+
+.section-head span,
+.empty-state,
+.validation-message {
+  color: #667276;
+}
+
+.validation-message {
+  margin: 0;
+  color: #a94442;
+  font-weight: 700;
+}
+
+.empty-state {
+  margin: 0;
+  padding: 18px 0;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-content p {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .adjustment-form {
+    grid-template-columns: 1fr;
+  }
+}

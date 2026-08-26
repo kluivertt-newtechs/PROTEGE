@@ -50,6 +50,13 @@ export const routes: Routes = [
             (r) => r.salePriceRoutes,
           ),
       },
+      {
+        path: 'parameters',
+        loadChildren: () =>
+          import('./features/parameters/parameters.routes').then(
+            (r) => r.parametersRoutes,
+          ),
+      },
     ],
   },
   { path: '**', redirectTo: 'product-components' },

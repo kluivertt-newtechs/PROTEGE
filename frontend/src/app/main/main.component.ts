@@ -71,6 +71,12 @@ export class MainComponent {
       icon: 'an an-calculator',
       link: 'sale-price',
     },
+    {
+      label: 'Parâmetros',
+      shortLabel: 'Parâmetros',
+      icon: 'an an-sliders-horizontal',
+      link: 'parameters',
+    },
   ];
 
   constructor(private router: Router) {}

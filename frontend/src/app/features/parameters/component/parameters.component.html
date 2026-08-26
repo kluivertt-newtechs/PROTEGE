@@ -1,0 +1,159 @@
+<po-page-default p-title="Parâmetros">
+  <div class="parameters-page" [class.loading]="loading">
+    <po-tabs>
+      <po-tab
+        p-label="Reajuste Produto"
+        [p-active]="activeKind === 'product'"
+        (p-click)="activate('product')"
+      >
+        <ng-container *ngIf="activeKind === 'product'">
+          <ng-container *ngTemplateOutlet="adjustmentTemplate"></ng-container>
+        </ng-container>
+      </po-tab>
+
+      <po-tab
+        p-label="Reajuste Preço"
+        [p-active]="activeKind === 'price'"
+        (p-click)="activate('price')"
+      >
+        <ng-container *ngIf="activeKind === 'price'">
+          <ng-container *ngTemplateOutlet="adjustmentTemplate"></ng-container>
+        </ng-container>
+      </po-tab>
+    </po-tabs>
+
+    <ng-template #adjustmentTemplate>
+      <section class="adjustment-layout">
+        <div class="adjustment-form">
+          <po-lookup
+            *ngIf="activeKind === 'product'"
+            name="productComponentLookup"
+            p-label="Componentes de produto"
+            p-placeholder="Selecionar componentes"
+            p-field-value="id"
+            p-field-label="label"
+            p-title="Selecionar componentes"
+            [p-columns]="lookupColumns"
+            [p-filter-service]="productLookupService"
+            [p-multiple]="true"
+            [(ngModel)]="selectedProductIds"
+          ></po-lookup>
+
+          <po-lookup
+            *ngIf="activeKind === 'price'"
+            name="priceComponentLookup"
+            p-label="Componentes de preço"
+            p-placeholder="Selecionar componentes"
+            p-field-value="id"
+            p-field-label="label"
+            p-title="Selecionar componentes"
+            [p-columns]="lookupColumns"
+            [p-filter-service]="priceLookupService"
+            [p-multiple]="true"
+            [(ngModel)]="selectedPriceIds"
+          ></po-lookup>
+
+          <label class="percent-field">
+            <span>Percentual de Reajuste (%)</span>
+            <input
+              type="number"
+              step="0.01"
+              inputmode="decimal"
+              [(ngModel)]="percentage"
+            />
+          </label>
+
+          <po-button
+            p-kind="primary"
+            p-icon="an an-check"
+            p-label="Aplicar Reajuste"
+            [p-disabled]="!canApply"
+            (p-click)="openApplyConfirmation()"
+          ></po-button>
+        </div>
+
+        <p class="validation-message" *ngIf="hasNegativePreview">
+          O percentual informado geraria valor negativo em um ou mais itens.
+        </p>
+
+        <section class="preview-section">
+          <article
+            class="preview-chip"
+            *ngFor="let item of previewItems; trackBy: trackByPreview"
+          >
+            <div>
+              <strong>{{ item.code }} - {{ item.description }}</strong>
+              <small>{{ item.options.length || 1 }} valor(es) ativo/default</small>
+              <span>{{ formatPreviewValue(item.currentValue) }} -> {{ formatPreviewValue(item.newValue) }}</span>
+            </div>
+            <button
+              type="button"
+              (click)="removeSelected(item.id)"
+              [attr.aria-label]="'Remover ' + item.description"
+            >
+              <span class="an an-x" aria-hidden="true"></span>
+            </button>
+          </article>
+
+          <p class="empty-state" *ngIf="!previewItems.length">
+            Nenhum componente selecionado.
+          </p>
+        </section>
+
+        <section class="history-section">
+          <div class="section-head">
+            <h2>Histórico</h2>
+            <span>{{ historyRows.length }} operação(ões)</span>
+          </div>
+
+          <po-table
+            [p-columns]="historyColumns"
+            [p-items]="historyRows"
+            [p-actions]="historyActions"
+            [p-striped]="true"
+          ></po-table>
+        </section>
+      </section>
+    </ng-template>
+  </div>
+
+  <po-modal #confirmModal [p-title]="'Confirmar ' + tabTitle(activeKind)">
+    <div class="modal-content">
+      <p>
+        Aplicar reajuste de <strong>{{ formatPercent(normalizedPercentage) }}</strong>
+        em <strong>{{ previewItems.length }}</strong> item(ns)?
+      </p>
+      <p>Esta operação ficará registrada no histórico e poderá ser revertida pelos valores anteriores gravados.</p>
+    </div>
+
+    <po-modal-footer>
+      <po-button p-label="Cancelar" (p-click)="confirmModal.close()"></po-button>
+      <po-button
+        p-kind="primary"
+        p-label="Aplicar Reajuste"
+        [p-disabled]="loading"
+        (p-click)="applyAdjustment()"
+      ></po-button>
+    </po-modal-footer>
+  </po-modal>
+
+  <po-modal #revertModal p-title="Confirmar reversão">
+    <div class="modal-content">
+      <p *ngIf="revertCandidate">
+        Reverter o reajuste de <strong>{{ formatPercent(revertCandidate.percentage) }}</strong>
+        aplicado em <strong>{{ revertCandidate.items.length }}</strong> item(ns)?
+      </p>
+      <p>A reversão restaura exatamente os valores anteriores gravados no histórico.</p>
+    </div>
+
+    <po-modal-footer>
+      <po-button p-label="Cancelar" (p-click)="revertModal.close()"></po-button>
+      <po-button
+        p-kind="primary"
+        p-label="Reverter"
+        [p-disabled]="loading"
+        (p-click)="revertAdjustment()"
+      ></po-button>
+    </po-modal-footer>
+  </po-modal>
+</po-page-default>
